@@ -1,0 +1,18 @@
+[{
+	"pk": 1,
+	"model": "auth.user",
+	"fields": {
+		"username": "admin",
+		"first_name": "",
+		"last_name": "",
+		"is_active": true,
+		"is_superuser": true,
+		"is_staff": true,
+		"last_login": "2013-06-21T08:06:51.002Z",
+		"groups": [],
+		"user_permissions": [],
+		"password": "pbkdf2_sha256$10000$q4BAZc4yFLB3$ooQB2bx7JdaLT8r+TeUC8r+CQSxuhNN3wcLe+0yly7g=",
+		"email": "richardwangwagn@gmail.com",
+		"date_joined": "2013-06-21T08:06:51.002Z"
+	}
+}]

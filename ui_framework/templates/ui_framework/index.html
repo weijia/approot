@@ -1,0 +1,31 @@
+{% load i18n %}
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+    {% block head %}
+        {% block title %}
+            <TITLE>{% trans "Home" %}</TITLE>
+        {% endblock %}
+        <link href="/static/jquery-ui-1.10.2/themes/base/minified/jquery-ui.min.css" type="text/css" rel="stylesheet" />
+        <SCRIPT type="text/javascript" src="/static/jquery-1.9.1.min.js"></SCRIPT>
+        <SCRIPT type="text/javascript" src="/static/jquery-migrate-1.1.1.min.js"></SCRIPT>
+        <SCRIPT type="text/javascript" src="/static/jquery-ui-1.10.2/ui/minified/jquery-ui.min.js"></SCRIPT>
+        <SCRIPT type="text/javascript" src="/static/csrf.js"></SCRIPT>
+        {% block extra_head %}
+        {% endblock %}
+        <SCRIPT type="text/javascript">
+        var gUserName = "{{request.user}}";
+        </SCRIPT>
+    {% endblock %}
+</HEAD>
+{% block body %}
+    <BODY>
+        {% block body_content %}
+            <DIV class="ui-layout-center">
+                {% block content_block %}
+                {% endblock %}
+            </DIV>
+        {% endblock %}
+    </BODY>
+{% endblock %}
+</HTML>

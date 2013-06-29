@@ -1,0 +1,51 @@
+<div>
+<div id="{{tree.name}}">
+</div>
+<script src="/static/content_loader.js" type="text/javascript"></script>
+
+<script>
+$("#{{tree.name}}").jstree({
+    "plugins" : ["contextmenu", "cookies", "json_data", "themes","ui","checkbox"],
+    "json_data" : { 
+        "ajax" : {
+            "url" : function (n) {
+                if(n != -1)
+                {
+                    //console.debug(n);
+                    n = n.attr('id');
+
+                }
+                return "{{tree.url}}"+encodeURI(n);
+            },
+            "type":"POST"
+        }
+    }
+});
+
+
+$("#{{tree.name}}").bind("loaded.jstree", function (event, data) {
+                                                            //Do not need click if cookie will trigger some view
+                                                            var select = $.cookie("jstree_select");
+                                                            if(null == select)
+                                                            {
+                                                                $( "a" ,$( ".jstree-last" )).trigger("click");
+                                                            }
+                                          }).bind("select_node.jstree", function(e, data) {
+        /*
+        //alert(data.rslt.obj.attr("id"));
+        var path = data.rslt.obj.attr("id");
+        if($.cookie('curLoadPath') == path) return;
+        $.cookie('lastLoadedPath', path);
+        $.cookie('curLoadPath', path);
+        //alert("reloading when select tree item:"+path+"!="+$.cookie('curLoadPath'));
+        $("#curLoadedPath").text(path);
+        //console.log('loading:'+path);
+        $("#clearButton").trigger("click");
+        $("#existingList").elementListWidget("reload", path, curCollectionUrl)
+        */
+        //alert(data.rslt.obj.attr("url").replace("view://",""));
+        var url = data.rslt.obj.attr("url").replace("view:/","").replace("admin","normal_admin");
+        loadContent(url);
+    });
+</script>
+</div>

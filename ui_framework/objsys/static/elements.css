@@ -1,0 +1,12 @@
+.element-root{width:250px;height:300px;/*background-color:red;*/border:solid 1px;
+word-wrap:break-word;float:left;margin:2px;font-size:12px;
+}
+.element-thumb{width:246px;height:200px;padding:2px;}
+
+/*******************
+Tag font size
+*******************/
+.tag-list {height: 35px; margin: 2px;}
+.tag-list li {font-size: 6px;}
+
+#infscr-loading {clear:both;}

@@ -1,0 +1,11 @@
+*.pyc
+.svn
+*.db
+*.conf
+backup
+doc/_build
+/libs/ftp/ftpserver.py
+/libs/ftp/cert.pem
+obs
+/config.json
+/static

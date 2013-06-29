@@ -1,0 +1,13 @@
+{% extends "ui_framework/index.html" %}
+{% load i18n %}
+
+{% block head %}
+{{block.super}}
+<script type='text/javascript' src='/static/string_tools.js'></script>
+<link href="/static/elements.css" type="text/css" rel="stylesheet" />
+<link href="/static/connection/connection.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block content_block %}
+{% include "connection/connection.html" %}
+{% endblock %}

@@ -1,0 +1,61 @@
+{% block left_side_in_content_block %}
+<!--
+<script type='text/javascript' src='/static_serve/jqueryui/ui/jquery.ui.selectable.js'></script>
+<script type='text/javascript' src='/static_serve/jqueryui/ui/jquery.ui.sortable.js'></script>
+-->
+<script type='text/javascript' src='/static/json_list.js'></script>
+
+<!-- ref: http://webdeveloperplus.com/jquery/collpasible-drag-drop-panels/ -->
+<script>
+$(document).ready(function() {
+    $('.column').sortable({
+        connectWith: '.column',
+        handle: 'h2',
+        cursor: 'move',
+        placeholder: 'placeholder',
+        forcePlaceholderSize: true,
+        opacity: 0.4
+    })
+    .disableSelection();
+
+    $('.dragbox').each(function(){
+        $(this).hover(function(){
+            $(this).find('h2').addClass('collapse');
+        }, function(){
+            $(this).find('h2').removeClass('collapse');
+        })
+        .find('h2').hover(function(){
+            $(this).find('.configure').css('visibility', 'visible');
+        }, function(){
+            $(this).find('.configure').css('visibility', 'hidden');
+        })
+        .click(function(){
+            $(this).siblings('.dragbox-content').toggle();
+        })
+        .end()
+        .find('.configure').css('visibility', 'hidden');
+    });
+});
+</script>
+<style>
+.column .dragbox h2{
+    cursor:move;
+}
+</style>
+
+<div style="float:left;">
+    {% for column in columns %}
+    <div class="column">
+        {% for panel in column %}
+        <div class="dragbox">
+            <h2>{{panel.title}}</h2>
+            <div class="dragbox-content" id="{{panel.id}}">
+                <!-- Panel Content Here -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

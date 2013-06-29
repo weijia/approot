@@ -1,0 +1,84 @@
+{% extends "ui_framework/index.html" %}
+{% load i18n %}
+
+{% block head %}
+{{block.super}}
+<STYLE type="text/css">
+tr.mapped {color: red;}
+</STYLE>
+<script type='text/javascript' src='/static/string_tools.js'></script>
+<link href="/static/tags/elements.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block content_block %}
+<div id='wrap'>
+<script>
+/*
+if(window.location.href.indexOf('?')!= -1)
+{
+    base = window.location.href.substr(0, window.location.href.indexOf('?'));
+}
+else
+{
+    base = window.location.href;
+}*/
+//window.location.href = base;
+
+function map_driver(src, dest, user, passwd)
+{
+
+    /*var base;
+    if(window.location.href.indexOf('?')!= -1)
+    {
+        base = window.location.href.substr(0, window.location.href.indexOf('?'));
+    }
+    else
+    {
+        base = window.location.href;
+    }
+    window.location.href = base+"?"+dest+"="+src+"&user="+user+"&pass="+passwd;*/
+    //$.getJSON('/mapping_driver/'+"?"+dest+"="+src+"&user="+user+"&passwd="+passwd);
+    $( "#mapping-table" ).load('/mapping_driver/'+"?"+dest+"="+src+"&user="+user+"&passwd="+passwd+ " #mapping-table tbody");
+}
+function map_input()
+{
+    map_driver(document.getElementById('map_path').value, document.getElementById('driver_letter').value, 
+                document.getElementById('user').value, document.getElementById('passwd').value);
+}
+function map_row(e)
+{
+    //alert("clicked");
+    //map_driver(e.currentTarget.getElementsByTagName("td")[1].innerHTML, e.currentTarget.getElementsByTagName("td")[0].innerHTML.substr(0,2));
+    console.log($(".local", $(e.currentTarget)).text());
+    $("#driver_letter").val($(".local", $(e.currentTarget)).text()[0]);
+    $("#map_path").val($(".remote", $(e.currentTarget)).text());
+}
+function map_row_click(e)
+{
+    //alert("clicked");
+    //map_driver(e.currentTarget.parentNode.parentNode.getElementsByTagName("td")[1].innerHTML, e.currentTarget.parentNode.parentNode.getElementsByTagName("td")[0].innerHTML.substr(0,2));
+}
+
+</script>
+
+<input id="driver_letter" type="text" maxLength="1"><input id="map_path" type="text">
+<input id="user" type="text"><input id="passwd" type="password">
+<input type="button" name="map" value="map" onclick='javascript:map_input()''>
+
+
+<table border="1" id="mapping-table">
+
+{% for mapped in all_mapping %}
+    {% if mapped.existing %}
+        <tr class="mapped" onclick="map_row(event)">
+    {% else %}
+        <tr class="legacy-mapped" onclick="map_row(event)">
+    {% endif %}
+    <td class="local">{{mapped.local}}:</td><td class="remote">{{mapped.remote}}</td><td><button>{% trans "Map" %}</button></td>
+    </tr>
+{% endfor %}
+
+</table>
+<div style='clear:both'></div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "ui_framework/index.html" %}
+{% load i18n %}
+{% block title %}
+<TITLE>{% trans "Desktop" %}</TITLE>
+{% endblock %}
+
+{% block content_block %}
+<!--Include all script using blocks so scripts will not be loaded more than once?-->
+<script src="/static/dataTables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="/static/js/json_data_tables.js" type="text/javascript"></script>
+<script src="/static/string_tools.js" type="text/javascript"></script>
+<!--Include all script using blocks so scripts will not be loaded more than once?-->
+<script src="/static/csrf.js" type="text/javascript"></script>
+
+<script>
+$(document).ready(function() {
+    $( "#content" ).json_data_tables();
+});
+</script>
+<div id="content" src="/objsys/api/ufsobj/ufsobj/?full_path__contains=tag&format=json">
+</div>
+{% endblock %}

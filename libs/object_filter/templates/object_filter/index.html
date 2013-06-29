@@ -1,0 +1,33 @@
+{% extends "ui_framework/index.html" %}
+{% block extra_head %}
+<link href="/static/elements.css" type="text/css" rel="stylesheet" />
+<link href="/static/object_filter/object_filter.css" type="text/css" rel="stylesheet" />
+<link href="/static/js/tag-it/css/jquery.tagit.css" type="text/css" rel="stylesheet" />
+<SCRIPT type="text/javascript" src="/static/string_tools.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="/static/object_filter/object_filter.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="/static/js/tag-it/js/tag-it.min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="/static/js/infinite-scroll/jquery.infinitescroll.js"></SCRIPT>
+{% endblock %}
+{% block body_content %}
+<div id="main-container">
+    <div id="filter-pane">
+    <label for="full-path">Path contains:</label><input id="full-path"></input>
+    <label for="ufs-url">URL contains:</label><input id="ufs-url"></input>
+    {% if filter_tag %}
+        <label for="tag">Tag:</label><input id="tag" value="{{tag}}"/>
+    {% else %}
+        <label for="tag">Tag:</label><input id="tag"></input>
+    {% endif %}
+    </div>
+    <div id="scrolling-pane">
+        <div id="obj-pane">
+        </div>
+        <div id="end-of-element" class="clear-div">
+        </div>
+    </div>
+    <div id="navigation-pane"></div>
+    <div id="next-page-pane">
+        <a href="/objsys/api/ufsobj/ufsobj/?"></a>
+    </div>
+</div>
+{% endblock %}

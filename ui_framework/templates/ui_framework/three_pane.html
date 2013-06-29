@@ -1,0 +1,27 @@
+{% extends "ui_framework/index.html" %}
+{% load i18n %}
+
+
+{% block title %}
+    <TITLE>{% trans "Three pane" %}</TITLE>
+{% endblock %}
+
+{% block extra_head %}
+    <SCRIPT type="text/javascript" src="/static/jquery-layout/jquery.layout-1.3.0.rc30.74.min.js"></SCRIPT>
+    <SCRIPT type="text/javascript">
+        $(document).ready(function () {
+            $('body').layout({ applyDefaultStyles: true });
+        });
+    </SCRIPT>
+{% endblock %}
+
+{% block body_content %}
+<DIV class="ui-layout-center">
+{% block content_block %}
+{% endblock %}
+</DIV>
+<DIV class="ui-layout-north">{% block north_block %}North{% endblock %}</DIV>
+<!--<DIV class="ui-layout-south">South</DIV>
+<DIV class="ui-layout-east">East</DIV>-->
+<DIV class="ui-layout-west">{% block west_block %}West{% endblock %}</DIV>
+{% endblock %}

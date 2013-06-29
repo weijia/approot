@@ -1,0 +1,1 @@
+from ThumbServiceDjango import get_thumb

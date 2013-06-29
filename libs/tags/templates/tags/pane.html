@@ -1,0 +1,31 @@
+{% extends "ui_framework/index.html" %}
+{% load i18n %}
+
+{% block head %}
+{{block.super}}
+<script type='text/javascript' src='/static/string_tools.js'></script>
+<link href="/static/elements.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block content_block %}
+<div id='wrap'>
+<script>
+$(document).ready(function() {
+    $('#wrap').on("dblclick", ".element-root", function(event){
+        console.log("dblclicked");
+        
+        $.getJSON("/ui_framework/start?"+$(event.target).attr("fullpath"), function(data){});
+    });
+    $.getJSON("{{data_url}}", function(data){
+        //In this function $(this) is the xhr request
+        for(i = 0; i < data.length; i++)
+        {
+            //$(curContainerBlocksElem).container_blocks("genEvent", data[i].classroomId.pk, data[i].start, data[i].end, "New test class", data[i].id, data[i].teacherList);
+            $( '#wrap' ).append($(String.format('<div class="element-root" fullpath="{1}"><img src="/thumb/?target={1}"/>{0}</div>', data[i].data, data[i].full_path)));
+        }
+    });
+});
+</script>
+<div style='clear:both'></div>
+</div>
+{% endblock %}

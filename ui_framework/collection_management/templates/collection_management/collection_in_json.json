@@ -1,0 +1,26 @@
+{% load guardian_tags %}
+[
+    {% if user.is_authenticated %}
+        {% for obj in collections %}
+            {
+                {% get_obj_perms user for obj as "obj_perm" %}
+                {% get_obj_perms default_user for obj as "default_user_obj_perm" %}
+                
+                    {% if "view_collection_item" in default_user_obj_perm or "view_collection_item" in obj_perm %}
+                        "data": "{{obj.id_in_col}}",
+                        "attr": { "url": "{{obj.obj.ufs_url}}",
+                                  "id": "{{obj.obj.uuid}}"
+                                }
+                        {% if obj.obj.uuid in parent_list %}
+                        ,"state": "closed"
+                        {% endif %}
+                    {% endif %}
+
+            }
+            {% if not forloop.last %}
+            ,
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+]

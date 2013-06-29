@@ -1,0 +1,7 @@
+{
+    "ufs_web_server_port": 8210,
+    "ufs_sftp_server_port": 8211,
+    "ufs_beanstalkd_port": 8212,
+    "drop_wnd_color": "dark",
+    "POSTGRESQL_PORT": 8213
+}

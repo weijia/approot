@@ -1,0 +1,196 @@
+{% load i18n %}
+<div id='object-list'>
+</div>
+<div style='clear:both'></div>
+<div id='containers'>
+<button id="confirm-diagram">
+{% trans "Confirm Diagram" %}
+</button>
+<div class="object-container-group">
+    <table>
+        <tr>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+        </tr>
+        <tr>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+        </tr>
+        <tr>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+            <td class="object-container"></td>
+            <td class="separator"></td>
+        </tr>
+    </table>
+</div>
+<div style='clear:both'></div>
+</div>
+<SCRIPT type="text/javascript" src="/static/connection/objlist.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="/static/jquery.jsPlumb-1.3.16-all-min.js"></SCRIPT>
+<script type='text/javascript' src='/static/connection/connection.js'></script>
+<script type='text/javascript' src='/static/csrf.js'></script>
+<script>
+var diagram_id = "{{ diagram_id }}";
+$(document).ready(function () {
+    $(document).on("keyup", "input", function(event, ui){
+        //console.log("Key up");
+        console.log(event, ui);
+    });
+    $( "#object-list" ).objlist({url: "/tags/tagged/?tag=system:auto-app&amp;other=/", callback: function(elements, data){
+            $.each(elements, function(key, value){
+                $(elements[key]).draggable({
+                            zIndex: 999,
+                            revert: true,      // will cause the event to go back to its
+                            revertDuration: 0,  //  original position after the drag
+                            helper: "clone",
+                            //handle: "p",
+                            refreshPositions: true,
+                            start: function(event, ui)
+                            {
+                                console.log(event, ui, $(ui.helper).data("data"), $(event.srcElement).data("data"));
+                                $(ui.helper).data("data", $(event.srcElement).data("data"));
+                            },
+                            //appendTo: "#container-view-port",
+                            //snapTolerance: 60,
+                            /*
+                            snap: ".droppableCell",
+
+                            stop: function(event, ui)
+                            {
+                                _settings.internalData.draggingExistingEvent = false;
+                            },*/
+                            lastElement: "forIeToAvoidLastCommaIssue"
+                        });
+            });
+            $( ".object-container" ).droppable({
+                over: function(event, ui){
+                    //
+                },
+                drop: function(event, ui){
+                    //console.log("dropped: ", event, ui, $(ui.helper).data("data"));
+                    //Create connections
+                    var targetDiv = $(event.target);
+                    var itemData = $(ui.helper).data("data");
+                    console.log(itemData);
+                    var idx = itemData.full_path.lastIndexOf('/');
+                    //console.log(itemData.data, idx, String(itemData.data)[93],String(itemData.data).substr(idx));
+                    targetDiv.append('<span>'+ String(itemData.data).substr(idx) +'</span>').data("data", itemData);
+                    console.log($(ui.helper).data("data"));
+                    $.getJSON(String.format("/connection/properties/?full_path={0}", $(ui.helper).data("data").full_path), function(data){
+                        $.each(data, function(key, value){
+                            //Skip input output as they are embodied by end point
+                            if(("input" != key) && ("output" != key)){
+                                targetDiv.append(String.format('<input type="text" name="{0}" value="{1}">', key, value));
+                            }
+                        });
+                        
+                        //var rightTopAnchor = [ [ 1, 0.3, 0, -1 ] ];
+                        //var rightBottomAnchor = [ [ 1, 0.6, 0, -1 ] ];
+                        //////////////////////////////////
+                        // Create output endpoint
+                        //////////////////////////////////
+                        var endpointOptions = { isSource:true };
+                        //var endpoint = jsPlumb.addEndpoint(targetDiv, { anchor: rightTopAnchor, connector : "Straight", maxConnections : 5}, endpointOptions);
+                        //var endpoint = jsPlumb.addEndpoint(targetDiv, { anchor: rightBottomAnchor, connector : "Straight", maxConnections : 5}, endpointOptions);
+                        if(data.output){
+                            var endpoint = jsPlumb.addEndpoint(targetDiv, { anchor: "RightMiddle", connector : "Straight", maxConnections : 5}, endpointOptions);
+                        }
+                        //////////////////////////////////
+                        // Create input endpoint
+                        //////////////////////////////////
+                        var targetEndpointOptions = {
+                            //endpoint:"Rectangle",
+                            //paintStyle:{ width:25, height:21, fillStyle:'#666' },
+                            //isSource:true,
+                            //connectorStyle : { strokeStyle:"#666" },
+                            isTarget:true
+                        };
+                        //console.log(data.input);
+                        if(data.input){
+                            var endpoint = jsPlumb.addEndpoint(targetDiv, { anchor:"LeftMiddle", connector : "Straight", maxConnections : 5},  targetEndpointOptions);
+                        }
+                        /*
+                        //Only submit diagram after all is OK.
+                        jsPlumb.bind("jsPlumbConnection", function(info) {
+                            console.log(info.connection);
+                            if(undefined == info.connection.triggered)
+                            {
+                                info.connection.triggered = true;
+                            }
+                            else
+                            {
+                                console.log("already triggered, return");
+                                return;
+                            }
+                            //var connectionList = jsPlumb.getConnections();
+                            //console.log(connectionList, info);
+                            //console.log(info);
+                            //console.log($("#"+info.sourceId).data("data"));
+                            //console.log($("#"+info.targetId).data("data"));
+                            //console.log("{{ diagram_id }}");
+                            //Check if all fields are filled
+                            
+                            //console.log($("#"+info.sourceId).data("id")); 
+                            //console.log($("#"+info.targetId).data("id"));
+                            var source = $("#"+info.sourceId).data("data").data;
+                            var target = $("#"+info.targetId).data("data").data;
+                            if(undefined != $("#"+info.sourceId).data("id"))
+                            {
+                                source = $("#"+info.sourceId).data("id");
+                            }
+                            if(undefined != $("#"+info.targetId).data("id"))
+                            {
+                                target = $("#"+info.targetId).data("id");
+                            }
+                            
+                            $.getJSON(String.format("/connection/connection/?source={0}&target={1}&diag_uuid={2}", 
+                                                        source,
+                                                        target,
+                                                        "{{ diagram_id }}"), function(res){
+                                                            $("#"+info.sourceId).data("id", res.source);
+                                                            $("#"+info.targetId).data("id", res.target);
+                                                            console.log($("#"+info.sourceId).data("id"));
+                                                        });
+                        });*/
+
+                        
+                    });
+                    
+                    
+
+                }//End of drop: function(event, ui){
+                
+            });
+        }
+    });
+});
+</script>
