@@ -1,2 +1,2 @@
-ufs_django_new
+Django based local IFTTT style app.
 ==============
