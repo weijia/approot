@@ -102,12 +102,17 @@ build_exe_params = {
                         #"packages": find_packages(),
                    }
                    
+                   
+#Create data.db for SQLITE so build process can run with SQLITE
+os.environ["POSTGRESQL_ROOT"] = ""
+os.system("syncdb.bat")
+os.system("collectstatic.bat")
+
+                   
 gen_spec(settings, build_exe_params)
 
 final_script_list = gen_executables_list(script_list)
 
-os.system("syncdb.bat")
-os.system("collectstatic.bat")
 
 setup(
         version = "0.1", #This is required or build process will have exception.
