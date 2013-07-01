@@ -32,16 +32,22 @@ def add_tag_for_full_path(full_path, tag, tag_app = None):
     else:
         obj = obj_list[0]
     Tag.objects.add_tag(obj, tag, tag_app)
-    obj_type = obj.get_type()
-    cl(obj_type)
-    if 'image' in obj_type:
-        Tag.objects.add_tag(obj, "system:pic", tag_app)
+    
+    #Add folder tag
+    if os.path.isdir(full_path):
+        Tag.objects.add_tag(obj, "system:folder", tag_app)
     else:
-        isVideo = False
-        for signiture in ['RIFF (little-endian) data, AVI', 'RealMedia file', 'Matroska data']:
-            if signiture in obj_type:
-                Tag.objects.add_tag(obj, "system:video", tag_app)
-                break
+        #Add media tags
+        obj_type = obj.get_type()
+        cl(obj_type)
+        if 'image' in obj_type:
+            Tag.objects.add_tag(obj, "system:pic", tag_app)
+        else:
+            isVideo = False
+            for signiture in ['RIFF (little-endian) data, AVI', 'RealMedia file', 'Matroska data']:
+                if signiture in obj_type:
+                    Tag.objects.add_tag(obj, "system:video", tag_app)
+                    break
             
             
             
@@ -64,6 +70,7 @@ class FolderTaggingThread(SimpleWorkThread, StatefulProcessor):
             #Ignore system auto app tag and folder tag
             if (not (item["tag"] in gDefaultAutoTagIgnoreTagsList)) and (not ("system:" in item["tag"])):
                 if os.path.exists(item["full_path"]) and os.path.isdir(item["full_path"]):
+                    '''
                     for folder_path, folders, filenames in os.walk(item["full_path"]):
                         for filename in filenames:
                             if filename in gDefaultAutoTagIgnoreFileList:
@@ -78,18 +85,25 @@ class FolderTaggingThread(SimpleWorkThread, StatefulProcessor):
                         for ignore_folder in gDefaultAutoTagIgnoreFolderList:
                             if ignore_folder in folders:
                                 folders.remove(ignore_folder)
-                        '''
-                        for folder in folders:
-                            target_full_path = os.path.join(folder_path, folder)
-                            add_tag_for_full_path(target_full_path, item["tag"], gAutoTagServiceAppName)
-                            add_tag_for_full_path(target_full_path, 'system:folder', gAutoTagServiceAppName)
-                            if self.quit_flag:
-                                break
-                            time.sleep(1)
-                        '''
+
                         if self.quit_flag:
                             break
-                        
+                    '''
+                    for path_name in os.listdir(item["full_path"]):
+                        target_full_path = os.path.join(item["full_path"], path_name)
+                        if os.path.isdir(target_full_path):
+                            if path_name in gDefaultAutoTagIgnoreFolderList:
+                                continue
+                        else:
+                            if path_name in gDefaultAutoTagIgnoreFileList:
+                                continue
+                        target_full_path = os.path.join(item["full_path"], path_name)
+                        add_tag_for_full_path(target_full_path, item["tag"], gAutoTagServiceAppName)
+                        if self.quit_flag:
+                            break
+                        time.sleep(1)
+
+
         if not self.quit_flag:
             #If quit, we are not sure if this element is processed, so do not update
             self.last_timestamp = item["timestamp"]

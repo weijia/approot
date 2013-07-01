@@ -8,7 +8,12 @@ $(document).ready(function() {
         $.getJSON("/ui_framework/start?"+$(event.currentTarget).attr("full_path"), function(data){});
     });
 
-
+    $("#detail-view-button").button().click(
+                                            function () {
+                                                            $("#obj-pane").removeClass("thumb-view");
+                                                            $("#obj-pane").addClass("detailed-view");
+                                                        }
+    );
 
 
     function genHtml(data)

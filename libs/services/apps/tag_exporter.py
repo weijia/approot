@@ -57,7 +57,7 @@ class TagExporter(beanstalkServiceApp, StatefulProcessor):
                 if result_dict.has_key(obj.ufs_url):
                     result_dict[obj.ufs_url]["tags"].append({"tag": obj_tag, "app": tag_app})
                 else:
-                    result_dict[obj.ufs_url] = {"tags": [{"tag": obj_tag, "app": tag_app}], "uuid": obj.uuid}
+                    result_dict[obj.ufs_url] = {"tags": [{"tag": obj_tag, "app": tag_app}], "uuid": obj.uuid, "description": obj.description, "size": obj.size}
                 last_timestamp = time.mktime(tagged_item.timestamp.timetuple())
                 if self.quit_flag:
                     break
@@ -68,7 +68,9 @@ class TagExporter(beanstalkServiceApp, StatefulProcessor):
         # Quitting, so save last_timestamp
         final_data = []
         for ufs_url in result_dict:
-            final_data.append({"tags": result_dict[ufs_url]["tags"], "ufs_url": ufs_url, "uuid": result_dict[ufs_url]["uuid"]})
+            final_data.append({"tags": result_dict[ufs_url]["tags"], "ufs_url": ufs_url, 
+                                "uuid": result_dict[ufs_url]["uuid"],
+                                "description": result_dict[ufs_url]["description"], "size": result_dict[ufs_url]["size"]})
 
         
                 
