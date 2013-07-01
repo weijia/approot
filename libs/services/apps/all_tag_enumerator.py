@@ -86,8 +86,10 @@ class AllTagEnumThread(beanstalkWorkingThread, StatefulProcessor):
 
             cl(obj, tagged_item.timestamp, first_tag_timestamp, time.mktime(tagged_item.timestamp.timetuple()) + (tagged_item.timestamp.microsecond/1000000.0))
             
-            self.put_item({"session_id": self.session_id, "ufs_url": obj.ufs_url, "uuid": obj.uuid, "full_path": obj.full_path, 
-                                "tag": obj_tag, "tag_app": tag_app, "timestamp": time.mktime(tagged_item.timestamp.timetuple()) + (tagged_item.timestamp.microsecond/1000000.0), 
+            self.put_item({"session_id": self.session_id, "ufs_url": obj.ufs_url, 
+                            "uuid": obj.uuid, "full_path": obj.full_path, "tag": obj_tag, "tag_app": tag_app, 
+                                "timestamp": time.mktime(tagged_item.timestamp.timetuple()) + 
+                                            (tagged_item.timestamp.microsecond/1000000.0), 
                                 "diagram_id": self.diagram_id}, 
                             self.output)
             if self.quit_flag:

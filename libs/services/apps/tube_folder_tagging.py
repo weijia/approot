@@ -39,7 +39,7 @@ def add_tag_for_full_path(full_path, tag, tag_app = None):
     else:
         #Add media tags
         obj_type = obj.get_type()
-        cl(obj_type)
+        cl(full_path, obj_type)
         if 'image' in obj_type:
             Tag.objects.add_tag(obj, "system:pic", tag_app)
         else:
@@ -104,13 +104,13 @@ class FolderTaggingThread(SimpleWorkThread, StatefulProcessor):
                         time.sleep(1)
 
 
-        if not self.quit_flag:
-            #If quit, we are not sure if this element is processed, so do not update
-            self.last_timestamp = item["timestamp"]
-            param = self.get_state(self.diagram_id, {'all_tag_enum_start_timestamp': 0})
-            param['all_tag_enum_start_timestamp'] = self.last_timestamp
-            print 'set last timestamp', self.last_timestamp
-            self.set_state(self.diagram_id, param)
+            if not self.quit_flag:
+                #If quit, we are not sure if this element is processed, so do not update
+                self.last_timestamp = item["timestamp"]
+                param = self.get_state(self.diagram_id, {'all_tag_enum_start_timestamp': 0})
+                param['all_tag_enum_start_timestamp'] = self.last_timestamp
+                print 'set last timestamp', self.last_timestamp
+                self.set_state(self.diagram_id, param)
             
             
         #Final return, default handler
