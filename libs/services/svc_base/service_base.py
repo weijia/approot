@@ -32,7 +32,7 @@ class Service(object):
 
     def startServer(self):
         '''
-        For compatitable with legacy simpleservice.py
+        For compatible with legacy simpleservice.py
         '''
         self.start_service()
         
