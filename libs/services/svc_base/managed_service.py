@@ -3,6 +3,8 @@ from service_base import Service
 from msg import RegMsg
 from msg_service import *
 import threading
+from diagram_state import DiagramState
+from msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
         
 class ManagedService(Service):
     def __init__(self, param_dict):
@@ -18,11 +20,11 @@ class ManagedService(Service):
         if param_dict.has_ley("diagram_id"):
             self.state = DiagramState(param_dict["diagram_id"])
 
-    def receive(self):
-        '''
-        blocking call that will be overrided by Receiver.
-        '''
-        pass
+    # def receive(self):
+        # '''
+        # blocking call that will be overrided by Receiver.
+        # '''
+        # pass
     
     def register_service(self):
         msg = RegMsg()
@@ -41,8 +43,8 @@ class ManagedService(Service):
                 
     def receive_register_ok(self, timestamp):
         self.receiver.register_to_cmd_msg_q()
-        for retry_cnt in range(0, RETRY_FOR_REGISTRATION_DONE):
-            msg = self.receiver.receive(timeout=WAIT_FOR_REGISTRATION_DONE_TIMEOUT)
+        for retry_cnt in range(0, self.RETRY_FOR_REGISTRATION_DONE):
+            msg = self.receiver.receive(timeout=self.WAIT_FOR_REGISTRATION_DONE_TIMEOUT)
             if msg is None:
                 print 'receive msg error, retry...', self.get_input_tube_name()
                 ###################

@@ -1,10 +1,10 @@
 import argparse
 import libsys
-from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
 import sys
+from managed_service import ManagedService
 
 
-
+'''
 class SimpleWorkThread(beanstalkWorkingThread):
     def __init__(self, input_tube, output_tube):
         super(SimpleWorkThread, self).__init__(input_tube)
@@ -12,9 +12,8 @@ class SimpleWorkThread(beanstalkWorkingThread):
         self.thread_init()
         
     def thread_init(self):
-        '''
-        A function sub-class can override to do some initialization.
-        '''
+
+        #A function sub-class can override to do some initialization.
         pass
         
     def add_task_info(self, item):
@@ -24,9 +23,9 @@ class SimpleWorkThread(beanstalkWorkingThread):
         
     def output(self, item):
         self.put_item(item, self.output_tube)
+'''
 
-
-class DefaultServiceClass(beanstalkServiceApp):
+class DefaultServiceClass(ManagedService):
     '''
     classdocs
     '''
@@ -69,7 +68,7 @@ class SimpleService(object):
         #print param_dict
         self.param_dict = param_dict
         self.service_class = service_class
-        self.thread_class = thread_class
+        self.thread_class = worker_class
         
     def run(self):
         #print "inside service.__call__()"
@@ -129,6 +128,6 @@ class SimpleService(object):
             for i in ['session_id', 'diagram_id']:
                 param[i] = args[i]
             
-            service_instance.addItem(param)
+            service_instance.add_item(param)
         
         

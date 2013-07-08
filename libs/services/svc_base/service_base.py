@@ -1,6 +1,7 @@
 # -*- coding: gbk -*-
 from msg_service import *
 
+
 class Service(object):
     def __init__(self, param_dict):
         '''
@@ -22,7 +23,10 @@ class Service(object):
             self.output = MsgQ(output_msg_q)
         '''
         self.receiver = Receiver(self.get_input_msg_queue_name())
-        
+    def add_item(self, param_dict):
+        q = MsgQ(self.get_input_msg_queue_name())
+        q.send(param_dict)
+
     def get_input_msg_queue_name(self):
         self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
 

@@ -1,8 +1,8 @@
 # -*- coding: gbk -*-
 from service_base import Service
+from libs.logsys.logSys import *
 
-
-gBeanstalkdLauncherServiceTubeName = "beanstalkd_launcher_service"
+gMsgBasedServiceManagerMsgQName = "msg_based_service_manager_msg_queue_name"
 
 class MsgBasedServiceManager(Service):
     def process(self, msg):
@@ -14,7 +14,7 @@ class MsgBasedServiceManager(Service):
             if msg["cmd"] == "registration":
                 #Keep app name, pid, input cmd queue name
                 pass
-            elif msg["cmd" == "start":
+            elif msg["cmd"] == "start":
                 #Start an app if not started
                 pass
             else:
