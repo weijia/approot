@@ -58,18 +58,18 @@ class CrossGuiLauncher(object):
         #self.window.hide()
         #self.icon.set_visible(False)
         print 'on_quit_clicked'
-        for i in self.task_to_menu_item_dict.keys():
-            if i == self.beanstalkd_app:
+        for log_collector in self.task_to_menu_item_dict.keys():
+            if log_collector == self.beanstalkd_app:
                 continue
-            i.send_stop_signal()
+            log_collector.send_stop_signal()
         print 'wait for 10 seconds'
         #self.timer_id = gobject.timeout_add(50000, self.final_quit)#Here time value are milliseconds
         self.gui_factory.timeout(5000, self.final_quit)
-        
+    '''    
     def on_console_wnd_close_clicked(self, console_wnd):
         self.wnd_to_console_dict[console_wnd].send_stop_signal()
         #self.timer_id = gobject.timeout_add(5000, self.kill_console_process_tree)#Here time value are milliseconds
-    
+    '''
     ###############################
     # Internal functions
     ###############################
@@ -80,12 +80,10 @@ class CrossGuiLauncher(object):
         if not (self.beanstalkd_launcher is None):
             self.beanstalkd_launcher.kill_console_process_tree()
         
-        for i in self.task_to_menu_item_dict.keys():
-            if i == self.beanstalkd_app:
+        for log_collector in self.task_to_menu_item_dict.keys():
+            if log_collector == self.beanstalkd_app:
                 continue
-            i.kill_console_process_tree()
-        
-        
+            log_collector.kill_console_process_tree()
         
         if not (self.beanstalkd_app is None):
             self.beanstalkd_app.kill_console_process_tree()

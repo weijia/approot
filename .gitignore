@@ -2,6 +2,7 @@
 .svn
 *.db
 *.conf
+.idea
 backup
 doc/_build
 /libs/ftp/ftpserver.py

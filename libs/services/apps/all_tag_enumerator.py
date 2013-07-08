@@ -1,3 +1,4 @@
+# -*- coding: gbk -*-
 import libsys
 from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
 from libs.services.servicebase import service
@@ -113,8 +114,10 @@ class AllTagEnumeratorService(beanstalkServiceApp):
         if item.has_key("dynamic_tag"):
             timestamp = time.time()
             for diagram_id in self.input_channel_name_to_work_thread_dict:
-                if self.input_channel_name_to_work_thread_dict[diagram_id].get_last_processing_timestamp() >= self.last_msg_timestamp[diagram_id]:
-                    #self.input_channel_name_to_work_thread_dict[diagram_id].add_tagged(item)
+                thread_last_timestamp = 
+                                self.input_channel_name_to_work_thread_dict[diagram_id].get_last_processing_timestamp()
+                if thread_last_timestamp >= self.last_msg_timestamp[diagram_id]:
+                    #相等的话表示最后一个发给thraed的消息已经被处理掉，如果大于呢？应该是不可能有大于
                     self.input_channel_name_to_work_thread_dict[diagram_id].put({"restart": True, "timestamp": timestamp})
         else:        
             output_tube = item["output"]
