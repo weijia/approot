@@ -33,7 +33,7 @@ class MsgBasedServiceManager(Service):
 
     def msg_loop(self):
         while True:
-            msg = self.receive()
+            msg = self.receiver.receive()
             if not self.process(msg):
                 break
 
@@ -51,7 +51,9 @@ class MsgBasedServiceManager(Service):
                         gui_service.addItem({"command": "LaunchApp", "app_name": msg.get_app_name(), "param":['--startserver']})
             elif msg.is_stop_msg():
                 for app_name in self.app_name_to_info:
-                    MsgQ(self.app_name_to_info[app_name].get_cmd_q_name()).send_cmd(Msg().add_cmd("stop"))
+                    stop_msg = Msg()
+                    stop_msg.add_cmd("stop")
+                    MsgQ(self.app_name_to_info[app_name].get_cmd_q_name()).send_cmd(stop_msg)
                 return False
             else:
                 cl("Unexpected command")

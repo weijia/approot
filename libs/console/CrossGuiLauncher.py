@@ -113,7 +113,7 @@ class CrossGuiLauncher(object):
         is_launch = True
         if data["command"] == "Launch":
             param = [data["path"]]
-        if data["command"] == "LaunchApp":
+        elif data["command"] == "LaunchApp":
             app_name = data["app_name"]
             full_path = fileTools.findFileInProduct(app_name)
             if full_path is None:

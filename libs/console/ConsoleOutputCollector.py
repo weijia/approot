@@ -216,5 +216,8 @@ class ConsoleOutputCollector:
             except:
                 cl('Beanstalkd service stopped')
                 #raise
-            MsgQ(gMsgBasedServiceManagerMsgQName).send_cmd(Msg().add_cmd("stop"))
+            stop_msg = Msg()
+            stop_msg.add_cmd("stop")
+            cl(stop_msg)
+            MsgQ(gMsgBasedServiceManagerMsgQName).send_cmd(stop_msg)
             self.stopped = True

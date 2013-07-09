@@ -1,13 +1,18 @@
 # -*- coding: gbk -*-
 import beanstalkc
 from configuration import g_config_dict
+from msg import Msg
+import libsys
+from libs.logsys.logSys import *
 
 gBeanstalkdServerHost = '127.0.0.1'
 gBeanstalkdServerPort = g_config_dict["ufs_beanstalkd_port"]
 
+DEFAULT_PRIORITY = beanstalkc.DEFAULT_PRIORITY
+CMD_PRIORITY = 0
+
 class BeanstalkdMsgQ(object):
-    DEFAULT_PRIORITY = beanstalkc.DEFAULT_PRIORITY
-    CMD_PRIORITY = 0
+
     def __init__(self, msg_q_name):
         self.msg_q_name = msg_q_name
         #self.beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
@@ -16,14 +21,16 @@ class BeanstalkdMsgQ(object):
         '''
         delay is in seconds
         '''
+        cl(msg_dict)
         self.send(msg_dict, priority = CMD_PRIORITY)
         
     def send(self, msg_dict, priority = DEFAULT_PRIORITY, delay = 0):
+        cl(msg_dict)
         self.send_msg(Msg(msg_dict), priority, delay)
 
         
     def send_msg(self, msg, priority = DEFAULT_PRIORITY, delay = 0):
-        ncl('port: ', gBeanstalkdServerPort)
+        #ncl('port: ', gBeanstalkdServerPort)
         beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
         try:
             beanstalk.use(self.msg_q_name)

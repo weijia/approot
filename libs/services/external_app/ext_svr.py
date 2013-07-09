@@ -15,6 +15,7 @@ class ExtAppMgrIntf(object):
         pass
 def start_app_shortcut(name):
     app_full_path = fileTools.findAppInProduct(name)
+    print "-------------------------", os.environ["POSTGRESQL_ROOT"]
     if app_full_path is None:
         print name
         raise "Path not find"

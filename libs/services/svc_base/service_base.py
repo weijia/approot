@@ -27,7 +27,7 @@ class Service(object):
         return self.param_dict["session_id"]
 
     def get_input_msg_queue_name(self):
-        self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
+        return self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
 
     def startServer(self):
         '''
@@ -36,7 +36,7 @@ class Service(object):
         self.start_service()
         
     def start_service(self):
-        self.receiver.register_to_data_q()
+        self.receiver.register_to_data_msg_q()
         self.msg_loop()
         
         

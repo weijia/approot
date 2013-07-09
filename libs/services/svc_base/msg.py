@@ -7,17 +7,40 @@ import libsys
 from libs.logsys.logSys import *
 
 
-class Msg(dict):
-    '''
+class Msg(collections.MutableMapping):
+    """
     用来规范化一些属性的名字，比如full path经常被不同的属性名fullpath, full_path代表
-    '''
+    """
     #Path related
     APP_NAME_ATTR_NAME = "app_name"
     CMD_MSG_Q_NAME_ATTR = "cmd_msg_q"
     CMD_ATTR_NAME = "cmd"
-    def __init__(self, *args):
-        dict.__init__(self, args)
+    
+    def __init__(self, *args, **kwargs):
+        self.store = dict()
+        self.update(dict(*args, **kwargs)) # use the free update to set keys
 
+    def __getitem__(self, key):
+        #return self.store[self.__keytransform__(key)]
+        return self.store[key]
+
+    def __setitem__(self, key, value):
+        #self.store[self.__keytransform__(key)] = value
+        self.store[key] = value
+
+    def __delitem__(self, key):
+        #del self.store[self.__keytransform__(key)]
+        del self.store[key]
+
+    def __iter__(self):
+        return iter(self.store)
+
+    def __len__(self):
+        return len(self.store)
+
+    #def __keytransform__(self, key):
+    #    return key
+        
     def add_path(self, full_path):
         self.__setitem__("full_path", full_path)
 
@@ -30,16 +53,18 @@ class Msg(dict):
             cl("Regenerate a timestamp, may not be an expected behaviour")
         self.timestamp = time.time()
         self["timestamp"] = self.timestamp
+        return self
 
     def get_timestamp(self):
         return self["timestamp"]
         
     def to_json(self):
-        return json.dumps(self, sort_keys=True, indent=4)
+        return json.dumps(self.store, sort_keys=True, indent=4)
 
     def add_cmd(self, cmd):
         self["cmd"] = cmd
-
+        return self
+        
     def is_stop_msg(self):
         if "cmd" in self:
             if self["cmd"] == "stop":
@@ -62,9 +87,11 @@ class RegMsg(Msg):
 
     def add_receiver(self, receiver):
         self["cmd_msg_q"] = receiver.get_cmd_msg_q_name()
+        return self
 
     def add_app_name(self, app_name):
         self["app_name"] = app_name
+        return self
 
     def is_registration_ok(self):
         return self["registration_result"]
