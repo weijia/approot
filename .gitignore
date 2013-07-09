@@ -10,3 +10,4 @@ doc/_build
 obs
 /config.json
 /static
+/libs/jinshankuaipan/jinshan_key.py
