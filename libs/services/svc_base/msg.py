@@ -14,8 +14,11 @@ class Msg(collections.MutableMapping):
     #Path related
     APP_NAME_ATTR_NAME = "app_name"
     CMD_MSG_Q_NAME_ATTR = "cmd_msg_q"
+    CMD_ATTR_NAME = "cmd"
+
     def add_path(self, full_path):
         self.__setitem__("full_path", full_path)
+
     def get_path(self):
         return self["full_path"]
         
@@ -31,9 +34,12 @@ class Msg(collections.MutableMapping):
         
     def to_json(self):
         return json.dumps(self, sort_keys=True, indent=4)
-        
+
+    def add_cmd(self, cmd):
+        self["cmd"] = cmd
+
     def is_stop_msg(self):
-        if self.has_key("cmd"):
+        if "cmd" in self:
             if self["cmd"] == "stop":
                 cl("Stop msg received")
                 return True

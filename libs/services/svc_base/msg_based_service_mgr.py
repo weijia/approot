@@ -3,9 +3,10 @@ from libs.services.svc_base.gui_service import GuiService
 from libs.services.svc_base.msg_service import MsgQ
 from service_base import Service
 from libs.logsys.logSys import *
-from msg import RegMsg
+from msg import RegMsg, Msg
 
 gMsgBasedServiceManagerMsgQName = "msg_based_service_manager_msg_queue_name"
+
 
 class MsgBasedServiceManager(Service):
     def __init__(self, param_dict):
@@ -46,6 +47,13 @@ class MsgBasedServiceManager(Service):
                     else:
                         gui_service = GuiService()
                         gui_service.addItem({"command": "LaunchApp", "app_name": msg.get_app_name(), "param":['--startserver']})
+            elif msg["cmd"] == "stop":
+                for app_name in self.app_name_to_info:
+                    MsgQ(self.app_name_to_info[app_name].get_cmd_q_name()).send_cmd(Msg().add_cmd("stop"))
             else:
                 cl("Unexpected command")
-    
+
+
+if __name__ == "__main__":
+    s = MsgBasedServiceManager({"input_msg_q_name": gMsgBasedServiceManagerMsgQName})
+    s.start_service()

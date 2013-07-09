@@ -79,6 +79,9 @@ class CrossGuiLauncher(object):
         #Kill Beanstalkd Launcher service
         if not (self.beanstalkd_launcher is None):
             self.beanstalkd_launcher.kill_console_process_tree()
+
+        if not (self.msg_based_service_mgr is None):
+            self.msg_based_service_mgr.kill_console_process_tree()
         
         for log_collector in self.task_to_menu_item_dict.keys():
             if log_collector == self.beanstalkd_app:
@@ -150,6 +153,7 @@ class CrossGuiLauncher(object):
         ###########################
         #This service will manage services (services who want to receive notification of quitting must register to this service)
         self.beanstalkd_launcher = self.start_basic_app("BeanstalkdLauncherService")
+        self.msg_based_service_mgr = self.start_basic_app("msg_based_service_mgr")
         ######
         ##TODO: check BeanstalkdLauncherService is working? No, retry to register in services
         #import time
