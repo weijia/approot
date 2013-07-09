@@ -1,6 +1,9 @@
 import threading
 import subprocess
 import os
+from libs.services.svc_base.msg import Msg
+from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
+from libs.services.svc_base.msg_service import MsgQ
 import libsys
 import libs.windows.processManager as processManager
 CREATE_NO_WINDOW = 0x8000000
@@ -213,4 +216,5 @@ class ConsoleOutputCollector:
             except:
                 cl('Beanstalkd service stopped')
                 #raise
+            MsgQ(gMsgBasedServiceManagerMsgQName).send_cmd(Msg().add_cmd("stop"))
             self.stopped = True

@@ -29,16 +29,17 @@ class MsgBasedServiceManager(Service):
                 MsgQ(msg.get_cmd_q_name()).send_cmd(reg_msg)
             else:
                 print "invalid registration msg"
-        return True
+
+    def msg_loop(self):
+        while True:
+            msg = self.receive()
+            if not self.process(msg):
+                break
 
     def process(self, msg):
-        if msg.is_stop_msg():
-            #Send stop msg to all registered services
-            return False
-        
         if "cmd" in msg:
             if msg["cmd"] == "registration":
-                return self.handle_registration(msg)
+                self.handle_registration(msg)
             elif msg["cmd"] == "start":
                 #Start an app if not started
                 if msg.has_app_name():
@@ -47,12 +48,13 @@ class MsgBasedServiceManager(Service):
                     else:
                         gui_service = GuiService()
                         gui_service.addItem({"command": "LaunchApp", "app_name": msg.get_app_name(), "param":['--startserver']})
-            elif msg["cmd"] == "stop":
+            elif msg.is_stop_msg():
                 for app_name in self.app_name_to_info:
                     MsgQ(self.app_name_to_info[app_name].get_cmd_q_name()).send_cmd(Msg().add_cmd("stop"))
+                return False
             else:
                 cl("Unexpected command")
-
+        return True
 
 if __name__ == "__main__":
     s = MsgBasedServiceManager({"input_msg_q_name": gMsgBasedServiceManagerMsgQName})
