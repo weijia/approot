@@ -7,7 +7,7 @@ import libsys
 from libs.logsys.logSys import *
 
 
-class Msg(collections.MutableMapping):
+class Msg(dict):
     '''
     用来规范化一些属性的名字，比如full path经常被不同的属性名fullpath, full_path代表
     '''
@@ -15,6 +15,8 @@ class Msg(collections.MutableMapping):
     APP_NAME_ATTR_NAME = "app_name"
     CMD_MSG_Q_NAME_ATTR = "cmd_msg_q"
     CMD_ATTR_NAME = "cmd"
+    def __init__(self, *args):
+        dict.__init__(self, args)
 
     def add_path(self, full_path):
         self.__setitem__("full_path", full_path)
@@ -55,7 +57,8 @@ class Msg(collections.MutableMapping):
 
         
 class RegMsg(Msg):
-
+    def __init__(self, *args):
+        super(RegMsg, self).__init__(args)
 
     def add_receiver(self, receiver):
         self["cmd_msg_q"] = receiver.get_cmd_msg_q_name()
