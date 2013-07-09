@@ -26,6 +26,7 @@ gDefaultServices = ['monitor',
                 'all_tag_enumerator',
                 'tube_folder_tagging',
                 'diagram_importer',
+                'tag_enum',
                 ]
         
 def init_all_tagged_apps():

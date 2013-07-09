@@ -4,6 +4,7 @@ from configuration import g_config_dict
 from msg import Msg
 import libsys
 from libs.logsys.logSys import *
+import json
 
 gBeanstalkdServerHost = '127.0.0.1'
 gBeanstalkdServerPort = g_config_dict["ufs_beanstalkd_port"]

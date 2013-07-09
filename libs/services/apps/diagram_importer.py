@@ -19,7 +19,7 @@ import libs.utils.objTools as objtools
 from libs.services.svc_base.simpleservice import SimpleService
 from libs.utils.misc import ensureDir as ensure_dir
 from django.contrib.auth.models import User
-from libs.services.sv_base.state import StatefulProcessor
+from libs.services.svc_base.state import StatefulProcessor
 from ui_framework.connection.save_diagram_view import save_diagram
 from libs.services.service_starter import diagram_root
 

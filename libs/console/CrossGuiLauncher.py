@@ -11,6 +11,10 @@ from msg_handler import GuiServiceMsgHandler
 import webbrowser
 from configuration import g_config_dict
 import sys
+import time
+from libs.services.svc_base.msg import Msg
+from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
+from libs.services.svc_base.msg_service import MsgQ
 
 class CrossGuiLauncher(object):
     def __init__(self, gui_factory):
@@ -18,6 +22,7 @@ class CrossGuiLauncher(object):
         * Create taskbar menu
         '''
         self.gui_factory = gui_factory
+        self.session_id = time.time()
         self.taskbar_icon_app = self.gui_factory.create_taskbar_icon_app()
         self.app_list_ui = self.gui_factory.get_app_list()
         self.taskbar_icon_app["Open Main Page"] = self.open_main
@@ -34,6 +39,7 @@ class CrossGuiLauncher(object):
         self.msg_handler = GuiServiceMsgHandler(gui_factory)
         #self.drop_handler = None
         self.beanstalkd_launcher = None
+        
     def open_main(self):
         webbrowser.open("http://127.0.0.1:" + str(g_config_dict["ufs_web_server_port"]) + "/objsys/manager/", new = 1)
         
@@ -62,6 +68,11 @@ class CrossGuiLauncher(object):
             if log_collector == self.beanstalkd_app:
                 continue
             log_collector.send_stop_signal()
+        stop_msg = Msg()
+        stop_msg.add_cmd("stop")
+        stop_msg["session_id"] = self.session_id
+        MsgQ(gMsgBasedServiceManagerMsgQName).send_cmd(stop_msg)
+
         print 'wait for 10 seconds'
         #self.timer_id = gobject.timeout_add(50000, self.final_quit)#Here time value are milliseconds
         self.gui_factory.timeout(5000, self.final_quit)
@@ -198,7 +209,7 @@ class CrossGuiLauncher(object):
             if full_path is None:
                 print app_name, 'not found ---- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
                 return None
-        return self.create_console_wnd_for_app([full_path])
+        return self.create_console_wnd_for_app([full_path, '--session_id', "%f"%self.session_id])
         
 def start_cross_gui_launcher(applist = []):
     from libs.qtconsole.PyQtGuiFactory import PyQtGuiFactory

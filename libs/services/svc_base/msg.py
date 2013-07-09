@@ -41,6 +41,9 @@ class Msg(collections.MutableMapping):
     #def __keytransform__(self, key):
     #    return key
         
+    def __str__(self):
+        return self.store.__str__()
+        
     def add_path(self, full_path):
         self.__setitem__("full_path", full_path)
 
@@ -73,7 +76,7 @@ class Msg(collections.MutableMapping):
         return False
 
     def get_session_id(self):
-        return self["session_id"]
+        return self.get("session_id", 0)
 
     def has_app_name(self):
         return self.has_key(self.APP_NAME_ATTR_NAME)
