@@ -1,9 +1,13 @@
 # -*- coding: gbk -*-
 from django.utils.timezone import utc
+import datetime
+import libsys
 from libs.logsys.logSys import *
+from django.conf import settings
+from libs.services.svc_base.managed_service import WorkerBase
+from libs.tagging.models import TaggedItem
 
 
-        
 class AllTagEnum(WorkerBase):
     '''
     没有Service结尾的作为worker thread
@@ -49,11 +53,11 @@ class AllTagEnum(WorkerBase):
             tagged_item_list = TaggedItem.objects.filter(timestamp__gt=django_time).order_by('timestamp')
             
             
-from simple_service_v2 import SimpleService
+from libs.services.svc_base.simple_service_v2 import SimpleService
 
 if __name__ == "__main__":
     s = SimpleService({
                             "output": "Output msg queue for this generator",
                       },
-                      worker = AllTagEnum)
-    s.run()
+                      worker_thread_class = AllTagEnum)
+    #s.run()

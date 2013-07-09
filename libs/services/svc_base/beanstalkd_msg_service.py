@@ -1,5 +1,6 @@
 # -*- coding: gbk -*-
 import beanstalkc
+from configuration import g_config_dict
 
 gBeanstalkdServerHost = '127.0.0.1'
 gBeanstalkdServerPort = g_config_dict["ufs_beanstalkd_port"]

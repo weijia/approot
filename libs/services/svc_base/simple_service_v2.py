@@ -59,17 +59,18 @@ class DefaultServiceClass(ManagedService):
         return False#Do not need to put the item back to the tube
 
 
-
 class SimpleService(object):
-    def __init__(self, param_dict, service_class = None, worker_class = None):
+    def __init__(self, param_dict, service_class = None, worker_thread_class = None):
         #print "inside service.__init__()"
         #param_dict() # Prove that function definition has completed
         #print param_dict
         self.param_dict = param_dict
         self.service_class = service_class
-        self.thread_class = worker_class
+        self.worker_thread_class = worker_thread_class
+        import __main__
+        print "exe filename:", __main__.__file__
 
-    def add_task(self, args, service_instance):
+    def add_task(self, service_instance, args):
         #Confirm service for this app is started
         service_manager = MsgBasedServiceManager()
         service_manager.add_item({})
@@ -82,7 +83,7 @@ class SimpleService(object):
             param[i] = args[i]
         service_instance.add_item(param)
 
-    def parse_args(self):
+    def parse_service_args(self):
         parser = argparse.ArgumentParser()
         #print self.param_dict
         ############################
@@ -109,15 +110,15 @@ class SimpleService(object):
 
     def run(self):
         #print "inside service.__call__()"
-        args = self.parse_args()
-        
+        args = self.parse_service_args()
+
         #print '-----------------everything OK'
         is_server = args["startserver"]
         
         if self.service_class is None:
-            if self.thread_class is None:
+            if self.worker_thread_class is None:
                 raise "Neither a service class nor a thread class is given, we will not work with nothing"
-            service_instance = DefaultServiceClass(self.thread_class)
+            service_instance = DefaultServiceClass(self.worker_thread_class)
         else:
             service_instance = self.service_class()
             
@@ -126,6 +127,11 @@ class SimpleService(object):
             print 'start server'
             service_instance.start_service()
         else:
-            self.add_task(args, service_instance)
+            self.add_task(service_instance, args)
         
         
+if __name__ == "__main__":
+    s = SimpleService({
+                            "output": "Output msg queue for this generator",
+                      })
+    #s.run()

@@ -1,6 +1,8 @@
 import json
+import os
+os.environ["DJANGO_SETTINGS_MODULE"] = "rootapp.settings"
 
-
+from django.conf import settings
 from ui_framework.objsys.models import UfsObj
 from ui_framework.connection.models import Processor
 
