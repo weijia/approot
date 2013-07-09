@@ -36,27 +36,25 @@ class DefaultServiceClass(ManagedService):
         '''
         tube_name = "default_service_msg_queue_for_" + worker_thread_class.__name__
         super(DefaultServiceClass, self).__init__(tube_name)
-        self.thread_class = worker_thread_class
-        self.diagram_id = None
-        self.session_id = None
+        self.worker_thread_class = worker_thread_class
+        self.task_signature_to_worker_thread = {}
 
-
+    def add_worker_thread(self, task_signature, thread_instance):
+        self.task_signature_to_worker_thread[task_signature] = thread_instance
+        
+    def is_processing(self, task_signature):
+        return self.task_signature_to_worker_thread.has_key(task_signature)
+    
     def process(self, msg):
-        input_tube = msg.get("input", None)
-        output_tube = msg.get("output", None)
-
-        diagram_id = msg["diagram_id"]
-        session_id = msg.get("session_id", 0)
-        
-        
-        if self.is_processing_tube(input_tube):
-            print 'input tube already processing'
-            return False#Do not need to put the item back to the tube
-        t = self.thread_class(input_tube, output_tube)
+        t = self.worker_thread_class(msg)
+        task_signature = t.get_task_signiture()
+        if self.is_processing(task_signature):
+            print 'input tube already processing: ',task_signature
+            return True #Return True if we do not need to exit msg_loop
         t.add_task_info(msg)
-        self.add_work_thread(input_tube, t)
+        self.add_worker_thread(task_signature, t)
         t.start()
-        return False#Do not need to put the item back to the tube
+        return True #Return True if we do not need to exit msg_loop
 
 
 class SimpleService(object):
@@ -67,8 +65,7 @@ class SimpleService(object):
         self.param_dict = param_dict
         self.service_class = service_class
         self.worker_thread_class = worker_thread_class
-        import __main__
-        print "exe filename:", __main__.__file__
+
 
     def add_task(self, service_instance, args):
         #Confirm service for this app is started

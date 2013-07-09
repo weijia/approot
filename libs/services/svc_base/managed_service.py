@@ -1,4 +1,5 @@
 # -*- coding: gbk -*-
+import os
 from service_base import Service
 from msg import RegMsg
 from msg_service import *
@@ -29,9 +30,9 @@ class ManagedService(Service):
     def register_service(self):
         msg = RegMsg()
         import __main__
-        #print __main__.__file__
-        cl("main file name:", __main__.__file__)
-        msg.add_app_name(__main__.__file__)
+        #print "exe filename:", __main__.__file__
+        app_name = os.path.basename(__main__.__file__).split(".")[0]
+        msg.add_app_name(app_name)
         msg.add_receiver(self.receiver)
         msg.add_timestamp()
         q = MsgQ(gMsgBasedServiceManagerMsgQName)

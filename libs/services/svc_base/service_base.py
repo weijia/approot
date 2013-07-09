@@ -26,6 +26,8 @@ class Service(object):
     def add_item(self, param_dict):
         q = MsgQ(self.get_input_msg_queue_name())
         q.send(param_dict)
+    def get_session_id(self):
+        return self.param_dict["session_id"]
 
     def get_input_msg_queue_name(self):
         self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
@@ -49,6 +51,11 @@ class Service(object):
         #msg.set_processed()
         
     def process(self, msg):
+        '''
+        Process the received msg
+        :param msg:
+        :return: False: need to exit msg_loop
+        '''
         pass
         
     #def stop(self):

@@ -107,8 +107,21 @@ class CrossGuiLauncher(object):
     
     def handle_msg(self, data):
         #print "msg_handler:", data
+        is_launch = True
         if data["command"] == "Launch":
             param = [data["path"]]
+        if data["command"] == "LaunchApp":
+            app_name = data["app_name"]
+            full_path = fileTools.findFileInProduct(app_name)
+            if full_path is None:
+                full_path = fileTools.findAppInProduct(app_name)
+                if full_path is None:
+                    is_launch = False
+            param = [full_path]
+        else:
+            is_launch = False
+
+        if is_launch:
             param.extend(data["param"])
             print 'launching: ', param
             self.create_console_wnd_for_app(param)
