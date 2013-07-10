@@ -5,6 +5,7 @@ import os
 
 urlpatterns = patterns('',
     url(r'^root$', 'desktop.filemanager.folder_view.root'),
+    #url(r'^local_drivers/', 'desktop.filemanager.folder_view.local_drivers'),
     url(r'^$', 'desktop.filemanager.views.index'),
     url(r'^.+$', 'desktop.filemanager.views.handler'),
 )

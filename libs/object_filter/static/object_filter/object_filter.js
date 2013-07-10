@@ -89,8 +89,13 @@ $(document).ready(function() {
                         format: "json"
                     };
             }
+            var url = "/objsys/api/ufsobj/ufsobj/?";
+            if($("#query-base").length > 0)
+            {
+                url = $("#query-base").val();
+            }
             $.ajax({
-                    url: "/objsys/api/ufsobj/ufsobj/?",
+                    url: url,
                     dataType: "json",
                     data: queryData,
                     success: function( data ) {
@@ -125,7 +130,7 @@ $(document).ready(function() {
                        // selector for the NEXT link (to page 2)
         //itemSelector : "#content div.post"          
                        // selector for all items you'll retrieve
-        contentSelector: '#obj-pane',
+        contentSelector: '#obj-pane'
         }, function(json, opts) {
             console.log("loading new page");
             console.log(json);
@@ -161,8 +166,13 @@ $(document).ready(function() {
             }
         }
     });*/
+    var url = "/objsys/api/ufsobj/ufsobj/?";
+    if($("#query-base").length > 0)
+    {
+        url = $("#query-base").val();
+    }
     $.ajax({
-            url: "/objsys/api/ufsobj/ufsobj/?",
+            url: url,
             dataType: "json",
             data: {
                         tag: $("#tag").val(),

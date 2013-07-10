@@ -12,9 +12,14 @@ def object_filter(request):
         data = request.GET
     else:
         data = request.POST
-    if data.has_key("tag"):
-        c = {"user": request.user, "tag": data["tag"], "filter_tag": True}
-    else:
-        c = {"user": request.user}
+    c = {"user": request.user}
+    if "tag" in data:
+        c["tag"] = data["tag"]
+        c["filter_tag"] = True
+
+    if "query_base" in data:
+        c["query_base"] = data["query_base"]
+        c["query_base_exists"] = True
+
     c.update(csrf(request))
     return render_to_response('object_filter/index.html', c)

@@ -8,6 +8,7 @@ import json
 import libsys
 from libs.windows.windowsDriver import getDriverList
 
+
 def root(request):
     """
     Generate root folder list
@@ -21,3 +22,4 @@ def root(request):
         res.append({"data": driver + "/", "attr": {"url": "/filemanager/listdir/path=" + driver +"/"}})
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
+

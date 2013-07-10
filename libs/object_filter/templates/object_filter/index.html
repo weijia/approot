@@ -11,12 +11,15 @@
 {% block body_content %}
 <div id="main-container">
     <div id="filter-pane">
-    <label for="full-path">Path contains:</label><input id="full-path"></input>
-    <label for="ufs-url">URL contains:</label><input id="ufs-url"></input>
+    {% if query_base_exists %}
+    <input id="query-base" tpye="hidden" value="{{ query_base }}"/>
+    {% endif %}
+    <label for="full-path">Path contains:</label><input id="full-path"/>
+    <label for="ufs-url">URL contains:</label><input id="ufs-url"/>
     {% if filter_tag %}
         <label for="tag">Tag:</label><input id="tag" value="{{tag}}"/>
     {% else %}
-        <label for="tag">Tag:</label><input id="tag"></input>
+        <label for="tag">Tag:</label><input id="tag"/>
     {% endif %}
     <button id="detail-view-button">Detail</button>
     <button id="thumb-view-button">Thumb</button>
