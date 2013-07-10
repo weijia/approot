@@ -9,6 +9,12 @@ from ui_framework.objsys.models import UfsObj, CollectionItem
 import json
 
 def tag_list(request):
+    """
+    Generate tag list in the system with tagged item's count.
+    :param request:
+    :return: the returned data is in JSON:
+    [{"data": "private(10)", "attr": {"url": "/object_filter/?tag=private"}}]
+    """
     if request.method == "GET":
         data = request.GET
     else:

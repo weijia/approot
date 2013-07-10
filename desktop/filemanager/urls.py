@@ -4,6 +4,7 @@ from django.conf import settings
 import os
 
 urlpatterns = patterns('',
+    url(r'^root/$', 'desktop.filemanager.folders.root'),
     url(r'^$', 'desktop.filemanager.views.index'),
-    url(r'^.+$', 'desktop.filemanager.views.handler')
+    url(r'^.+$', 'desktop.filemanager.views.handler'),
 )
