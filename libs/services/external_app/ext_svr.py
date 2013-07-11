@@ -6,13 +6,18 @@ import sys
 import os
 from libs.services.svc_base.gui_service import GuiService
 
+
 class ExtAppMgrIntf(object):
     def __init__(self):
         pass
+
     def check_complet(self):
         pass
+
     def shutdown(self):
         pass
+
+
 def start_app_shortcut(name):
     app_full_path = fileTools.findAppInProduct(name)
     print "-------------------------", os.environ["POSTGRESQL_ROOT"]
@@ -20,16 +25,18 @@ def start_app_shortcut(name):
         print name
         raise "Path not find"
     gui_service = GuiService()
-    gui_service.addItem({"command": "Launch", "path": app_full_path, "param":[]})
-    
+    gui_service.addItem({"command": "Launch", "path": app_full_path, "param": []})
+
+
 def wait_for_app(app_and_param_list):
     name = app_and_param_list[0]
     app_full_path = fileTools.findAppInProduct(name)
     if app_full_path is None:
         print name
         raise "Path not find"
-    os.system(app_full_path+ ' ' + ' '.join(app_and_param_list[1:]))
-    
+    os.system(app_full_path + ' ' + ' '.join(app_and_param_list[1:]))
+
+
 class PostgreSqlApp(ExtAppMgrIntf):
     def __init__(self):
         ###########################
@@ -39,8 +46,8 @@ class PostgreSqlApp(ExtAppMgrIntf):
 
         #Define our connection string
         conn_string = "host='localhost' dbname='postgres' user='postgres' password=''"
-        conn_string += " port='%d'"%configuration.g_config_dict['POSTGRESQL_PORT']
-     
+        conn_string += " port='%d'" % configuration.g_config_dict['POSTGRESQL_PORT']
+
         # print the connection string we will use to connect
         print "Connecting to database\n	->%s" % (conn_string)
 
@@ -57,9 +64,8 @@ class PostgreSqlApp(ExtAppMgrIntf):
                 if retry_cnt > 80:
                     print "postgresql start failed"
                     break
-        
-    
-    
+
+
 class MongoDbApp(ExtAppMgrIntf):
     def __init__(self):
         ###########################
@@ -71,6 +77,7 @@ class MongoDbApp(ExtAppMgrIntf):
         retry_cnt = 0
         from pymongo import Connection
         from pymongo.errors import AutoReconnect
+
         while True:
             try:
                 connection = Connection()
@@ -80,7 +87,8 @@ class MongoDbApp(ExtAppMgrIntf):
                 if retry_cnt > 40:
                     print "mongodb start failed"
                     break
-    
+
+
 if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
