@@ -5,7 +5,7 @@ from tagging.models import Tag, TaggedItem
 #from django.core import serializers
 from ui_framework.objsys.models import UfsObj, CollectionItem
 import json
-
+import libs.utils.string_tools as string_tools
 
 # Create your views here.
 def object_filter(request):
@@ -19,7 +19,7 @@ def object_filter(request):
         c["filter_tag"] = True
 
     if "query_base" in data:
-        c["query_base"] = data["query_base"]
+        c["query_base"] = string_tools.unquote_unicode(data["query_base"])
         c["query_base_exists"] = True
 
     c.update(csrf(request))

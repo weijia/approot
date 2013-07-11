@@ -11,6 +11,7 @@ from libs.windows.windowsDriver import getDriverList
 import urllib2
 import libs.utils.string_tools as string_tools
 
+
 def root(request):
     """
     Generate root folder list
@@ -51,7 +52,6 @@ def root_rest(request):
         })
     response = json.dumps({"objects": res, "meta": {"next": ""}}, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
-
 
 
 def filesystem_rest(request):

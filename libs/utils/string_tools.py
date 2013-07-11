@@ -1,5 +1,5 @@
 import urllib2
-
+from libs.logsys.logSys import *
 
 class SpecialEncoder(object):
     def encode(self, unicode_str):
@@ -16,9 +16,14 @@ class SpecialEncoder(object):
 def quote_unicode(unicode_str):
     if unicode != type(unicode_str):
         raise "Only support unicode string"
-    return urllib2.quote(unicode_str.encode('utf8'))
+    res = urllib2.quote(unicode_str.encode('utf8'))
+    cl("input:", unicode_str, "output:", unquote_unicode(res))
+    return res
 
 
 def unquote_unicode(quoted_str):
-    return urllib2.unquote(quoted_str).decode('utf8')
+    cl(urllib2.unquote(quoted_str))
+    result = urllib2.unquote(quoted_str).decode('utf8')
+    cl("input:", quoted_str, "output:", unquote_unicode(result))
+    return result
 

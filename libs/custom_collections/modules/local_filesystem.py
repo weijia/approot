@@ -12,7 +12,8 @@ def get_collection(path):
         if os.path.isdir(full_path):
             res.append({"data": filename,
                         "attr": {
-                                    "url": string_tools.quote_unicode(u"/filemanager/filesystem_rest/?full_path="+full_path),
+                                    "url": string_tools.quote_unicode(u"/filemanager/filesystem_rest/?full_path="+
+                                                                      unicode(full_path)),
                                     "id": string_tools.quote_unicode(u"local_filesystem://"+full_path)
                                 },
                         "state": "closed"
