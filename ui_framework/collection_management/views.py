@@ -52,7 +52,7 @@ def getCollectionByProtocol(collectionId, dbSysInst):
 '''
 
 import libs.utils.objTools as obj_tools
-
+import libs.utils.string_tools as string_tools
 
 def get_collection_by_protocol(collection_id):
     if obj_tools.isUfsUrl(collection_id):
@@ -62,7 +62,6 @@ def get_collection_by_protocol(collection_id):
 
 import json
 from libs.logsys.logSys import *
-import libs.utils.string_tools as string_tools
 
 def collections_jstree(request):
     if request.method == "GET":
@@ -70,14 +69,11 @@ def collections_jstree(request):
     else:
         data = request.POST
     parent_uuid = request.REQUEST["node"]
-    cl(parent_uuid)
-    decoded_parent = string_tools.unquote_unicode(parent_uuid)
-    cl(urllib2.unquote(decoded_parent))
-    cl(decoded_parent)
-    if obj_tools.isUfsUrl(decoded_parent):
+    unquoted_parent = string_tools.unquote_unicode(parent_uuid)
+    if obj_tools.isUfsUrl(unquoted_parent):
         #cl("Ufs URL use correct module")
         #print "is ufs url"
-        res = get_collection_by_protocol(decoded_parent)
+        res = get_collection_by_protocol(unquoted_parent)
         #print res
         response = json.dumps(res, sort_keys=True, indent=4)
         return HttpResponse(response, mimetype="application/json")

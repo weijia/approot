@@ -17,13 +17,14 @@ def quote_unicode(unicode_str):
     if unicode != type(unicode_str):
         raise "Only support unicode string"
     res = urllib2.quote(unicode_str.encode('utf8'))
-    cl("input:", unicode_str, "output:", unquote_unicode(res))
+    cl("input:", unicode_str, "output:", res)
     return res
 
 
 def unquote_unicode(quoted_str):
-    cl(urllib2.unquote(quoted_str))
+    #cl(urllib2.unquote(quoted_str))
+    cl("input:", quoted_str)
     result = urllib2.unquote(quoted_str).decode('utf8')
-    cl("input:", quoted_str, "output:", unquote_unicode(result))
+    cl("output:", result)
     return result
 
