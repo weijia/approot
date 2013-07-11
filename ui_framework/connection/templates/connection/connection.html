@@ -65,7 +65,7 @@ $(document).ready(function () {
         //console.log("Key up");
         console.log(event, ui);
     });
-    $( "#object-list" ).obj_list({url: "/tags/tagged/?tag=system:auto-app&amp;other=/", callback: function(elements, data){
+    $( "#object-list" ).obj_list({url: "/connection/app_list/", callback: function(elements, data){
             $.each(elements, function(key, value){
                 $(elements[key]).draggable({
                             zIndex: 999,

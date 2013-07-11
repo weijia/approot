@@ -137,5 +137,36 @@ def item_properties(request):
     #json_serializer = serializers.get_serializer("json")()
     #response =  json_serializer.serialize(res, ensure_ascii=False, indent=2, use_natural_keys=True)\
     response = json.dumps(res, sort_keys=True, indent=4)
-    print response
+    #print response
     return HttpResponse(response, mimetype="application/json")
+
+gDefaultServices = ['monitor',
+                'scache_storage',
+                'tagged_enumerator',
+                'tube_logging_service',
+                'git_puller',
+                're_send_service',
+                'tag_exporter',
+                'tag_importer',
+                'delay_send_service',
+                'domain_assign_service',
+                #'folder_tagging',
+                'all_tag_enumerator',
+                'tube_folder_tagging',
+                'diagram_importer',
+                'tag_enum',
+                ]
+import libs.utils.filetools as file_tools
+from ui_framework.objsys.models import get_ufs_obj_from_full_path
+
+def get_service_apps(request):
+    res = []
+    for app_name in gDefaultServices:
+        app_path = file_tools.findAppInProduct(app_name)
+        if not (app_path is None):
+            ufs_obj = get_ufs_obj_from_full_path(app_path)
+            res.append({"data": app_name, "full_path": app_path, "ufs_url": ufs_obj.ufs_url})
+    response = json.dumps(res, sort_keys=True, indent=4)
+    #print response
+    return HttpResponse(response, mimetype="application/json")
+

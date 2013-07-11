@@ -17,7 +17,7 @@ $(document).ready(function () {
                 }
             }
             processorList[connectionList[i].sourceId]["outputs"].push(i);
-            processorList[connectionList[i].sourceId]["ufs_url"] = $("#"+connectionList[i].sourceId).data("data").data;
+            processorList[connectionList[i].sourceId]["ufs_url"] = $("#"+connectionList[i].sourceId).data("data").ufs_url;
             
             //Input for the processor
             if(undefined != connectionList[i].targetId)
@@ -30,7 +30,7 @@ $(document).ready(function () {
             }
             
             processorList[connectionList[i].targetId]["inputs"].push(i);
-            processorList[connectionList[i].targetId]["ufs_url"] = $("#"+connectionList[i].targetId).data("data").data;
+            processorList[connectionList[i].targetId]["ufs_url"] = $("#"+connectionList[i].targetId).data("data").ufs_url;
             
             //console.log(processorList);
             //console.log($("#"+connectionList[i].targetId).data("data").data);
