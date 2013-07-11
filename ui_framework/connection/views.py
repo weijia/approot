@@ -105,14 +105,14 @@ def parse_help(help_str):
                 #res["log"] += param_name + "->" + i +","
         if -1 != i.find("optional arguments:"):
             param_start = True
-        #Remove default arguments
+    #Remove default arguments
     del res["-h"]
     del res["startserver"]
     del res["session_id"]
     del res["diagram_id"]
 
     #Remove standard output
-    for i in ["outputtube", "inputtube"]:
+    for i in ["outputtube", "inputtube","input_msg_queue", "output_msg_queue"]:
         if res.has_key(i):
             del res[i]
     return res

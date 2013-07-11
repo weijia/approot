@@ -1,12 +1,12 @@
 $(document).ready(function () {
     $( "#confirm-diagram" ).click(function(){
-        console.log("confirm-clicked");
+        //console.log("confirm-clicked");
         var connectionList = jsPlumb.getConnections();
         var processorList = {};
         var taskList = [];
         for (var i=0;i<connectionList.length;i++)
         {
-            console.log(connectionList[i], i, connectionList);
+            //console.log(connectionList[i], i, connectionList);
             //Output for the processor
             if(undefined != connectionList[i].sourceId)
             {
@@ -32,8 +32,8 @@ $(document).ready(function () {
             processorList[connectionList[i].targetId]["inputs"].push(i);
             processorList[connectionList[i].targetId]["ufs_url"] = $("#"+connectionList[i].targetId).data("data").data;
             
-            console.log(processorList);
-            console.log($("#"+connectionList[i].targetId).data("data").data);
+            //console.log(processorList);
+            //console.log($("#"+connectionList[i].targetId).data("data").data);
             
         }
         for(var processorIndex = 0; processorIndex < taskList.length; processorIndex++)
@@ -42,13 +42,13 @@ $(document).ready(function () {
             processorList[processor_id]["params"] = $("#"+processor_id+" input").val();
         }
         
-        console.log(JSON.stringify(processorList));
+        //console.log(JSON.stringify(processorList));
 
         $.post('/connection/save_diagram/',
             JSON.stringify({"diagram_id": diagram_id, "processorList": processorList}),
             function(data) {
                 //$('.result').html(data);
-                console.log(data);
+                //console.log(data);
             }
         );
 

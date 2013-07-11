@@ -65,7 +65,7 @@ $(document).ready(function () {
         //console.log("Key up");
         console.log(event, ui);
     });
-    $( "#object-list" ).objlist({url: "/tags/tagged/?tag=system:auto-app&amp;other=/", callback: function(elements, data){
+    $( "#object-list" ).obj_list({url: "/tags/tagged/?tag=system:auto-app&amp;other=/", callback: function(elements, data){
             $.each(elements, function(key, value){
                 $(elements[key]).draggable({
                             zIndex: 999,
@@ -76,18 +76,9 @@ $(document).ready(function () {
                             refreshPositions: true,
                             start: function(event, ui)
                             {
-                                console.log(event, ui, $(ui.helper).data("data"), $(event.srcElement).data("data"));
+                                //console.log(event, ui, $(ui.helper).data("data"), $(event.srcElement).data("data"));
                                 $(ui.helper).data("data", $(event.srcElement).data("data"));
                             },
-                            //appendTo: "#container-view-port",
-                            //snapTolerance: 60,
-                            /*
-                            snap: ".droppableCell",
-
-                            stop: function(event, ui)
-                            {
-                                _settings.internalData.draggingExistingEvent = false;
-                            },*/
                             lastElement: "forIeToAvoidLastCommaIssue"
                         });
             });
@@ -100,11 +91,11 @@ $(document).ready(function () {
                     //Create connections
                     var targetDiv = $(event.target);
                     var itemData = $(ui.helper).data("data");
-                    console.log(itemData);
+                    //console.log(itemData);
                     var idx = itemData.full_path.lastIndexOf('/');
                     //console.log(itemData.data, idx, String(itemData.data)[93],String(itemData.data).substr(idx));
                     targetDiv.append('<span>'+ String(itemData.data).substr(idx) +'</span>').data("data", itemData);
-                    console.log($(ui.helper).data("data"));
+                    //console.log($(ui.helper).data("data"));
                     $.getJSON(String.format("/connection/properties/?full_path={0}", $(ui.helper).data("data").full_path), function(data){
                         $.each(data, function(key, value){
                             //Skip input output as they are embodied by end point
@@ -171,22 +162,8 @@ $(document).ready(function () {
                             {
                                 target = $("#"+info.targetId).data("id");
                             }
-                            
-                            $.getJSON(String.format("/connection/connection/?source={0}&target={1}&diag_uuid={2}", 
-                                                        source,
-                                                        target,
-                                                        "{{ diagram_id }}"), function(res){
-                                                            $("#"+info.sourceId).data("id", res.source);
-                                                            $("#"+info.targetId).data("id", res.target);
-                                                            console.log($("#"+info.sourceId).data("id"));
-                                                        });
                         });*/
-
-                        
                     });
-                    
-                    
-
                 }//End of drop: function(event, ui){
                 
             });

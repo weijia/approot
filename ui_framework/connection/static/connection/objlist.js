@@ -15,11 +15,6 @@ var ObjList = {
             //In this function $(this) is the xhr request
             for(i = 0; i < data.length; i++)
             {
-                //$(curContainerBlocksElem).container_blocks("genEvent", data[i].classroomId.pk, data[i].start, data[i].end, "New test class", data[i].id, data[i].teacherList);
-                /*var attrs = "";
-                $.each(data[i], function(key, value){
-                    attrs = key + '= "' + value + '" ';
-                });*/
                 $(String.format('<div class="element-root" style="float:left">{0}</div>', data[i].data)).appendTo(elemInInit).data("data", data[i]);
             }
             if(null == optionsInInit.callback) return;
@@ -31,4 +26,4 @@ var ObjList = {
     }*/
 }
 
-$.widget ('ufs.objlist', ObjList);
+$.widget ('ufs.obj_list', ObjList);
