@@ -1,4 +1,6 @@
 import argparse
+import os
+from libs.services.svc_base.msg import Msg
 import libsys
 import sys
 from managed_service import ManagedService
@@ -70,7 +72,11 @@ class SimpleService(object):
     def add_task(self, service_instance, args):
         #Confirm service for this app is started
         service_manager = MsgBasedServiceManager()
-        service_manager.add_item({})
+        #print "exe filename:", __main__.__file__
+        app_name = os.path.basename(__main__.__file__).split(".")[0]
+        msg = Msg()
+        msg.add_app_name(app_name)
+        service_manager.add_msg(msg)
         print 'start app'
         #Generate params
         param = {}

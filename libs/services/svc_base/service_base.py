@@ -23,6 +23,10 @@ class Service(object):
         q = MsgQ(self.get_input_msg_queue_name())
         q.send(param_dict)
 
+    def add_msg(self, msg):
+        q = MsgQ(self.get_input_msg_queue_name())
+        q.send_msg(msg)
+
     def get_session_id(self):
         return self.param_dict["session_id"]
 
