@@ -6,6 +6,7 @@ from tagging.models import Tag, TaggedItem
 from ui_framework.objsys.models import UfsObj, CollectionItem
 import json
 
+
 # Create your views here.
 def object_filter(request):
     if request.method == "GET":
