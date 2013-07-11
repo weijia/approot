@@ -22,10 +22,19 @@ $(document).ready(function() {
         var resHtml = ""
         $.each(data.objects, function(key, value)
         {
+            var objName = "";
+            if(value.object_name)
+            {
+                objName = value.object_name;
+            }
+            else
+            {
+                objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
+            }
             resHtml += String.format('<div class="element-root" ufs_url="{0}" full_path="{1}">'+
                         '<img class="element-thumb" src="/thumb/?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
                         value.ufs_url, value.full_path, '<li>'+value.tags.join('</li><li>')+'</li>', 
-                        value.full_path.substring(value.full_path.lastIndexOf("/")+1), value.description.replace(/"/g,''),
+                        objName, value.description.replace(/"/g,''),
                         encodeURI(value.full_path));
         });
         if(null != data.meta.next){

@@ -7,7 +7,7 @@ from ui_framework.objsys.models import UfsObj, CollectionItem
 import json
 import libsys
 from libs.windows.windowsDriver import getDriverList
-
+import urllib2
 
 def root(request):
     """
@@ -15,11 +15,34 @@ def root(request):
     :param request:
     :return:
     [{"data": "D:/", "attr": {"url": "/filemanager/listdir?path=D:/"}}]
+    For supporting object_filter view, we added another structure:
+    {"full_path":"D:/", "description": "..."}
     """
     driver_list = getDriverList()
     res = []
     for driver in driver_list:
-        res.append({"data": driver + "/", "attr": {"url": "/filemanager/listdir/path=" + driver +"/"}})
+        res.append({"data": driver, "attr": {"url": "/filemanager/listdir/path=" + driver,
+                                             "id": urllib2.quote("local_filesystem://"+driver)},
+                    "state": "closed"
+        })
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
+
+def root_rest(request):
+    """
+    Used for content display
+    Generate root folder list in rest api format as generated Tastypie
+    :param request:
+    :return:
+    For supporting object_filter view, we added another structure:
+    {"full_path":"D:/", "description": "..."}
+    """
+    driver_list = getDriverList()
+    res = []
+    for driver in driver_list:
+        res.append({"data": driver, "attr": {"url": "/filemanager/listdir/path=" + driver},
+                    "full_path": driver, "description": "Driver", "tags": [], "object_name": driver
+        })
+    response = json.dumps({"objects": res, "meta": {"next": ""}}, sort_keys=True, indent=4)
+    return HttpResponse(response, mimetype="application/json")
