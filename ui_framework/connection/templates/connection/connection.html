@@ -92,9 +92,9 @@ $(document).ready(function () {
                     var targetDiv = $(event.target);
                     var itemData = $(ui.helper).data("data");
                     //console.log(itemData);
-                    var idx = itemData.full_path.lastIndexOf('/');
+                    var idx = itemData.full_path.lastIndexOf('/') + 1;
                     //console.log(itemData.data, idx, String(itemData.data)[93],String(itemData.data).substr(idx));
-                    targetDiv.append('<span>'+ String(itemData.data).substr(idx) +'</span>').data("data", itemData);
+                    targetDiv.append('<span>'+ String(itemData.full_path).substr(idx) +'</span>').data("data", itemData);
                     //console.log($(ui.helper).data("data"));
                     $.getJSON(String.format("/connection/properties/?full_path={0}", $(ui.helper).data("data").full_path), function(data){
                         $.each(data, function(key, value){

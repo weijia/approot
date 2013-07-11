@@ -60,4 +60,4 @@ if __name__ == "__main__":
                             "output": "Output msg queue for this generator",
                       },
                       worker_thread_class = AllTagEnum)
-    #s.run()
+    s.run()

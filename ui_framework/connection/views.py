@@ -132,6 +132,7 @@ def item_properties(request):
     proc = execute_app(full_path, ["--help"])
     out = proc.communicate()[0]
     #print the output of the child process to stdout
+    #print out
     res = parse_help(out)
 
     #json_serializer = serializers.get_serializer("json")()
@@ -165,7 +166,7 @@ def get_service_apps(request):
         app_path = file_tools.findAppInProduct(app_name)
         if not (app_path is None):
             ufs_obj = get_ufs_obj_from_full_path(app_path)
-            res.append({"data": app_name, "full_path": app_path, "ufs_url": ufs_obj.ufs_url})
+            res.append({"data": app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url})
     response = json.dumps(res, sort_keys=True, indent=4)
     #print response
     return HttpResponse(response, mimetype="application/json")

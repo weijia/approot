@@ -15,6 +15,8 @@
 {
     height: 150px;
     width: 150px;
+    border: solid 1px;
+    margin: 2px;
 }
 .object-container
 {
