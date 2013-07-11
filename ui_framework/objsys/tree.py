@@ -72,7 +72,7 @@ def register_menu(subitem_url, subitem_text, parent_path = "/", permmited_group 
             o = UfsObj(ufs_url = url, uuid = unicode(uuid.uuid4()), timestamp=timezone.now(), user=User.objects.filter(username="AnonymousUser")[0])
             o.save()
         else:
-            print 'use existing item'
+            #print 'use existing item'
             o = qs[0]
         
     else:#except django.db.utils.DatabaseError:
