@@ -14,7 +14,7 @@ from django.utils.timezone import utc
 import uuid
 import os
 from libs.logsys.logSys import *
-import libs.utils.objTools as objtools
+import libs.utils.objTools as obj_tools
 from libs.services.svc_base.simpleservice import SimpleService, SimpleWorkThread
 from libs.services.svc_base.state import StatefulProcessor
 from libs.utils.misc import ensureDir as ensure_dir
@@ -26,7 +26,7 @@ def add_tag_for_full_path(full_path, tag, tag_app = None):
     full_path = transform.transformDirToInternal(full_path)
     obj_list = UfsObj.objects.filter(full_path = full_path)
     if 0 == obj_list.count():
-        ufs_url = objtools.getUfsUrlForPath(full_path)
+        ufs_url = obj_tools.getUfsUrlForPath(full_path)
         obj = UfsObj(ufs_url = ufs_url, full_path=full_path)
         obj.save()
     else:
@@ -44,8 +44,8 @@ def add_tag_for_full_path(full_path, tag, tag_app = None):
             Tag.objects.add_tag(obj, "system:pic", tag_app)
         else:
             isVideo = False
-            for signiture in ['RIFF (little-endian) data, AVI', 'RealMedia file', 'Matroska data']:
-                if signiture in obj_type:
+            for signature in ['RIFF (little-endian) data, AVI', 'RealMedia file', 'Matroska data']:
+                if signature in obj_type:
                     Tag.objects.add_tag(obj, "system:video", tag_app)
                     break
             

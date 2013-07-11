@@ -35,7 +35,7 @@ class MsgBasedServiceManager(Service):
     def msg_loop(self):
         while True:
             msg = self.receiver.receive()
-            if msg.get_session_id() != self.param_dict["session_id"]: 
+            if msg.get_session_id() != self.param_dict["session_id"]:
                 print "ignore legacy session msg"
                 continue
             if not self.process(msg):
@@ -53,8 +53,8 @@ class MsgBasedServiceManager(Service):
                         print "Unneeded start app, app already started"
                     else:
                         gui_service = GuiService()
-                        gui_service.addItem({"command": "LaunchApp", "app_name": msg.get_app_name(), 
-                                                "param":['--startserver', '--session_id', self.param_dict["session_id"]]})
+                        gui_service.addItem({"command": "LaunchApp", "app_name": msg.get_app_name(),
+                                             "param": ['--startserver', '--session_id', self.param_dict["session_id"]]})
             elif msg.is_stop_msg():
                 for app_name in self.app_name_to_info:
                     stop_msg = Msg()
@@ -64,6 +64,7 @@ class MsgBasedServiceManager(Service):
             else:
                 cl("Unexpected command")
         return True
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

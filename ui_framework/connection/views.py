@@ -16,23 +16,22 @@ def index(request):
         data = request.GET
     else:
         data = request.POST
-    c = {"user": request.user, "data_url": request.get_full_path().replace("pane/", "").replace("pane", ""), "diagram_id": uuid.uuid4()}
+    c = {"user": request.user, "data_url": request.get_full_path().replace("pane/", "").replace("pane", ""),
+         "diagram_id": uuid.uuid4()}
     c.update(csrf(request))
     return render_to_response('connection/connection_pane.html', c)
 
-def save_diagram(request):
-    pass
-    
+
 def create_diagram_obj(request):
-    '''
+    """
     * Create diagram one connection after another. There will be a diagram uuid for all connections for this diagram.
     * UfsObj(ufs_url="diagram://uuid")
-    '''
+    """
     if request.method == "GET":
         data = request.GET
     else:
         data = request.POST
-    
+
     diag_uuid = data.get("diag_uuid", None)
     source = data.get("source", None)
     target = data.get("target", None)
@@ -40,38 +39,42 @@ def create_diagram_obj(request):
     target_param = data.get("target_param", None)
     if (source is None) or (target is None) or (diag_uuid is None):
         raise "Invalid params"
-    #Create diagram object
+        #Create diagram object
     #Find if the diagram object already exist
-    if 0 == UfsObj.objects.filter(ufs_url = u"diagram://" + diag_uuid).count():
-        obj = UfsObj(ufs_url = u"diagram://" + diag_uuid, uuid = unicode(diag_uuid), timestamp=timezone.now(), user = request.user)
+    if 0 == UfsObj.objects.filter(ufs_url=u"diagram://" + diag_uuid).count():
+        obj = UfsObj(ufs_url=u"diagram://" + diag_uuid, uuid=unicode(diag_uuid), timestamp=timezone.now(),
+                     user=request.user)
         obj.save()
     else:
-        obj = UfsObj.objects.get(ufs_url = u"diagram://" + diag_uuid)
+        obj = UfsObj.objects.get(ufs_url=u"diagram://" + diag_uuid)
     if source.isdigit():
         #source is digital so this processor has already been posted
         source_processor = Processor.objects.filter(pk=int(source))[0]
         #source_obj = 
     else:
-        source_obj = UfsObj.objects.get(ufs_url = source)
+        source_obj = UfsObj.objects.get(ufs_url=source)
         #Create processor
-        source_processor = Processor(ufsobj = source_obj, param_descriptor = source_param)
+        source_processor = Processor(ufsobj=source_obj, param_descriptor=source_param)
         source_processor.save()
-        
+
     if target.isdigit():
         #target is digital so this processor has already been posted
         target_processor = Processor.objects.filter(pk=int(target))[0]
     else:
-        target_obj = UfsObj.objects.get(ufs_url = target)
+        target_obj = UfsObj.objects.get(ufs_url=target)
         #Create processor
-        target_processor = Processor(ufsobj = target_obj, param_descriptor = target_param)
+        target_processor = Processor(ufsobj=target_obj, param_descriptor=target_param)
         target_processor.save()
-    #Add connections
-    con = Connection(source = source_processor, target = target_processor, diagram = obj)
+        #Add connections
+    con = Connection(source=source_processor, target=target_processor, diagram=obj)
     con.save()
-    return HttpResponse('{"source":%s, "target":%s}'%(source_processor.pk, target_processor.pk), mimetype="application/json")
-    
+    return HttpResponse('{"source":%s, "target":%s}' % (source_processor.pk, target_processor.pk),
+                        mimetype="application/json")
+
+
 import subprocess
 from libs.console.ConsoleOutputCollector import execute_app
+
 
 def parse_help(help_str):
     '''
@@ -102,17 +105,18 @@ def parse_help(help_str):
                 #res["log"] += param_name + "->" + i +","
         if -1 != i.find("optional arguments:"):
             param_start = True
-    #Remove default arguments
+        #Remove default arguments
     del res["-h"]
     del res["startserver"]
     del res["session_id"]
     del res["diagram_id"]
-    
+
     #Remove standard output
     for i in ["outputtube", "inputtube"]:
         if res.has_key(i):
             del res[i]
     return res
+
 
 def item_properties(request):
     '''
@@ -129,7 +133,7 @@ def item_properties(request):
     out = proc.communicate()[0]
     #print the output of the child process to stdout
     res = parse_help(out)
-    
+
     #json_serializer = serializers.get_serializer("json")()
     #response =  json_serializer.serialize(res, ensure_ascii=False, indent=2, use_natural_keys=True)\
     response = json.dumps(res, sort_keys=True, indent=4)

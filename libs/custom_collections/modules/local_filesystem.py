@@ -19,7 +19,7 @@ def get_collection(path):
         obj_list = UfsObj.objects.filter(full_path = full_path)
         tags = ""
         if 0 != obj_list.count():
-            tags += "("
+            tags += " ("
             for tag in obj_list[0].tags:
                 tags += tag.name
             tags += ")"

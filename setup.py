@@ -63,7 +63,7 @@ includes = ["PyQt4.QtCore",
 
 script_list = ['rootapp', 'tornado_main', 'tagging', 'ext_svr', 'sftpserver',
                'BeanstalkdLauncherService', 'manage', 'initial_launcher',
-               'service_starter',
+               'service_starter','msg_based_service_mgr',
                # ('monitor.py', 'libs/services/apps/monitor.exe'),
                # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
                # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
