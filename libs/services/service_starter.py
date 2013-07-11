@@ -8,7 +8,7 @@ from ui_framework.objsys.models import UfsObj, CollectionItem
 import os
 import libs.utils.simplejson as json
 from ui_framework.connection.models import Connection, Processor
-import libs.utils.filetools as filetools
+import libs.utils.filetools as file_tools
 import time
 
 
@@ -26,7 +26,7 @@ def start_app(app_path, param_dict):
     app_path = os.path.basename(app_path)
     print "base:", app_path
     app_path = app_path.split(".")[0]
-    app_path = filetools.findAppInProduct(app_path)
+    app_path = file_tools.findAppInProduct(app_path)
     print "found:", app_path
     if os.path.exists(app_path):
         gui_service = GuiService()
@@ -46,8 +46,9 @@ def service_starter():
         #print 'starting diagram:', coll_item.obj.ufs_url
         start_diagram(coll_item.obj)
 
+
 def start_diagram(diagram_obj, connection_prefix = u''):
-    '''
+    """
     * Start diagram
 
     for processor in diagram:
@@ -55,7 +56,7 @@ def start_diagram(diagram_obj, connection_prefix = u''):
             start diagram(processor.params)
         else:
             start processor(processor.params)
-    '''
+    """
     print diagram_obj
     session_id = time.time()
     

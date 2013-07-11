@@ -1,10 +1,12 @@
-import libsys
 #from setuptools import find_packages
-from rootapp import settings
-from cx_Freeze import setup, Executable
-from django_setup import gen_spec
 import os
+
+from cx_Freeze import setup, Executable
+
+from rootapp import settings
+from django_setup import gen_spec
 import libs.qtconsole.fileTools as filetools
+
 
 ####################
 # Dependancy
@@ -69,7 +71,7 @@ script_list = ['rootapp', 'tornado_main', 'tagging', 'ext_svr', 'sftpserver',
                # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
                # ('tube_logging.py', 'libs/services/apps/tube_logging.exe'),
 ]
-from libs.services.initial_launcher import gDefaultServices
+from libs.services.svc_base.default_apps import gDefaultServices
 
 script_list.extend(gDefaultServices)
 print script_list

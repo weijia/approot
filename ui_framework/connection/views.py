@@ -141,24 +141,10 @@ def item_properties(request):
     #print response
     return HttpResponse(response, mimetype="application/json")
 
-gDefaultServices = ['monitor',
-                'scache_storage',
-                'tagged_enumerator',
-                'tube_logging_service',
-                'git_puller',
-                're_send_service',
-                'tag_exporter',
-                'tag_importer',
-                'delay_send_service',
-                'domain_assign_service',
-                #'folder_tagging',
-                'all_tag_enumerator',
-                'tube_folder_tagging',
-                'diagram_importer',
-                'tag_enum',
-                ]
+from libs.services.svc_base.default_apps import gDefaultServices
 import libs.utils.filetools as file_tools
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
+
 
 def get_service_apps(request):
     res = []
