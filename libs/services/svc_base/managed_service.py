@@ -25,12 +25,6 @@ class ManagedService(Service):
         if param_dict.has_ley("diagram_id"):
             self.state = DiagramState(param_dict["diagram_id"])
 
-            # def receive(self):
-            # '''
-            # blocking call that will be overrided by Receiver.
-            # '''
-            # pass
-
     def register_service(self):
         msg = RegMsg()
         import __main__
@@ -46,7 +40,7 @@ class ManagedService(Service):
     def receive_register_ok(self, timestamp):
         self.receiver.register_to_cmd_msg_q()
         for retry_cnt in range(0, self.RETRY_FOR_REGISTRATION_DONE):
-            msg = self.receiver.receive(timeout=self.WAIT_FOR_REGISTRATION_DONE_TIMEOUT)
+            msg = self.receive(timeout=self.WAIT_FOR_REGISTRATION_DONE_TIMEOUT)
             if msg is None:
                 print 'receive msg error, retry...', self.get_input_tube_name()
                 ###################

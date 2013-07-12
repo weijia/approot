@@ -146,14 +146,41 @@ import libs.utils.filetools as file_tools
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
 
 
-def get_service_apps(request):
+class DefaultApp(object):
+    def __init__(self, app_name):
+        self.app_name = app_name
+
+    def get_info(self):
+        app_path = file_tools.findAppInProduct(self.app_name)
+        if app_path is None:
+            raise "Obj not exists"
+
+        ufs_obj = get_ufs_obj_from_full_path(app_path)
+        return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url}
+
+
+def get_content_item_list_in_json(item_list):
     res = []
-    for app_name in gDefaultServices:
-        app_path = file_tools.findAppInProduct(app_name)
-        if not (app_path is None):
-            ufs_obj = get_ufs_obj_from_full_path(app_path)
-            res.append({"data": app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url})
+    for item in item_list:
+        res.append(item.get_info())
     response = json.dumps(res, sort_keys=True, indent=4)
-    #print response
     return HttpResponse(response, mimetype="application/json")
 
+
+def get_service_apps(request):
+    app_list = []
+    for app_name in gDefaultServices:
+        app_list.append(DefaultApp(app_name))
+    return get_content_item_list_in_json(app_list)
+
+
+class Diagram(object):
+    def __init__(self, diagram):
+        self.diagram = diagram
+
+    def get_info(self):
+        pass
+
+
+def get_diagrams(request):
+    pass
