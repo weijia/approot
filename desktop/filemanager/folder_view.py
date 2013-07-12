@@ -53,6 +53,8 @@ def root_rest(request):
     response = json.dumps({"objects": res, "meta": {"next": ""}}, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
+import libs.utils.transform as transform
+import libs.utils.objTools as obj_tools
 
 def filesystem_rest(request):
     if request.method == "GET":
@@ -63,6 +65,7 @@ def filesystem_rest(request):
     parent = string_tools.unquote_unicode(data["full_path"])
     for filename in os.listdir(parent):
         full_path = os.path.join(parent, filename)
-        res.append({"full_path": full_path, "description": full_path, "tags": []})
+        full_path = transform.transformDirToInternal(full_path)
+        res.append({"ufs_url": obj_tools.getUfsUrl(full_path),"full_path": full_path, "description": full_path, "tags": []})
     response = json.dumps({"objects": res, "meta": {"next": ""}}, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")

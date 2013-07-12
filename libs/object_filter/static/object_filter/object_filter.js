@@ -184,6 +184,7 @@ $(document).ready(function() {
     {
         url = $("#query-base").val();
     }
+    console.log("loading url:",url);
     $.ajax({
             url: url,
             dataType: "json",

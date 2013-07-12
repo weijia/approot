@@ -19,14 +19,15 @@ def get_collection(path):
         obj_list = UfsObj.objects.filter(full_path = full_path)
         tags = ""
         if 0 != obj_list.count():
-            tags += " ("
+            tag_list = []
             for tag in obj_list[0].tags:
-                tags += tag.name
-            tags += ")"
+                tag_list.append(tag.name)
+            if 0 != len(tag_list):
+                tags += " tags:(%s)" % (','.join(tag_list))
         if os.path.isdir(full_path):
             res.append({"data": filename + tags,
                         "attr": {
-                            "url": string_tools.quote_unicode(u"/filemanager/filesystem_rest/?full_path=" +
+                            "url": u"/object_filter/?query_base=" + string_tools.quote_unicode(u"/filemanager/filesystem_rest/?full_path=" +
                                                               unicode(full_path)),
                             "id": string_tools.quote_unicode(u"local_filesystem://" + full_path)
                         },

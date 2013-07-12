@@ -21,6 +21,8 @@ def parseUrl(url):
 def getHostName():
     return unicode(socket.gethostname())
 
+def getUfsUrl(localPath):
+    return gUfsObjUrlPrefix+getHostName()+gUfsObjUrlSeparator+transform.transformDirToInternal(localPath)
 
 def getUfsUrlForPath(fullPath):
     fullPath = transform.transformDirToInternal(fullPath)
@@ -77,10 +79,6 @@ def isUfsUrl(url):
         return False
     else:
         return True
-
-
-def getUfsUrl(localPath):
-    return gUfsObjUrlPrefix+getHostName()+gUfsObjUrlSeparator+transform.transformDirToInternal(localPath)
 
 
 def getUfsLocalRootUrl():

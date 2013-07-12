@@ -4,7 +4,8 @@ word-wrap:break-word;float:left;margin:2px;font-size:12px;
 .thumb-view .element-thumb{width:246px;height:200px;padding:2px;}
 
 .detailed-view .element-root{border:solid 1px;}
-.detailed-view .element-thumb{display:none;}
+.detailed-view .element-thumb{width:100px;height:100px;float:left}
+.detailed-view ul {float:left;}
 
 /*******************
 Tag font size
