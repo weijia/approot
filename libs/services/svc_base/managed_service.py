@@ -11,7 +11,6 @@ from libs.logsys.logSys import *
 
 
 class ManagedService(Service):
-
     WAIT_FOR_REGISTRATION_DONE_TIMEOUT = 20
     RETRY_FOR_REGISTRATION_DONE = 10
 
@@ -26,12 +25,12 @@ class ManagedService(Service):
         if param_dict.has_ley("diagram_id"):
             self.state = DiagramState(param_dict["diagram_id"])
 
-    # def receive(self):
-        # '''
-        # blocking call that will be overrided by Receiver.
-        # '''
-        # pass
-    
+            # def receive(self):
+            # '''
+            # blocking call that will be overrided by Receiver.
+            # '''
+            # pass
+
     def register_service(self):
         msg = RegMsg()
         import __main__
@@ -44,7 +43,6 @@ class ManagedService(Service):
         q = MsgQ(gMsgBasedServiceManagerMsgQName)
         q.send(msg)
 
-                
     def receive_register_ok(self, timestamp):
         self.receiver.register_to_cmd_msg_q()
         for retry_cnt in range(0, self.RETRY_FOR_REGISTRATION_DONE):
@@ -54,7 +52,7 @@ class ManagedService(Service):
                 ###################
                 # Receive failed, quiting
                 continue
-                
+
             #Every control msg must have a timestamp
             if not msg.has_key('timestamp'):
                 cl('no timestamp, drop msg')
@@ -64,7 +62,7 @@ class ManagedService(Service):
                 #Very old control msg, ignore it
                 cl("Very old control msg, drop it", msg)
                 continue
-                
+
             put_delay = 2#In seconds
             #Only care about pid matched message
             if (msg.get("pid", 0) == self.pid) and (self.reg_timestamp == msg.get("timestamp", 0)):
@@ -86,7 +84,7 @@ class ManagedService(Service):
                 #TODO: maybe should sleep random seconds
                 time.sleep(1)
                 cl("msg sent back, back to msg loop")
-        
+
         #All retry failed, quit this task
         return False
 
@@ -97,7 +95,7 @@ class ManagedService(Service):
         #清空cmd消息队列
         #receiver.clear(self.get_input_msg_queue_name())
         #注册到cmd消息队列
-        
+
         #通过cmd消息队列注册到服务管理程序
         self.register_service()
         if self.receive_register_ok():
@@ -105,8 +103,8 @@ class ManagedService(Service):
             self.receiver.register_to_data_msg_q()
             #开始消息循环处理消息
             self.msg_loop()
-        
-            
+
+
 class WorkerBase(ManagedService, threading.Thread):
     def __init__(self, param_dict):
         super(WorkerBase, self).__init__(param_dict)
