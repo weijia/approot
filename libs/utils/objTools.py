@@ -21,12 +21,13 @@ def parseUrl(url):
 def getHostName():
     return unicode(socket.gethostname())
 
+
 def getUfsUrl(localPath):
     return gUfsObjUrlPrefix+getHostName()+gUfsObjUrlSeparator+transform.transformDirToInternal(localPath)
 
+
 def getUfsUrlForPath(fullPath):
-    fullPath = transform.transformDirToInternal(fullPath)
-    return gUfsObjUrlPrefix + getHostName() + gUfsObjUrlSeparator + fullPath
+    return getUfsUrl(fullPath)
 
 
 def getFullPathFromUfsUrl(ufsUrl):
