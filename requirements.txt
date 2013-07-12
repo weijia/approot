@@ -6,7 +6,6 @@ defusedxml
 PyYAML
 python-digest
 biplist
-pywin32
 python_digest
 mimeparse
 django-tastypie
@@ -14,3 +13,4 @@ libmagic
 #Install from exe
 pillow
 PyQt
+pywin32

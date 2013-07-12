@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^manager/$', 'ui_framework.objsys.views.manager'),
     url(r'^query/$', 'ui_framework.objsys.views.query'),
     url(r'^remove_tag/$', 'ui_framework.objsys.views.remove_tag'),
+    url(r'^add_tag/$', 'ui_framework.objsys.views.add_tag'),
     url(r'^get_tags/$', 'ui_framework.objsys.views.get_tags'),
     url(r'^remove_thumb_for_paths/$', 'ui_framework.objsys.views.remove_thumb_for_paths'),
     url(r'^taglist/$', ListView.as_view(

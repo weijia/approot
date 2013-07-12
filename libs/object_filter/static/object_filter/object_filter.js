@@ -69,6 +69,10 @@ $(document).ready(function() {
                                                     //ui.tag.parents('.element-root').attr('ufs_url')
                                                     var req = $.getJSON('/objsys/remove_tag/?ufs_url='+encodeURIComponent(ui.tag.parents('.element-root').attr('ufs_url'))+
                                                                         '&tag='+ui.tagLabel);                                                    
+                                                },
+                                                beforeTagAdded: function(event, ui){
+                                                    var req = $.getJSON('/objsys/add_tag/?ufs_url='+encodeURIComponent($(this).parents('.element-root').attr('ufs_url'))+
+                                                                        '&tag='+ui.tagLabel);
                                                 }
                                             })
             .removeClass('tag-list-no-autocomplete');

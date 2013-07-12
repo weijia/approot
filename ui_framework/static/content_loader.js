@@ -20,6 +20,7 @@ function loadContent(url)
             }
     });*/
     jQuery.ajaxSetup({ cache:true});
+    console.log(url);
     $( '#content' ).load(url, function(){
         delete url;
         $( '#content a' ).click(function(e){

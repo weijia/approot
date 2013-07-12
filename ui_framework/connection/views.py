@@ -105,14 +105,14 @@ def parse_help(help_str):
                 #res["log"] += param_name + "->" + i +","
         if -1 != i.find("optional arguments:"):
             param_start = True
-    #Remove default arguments
+        #Remove default arguments
     del res["-h"]
     del res["startserver"]
     del res["session_id"]
     del res["diagram_id"]
 
     #Remove standard output
-    for i in ["outputtube", "inputtube","input_msg_queue", "output_msg_queue"]:
+    for i in ["outputtube", "inputtube", "input_msg_queue", "output_msg_queue"]:
         if res.has_key(i):
             del res[i]
     return res
@@ -141,6 +141,7 @@ def item_properties(request):
     #print response
     return HttpResponse(response, mimetype="application/json")
 
+
 from libs.services.svc_base.default_apps import gDefaultServices
 import libs.utils.filetools as file_tools
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
@@ -159,7 +160,15 @@ class DefaultApp(object):
         return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url}
 
 
-def get_content_item_list_in_json(item_list):
+def get_content_item_list_in_json_rest(item_list):
+    res = []
+    for item in item_list:
+        res.append(item.get_info())
+    response = json.dumps({"objects": res, "meta": {"next": None}}, sort_keys=True, indent=4)
+    return HttpResponse(response, mimetype="application/json")
+
+
+def get_list_in_json(item_list):
     res = []
     for item in item_list:
         res.append(item.get_info())
@@ -171,16 +180,23 @@ def get_service_apps(request):
     app_list = []
     for app_name in gDefaultServices:
         app_list.append(DefaultApp(app_name))
-    return get_content_item_list_in_json(app_list)
+    return get_list_in_json(app_list)
 
 
 class Diagram(object):
-    def __init__(self, diagram):
-        self.diagram = diagram
+    def __init__(self, diagram_obj):
+        self.diagram_obj = diagram_obj
 
     def get_info(self):
-        pass
+        tag_list = []
+        for tag in self.diagram_obj.tags:
+            tag_list.append(tag.name)
+        return {"data": self.diagram_obj.ufs_url, "full_path": self.diagram_obj.ufs_url,
+                "ufs_url": self.diagram_obj.ufs_url, "tags":tag_list , "description": self.diagram_obj.ufs_url}
 
 
 def get_diagrams(request):
-    pass
+    diagram_list = []
+    for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
+        diagram_list.append(Diagram(diagram_obj))
+    return get_content_item_list_in_json_rest(diagram_list)
