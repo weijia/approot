@@ -18,7 +18,7 @@ def quote_unicode(unicode_str):
     if unicode != type(unicode_str):
         raise "Only support unicode string"
     res = urllib2.quote(unicode_str.encode('utf8'))
-    cl("input:", unicode_str, "output:", res)
+    #cl("input:", unicode_str, "output:", res)
     return res
 
 

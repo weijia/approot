@@ -196,17 +196,18 @@ gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
 
 def collect_apps(app_root_dir, ext=None):
     res = []
-    for filename in os.listdir(app_root_dir):
-        if filename in gIgnoreAppList:
-            print "ignoring: ", filename
-            continue
-        if (ext is None) or (ext in filename):
-            #To ensure .pyc is not included
-            if len(filename.split(ext)[1]) != 0:
+    if os.path.exists(app_root_dir) and os.path.isdir(app_root_dir):
+        for filename in os.listdir(app_root_dir):
+            if filename in gIgnoreAppList:
+                print "ignoring: ", filename
                 continue
-            full_path = os.path.join(app_root_dir, filename)
-            print full_path
-            res.append(FullPathApp(full_path))
+            if (ext is None) or (ext in filename):
+                #To ensure .pyc is not included
+                if len(filename.split(ext)[1]) != 0:
+                    continue
+                full_path = os.path.join(app_root_dir, filename)
+                print full_path
+                res.append(FullPathApp(full_path))
     return res
 
 

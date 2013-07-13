@@ -1,26 +1,25 @@
-import libs.qtconsole.fileTools as filetools
+import libsys
+import libs.qtconsole.fileTools as file_tools
 import os
+
 
 def add_django_module(class_list, includes):
     for i in class_list:
         module_name = i.split(".")[0:-1]
         if not (module_name in includes):
             includes.append(".".join(module_name))
-        
+
+
 def add_django_module_from_list(module_list, includes):
     for i in module_list:
         add_django_module(i, includes)
-        
 
-    
 
 def gen_spec(settings, existing_config):
-    
-    
     for i in settings.INSTALLED_APPS:
         #print i
         module_i = __import__(i)
-        
+
         #print 'name:', module_i.__name__
         #print 'full name:', i
         #print i.split(".")[1:]
@@ -28,9 +27,9 @@ def gen_spec(settings, existing_config):
         #print module_path
         module_root = os.path.join(module_i.__path__[0], module_path)
         #print module_i.__path__
-        
+
         possible_template_path = os.path.join(module_root, 'templatetags')
-        
+
         #print 'template tag path:',possible_template_path
         if os.path.exists(possible_template_path):
             for templatetags_file in os.listdir(possible_template_path):
@@ -38,14 +37,14 @@ def gen_spec(settings, existing_config):
                 if ext == ".py":
                     #print 'templatetags file:',templatetags_file
                     templatetags_file_full_path = os.path.join(possible_template_path, templatetags_file)
-                    
+
                     if not os.path.isdir(templatetags_file_full_path):
-                        existing_config['includes'].append(i+".templatetags."+name)
+                        existing_config['includes'].append(i + ".templatetags." + name)
                         #print i+".templatetags."+name
 
-        
-        
-        
+
+
+
         #################################################3
         #Install template/static files to target dir
         ##############################################
@@ -60,90 +59,92 @@ def gen_spec(settings, existing_config):
                 #                        
                 #existing_config['zip_includes'].append((data_folder, 
                 #                        os.path.join(i.replace('.', '/'), django_data_folder)))
-                existing_config['include_files'].append((data_folder, 
-                                        'templates'))
-                                        
-        for django_sub_module in ['urls', 'views', 'admin', 'api', 'models', 'forms', 'decorators', 'mixins', 'management']:
+                existing_config['include_files'].append((data_folder,
+                                                         'templates'))
+
+        for django_sub_module in ['urls', 'views', 'admin', 'api', 'models', 'forms', 'decorators', 'mixins',
+                                  'management']:
             try:
-                sub_module = __import__(i+"."+django_sub_module)
-                existing_config['includes'].append(i+"."+django_sub_module)
+                sub_module = __import__(i + "." + django_sub_module)
+                existing_config['includes'].append(i + "." + django_sub_module)
             except ImportError:
                 pass
-        
-        #########
-        # TODO: import module from url
-        #########
+
+                #########
+                # TODO: import module from url
+                #########
     existing_config['includes'].extend([
-                #"psycopg2", 
-            "django.core.cache.backends.locmem",
-            "django.core.serializers.xml_serializer",
-            "django.core.serializers.python",
-            "django.core.serializers.json",
-            "django.core.serializers.pyyaml",
-            'django.template.defaulttags',
-            'django.template.defaultfilters',
-            'django.template.loader_tags',
-            'django.template.loaders.filesystem',
-            'django.template.loaders.app_directories',
-            'django.contrib.sessions.backends.db',
-            'django.contrib.auth.models',
-            'django.contrib.messages.storage.fallback',
-            'django.contrib.sites',
-            'django.contrib.sites.managers',
-            'django.contrib.sites.management',
-            'django.contrib.admin',
-            'django.contrib.admin.models',
-            'django.contrib.admin.sites',
-            'django.contrib.admin.forms',
-            "django.contrib.sessions",
-            
-            
-            'django.db.models',
-            'django.db.backends.sqlite3',
-            "django.db.models.sql.compiler",
-            "django.db.backends.postgresql_psycopg2",
-            "django.db.backends.postgresql_psycopg2.base",
-            
-            'django.templatetags.i18n',
-            'django.templatetags.l10n',
-            'django.templatetags.static',
-            'django.templatetags.cache',
-            'django.templatetags.tz',
-            'django.templatetags.future',
-            'django.views.i18n',
-            'django.views.csrf',
-            'django.views.defaults',
-            'django.views.static',
-            'django.views.debug',
-            'django.views.generic.simple',
-            'django.conf.urls.defaults',
-            'django.dispatch.dispatcher',
-            
-            
-            #"django.middleware.common",
-            #"django.contrib.sessions.middleware",
-            "management",
-            "management.commands.syncdb",
-            "management.commands.loaddata",
-            ##############
-            "allauth",
-            "allauth.account",
-            "argparse",
-            "allauth.socialaccount",
-            "guardian",
-            "win_smb",
-            "ui_framework",
-            "ui_framework.collection_management",
-            "ui_framework.normal_admin",
-            "ui_framework.objsys",
-            "tags",
-            "ui_framework.connection",
-            "desktop.filemanager",
-            ]
+        #"psycopg2",
+        "django.core.cache.backends.locmem",
+        "django.core.serializers.xml_serializer",
+        "django.core.serializers.python",
+        "django.core.serializers.json",
+        "django.core.serializers.pyyaml",
+        'django.template.defaulttags',
+        'django.template.defaultfilters',
+        'django.template.loader_tags',
+        'django.template.loaders.filesystem',
+        'django.template.loaders.app_directories',
+        'django.contrib.sessions.backends.db',
+        'django.contrib.auth.models',
+        'django.contrib.messages.storage.fallback',
+        'django.contrib.sites',
+        'django.contrib.sites.managers',
+        'django.contrib.sites.management',
+        'django.contrib.admin',
+        'django.contrib.admin.models',
+        'django.contrib.admin.sites',
+        'django.contrib.admin.forms',
+        "django.contrib.sessions",
+
+
+        'django.db.models',
+        'django.db.backends.sqlite3',
+        "django.db.models.sql.compiler",
+        "django.db.backends.postgresql_psycopg2",
+        "django.db.backends.postgresql_psycopg2.base",
+
+        'django.templatetags.i18n',
+        'django.templatetags.l10n',
+        'django.templatetags.static',
+        'django.templatetags.cache',
+        'django.templatetags.tz',
+        'django.templatetags.future',
+        'django.views.i18n',
+        'django.views.csrf',
+        'django.views.defaults',
+        'django.views.static',
+        'django.views.debug',
+        'django.views.generic.simple',
+        'django.conf.urls.defaults',
+        'django.dispatch.dispatcher',
+
+
+        #"django.middleware.common",
+        #"django.contrib.sessions.middleware",
+        "management",
+        "management.commands.syncdb",
+        "management.commands.loaddata",
+        ##############
+        "allauth",
+        "allauth.account",
+        "argparse",
+        "allauth.socialaccount",
+        "guardian",
+        "win_smb",
+        "ui_framework",
+        "ui_framework.collection_management",
+        "ui_framework.normal_admin",
+        "ui_framework.objsys",
+        "tags",
+        "ui_framework.connection",
+        "desktop.filemanager",
+    ]
     )
-    
-    add_django_module_from_list([settings.MIDDLEWARE_CLASSES, settings.AUTHENTICATION_BACKENDS, 
-        settings.TEMPLATE_CONTEXT_PROCESSORS, settings.TEMPLATE_LOADERS], existing_config['includes'])
+
+    add_django_module_from_list([settings.MIDDLEWARE_CLASSES, settings.AUTHENTICATION_BACKENDS,
+                                 settings.TEMPLATE_CONTEXT_PROCESSORS, settings.TEMPLATE_LOADERS],
+                                existing_config['includes'])
     existing_config['includes'].extend(settings.INSTALLED_APPS)
-    
+
     existing_config['include_files'].append("static")
