@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^add_tag/$', 'ui_framework.objsys.views.add_tag'),
     url(r'^get_tags/$', 'ui_framework.objsys.views.get_tags'),
     url(r'^remove_thumb_for_paths/$', 'ui_framework.objsys.views.remove_thumb_for_paths'),
+    url(r'^rm_obj_from_db/$', 'ui_framework.objsys.views.rm_obj_from_db'),
     url(r'^taglist/$', ListView.as_view(
             queryset=Tag.objects.all(),
             context_object_name='tagged_items',

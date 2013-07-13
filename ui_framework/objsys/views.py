@@ -182,7 +182,8 @@ def add_tag(request):
     if data.has_key('ufs_url') and data.has_key('tag'):
         obj = get_ufs_obj_from_ufs_url(data['ufs_url'])
         Tag.objects.add_tag(obj, data["tag"], tag_app='user:' + request.user.username)
-        return HttpResponse('{"result": "added tag: %s to %s done"}' % (data["tag"], data["ufs_url"]), mimetype="application/json")
+        return HttpResponse('{"result": "added tag: %s to %s done"}' % (data["tag"], data["ufs_url"]),
+                            mimetype="application/json")
     return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
 
 
@@ -226,4 +227,17 @@ def remove_thumb_for_paths(request):
             else:
                 break
         ThumbCache.objects.filter(obj__full_path__contains=path).delete()
-        return HttpResponse(res, mimetype="application/json")      
+        return HttpResponse(res, mimetype="application/json")
+
+
+def rm_obj_from_db(request):
+    if request.method == "GET":
+        data = request.GET
+    else:
+        data = request.POST
+    if "ufs_url" in data:
+        for obj in UfsObj.objects.filter(ufs_url=data["ufs_url"]):
+            obj.tags = ""
+            obj.delete()
+        return HttpResponse('{"result": "removed: %s"}' % (data["ufs_url"]), mimetype="application/json")
+    return HttpResponse('{"result": "not enough params"}', mimetype="application/json")

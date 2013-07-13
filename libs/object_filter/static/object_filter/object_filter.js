@@ -3,9 +3,21 @@ $(document).ready(function() {
 
 
     $('#scrolling-pane').on("dblclick", ".element-root", function(event){
-        console.log("dblclicked", event, $(event.currentTarget).attr("full_path"));
+        //console.log("dblclicked", event, $(event.currentTarget).attr("full_path"));
         
         $.getJSON("/ui_framework/start?"+$(event.currentTarget).attr("full_path"), function(data){});
+    });
+
+    $("#obj-pane").on("click", "#delButton", function(e){
+        $.getJSON("/objsys/rm_obj_from_db/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
+    });
+
+    $("#obj-pane").on("mouseenter", ".element-root", function(e){
+        //The this pointer is pointing to ".element-root"
+        $("#toolBar").remove();
+        $(this).append('<div id="toolBar" style="position:absolute;top:10px;left:20px;z-index:999">' +
+                           '<p id="delButton">delete</p></div>');
+        //console.log("created tool bar for ", e.target);
     });
 
     $("#detail-view-button").button().click(
@@ -18,7 +30,7 @@ $(document).ready(function() {
 
     function genHtml(data)
     {
-        console.log(data);
+        //console.log(data);
         var resHtml = ""
         $.each(data.objects, function(key, value)
         {
@@ -31,7 +43,7 @@ $(document).ready(function() {
             {
                 objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
             }
-            resHtml += String.format('<div class="element-root" ufs_url="{0}" full_path="{1}">'+
+            resHtml += String.format('<div class="element-root" style="position:relative" ufs_url="{0}" full_path="{1}">'+
                         '<img class="element-thumb" src="/thumb/?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
                         value.ufs_url, value.full_path, '<li>'+value.tags.join('</li><li>')+'</li>', 
                         objName, value.description.replace(/"/g,''),

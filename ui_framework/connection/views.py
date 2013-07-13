@@ -1,7 +1,9 @@
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
+import os
 import uuid
 from django.utils import timezone
+import libsys
 from models import Connection, Processor
 from ui_framework.objsys.models import UfsObj
 from django.http import HttpResponse
@@ -105,7 +107,7 @@ def parse_help(help_str):
                 #res["log"] += param_name + "->" + i +","
         if -1 != i.find("optional arguments:"):
             param_start = True
-        #Remove default arguments
+            #Remove default arguments
     del res["-h"]
     del res["startserver"]
     del res["session_id"]
@@ -119,9 +121,9 @@ def parse_help(help_str):
 
 
 def item_properties(request):
-    '''
+    """
     * Retrieve info from application help.
-    '''
+    """
     if request.method == "GET":
         data = request.GET
     else:
@@ -147,17 +149,28 @@ import libs.utils.filetools as file_tools
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
 
 
-class DefaultApp(object):
-    def __init__(self, app_name):
-        self.app_name = app_name
+class App(object):
+    """
+    Can not be called directly
+    """
 
     def get_info(self):
-        app_path = file_tools.findAppInProduct(self.app_name)
+        ufs_obj = get_ufs_obj_from_full_path(self.app_full_path)
+        return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url}
+
+
+class FullPathApp(App):
+    def __init__(self, app_full_path):
+        self.app_full_path = app_full_path
+        self.app_name = os.path.basename(self.app_full_path).split(".")[0]
+
+
+class NamedApp(App):
+    def __init__(self, app_name):
+        self.app_name = app_name
+        self.app_full_path = app_path = file_tools.findAppInProduct(self.app_name)
         if app_path is None:
             raise "Obj not exists"
-
-        ufs_obj = get_ufs_obj_from_full_path(app_path)
-        return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url}
 
 
 def get_content_item_list_in_json_rest(item_list):
@@ -175,11 +188,36 @@ def get_list_in_json(item_list):
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
+gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
+                  #tagging will always be started currently
+                  "tagging.py", "tagging.exe",
+]
+
+
+def collect_apps(app_root_dir, ext=None):
+    res = []
+    for filename in os.listdir(app_root_dir):
+        if filename in gIgnoreAppList:
+            print "ignoring: ", filename
+            continue
+        if (ext is None) or (ext in filename):
+            #To ensure .pyc is not included
+            if len(filename.split(ext)[1]) != 0:
+                continue
+            full_path = os.path.join(app_root_dir, filename)
+            print full_path
+            res.append(FullPathApp(full_path))
+    return res
+
 
 def get_service_apps(request):
     app_list = []
-    for app_name in gDefaultServices:
-        app_list.append(DefaultApp(app_name))
+    #for app_name in gDefaultServices:
+    #    app_list.append(NamedApp(app_name))
+    #Add root folder .exe, (used for built apps)
+    root_dir = libsys.get_root_dir()
+    for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py")]:
+        app_list.extend(collect_apps(sub_dir, ext))
     return get_list_in_json(app_list)
 
 
@@ -191,8 +229,13 @@ class Diagram(object):
         tag_list = []
         for tag in self.diagram_obj.tags:
             tag_list.append(tag.name)
+
+        processor_list = []
+        for processor in Processor.objects.filter(diagram_obj=self.diagram_obj):
+            processor_list.append(processor.ufsobj.ufs_url)
+
         return {"data": self.diagram_obj.ufs_url, "full_path": self.diagram_obj.ufs_url,
-                "ufs_url": self.diagram_obj.ufs_url, "tags":tag_list , "description": self.diagram_obj.ufs_url}
+                "ufs_url": self.diagram_obj.ufs_url, "tags": tag_list, "description": ",".join(processor_list)}
 
 
 def get_diagrams(request):
