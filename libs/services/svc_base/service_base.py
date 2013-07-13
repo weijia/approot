@@ -1,4 +1,5 @@
 # -*- coding: gbk -*-
+import threading
 from msg_service import *
 
 
@@ -22,6 +23,14 @@ class Service(object):
     def add_item(self, param_dict):
         q = MsgQ(self.get_input_msg_queue_name())
         q.send(param_dict)
+
+    def addItem(self, item_dict):
+        """
+        This function is just used for compatible for legacy service
+        :param item_dict:
+        :return:
+        """
+        self.add_item(item_dict)
 
     def add_msg(self, msg):
         q = MsgQ(self.get_input_msg_queue_name())
@@ -66,3 +75,7 @@ class Service(object):
         
     def stop(self):
         pass
+
+class ThreadService(Service, threading.Thread):
+    def run(self):
+        self.start_service()
