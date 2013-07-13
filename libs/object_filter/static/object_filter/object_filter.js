@@ -11,12 +11,15 @@ $(document).ready(function() {
     $("#obj-pane").on("click", "#delButton", function(e){
         $.getJSON("/objsys/rm_obj_from_db/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
     });
+    $("#obj-pane").on("click", "#delDirectories", function(e){
+        $.getJSON("/objsys/rm_objs_for_path/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
+    });
 
     $("#obj-pane").on("mouseenter", ".element-root", function(e){
         //The this pointer is pointing to ".element-root"
         $("#toolBar").remove();
         $(this).append('<div id="toolBar" style="position:absolute;top:10px;left:20px;z-index:999">' +
-                           '<p id="delButton">delete</p></div>');
+                           '<p id="delButton">delete</p><p id="delDirectories">delete dir</p></div>');
         //console.log("created tool bar for ", e.target);
     });
 

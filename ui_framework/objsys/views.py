@@ -229,7 +229,25 @@ def remove_thumb_for_paths(request):
         ThumbCache.objects.filter(obj__full_path__contains=path).delete()
         return HttpResponse(res, mimetype="application/json")
 
-
+        
+def rm_objs_for_path(request):
+    if request.method == "GET":
+        data = request.GET
+    else:
+        data = request.POST
+    if "ufs_url" in data:
+        res = []
+        for i in UfsObj.objects.filter(ufs_url__startswith=data["ufs_url"]):
+            if cnt < 100:
+                res.append(i.obj.full_path)
+            else:
+                break
+        #Remove tags first?
+        TaggedItem.objects.filter(obj__ufs_url__startswith=data["ufs_url"]).delete()
+        UfsObj.objects.filter(ufs_url__startswith=data["ufs_url"]).delete()
+        return HttpResponse(res, mimetype="application/json")
+        
+        
 def rm_obj_from_db(request):
     if request.method == "GET":
         data = request.GET
