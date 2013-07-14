@@ -12,9 +12,14 @@ gBeanstalkdServerPort = g_config_dict["ufs_beanstalkd_port"]
 DEFAULT_PRIORITY = beanstalkc.DEFAULT_PRIORITY
 CMD_PRIORITY = 0
 
+class MsgQueueNameIsNone: pass
+
+
 class BeanstalkdMsgQ(object):
 
     def __init__(self, msg_q_name):
+        if self.msg_q_name is None:
+            raise MsgQueueNameIsNone
         self.msg_q_name = msg_q_name
         #self.beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
 

@@ -16,31 +16,84 @@ class Service(object):
         """
         self.param_dict = param_dict
         super(Service, self).__init__()
-
-        self.receiver = Receiver(self.get_input_msg_queue_name())
         self.is_stopped = False
 
-    def add_item(self, param_dict):
-        q = MsgQ(self.get_input_msg_queue_name())
+    def add_task_info(self, msg):
+        self.task_info = msg
+
+    def get_output_msg_queue_name(self):
+        return self.param_dict.get("output", None)
+
+    def send_to_output(self, param_dict):
+        """
+        :param param_dict:
+        :return:
+        """
+        """
+        :param param_dict:
+        :return:
+        """
+        q = MsgQ(self.get_output_msg_queue_name())
         q.send(param_dict)
 
     def addItem(self, item_dict):
         """
+        Do not use this function
         This function is just used for compatible for legacy service
         :param item_dict:
         :return:
         """
-        self.add_item(item_dict)
+        self.send_to_output(item_dict)
 
-    def add_msg(self, msg):
-        q = MsgQ(self.get_input_msg_queue_name())
-        q.send_msg(msg)
+    def stop(self):
+        """
+        Called from external
+        :return:
+        """
+        self.is_stopped = True
 
-    def receive(self):
-        return self.receiver.receive()
+    def is_quitting(self):
+        return self.is_stopped
 
     def get_session_id(self):
         return self.param_dict["session_id"]
+
+    def on_stop(self):
+        pass
+
+
+class ThreadedService(Service, threading.Thread):
+    def run(self):
+        pass
+
+
+class MsgProcessor(Service):
+    """
+    This class provides the basic message handling mechanism, it is not threaded. If thread for msg
+    processing is needed, please use ThreadedMsgProcessor
+    """
+    def __init__(self, param_dict):
+        super(MsgProcessor, self).__init__(param_dict)
+        self.receiver = Receiver(self.get_input_msg_queue_name())
+
+    def send_to_self(self, msg_dict):
+        q = MsgQ(self.get_input_msg_queue_name())
+        q.send(msg_dict)
+
+    def put(self, msg_dict):
+        """
+        A quick function for send to self
+        :param msg_dict:
+        :return:
+        """
+        self.send_to_self(msg_dict)
+
+    def add_msg(self, msg_dict):
+        q = MsgQ(self.get_input_msg_queue_name())
+        self.send_to_self(msg_dict)
+
+    def receive(self):
+        return self.receiver.receive()
 
     def get_input_msg_queue_name(self):
         return self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
@@ -59,8 +112,8 @@ class Service(object):
         while True:
             msg = self.receive()
             if msg.is_stop_msg():
-                is_stopped = True
-                self.stop()
+                self.is_stopped = True
+                self.on_stop()
             elif not self.process(msg):
                 break
         #msg.set_processed()
@@ -72,10 +125,9 @@ class Service(object):
         :return: False: need to exit msg_loop
         """
         pass
-        
-    def stop(self):
-        pass
 
-class ThreadService(Service, threading.Thread):
+
+
+class ThreadedMsgProcessor(MsgProcessor, threading.Thread):
     def run(self):
         self.start_service()

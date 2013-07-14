@@ -1,7 +1,7 @@
 # -*- coding: gbk -*-
 import os
 import time
-from service_base import Service
+from service_base import MsgProcessor
 from msg import RegMsg
 from msg_service import *
 import threading
@@ -10,7 +10,7 @@ from msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 from libs.logsys.logSys import *
 
 
-class ManagedService(Service):
+class ManagedService(MsgProcessor):
     WAIT_FOR_REGISTRATION_DONE_TIMEOUT = 20
     RETRY_FOR_REGISTRATION_DONE = 10
 
@@ -20,17 +20,20 @@ class ManagedService(Service):
         super(ManagedService, self).__init__(param_dict)
         self.output = None
         if param_dict.has_key("output"):
-            self.output = MsgQ(param_dict["output"])
+            self.output = MsgQ(self.get_output_msg_q_name())
         self.state = None
         if param_dict.has_ley("diagram_id"):
             self.state = DiagramState(param_dict["diagram_id"])
 
-    def register_service(self):
-        msg = RegMsg()
+    def get_task_signature(self):
         import __main__
         #print "exe filename:", __main__.__file__
         app_name = os.path.basename(__main__.__file__).split(".")[0]
-        msg.add_app_name(app_name)
+        return app_name
+
+    def register_service(self):
+        msg = RegMsg()
+        msg.add_app_name(self.get_task_signature())
         msg.add_receiver(self.receiver)
         msg.add_timestamp()
         self.reg_timestamp = msg.get_timestamp()
@@ -108,3 +111,10 @@ class WorkerBase(ManagedService, threading.Thread):
 
     def get_last_processing_timestamp(self):
         return self.last_timestamp
+
+    def get_task_signature(self):
+        app_name = super(WorkerBase, self).get_task_signature()
+        signature = "%s:worker:%s" % (self.get_input_msg_queue_name(),
+                                      self.get_output_msg_q_name())
+
+

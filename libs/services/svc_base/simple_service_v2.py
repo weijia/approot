@@ -28,14 +28,16 @@ class SimpleWorkThread(beanstalkWorkingThread):
         self.put_item(item, self.output_tube)
 '''
 
+
 class DefaultServiceClass(ManagedService):
-    '''
-    classdocs
-    '''
+    """
+    Default main service class
+    """
+
     def __init__(self, worker_thread_class):
-        '''
+        """
         Constructor
-        '''
+        """
         tube_name = "default_service_msg_queue_for_" + worker_thread_class.__name__
         super(DefaultServiceClass, self).__init__(tube_name)
         self.worker_thread_class = worker_thread_class
@@ -43,31 +45,39 @@ class DefaultServiceClass(ManagedService):
 
     def add_worker_thread(self, task_signature, thread_instance):
         self.task_signature_to_worker_thread[task_signature] = thread_instance
-        
+
     def is_processing(self, task_signature):
         return self.task_signature_to_worker_thread.has_key(task_signature)
-    
+
     def process(self, msg):
         t = self.worker_thread_class(msg)
         task_signature = t.get_task_signiture()
         if self.is_processing(task_signature):
-            print 'input tube already processing: ',task_signature
-            return True #Return True if we do not need to exit msg_loop
+            print 'input tube already processing: ', task_signature
+            return True  # Return True if we do not need to exit msg_loop
+        #TODO: add some checking for worker thread, so if no input and output, the work thread can
+        #refuse to work
         t.add_task_info(msg)
         self.add_worker_thread(task_signature, t)
         t.start()
-        return True #Return True if we do not need to exit msg_loop
+        return True  # Return True if we do not need to exit msg_loop
 
+    def on_stop(self):
+        """
+        Set all sub processor to stop
+        :return:
+        """
+        for task in self.task_signature_to_worker_thread:
+            task.stop()
 
 class SimpleService(object):
-    def __init__(self, param_dict, service_class = None, worker_thread_class = None):
+    def __init__(self, param_dict, service_class=None, worker_thread_class=None):
         #print "inside service.__init__()"
         #param_dict() # Prove that function definition has completed
         #print param_dict
         self.param_dict = param_dict
         self.service_class = service_class
         self.worker_thread_class = worker_thread_class
-
 
     def add_task(self, service_instance, args):
         #Confirm service for this app is started
@@ -84,7 +94,7 @@ class SimpleService(object):
             param[i] = args[i]
         for i in ['session_id', 'diagram_id']:
             param[i] = args[i]
-        service_instance.add_item(param)
+        service_instance.add_msg(param)
 
     def parse_service_args(self):
         parser = argparse.ArgumentParser()
@@ -117,24 +127,24 @@ class SimpleService(object):
 
         #print '-----------------everything OK'
         is_server = args["startserver"]
-        
+
         if self.service_class is None:
             if self.worker_thread_class is None:
                 raise "Neither a service class nor a thread class is given, we will not work with nothing"
             service_instance = DefaultServiceClass(self.worker_thread_class)
         else:
             service_instance = self.service_class()
-            
+
         #print is_server
         if is_server:
             print 'start server'
             service_instance.start_service()
         else:
             self.add_task(service_instance, args)
-        
-        
+
+
 if __name__ == "__main__":
     s = SimpleService({
-                            "output": "Output msg queue for this generator",
-                      })
+        "output": "Output msg queue for this generator",
+    })
     #s.run()

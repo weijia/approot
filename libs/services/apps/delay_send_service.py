@@ -1,40 +1,46 @@
 # -*- coding: gbk -*- 
-'''
+"""
 Created on 2012-02-13
 
 @author: Richard
-'''
+"""
 import os
 import time
-import beanstalkc
+from libs.logsys.logSys import cl
 import libsys
-from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
-import libs.utils.simplejson as json
-import libs.utils.transform as transform 
-from libs.services.svc_base.simpleservice import SimpleService
+from libs.services.svc_base.simple_service_v2 import SimpleService
+from libs.services.svc_base.managed_service import WorkerBase
+import libs.utils.transform as transform
+
+gDefaultDelaySeconds = 60 * 60
 
 
-class DelaySendThread(beanstalkWorkingThread):
+class DelaySendThread(WorkerBase):
+    '''
     def __init__(self, input_tube, output_tube, timeout):
-        '''
+        """
         timeout is in seconds
-        '''
+        """
         super(DelaySendThread, self).__init__(input_tube)
         self.input_tube = input_tube
         self.output_tube = output_tube
-        self.timeout = int(timeout)
-        self.received_items = {}
+    '''
+
+    def add_task_info(self, msg):
+        super(DelaySendThread, self).add_task_info(msg)
         #还需要处理以前提交的项目，所以如果timestamp不等于这个值则等同于新项目。
         self.timestamp = time.time()
-        
-    def processItem(self, job, item):
+        self.received_items = {}
+        self.timeout = int(msg.get("timeout", gDefaultDelaySeconds))
+
+    def process(self, msg):
+        '''
         if self.output_tube is None:
             print 'error, no output tube given'
             #Do not put the item to target tube
-            job.delete()
             return False#Do not need to put the item back to the tube
-            
-        full_path = transform.transformDirToInternal(item["fullpath"])
+        '''
+        full_path = transform.transformDirToInternal(msg.get_path())
 
         #Case 1, the item is first received no delay_send_timestamp
         #Add delay_send_timestamp and send with delay
@@ -48,22 +54,21 @@ class DelaySendThread(beanstalkWorkingThread):
         #存在delay_timestamp也是两种情况
         #   1.老项目，超时时间到，不发布新task，发送到output.把当前task删除。
         #   2.老项目，超时时间到后发现后面又更新过，不处理。把当前task删除。
-        
+
         #
-        if self.timestamp != item.get("delay_send_session_timestamp", 0):
+        if self.timestamp != msg.get("delay_send_session_timestamp", 0):
             #Not put in tube in this session, update session timestamp and remove delay_send_timestamp
-            item["delay_send_session_timestamp"] = self.timestamp
-            item.pop("delay_send_timestamp", None)
+            msg["delay_send_session_timestamp"] = self.timestamp
+            msg.pop("delay_send_timestamp", None)
             #Temp remove item
             #job.delete()
             #return False
-        
-        
-        if item.has_key("delay_send_timestamp"):
-            if self.received_items[full_path] == item["delay_send_timestamp"]:
+
+        if "delay_send_timestamp" in msg:
+            if self.received_items[full_path] == msg["delay_send_timestamp"]:
                 #Item timeout, output it
-                print 'timeout reached, send it:', item, self.received_items[full_path], item["delay_send_timestamp"]
-                new_job = self.put_item(item, self.output_tube)
+                cl('timeout reached, send it:', msg, self.received_items[full_path], msg["delay_send_timestamp"])
+                new_job = self.add_item(msg)
                 del self.received_items[full_path]
             else:
                 #Ignore the item
@@ -71,15 +76,12 @@ class DelaySendThread(beanstalkWorkingThread):
         else:
             new_timestamp = time.time()
             self.received_items[full_path] = new_timestamp
-            item.update({'delay_send_timestamp': new_timestamp, "delay_send_session_timestamp": self.timestamp})
-            self.put(item, delay = self.timeout)
-            
+            msg.update({'delay_send_timestamp': new_timestamp, "delay_send_session_timestamp": self.timestamp})
+            self.add_item(msg)
+        return True
 
-        job.delete()        
-        return False#Do not need to put the item back to the tube
 
-gDefaultDelaySeconds = 60*60
-
+'''
 class DelaySendService(beanstalkServiceApp):
     def processItem(self, job, item):
         input_tube = item["input"]
@@ -95,16 +97,9 @@ class DelaySendService(beanstalkServiceApp):
         t.start()
         job.delete()
         return False#Do not need to put the item back to the tube
+'''
 
-
-    
-    
-        
 if __name__ == "__main__":
-    s = SimpleService({
-                            "input": "Input tube for generator",
-                            "output": "Output tube for generator",
-                            "timeout": "Timeout value for processing",
-                      },
-                      DelaySendService)
+    s = SimpleService({"timeout": "Timeout value for processing", },
+                      worker_thread_class=DelaySendThread)
     s.run()
