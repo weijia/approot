@@ -4,8 +4,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.conf import settings
+import django.utils.timezone as timezone
 import os
-from time import timezone
 from models import UfsObj, get_ufs_obj_from_ufs_url
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
