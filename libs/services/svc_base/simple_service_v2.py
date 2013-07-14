@@ -1,6 +1,7 @@
 import argparse
 import os
 from libs.services.svc_base.msg import Msg
+from libs.utils.filetools import get_main_file
 import libsys
 import sys
 from managed_service import ManagedService
@@ -88,8 +89,8 @@ class SimpleService(object):
         #Confirm service for this app is started
         service_manager = MsgBasedServiceManager({"input_msg_q_name": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
         #print "exe filename:", __main__.__file__
-        import __main__
-        app_name = os.path.basename(__main__.__file__).split(".")[0]
+        #import __main__
+        app_name = get_main_file()
         msg = Msg()
         msg.add_app_name(app_name)
         service_manager.add_msg(msg)

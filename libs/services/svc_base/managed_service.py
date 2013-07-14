@@ -1,13 +1,14 @@
 # -*- coding: gbk -*-
 import os
 import time
-from service_base import MsgProcessor
-from msg import RegMsg
-from msg_service import *
 import threading
-from diagram_state import DiagramState
-from msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
+from libs.services.svc_base.service_base import MsgProcessor
+from libs.services.svc_base.msg import RegMsg
+from libs.services.svc_base.msg_service import *
+from libs.services.svc_base.diagram_state import DiagramState
+from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 from libs.logsys.logSys import *
+from libs.utils.filetools import get_main_file
 
 
 class ManagedService(MsgProcessor):
@@ -26,9 +27,15 @@ class ManagedService(MsgProcessor):
             self.state = DiagramState(param_dict["diagram_id"])
 
     def get_task_signature(self):
-        import __main__
+        #import __main__
+        #cl(dir(__main__))
+        #cl(__main__.__name__)
+        #try:
+        #    cl(__main__.__file__)
+        #except:
+        #    pass
         #print "exe filename:", __main__.__file__
-        app_name = os.path.basename(__main__.__file__).split(".")[0]
+        app_name = get_main_file()
         return app_name
 
     def register_service(self):

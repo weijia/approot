@@ -4,7 +4,7 @@ from libs.services.svc_base.gui_service import GuiService
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_base import MsgProcessor
 from libs.logsys.logSys import *
-from msg import RegMsg, Msg
+from libs.services.svc_base.msg import RegMsg, Msg
 import argparse
 
 gMsgBasedServiceManagerMsgQName = "msg_based_service_manager_msg_queue_name"
