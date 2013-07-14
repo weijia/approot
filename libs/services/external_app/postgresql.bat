@@ -21,7 +21,7 @@ REM The script sets environment variables helpful for PostgreSQL
 @SET PGPORT=%POSTGRESQL_PORT%
 @SET PGLOCALEDIR=%POSTGRESQL_ROOT%\share\locale
 REM Next line MUST be uncommented the first time to init the server, it can then be commented.
-"%POSTGRESQL_ROOT%\bin\initdb" -U postgres -A trust -E UTF8
+if not exist %PGDATA% "%POSTGRESQL_ROOT%\bin\initdb" -U postgres -A trust -E UTF8
 "%POSTGRESQL_ROOT%\bin\pg_ctl" -D "%POSTGRESQL_ROOT%/../../data/data_post" -l %POSTGRESQL_ROOT%/../../logfile start
 
 rem ECHO "Click enter to stop"

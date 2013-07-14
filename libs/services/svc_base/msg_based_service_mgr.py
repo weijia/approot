@@ -2,7 +2,7 @@
 import libsys
 from libs.services.svc_base.gui_service import GuiService
 from libs.services.svc_base.msg_service import MsgQ
-from service_base import MsgProcessor
+from libs.services.svc_base.service_base import MsgProcessor
 from libs.logsys.logSys import *
 from msg import RegMsg, Msg
 import argparse

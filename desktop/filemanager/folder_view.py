@@ -53,8 +53,12 @@ def root_rest(request):
     response = json.dumps({"objects": res, "meta": {"next": ""}}, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
+
 import libs.utils.transform as transform
 import libs.utils.objTools as obj_tools
+
+gDefaultFileListCnt = 20
+
 
 def filesystem_rest(request):
     if request.method == "GET":
@@ -63,9 +67,28 @@ def filesystem_rest(request):
         data = request.POST
     res = []
     parent = string_tools.unquote_unicode(data["full_path"])
+    offset = 0
+    if "offset" in data:
+        offset = int(data["offset"])
+    end_cnt = offset + gDefaultFileListCnt
+    is_in_range = False
+    cnt = 0
     for filename in os.listdir(parent):
+        if cnt >= offset:
+            is_in_range = True
+        cnt += 1
+        if not is_in_range:
+            continue
+        if cnt > end_cnt:
+            break
         full_path = os.path.join(parent, filename)
         full_path = transform.transformDirToInternal(full_path)
-        res.append({"ufs_url": obj_tools.getUfsUrl(full_path),"full_path": full_path, "description": full_path, "tags": []})
-    response = json.dumps({"objects": res, "meta": {"next": ""}}, sort_keys=True, indent=4)
+        res.append(
+            {"ufs_url": obj_tools.getUfsUrl(full_path), "full_path": full_path, "description": full_path, "tags": []})
+
+    response = json.dumps(
+        {"objects": res, "meta":
+            {"next": request.path + "?full_path=" + string_tools.quote_unicode(parent) +
+                     "&limit=20&offset=%d&format=json" % end_cnt}
+        }, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")

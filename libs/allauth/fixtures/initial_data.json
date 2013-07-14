@@ -1,5 +1,5 @@
 [{
-	"pk": 1,
+	"pk": 3,
 	"model": "auth.user",
 	"fields": {
 		"username": "admin",
