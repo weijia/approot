@@ -4,7 +4,7 @@ from libs.services.svc_base.msg import Msg
 import libsys
 import sys
 from managed_service import ManagedService
-from msg_based_service_mgr import MsgBasedServiceManager
+from msg_based_service_mgr import MsgBasedServiceManager, gMsgBasedServiceManagerMsgQName
 
 
 '''
@@ -34,12 +34,11 @@ class DefaultServiceClass(ManagedService):
     Default main service class
     """
 
-    def __init__(self, worker_thread_class):
+    def __init__(self, param_dict, worker_thread_class):
         """
         Constructor
         """
-        tube_name = "default_service_msg_queue_for_" + worker_thread_class.__name__
-        super(DefaultServiceClass, self).__init__(tube_name)
+        super(DefaultServiceClass, self).__init__(param_dict)
         self.worker_thread_class = worker_thread_class
         self.task_signature_to_worker_thread = {}
 
@@ -80,20 +79,21 @@ class SimpleService(object):
         self.worker_thread_class = worker_thread_class
 
     def add_task(self, service_instance, args):
-        #Confirm service for this app is started
-        service_manager = MsgBasedServiceManager()
-        #print "exe filename:", __main__.__file__
-        app_name = os.path.basename(__main__.__file__).split(".")[0]
-        msg = Msg()
-        msg.add_app_name(app_name)
-        service_manager.add_msg(msg)
-        print 'start app'
         #Generate params
         param = {}
         for i in self.param_dict:
             param[i] = args[i]
         for i in ['session_id', 'diagram_id']:
             param[i] = args[i]
+        #Confirm service for this app is started
+        service_manager = MsgBasedServiceManager({"input_msg_q_name": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
+        #print "exe filename:", __main__.__file__
+        import __main__
+        app_name = os.path.basename(__main__.__file__).split(".")[0]
+        msg = Msg()
+        msg.add_app_name(app_name)
+        service_manager.add_msg(msg)
+        print 'start app'
         service_instance.add_msg(param)
 
     def parse_service_args(self):
@@ -131,12 +131,13 @@ class SimpleService(object):
         if self.service_class is None:
             if self.worker_thread_class is None:
                 raise "Neither a service class nor a thread class is given, we will not work with nothing"
-            service_instance = DefaultServiceClass(self.worker_thread_class)
+            service_instance = DefaultServiceClass(args, self.worker_thread_class)
         else:
-            service_instance = self.service_class()
+            service_instance = self.service_class(args)
 
         #print is_server
-        if is_server:
+        print '----------------------', args
+        if service_instance.is_server_only() or is_server:
             print 'start server'
             service_instance.start_service()
         else:

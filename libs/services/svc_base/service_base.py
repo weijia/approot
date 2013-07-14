@@ -61,6 +61,11 @@ class Service(object):
     def on_stop(self):
         pass
 
+    def is_server_only(self):
+        """
+        Used for SimpleService to determine if it will be used to create tasks
+        """
+        return False
 
 class ThreadedService(Service, threading.Thread):
     def run(self):
@@ -92,10 +97,11 @@ class MsgProcessor(Service):
         q = MsgQ(self.get_input_msg_queue_name())
         self.send_to_self(msg_dict)
 
-    def receive(self):
-        return self.receiver.receive()
+    def receive(self, timeout=None):
+        return self.receiver.receive(timeout)
 
     def get_input_msg_queue_name(self):
+        print "receiving from:", self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
         return self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
 
     def startServer(self):

@@ -15,7 +15,7 @@ class Msg(collections.MutableMapping):
     APP_NAME_ATTR_NAME = "app_name"
     CMD_MSG_Q_NAME_ATTR = "cmd_msg_q"
     CMD_ATTR_NAME = "cmd"
-    
+
     def __init__(self, *args, **kwargs):
         self.store = dict()
         self.update(dict(*args, **kwargs)) # use the free update to set keys
@@ -40,19 +40,19 @@ class Msg(collections.MutableMapping):
 
     #def __keytransform__(self, key):
     #    return key
-        
+
     def __str__(self):
         return self.store.__str__()
-        
+
     def add_path(self, full_path):
         self.__setitem__("full_path", full_path)
 
     def get_path(self):
         return self["full_path"]
-        
+
     #Timestamp related
     def add_timestamp(self):
-        if self.has_key("timestamp"):
+        if "timestamp" in self.store:
             cl("Regenerate a timestamp, may not be an expected behaviour")
         self.timestamp = time.time()
         self["timestamp"] = self.timestamp
@@ -60,14 +60,14 @@ class Msg(collections.MutableMapping):
 
     def get_timestamp(self):
         return self["timestamp"]
-        
+
     def to_json(self):
         return json.dumps(self.store, sort_keys=True, indent=4)
 
     def add_cmd(self, cmd):
         self["cmd"] = cmd
         return self
-        
+
     def is_stop_msg(self):
         if "cmd" in self:
             if self["cmd"] == "stop":
@@ -78,22 +78,29 @@ class Msg(collections.MutableMapping):
     def get_session_id(self):
         return self.get("session_id", 0)
 
-    def has_app_name(self):
-        return self.has_key(self.APP_NAME_ATTR_NAME)
-        
-        
-
-        
-class RegMsg(Msg):
-    def __init__(self, *args):
-        super(RegMsg, self).__init__(args)
-
-    def add_receiver(self, receiver):
-        self["cmd_msg_q"] = receiver.get_cmd_msg_q_name()
-        return self
-
     def add_app_name(self, app_name):
         self["app_name"] = app_name
+        return self
+
+    def has_app_name(self):
+        return self.has_key(self.APP_NAME_ATTR_NAME)
+
+    def get_app_name(self):
+        return self[self.APP_NAME_ATTR_NAME]
+
+    def add_session_id(self, session_id):
+        self["session_id"] = session_id
+
+    def get_cmd_q_name(self):
+        return self[self.CMD_MSG_Q_NAME_ATTR]
+
+    def is_pid_match(self):
+        return os.getpid() == self["pid"]
+
+
+class RegMsg(Msg):
+    def add_receiver(self, receiver):
+        self["cmd_msg_q"] = receiver.get_cmd_msg_q_name()
         return self
 
     def is_registration_ok(self):
@@ -101,25 +108,20 @@ class RegMsg(Msg):
 
     def set_registration_result(self, is_ok):
         self["registration_result"] = is_ok
-        
+
     def to_json(self):
-        self.pid = os.getpid()
-        print "current pid: ", self.pid
-        if self.has_key(self.APP_NAME_ATTR_NAME) and self.has_key(self.CMD_MSG_Q_NAME_ATTR):
+        pid = os.getpid()
+        print "current pid: ", pid
+        if (self.APP_NAME_ATTR_NAME in self.store) and (self.CMD_MSG_Q_NAME_ATTR in self.store):
             #Added other required fields for registration msg
             self["cmd"] = "registration"
+            self["pid"] = pid
             return super(RegMsg, self).to_json()
         else:
             raise "Invalid reg msg"
 
     def is_valid(self):
-        if self.has_key(self.APP_NAME_ATTR_NAME):
+        if self.APP_NAME_ATTR_NAME in self.store:
             return True
         else:
             return False
-
-    def get_app_name(self):
-        return self[self.APP_NAME_ATTR_NAME]
-
-    def get_cmd_q_name(self):
-        return self[self.CMD_MSG_Q_NAME_ATTR]

@@ -35,14 +35,16 @@ class MsgBasedServiceManager(MsgProcessor):
     def msg_loop(self):
         while True:
             msg = self.receiver.receive()
+            #print msg
             if msg.get_session_id() != self.param_dict["session_id"]:
-                print "ignore legacy session msg"
+                print "ignore legacy session msg", msg
                 continue
             if not self.process(msg):
                 break
         cl('quiting msg based service manager')
 
     def process(self, msg):
+        cl(msg)
         if "cmd" in msg:
             if msg["cmd"] == "registration":
                 self.handle_registration(msg)

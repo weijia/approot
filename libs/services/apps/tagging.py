@@ -1,16 +1,18 @@
 import libsys
-from libs.services.svc_base.service_base import MsgProcessor
+from libs.services.svc_base.simple_service_v2 import SimpleService
+from libs.services.svc_base.managed_service import ManagedService
 from libs.services.svc_base.gui_service import GuiService
-import urllib
+#import urllib
 from django.conf import settings
 from configuration import g_config_dict
-import time
+#import time
 from libs.utils.string_tools import SpecialEncoder
 
 
-class TaggingService(MsgProcessor):
-    def __init__(self):
-        super(TaggingService, self).__init__({"input_msg_q_name": "system_tagging_service_input_msg_q"})
+class TaggingService(ManagedService):
+    def __init__(self, param_dict):
+        param_dict.update({"input_msg_q_name": "system_tagging_service_input_msg_q"})
+        super(TaggingService, self).__init__(param_dict)
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube
         self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name()})
@@ -31,7 +33,13 @@ class TaggingService(MsgProcessor):
         #time.sleep(2)
         return True
 
+    def is_server_only(self):
+        return True
 
 if __name__ == "__main__":
+    s = SimpleService({}, TaggingService)
+    s.run()
+    '''
     s = TaggingService()
     s.startServer()
+    '''

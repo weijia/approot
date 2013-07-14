@@ -25,7 +25,7 @@ def start_app_shortcut(name):
         print name
         raise "Path not find"
     gui_service = GuiService()
-    gui_service.addItem({"command": "Launch", "path": app_full_path, "param": []})
+    gui_service.put({"command": "Launch", "path": app_full_path, "param": []})
 
 
 def wait_for_app(app_and_param_list):

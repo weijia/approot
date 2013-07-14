@@ -19,10 +19,10 @@ class ManagedService(MsgProcessor):
         #必须要有一个cmd msg queue来接收控制消息
         super(ManagedService, self).__init__(param_dict)
         self.output = None
-        if param_dict.has_key("output"):
+        if "output" in param_dict:
             self.output = MsgQ(self.get_output_msg_q_name())
         self.state = None
-        if param_dict.has_ley("diagram_id"):
+        if "diagram_id" in param_dict:
             self.state = DiagramState(param_dict["diagram_id"])
 
     def get_task_signature(self):
@@ -36,22 +36,23 @@ class ManagedService(MsgProcessor):
         msg.add_app_name(self.get_task_signature())
         msg.add_receiver(self.receiver)
         msg.add_timestamp()
+        msg.add_session_id(self.param_dict.get("session_id"))
         self.reg_timestamp = msg.get_timestamp()
         q = MsgQ(gMsgBasedServiceManagerMsgQName)
-        q.send(msg)
+        q.send_msg(msg)
 
-    def receive_register_ok(self, timestamp):
+    def receive_register_ok(self):
         self.receiver.register_to_cmd_msg_q()
         for retry_cnt in range(0, self.RETRY_FOR_REGISTRATION_DONE):
             msg = self.receive(timeout=self.WAIT_FOR_REGISTRATION_DONE_TIMEOUT)
             if msg is None:
-                print 'receive msg error, retry...', self.get_input_tube_name()
+                print 'receive msg error, retry...', self.get_input_msg_queue_name()
                 ###################
                 # Receive failed, quiting
                 continue
 
             #Every control msg must have a timestamp
-            if not msg.has_key('timestamp'):
+            if not ('timestamp' in msg):
                 cl('no timestamp, drop msg')
                 continue
             if msg["timestamp"] + 20 < time.time():
@@ -62,7 +63,7 @@ class ManagedService(MsgProcessor):
 
             put_delay = 2#In seconds
             #Only care about pid matched message
-            if (msg.get("pid", 0) == self.pid) and (self.reg_timestamp == msg.get("timestamp", 0)):
+            if (msg.is_pid_match()) and (self.reg_timestamp == msg.get("timestamp", 0)):
                 reg_msg = RegMsg(msg)
                 if reg_msg.is_registration_ok():
                     #It is the master service app, shall be responsible for clean stop msg is there is some
