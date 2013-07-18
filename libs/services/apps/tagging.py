@@ -1,4 +1,5 @@
 import libsys
+from libs.logsys.logSys import cl
 from libs.services.svc_base.simple_service_v2 import SimpleService
 from libs.services.svc_base.managed_service import ManagedService
 from libs.services.svc_base.gui_service import GuiService
@@ -23,6 +24,7 @@ class TaggingService(ManagedService):
         #pyqt webkit browser will quote the url passed to it? Seems yes.
         links = ""
         e = SpecialEncoder()
+        cl(msg)
         for i in msg["urls"]:
             links += "url=" + e.encode(unicode(i)).encode(settings.DEFAULT_CHARSET) + "&"
         self.gui_service.put({"command": "Browser",

@@ -68,8 +68,13 @@ class Msg(collections.MutableMapping):
         self["cmd"] = cmd
         return self
 
+    def is_cmd(self):
+        if "cmd" in self.store:
+            return True
+        return False
+
     def is_stop_msg(self):
-        if "cmd" in self:
+        if self.is_cmd():
             if self["cmd"] == "stop":
                 cl("Stop msg received")
                 return True

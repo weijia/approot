@@ -118,7 +118,7 @@ class CrossGuiLauncher(object):
 
         """
         for i in app_list:
-            self.start_basic_app(i)
+            self.start_app_by_name_with_session_id(i)
         try:
             #Prevent impact to normal apps
             self.gui_factory.set_msg_callback(self.handle_msg)
@@ -130,28 +130,18 @@ class CrossGuiLauncher(object):
 
     def handle_msg(self, data):
         #print "msg_handler:", data
-        is_launch = True
         if data["command"] == "Launch":
             param = [data["path"]]
-        elif data["command"] == "LaunchApp":
-            app_name = data["app_name"]
-            full_path = fileTools.findFileInProduct(app_name)
-            if full_path is None:
-                full_path = fileTools.findAppInProduct(app_name)
-                if full_path is None:
-                    is_launch = False
-            param = [full_path]
-        else:
-            is_launch = False
-
-        if is_launch:
             param.extend(data["param"])
             print 'launching: ', param
             self.create_console_wnd_for_app(param)
-        self.msg_handler.handle_msg(data)
+        elif data["command"] == "LaunchApp":
+            self.start_app_by_name_with_session_id(data["app_name"], data["param"])
+        else:
+            self.msg_handler.handle_msg(data)
 
     def start_basic_service(self):
-        self.beanstalkd_app = self.start_basic_app('startBeanstalkd.bat')
+        self.beanstalkd_app = self.start_app_by_name_with_session_id('startBeanstalkd.bat')
         if self.beanstalkd_app is None:
             return None
             #Check if beanstalkd started correctly
@@ -172,8 +162,8 @@ class CrossGuiLauncher(object):
         # Start beanstalkd service manager
         ###########################
         #This service will manage services (services who want to receive notification of quitting must register to this service)
-        self.beanstalkd_launcher = self.start_basic_app("BeanstalkdLauncherService")
-        self.msg_based_service_mgr = self.start_basic_app("msg_based_service_mgr")
+        #self.beanstalkd_launcher = self.start_basic_app("BeanstalkdLauncherService")
+        self.msg_based_service_mgr = self.start_app_by_name_with_session_id("msg_based_service_mgr")
         ######
         ##TODO: check BeanstalkdLauncherService is working? No, retry to register in services
         #import time
@@ -209,14 +199,16 @@ class CrossGuiLauncher(object):
         self.app_list_ui[app_path_and_param_gen_str] = {"checked": False, "action": self.on_app_item_selected}
         return collector
 
-    def start_basic_app(self, app_name):
+    def start_app_by_name_with_session_id(self, app_name, param=[]):
         full_path = fileTools.findFileInProduct(app_name)
         if full_path is None:
             full_path = fileTools.findAppInProduct(app_name)
             if full_path is None:
                 print app_name, 'not found ---- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
                 return None
-        return self.create_console_wnd_for_app([full_path, '--session_id', "%f" % self.session_id])
+        all_param = [full_path, '--session_id', "%f" % self.session_id]
+        all_param.extend(param)
+        return self.create_console_wnd_for_app(all_param)
 
 
 def start_cross_gui_launcher(app_list=[]):

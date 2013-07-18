@@ -7,7 +7,8 @@ from libs.console.CrossGuiLauncher import start_cross_gui_launcher
 autoStartAppList = ["ext_svr",
                     #"sftpserver",
                     #"scache.bat",
-                    "tagging"]
+                    #"tagging"
+                    ]
 
 
 

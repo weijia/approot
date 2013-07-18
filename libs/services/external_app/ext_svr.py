@@ -18,14 +18,10 @@ class ExtAppMgrIntf(object):
         pass
 
 
-def start_app_shortcut(name):
-    app_full_path = fileTools.findAppInProduct(name)
-    print "-------------------------", os.environ["POSTGRESQL_ROOT"]
-    if app_full_path is None:
-        print name
-        raise "Path not find"
+def start_app_shortcut(app_name, param = []):
+    #print "-------------------------", os.environ["POSTGRESQL_ROOT"]
     gui_service = GuiService()
-    gui_service.put({"command": "Launch", "path": app_full_path, "param": []})
+    gui_service.put({"command": "LaunchApp", "app_name": app_name, "param": param})
 
 
 def wait_for_app(app_and_param_list):
@@ -93,10 +89,12 @@ if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
     #Other initial apps need to be launched may be added to initial_launcher
-    print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
+    #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
     start_app_shortcut("start_ext")
-    #Initial launcher is called in syncdb.bat
-    #start_app_shortcut("initial_launcher")
+    start_app_shortcut("tagging")
+    #The following is not working as tube logging service is not started automatically currently
+    #start_app_shortcut("tube_logging_service", ["--input", "ufs_test_tube"])
+
 
     '''
     wait_for_app(["manage", "--syncdb"])

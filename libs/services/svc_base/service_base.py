@@ -59,7 +59,11 @@ class Service(object):
         return self.param_dict["session_id"]
 
     def on_stop(self):
-        pass
+        """
+        This will be called when framework is stopping, just like window close event.
+        Processor should return False if it don't want to quit at once.
+        """
+        return True
 
     def is_server_only(self):
         """
@@ -115,6 +119,9 @@ class MsgProcessor(Service):
         self.receiver.register_to_data_msg_q()
         self.msg_loop()
 
+    def handle_cmd(self, msg):
+        pass
+
     def msg_loop(self):
         """
         This function will loop to receive message. The following messages will be handled in this level:
@@ -127,16 +134,21 @@ class MsgProcessor(Service):
         """
         while not self.is_stopped:
             msg = self.receive()
-            if msg.is_stop_msg():
-                self.is_stopped = True
-                self.on_stop()
+            if msg.is_cmd():
+                if msg.is_stop_msg():
+                    self.is_stopped = True
+                    if self.on_stop():
+                        #Check if really need to stop
+                        break
+                else:
+                    self.handle_cmd(msg)
             elif not self.process(msg):
                 break
         #msg.set_processed()
         
     def process(self, msg):
         """
-        Process the received msg
+        Process the received msg,
         :param msg:
         :return: False: need to exit msg_loop
         """
