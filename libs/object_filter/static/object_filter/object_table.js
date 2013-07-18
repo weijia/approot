@@ -14,7 +14,7 @@ $(document).ready(function() {
                 "data": aoData,
                 "success": function(data, result, req){
                     for(var i=0; i<data.objects.length; i++){
-                        data.objects[i].operations = "<button class='edit'>Edit</button> <button class='remove'>Remove</button>";
+                        data.objects[i].operations = "<button class='start'>Start</button> <button class='stop'>Stop</button>";
                     }
                     fnCallback(data);
                 }
@@ -23,7 +23,8 @@ $(document).ready(function() {
         "aoColumns": [
                         { "mDataProp": "ufs_url" },
                         { "mDataProp": "full_path" },
-                        { "mDataProp": "description" }
+                        { "mDataProp": "description" },
+                        { "mDataProp": "operations" }
                     ]
     });
     

@@ -1,4 +1,5 @@
 {% extends "ui_framework/index.html" %}
+{% load i18n %}
 {% block extra_head %}
 <link href="/static/elements.css" type="text/css" rel="stylesheet" />
 <link href="/static/object_filter/object_table.css" type="text/css" rel="stylesheet" />
@@ -9,6 +10,24 @@
 {% endblock %}
 {% block body_content %}
 <div id="main-container">
-    <table id="object-table"></table>
+    <table id="object-table">
+        <thead>
+            <tr>
+                <th>{% trans 'ufs_url' %}</th>
+                <th>{% trans 'full_path' %}</th>
+                <th>{% trans 'description' %}</th>
+                <th>{% trans 'operations' %}</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <th>{% trans 'ufs_url' %}</th>
+                <th>{% trans 'full_path' %}</th>
+                <th>{% trans 'description' %}</th>
+                <th>{% trans 'operations' %}</th>
+            </tr>
+        </tfoot>
+    </table>
 </div>
 {% endblock %}
