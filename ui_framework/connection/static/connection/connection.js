@@ -41,11 +41,15 @@ $(document).ready(function () {
             var processor_id = taskList[processorIndex];
             processorList[processor_id]["params"] = $("#"+processor_id+" input").val();
         }
-        
-        //console.log(JSON.stringify(processorList));
+        var standaloneProcessor = [];
 
+        $.each($("td.object-container span"), function(key, value){
+            standaloneProcessor.push([$(value).parent().data("data"), $("input", $(value).parent()).val()]);
+        });
+        //console.log(JSON.stringify(processorList));
         $.post('/connection/save_diagram/',
-            JSON.stringify({"diagram_id": diagram_id, "processorList": processorList}),
+            JSON.stringify({"diagram_id": diagram_id, "processorList": processorList,
+                               "standaloneProcessor": standaloneProcessor}),
             function(data) {
                 //$('.result').html(data);
                 //console.log(data);

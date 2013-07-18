@@ -12,6 +12,9 @@ from libs.utils.filetools import get_main_file
 
 
 class ManagedService(MsgProcessor):
+    """
+    ManagedService will be managed from MsgBasedServiceManager through message.
+    """
     WAIT_FOR_REGISTRATION_DONE_TIMEOUT = 20
     RETRY_FOR_REGISTRATION_DONE = 10
 
@@ -68,7 +71,7 @@ class ManagedService(MsgProcessor):
                 cl("Very old control msg, drop it", msg)
                 continue
 
-            put_delay = 2#In seconds
+            put_delay = 2   # In seconds
             #Only care about pid matched message
             if (msg.is_pid_match()) and (self.reg_timestamp == msg.get("timestamp", 0)):
                 reg_msg = RegMsg(msg)

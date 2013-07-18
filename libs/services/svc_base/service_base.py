@@ -67,6 +67,7 @@ class Service(object):
         """
         return False
 
+
 class ThreadedService(Service, threading.Thread):
     def run(self):
         pass
@@ -115,7 +116,16 @@ class MsgProcessor(Service):
         self.msg_loop()
 
     def msg_loop(self):
-        while True:
+        """
+        This function will loop to receive message. The following messages will be handled in this level:
+        stop message: {"cmd": "stop"}, stop the message loop
+        #The following is not needed as we know all diagram's message queue. Because the message queue is generated
+        #using a fixed schema. We can send stop to all message queues.
+        #The above is not correct as some service may not have message queue.
+        stop_diagram: {"cmd": "stop_diagram"}, stop the task for the specified diagram
+        :return:
+        """
+        while not self.is_stopped:
             msg = self.receive()
             if msg.is_stop_msg():
                 self.is_stopped = True
@@ -131,7 +141,6 @@ class MsgProcessor(Service):
         :return: False: need to exit msg_loop
         """
         pass
-
 
 
 class ThreadedMsgProcessor(MsgProcessor, threading.Thread):

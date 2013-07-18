@@ -45,7 +45,7 @@ $("#{{tree.name}}").bind("loaded.jstree", function (event, data) {
         */
         //alert(data.rslt.obj.attr("url").replace("view://",""));
         var url = data.rslt.obj.attr("url").replace("view:/","").replace("admin","normal_admin");
-        if(url[2] == "/") url = url.substring(1);
+        if(url[1] == "/") url = url.substring(1);
         loadContent(url);
     });
 </script>

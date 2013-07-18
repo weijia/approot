@@ -50,6 +50,11 @@ class DefaultServiceClass(ManagedService):
         return self.task_signature_to_worker_thread.has_key(task_signature)
 
     def process(self, msg):
+        """
+        Create worker thread if needed.
+        :param msg:
+        :return:
+        """
         t = self.worker_thread_class(msg)
         task_signature = t.get_task_signiture()
         if self.is_processing(task_signature):

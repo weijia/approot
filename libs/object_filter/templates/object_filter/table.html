@@ -1,0 +1,14 @@
+{% extends "ui_framework/index.html" %}
+{% block extra_head %}
+<link href="/static/elements.css" type="text/css" rel="stylesheet" />
+<link href="/static/object_filter/object_table.css" type="text/css" rel="stylesheet" />
+<link href="/static/dataTables/css/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+<SCRIPT type="text/javascript" src="/static/string_tools.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="/static/dataTables/js/jquery.dataTables.min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="/static/object_filter/object_table.js"></SCRIPT>
+{% endblock %}
+{% block body_content %}
+<div id="main-container">
+    <table id="object-table"></table>
+</div>
+{% endblock %}
