@@ -188,9 +188,9 @@ def get_list_in_json(item_list):
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
+
 gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
                   #tagging will always be started currently
-                  "tagging.py", "tagging.exe",
 ]
 
 
@@ -249,7 +249,7 @@ def get_diagrams(request):
 def handle_start_diagram(request):
     data = get_param(request)
     diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
-    start_diagram(diagram_obj)
-    res = {}
+    log_str = start_diagram(diagram_obj)
+    res = {"log": log_str}
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")

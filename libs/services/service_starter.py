@@ -23,10 +23,10 @@ def start_app(app_path, param_dict):
     for i in param_dict:
         param.append('--%s' % i)
         param.append('%s' % (param_dict[i]))
-    if os.path.exists(app_path):
-        gui_service = GuiService()
-        gui_service.put({"command": "LaunchApp", "app_name": get_app_name_from_path(app_path), "param": param})
-        #print {"command": "Launch", "path": path, "param": param}
+    gui_service = GuiService()
+    gui_service.put({"command": "LaunchApp", "app_name": get_app_name_from_path(app_path), "param": param})
+    #print {"command": "Launch", "path": path, "param": param}
+    return "done"
 
 
 diagram_root = 'b4852a45-af7b-4a38-8025-15cf12212701'
@@ -52,11 +52,13 @@ def start_diagram(diagram_obj, connection_prefix=u''):
         else:
             start processor(processor.params)
     """
+    log_str = str(diagram_obj)
     print diagram_obj
     session_id = time.time()
 
     for processor in Processor.objects.filter(diagram_obj=diagram_obj):
         print 'processing processor', processor.ufsobj.ufs_url
+        log_str += processor.ufsobj.ufs_url + "\n"
         if "diagram://" in processor.ufsobj.ufs_url:
             #It is a diagram or it is the processor for the diagram. We need to identify the processor object for this diagram
             if diagram_obj != processor.ufsobj:
@@ -66,7 +68,10 @@ def start_diagram(diagram_obj, connection_prefix=u''):
         else:
             #It is a processor, so ufs url pointer to a script file object
             #print "starting processor: ", processor.ufsobj.ufs_url
-            param = json.loads(processor.param_descriptor)
+            try:
+                param = json.loads(processor.param_descriptor)
+            except TypeError:
+                param = {}
             if 0 != processor.inputs.count():
                 param['input'] = connection_prefix + u"." + processor.inputs.all()[0].connection_uuid
             if 0 != processor.outputs.count():
@@ -74,7 +79,9 @@ def start_diagram(diagram_obj, connection_prefix=u''):
             processor_path = processor.ufsobj.ufs_url.replace("file:///", "")
             param['session_id'] = session_id
             param['diagram_id'] = diagram_obj.uuid
-            start_app(processor_path, param)
+            log_str += "starting:" + processor_path + "+" +str(param)
+            log_str += start_app(processor_path, param)
+    return log_str
 
 
 if __name__ == "__main__":

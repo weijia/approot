@@ -4,10 +4,11 @@ $(document).ready(function() {
         //console.log("debug: waiting-repair-table button.edit");
         //var o = $( "#waiting-repair-table" ).data("tableData").objects[$(event.currentTarget).parents("tr").attr("id")];
         var dbObj = $('#object-table').dataTable();
-        //var aPos = dbObj.fnGetPosition($(event.currentTarget).parents("tr")[0]);
-        var nRow = $(event.currentTarget).parents("tr")[0];
+        console.log($(event.target));
+        var aPos = dbObj.fnGetPosition($(event.target).parents("tr")[0]);
+        var nRow = $(event.target).parents("tr")[0];
         var aData = dbObj.fnGetData(nRow);
-        //console.log(aData, aData[0].ufs_url);
+        console.log(aData, aData.ufs_url);
         /*var jqTds = $('>td', nRow);
 
         for(var i = 0; i<3; i++){
@@ -15,7 +16,7 @@ $(document).ready(function() {
         }
         $('button.edit', $(nRow)).text('save').addClass("save").removeClass("edit").after('<button class="cancel">Cancel Edit</button>');
         */
-        $.getJSON("/connection/start_diagram/?ufs_url="+encodeURI(aData[0].ufs_url));
+        $.getJSON("/connection/start_diagram/?ufs_url="+encodeURI(aData.ufs_url));
     });
     $('#object-table').on("click", "button.stop", function(e){});
     $('#object-table').dataTable({bJQueryUI:true,

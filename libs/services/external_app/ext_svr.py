@@ -91,7 +91,7 @@ if __name__ == "__main__":
     #Other initial apps need to be launched may be added to initial_launcher
     #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
     start_app_shortcut("start_ext")
-    start_app_shortcut("tagging")
+    #start_app_shortcut("tagging")
     #The following is not working as tube logging service is not started automatically currently
     #start_app_shortcut("tube_logging_service", ["--input", "ufs_test_tube"])
 
