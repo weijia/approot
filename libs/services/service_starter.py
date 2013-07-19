@@ -12,25 +12,20 @@ import libs.utils.filetools as file_tools
 import time
 
 
+def get_app_name_from_path(app_path):
+    app_filename = os.path.basename(app_path)
+    app_name = app_path.split(".")[0]
+    return app_name
+
+
 def start_app(app_path, param_dict):
     param = []
     for i in param_dict:
-        param.append('--%s' % (i))
+        param.append('--%s' % i)
         param.append('%s' % (param_dict[i]))
-    '''
-    if not os.path.exists(path):
-        filename = os.path.basename(path)
-        path = os.path.join(os.getcwd(), 'libs/services/apps/'+filename)
-    '''
-    print app_path
-    app_path = os.path.basename(app_path)
-    print "base:", app_path
-    app_path = app_path.split(".")[0]
-    app_path = file_tools.findAppInProduct(app_path)
-    print "found:", app_path
     if os.path.exists(app_path):
         gui_service = GuiService()
-        gui_service.addItem({"command": "Launch", "path": app_path, "param": param})
+        gui_service.put({"command": "LaunchApp", "app_name": get_app_name_from_path(app_path), "param": param})
         #print {"command": "Launch", "path": path, "param": param}
 
 

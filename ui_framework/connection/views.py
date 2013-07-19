@@ -3,9 +3,10 @@ from django.core.context_processors import csrf
 import os
 import uuid
 from django.utils import timezone
+from libs.services.service_starter import start_diagram
 import libsys
 from models import Connection, Processor
-from ui_framework.objsys.models import UfsObj
+from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_ufs_url
 from django.http import HttpResponse
 from django.core import serializers
 import libs.utils.simplejson as json
@@ -14,10 +15,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def index(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = get_param(request)
     c = {"user": request.user, "data_url": request.get_full_path().replace("pane/", "").replace("pane", ""),
          "diagram_id": uuid.uuid4()}
     c.update(csrf(request))
@@ -29,10 +27,7 @@ def create_diagram_obj(request):
     * Create diagram one connection after another. There will be a diagram uuid for all connections for this diagram.
     * UfsObj(ufs_url="diagram://uuid")
     """
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = get_param(request)
 
     diag_uuid = data.get("diag_uuid", None)
     source = data.get("source", None)
@@ -120,14 +115,19 @@ def parse_help(help_str):
     return res
 
 
-def item_properties(request):
-    """
-    * Retrieve info from application help.
-    """
+def get_param(request):
     if request.method == "GET":
         data = request.GET
     else:
         data = request.POST
+    return data
+
+
+def item_properties(request):
+    """
+    * Retrieve info from application help.
+    """
+    data = get_param(request)
     full_path = data.get("full_path", None)
     if full_path is None:
         return HttpResponse("{result: Error, no full_path provided}", mimetype="application/json")
@@ -236,7 +236,7 @@ class Diagram(object):
             processor_list.append(processor.ufsobj.ufs_url)
 
         return {"data": self.diagram_obj.ufs_url, "full_path": self.diagram_obj.ufs_url,
-                "ufs_url": self.diagram_obj.ufs_url, "tags": tag_list, "description": ",".join(processor_list)}
+                "ufs_url": self.diagram_obj.ufs_url, "tags": tag_list, "description": "<br/>".join(processor_list)}
 
 
 def get_diagrams(request):
@@ -244,3 +244,12 @@ def get_diagrams(request):
     for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
         diagram_list.append(Diagram(diagram_obj))
     return get_content_item_list_in_json_rest(diagram_list)
+
+
+def handle_start_diagram(request):
+    data = get_param(request)
+    diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
+    start_diagram(diagram_obj)
+    res = {}
+    response = json.dumps(res, sort_keys=True, indent=4)
+    return HttpResponse(response, mimetype="application/json")

@@ -1,7 +1,6 @@
 import threading
 import subprocess
 import os
-from libs.services.obs import BeanstalkdLauncherService
 import libsys
 import libs.windows.processManager as processManager
 CREATE_NO_WINDOW = 0x8000000
