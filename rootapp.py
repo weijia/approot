@@ -4,7 +4,7 @@ from libs.console.CrossGuiLauncher import start_cross_gui_launcher
 ################
 # It is recommended to start app in ext_svr instead of here. Failure in starting app here will cause unexpected result.
 ################
-autoStartAppList = ["ext_svr",
+autoStartAppList = ["start_ext.bat",
                     #"sftpserver",
                     #"scache.bat",
                     #"tagging"

@@ -5,7 +5,7 @@ import psycopg2
 import sys
 import os
 from libs.services.svc_base.gui_service import GuiService
-
+from libs.utils.process_mgr import gProcessMgr
 
 class ExtAppMgrIntf(object):
     def __init__(self):
@@ -30,7 +30,10 @@ def wait_for_app(app_and_param_list):
     if app_full_path is None:
         print name
         raise "Path not find"
-    os.system(app_full_path + ' ' + ' '.join(app_and_param_list[1:]))
+    app_full_path_and_param_list = [app_full_path]
+    app_full_path_and_param_list.extend(app_and_param_list[:1])
+    cur_working_dir = libsys.get_root_dir()
+    gProcessMgr().wait_for_complete_without_console(app_full_path_and_param_list, cur_working_dir)
 
 
 class PostgreSqlApp(ExtAppMgrIntf):
@@ -90,18 +93,14 @@ if __name__ == "__main__":
     PostgreSqlApp()
     #Other initial apps need to be launched may be added to initial_launcher
     #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
-    start_app_shortcut("start_ext")
+    #start_app_shortcut("start_ext")
+    sys.stdout.flush()
+    #wait_for_app(["start_ext"])
+    #wait_for_app(["runserver"])
     #start_app_shortcut("tagging")
     #The following is not working as tube logging service is not started automatically currently
     #start_app_shortcut("tube_logging_service", ["--input", "ufs_test_tube"])
 
-
-    '''
-    wait_for_app(["manage", "--syncdb"])
-    wait_for_app(["initial_launcher"])
-    wait_for_app(["tube_logging", '--input "ufs_test_tube"'])
-    wait_for_app(["service_starter"])
-    '''
     
     
     

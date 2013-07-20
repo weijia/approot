@@ -4,6 +4,13 @@ import sys
 pwd = os.getcwd()
 sys.path.insert(0, os.path.join(pwd, "libs"))
 
+
+import os
+import sys
+unbuffered = os.fdopen(os.dup(sys.stdout.fileno()), 'w', 0)
+sys.stderr = unbuffered
+
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rootapp.settings")
 
