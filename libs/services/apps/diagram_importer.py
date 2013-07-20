@@ -1,27 +1,17 @@
+import json
+import os
+
 import libsys
-from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
-from libs.services.servicebase import service
+from libs.services.svc_base.beanstalkd_interface import beanstalkServiceApp
 from django.conf import settings
 from ui_framework.objsys.models import UfsObj, CollectionItem
-from libs.tagging.models import Tag, TaggedItem
-import threading
-import traceback
-import json
-import time
-import datetime
-import uuid
-import os
 from django.utils.timezone import utc
-
-from libs.logsys.logSys import *
-from ui_framework.connection.models import Processor
-import libs.utils.objTools as objtools
 from libs.services.svc_base.simpleservice import SimpleService
 from libs.utils.misc import ensureDir as ensure_dir
 from django.contrib.auth.models import User
 from libs.services.svc_base.state import StatefulProcessor
 from ui_framework.connection.save_diagram_view import save_diagram
-from libs.services.service_starter import diagram_root
+from libs.services.svc_base.service_starter import diagram_root
 
 
 gDiagramImporterProcessorId = 'f4156981-575d-4057-b6f7-269307105f80'

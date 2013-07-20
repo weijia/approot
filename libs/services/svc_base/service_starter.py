@@ -1,4 +1,5 @@
 import libsys
+from libs.tagging.models import TaggedItem
 from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
 from libs.services.svc_base.gui_service import GuiService
 import urllib
@@ -46,6 +47,17 @@ def service_starter():
         start_diagram(coll_item.obj)
 
 
+gAutoStartTagName = "system:auto_start"
+
+
+def start_diagram_by_tag():
+    obj_list = TaggedItem.objects.get_by_model(UfsObj.objects.order_by('timestamp'), gAutoStartTagName)
+    for obj in obj_list:
+        if "diagram://" in obj.ufs_url:
+            start_diagram(obj)
+
+
+
 def start_diagram(diagram_obj, connection_prefix=u''):
     """
     * Start diagram
@@ -90,4 +102,4 @@ def start_diagram(diagram_obj, connection_prefix=u''):
 
 if __name__ == "__main__":
     print 'starting diagrams --------------------------------------'
-    service_starter()
+    start_diagram_by_tag()

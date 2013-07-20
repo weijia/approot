@@ -1,6 +1,6 @@
 import libsys
 from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
-from libs.services.servicebase import service
+#from libs.services.servicebase import service
 from django.conf import settings
 from ui_framework.objsys.models import UfsObj
 from libs.tagging.models import Tag, TaggedItem

@@ -1,9 +1,10 @@
-from django.shortcuts import render_to_response, redirect
-from django.core.context_processors import csrf
 import os
 import uuid
+
+from django.shortcuts import render_to_response, redirect
+from django.core.context_processors import csrf
 from django.utils import timezone
-from libs.services.service_starter import start_diagram
+from libs.services.svc_base.service_starter import start_diagram
 import libsys
 from models import Connection, Processor
 from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_ufs_url
@@ -11,6 +12,7 @@ from django.http import HttpResponse
 from django.core import serializers
 import libs.utils.simplejson as json
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 @login_required
@@ -69,7 +71,6 @@ def create_diagram_obj(request):
                         mimetype="application/json")
 
 
-import subprocess
 from libs.console.ConsoleOutputCollector import execute_app
 
 
@@ -144,7 +145,6 @@ def item_properties(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-from libs.services.svc_base.default_apps import gDefaultServices
 import libs.utils.filetools as file_tools
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
 

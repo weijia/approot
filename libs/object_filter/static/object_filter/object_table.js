@@ -19,6 +19,7 @@ $(document).ready(function() {
         $.getJSON("/connection/start_diagram/?ufs_url="+encodeURI(aData.ufs_url));
     });
     $('#object-table').on("click", "button.stop", function(e){});
+    $('#object-table').on("click", "button.auto-start", function(e){});
     $('#object-table').dataTable({bJQueryUI:true,
         "sAjaxSource": "/connection/diagram_list/",
         "sAjaxDataProp": "objects",
@@ -33,7 +34,9 @@ $(document).ready(function() {
                 "data": aoData,
                 "success": function(data, result, req){
                     for(var i=0; i<data.objects.length; i++){
-                        data.objects[i].operations = "<button class='start'>Start</button> <button class='stop'>Stop</button>";
+                        data.objects[i].operations = '<button class="start">Start</button>' +
+                             '<button class="stop">Stop</button>' +
+                            '<button class="auto-start">Auto start</button>';
                     }
                     fnCallback(data);
                 }
