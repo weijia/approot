@@ -16,6 +16,7 @@ class DroppingService(WorkerBase):
     没有Service结尾的作为worker thread
     """
     def worker_init(self):
+        cl("--------------------------")
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube
         self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name(),

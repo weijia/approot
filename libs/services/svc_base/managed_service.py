@@ -23,8 +23,9 @@ class ManagedService(MsgProcessor):
         #必须要有一个cmd msg queue来接收控制消息
         super(ManagedService, self).__init__(param_dict)
         self.output = None
-        if "output" in param_dict:
-            self.output = MsgQ(self.get_output_msg_queue_name())
+        cl(self.param_dict)
+        #if not (self.param_dict.get("output", None) is None):
+        #    self.output = MsgQ(self.get_output_msg_queue_name())
         self.state = None
         if "diagram_id" in param_dict:
             self.state = DiagramState(param_dict["diagram_id"])
@@ -122,6 +123,7 @@ class WorkerBase(ManagedService, threading.Thread):
         self.worker_init()
 
     def worker_init(self):
+        cl("calling worker init in worker base")
         pass
 
     def get_last_processing_timestamp(self):

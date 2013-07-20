@@ -1,5 +1,6 @@
 # -*- coding: gbk -*-
 import threading
+from libs.logsys.logSys import cl
 from msg_service import *
 
 
@@ -110,7 +111,8 @@ class MsgProcessor(Service):
         This function will use "input" param so child class need not override this function
         :return:
         """
-        print "receiving from:", self.param_dict.get("input", self.__class__.__name__ + "_default_input_msg_q_name")
+        cl("receiving from:", self.param_dict.get("input", self.__class__.__name__ +
+                                                           "_default_input_msg_q_name"))
         return self.param_dict.get("input", self.__class__.__name__ + "_default_input_msg_q_name")
 
     def startServer(self):
