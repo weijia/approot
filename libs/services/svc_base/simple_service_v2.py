@@ -92,14 +92,15 @@ class SimpleService(object):
         self.service_class = service_class
         self.worker_thread_class = worker_thread_class
 
-    def add_task(self, service_instance, args):
+    def add_task_and_run_service(self, service_instance, args):
         #Generate params
         param = {}
         for i in self.param_dict:
             param[i] = args[i]
         for i in ['session_id', 'diagram_id']:
             param[i] = args[i]
-            #Confirm service for this app is started
+        '''
+        #Confirm service for this app is started
         service_manager = MsgBasedServiceManager(
             {"input": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
         #print "exe filename:", __main__.__file__
@@ -110,8 +111,10 @@ class SimpleService(object):
         msg.add_session_id(param["session_id"])
         msg.add_cmd("start")
         service_manager.add_msg(msg)
-        print 'start app'
+        '''
+        #print 'start app'
         service_instance.add_msg(param)
+        service_instance.start_service()
 
     def parse_service_args(self):
         parser = argparse.ArgumentParser()
@@ -158,7 +161,7 @@ class SimpleService(object):
             print 'start server'
             service_instance.start_service()
         else:
-            self.add_task(service_instance, args)
+            self.add_task_and_run_service(service_instance, args)
 
 
 if __name__ == "__main__":
