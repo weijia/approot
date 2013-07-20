@@ -86,6 +86,7 @@ class MsgProcessor(Service):
     Service default data input msg queue name: service class name + "_default_input_msg_q_name"
 
     """
+
     def __init__(self, param_dict):
         super(MsgProcessor, self).__init__(param_dict)
         self.receiver = Receiver(self.get_input_msg_queue_name())
@@ -114,16 +115,27 @@ class MsgProcessor(Service):
         This function will use "input" param so child class need not override this function
         :return:
         """
-        cl("receiving from:", self.param_dict.get("input", self.__class__.__name__ +
-                                                           "_default_input_msg_q_name"))
-        return self.param_dict.get("input", self.__class__.__name__ + "_default_input_msg_q_name")
+        #cl(self.param_dict.get("output", "no_output"))
+        #As output may be None value, we have to check the None state here
+        output_msg_q_name = self.param_dict.get("output", None)
+        if output_msg_q_name is None:
+            output_msg_q_name = "no_input"
+        cl("receiving from:", self.param_dict.get("input",
+                                                  self.__class__.__name__ +
+                                                  "_default_input_msg_q_name_with_output" +
+                                                  output_msg_q_name
+        ))
+        return self.param_dict.get("input",
+                                   self.__class__.__name__ +
+                                   "_default_input_msg_q_name_with_output" +
+                                   output_msg_q_name)
 
     def startServer(self):
         """
         For compatible with legacy simpleservice.py
         """
         self.start_service()
-        
+
     def start_service(self):
         self.receiver.register_to_data_msg_q()
         self.msg_loop()
@@ -151,10 +163,19 @@ class MsgProcessor(Service):
                         break
                 else:
                     self.handle_cmd(msg)
-            elif not self.process(msg):
+            elif not self.process_msg_with_exception_captured(msg):
                 break
-        #msg.set_processed()
-        
+                #msg.set_processed()
+
+    def process_msg_with_exception_captured(self, msg):
+        try:
+            return self.process(msg)
+        except:
+            print msg
+            import traceback
+            traceback.print_exc()
+        return True
+
     def process(self, msg):
         """
         Process the received msg,

@@ -2,11 +2,14 @@ from PyQt4.QtGui import QApplication, QTextBrowser
 from PyQt4 import QtCore
 import sys
 
+
 class ConsoleOutputWndBase:
     def set_title(self):
         pass
+
+
 class MinimizeOnClose:
-    def closeEvent(self,event):
+    def closeEvent(self, event):
         # Let the Exit button handle tab closing
         #print "close event captured. Do nothing.", event
         #"minimize"
@@ -16,6 +19,7 @@ class MinimizeOnClose:
         if hasattr(self, "parent"):
             if hasattr(self.parent, "on_child_closed"):
                 self.parent.on_child_closed(self)
+
 
 class ToggleMaxMin:
     def toggle(self):
@@ -29,18 +33,16 @@ class ToggleMaxMin:
             self.minimized = True
         return self.minimized
 
-        
-        
+
 class PyQtConsoleOutputWnd(QTextBrowser, MinimizeOnClose, ToggleMaxMin):
     log_updated_signal = QtCore.pyqtSignal(object)
     #signal_registered = False
-    
-    
-    '''
+
+    """
     This class manages console windows, it will kill applications for every console window.
-    '''
-        
-    def __init__(self, parent, logFilePath = None):
+    """
+
+    def __init__(self, parent, logFilePath=None):
         #self.browser.setDocumentTitle('dsds')
         super(PyQtConsoleOutputWnd, self).__init__()
         #self.show()
@@ -58,19 +60,19 @@ class PyQtConsoleOutputWnd(QTextBrowser, MinimizeOnClose, ToggleMaxMin):
             self.logFile = None
         else:
             self.logFile = open(logFilePath, 'w')
-            
+
     def set_title(self, title):
-        self.setWindowTitle(title);
-        
+        self.setWindowTitle(title)
+
     def on_close_clicked(self, widget):
         self.parent.console_wnd_close_clicked(self)
         #self.isMinimized = True
         #self.window.hide()
         #return False
-        
+
     def updateViewCallback(self, data):
         self.log_updated_signal.emit(data.replace('\r\n', '\n'))
-        
+
     def updateView(self, data):
         #print "updateView:", data
         if not (self.logFile is None):
@@ -84,6 +86,7 @@ class PyQtConsoleOutputWnd(QTextBrowser, MinimizeOnClose, ToggleMaxMin):
             encoded_data = data.encode(sys.getdefaultencoding(), 'replace')
             self.logFile.write(encoded_data)
         self.append(data)
+
     '''
     def closeEvent(self,event):
         # Let the Exit button handle tab closing

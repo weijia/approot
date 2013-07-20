@@ -117,6 +117,8 @@ class ManagedService(MsgProcessor):
 class WorkerBase(ManagedService, threading.Thread):
     def __init__(self, param_dict):
         super(WorkerBase, self).__init__(param_dict)
+        #cl(param_dict)
+        #cl(param_dict.get("output", "no_output"))
         #用来记录正在处理的一条从服务器收到的消息的timestamp，这样服务器检测到进程已经在处理最后一条消息
         #则可以继续给worker发送新的消息
         self.last_timestamp = 0
@@ -136,8 +138,11 @@ class WorkerBase(ManagedService, threading.Thread):
                                       self.get_output_msg_queue_name())
         return signature
 
+    def run(self):
+        self.start_service()
     '''
-    #The ManagedService will use "input" param as input queue so we do not need to override this func
+    # The MsgProcessor will use "input" and "output" param as input queue so we do not
+    # need to override this func to set different worker input here
     def get_input_msg_queue_name(self):
         super(WorkerBase, self).get_input_msg_queue_name()
     '''

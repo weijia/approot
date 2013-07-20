@@ -16,7 +16,8 @@ class TaggingService(ManagedService):
         super(TaggingService, self).__init__(param_dict)
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube
-        self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name()})
+        self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name(),
+                              "tip": "tagging"})
 
     def process(self, msg):
         #Encode as utf8 as Django's settings.encoding is using default value: utf-8

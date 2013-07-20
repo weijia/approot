@@ -10,6 +10,12 @@ from configuration import g_config_dict
 #import time
 from libs.utils.string_tools import SpecialEncoder
 
+'''
+class NoInputWorker(WorkerBase):
+    def get_input_msg_queue_name(self):
+        return
+'''
+
 
 class DropService(WorkerBase):
     """
@@ -20,7 +26,7 @@ class DropService(WorkerBase):
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube
         self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name(),
-                              "tip": self.param_dict["tip"]})
+                              "tip": self.param_dict.get("tip", None)})
 
     def process(self, msg):
         #Encode as utf8 as Django's settings.encoding is using default value: utf-8

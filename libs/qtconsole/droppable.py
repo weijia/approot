@@ -45,8 +45,10 @@ class Droppable(QtGui.QWidget, Draggable):
             p = self.palette()
             p.setColor(self.backgroundRole(), Qt.red)
             self.setPalette(p)
-            self.setAutoFillBackground(True);
+            self.setAutoFillBackground(True)
         self.setGeometry(300,300,30,30)
+        # The following is not working
+        # self.setToolTip("hello world")
         self.show()
         self.drop_callback = None
 
