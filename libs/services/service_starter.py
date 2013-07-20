@@ -12,6 +12,10 @@ import libs.utils.filetools as file_tools
 import time
 
 
+def get_app_name_from_ufs_url(app_ufs_url):
+    return get_app_name_from_path(app_ufs_url)
+
+
 def get_app_name_from_path(app_path):
     app_filename = os.path.basename(app_path)
     app_name = app_filename.split(".")[0]
@@ -76,11 +80,11 @@ def start_diagram(diagram_obj, connection_prefix=u''):
                 param['input'] = connection_prefix + u"." + processor.inputs.all()[0].connection_uuid
             if 0 != processor.outputs.count():
                 param['output'] = connection_prefix + u"." + processor.outputs.all()[0].connection_uuid
-            processor_path = processor.ufsobj.full_path
+            processor_ufs_url = processor.ufsobj.ufs_url
             param['session_id'] = session_id
             param['diagram_id'] = diagram_obj.uuid
-            log_str += "starting:" + processor_path + "+" +str(param)
-            log_str += start_app(processor_path, param)
+            log_str += "starting:" + processor_ufs_url + "+" +str(param)
+            log_str += start_app(processor_ufs_url, param)
     return log_str
 
 
