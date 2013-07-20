@@ -14,7 +14,7 @@ import time
 
 def get_app_name_from_path(app_path):
     app_filename = os.path.basename(app_path)
-    app_name = app_path.split(".")[0]
+    app_name = app_filename.split(".")[0]
     return app_name
 
 
@@ -76,7 +76,7 @@ def start_diagram(diagram_obj, connection_prefix=u''):
                 param['input'] = connection_prefix + u"." + processor.inputs.all()[0].connection_uuid
             if 0 != processor.outputs.count():
                 param['output'] = connection_prefix + u"." + processor.outputs.all()[0].connection_uuid
-            processor_path = processor.ufsobj.ufs_url.replace("file:///", "")
+            processor_path = processor.ufsobj.full_path
             param['session_id'] = session_id
             param['diagram_id'] = diagram_obj.uuid
             log_str += "starting:" + processor_path + "+" +str(param)

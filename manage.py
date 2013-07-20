@@ -7,8 +7,10 @@ sys.path.insert(0, os.path.join(pwd, "libs"))
 
 import os
 import sys
-unbuffered = os.fdopen(os.dup(sys.stdout.fileno()), 'w', 0)
-sys.stderr = unbuffered
+unbuffered_out = os.fdopen(os.dup(sys.stdout.fileno()), 'w', 0)
+sys.stdout = unbuffered_out
+unbuffered_err = os.fdopen(os.dup(sys.stderr.fileno()), 'w', 0)
+sys.stderr = unbuffered_err
 
 
 if __name__ == "__main__":
