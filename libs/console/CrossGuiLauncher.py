@@ -115,7 +115,6 @@ class CrossGuiLauncher(object):
 
     def start_services(self, app_list):
         """Start GUI service by start thread that retrieve msg from beanstalkd.
-
         """
         for i in app_list:
             self.start_app_by_name_with_session_id(i)

@@ -74,5 +74,5 @@ if __name__ == "__main__":
     parser.add_argument("--session_id", help="the session id for all processors in one diagram is unique," +
                                              "so processors can identify legacy data in tubes using this")
     args = vars(parser.parse_args())
-    s = MsgBasedServiceManager({"input_msg_q_name": gMsgBasedServiceManagerMsgQName, "session_id": args["session_id"]})
+    s = MsgBasedServiceManager({"input": gMsgBasedServiceManagerMsgQName, "session_id": args["session_id"]})
     s.start_service()

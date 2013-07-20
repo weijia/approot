@@ -12,7 +12,7 @@ from libs.utils.string_tools import SpecialEncoder
 
 class TaggingService(ManagedService):
     def __init__(self, param_dict):
-        param_dict.update({"input_msg_q_name": "system_tagging_service_input_msg_q"})
+        param_dict.update({"input": "system_tagging_service_input_msg_q"})
         super(TaggingService, self).__init__(param_dict)
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube

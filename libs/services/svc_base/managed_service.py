@@ -24,7 +24,7 @@ class ManagedService(MsgProcessor):
         super(ManagedService, self).__init__(param_dict)
         self.output = None
         if "output" in param_dict:
-            self.output = MsgQ(self.get_output_msg_q_name())
+            self.output = MsgQ(self.get_output_msg_queue_name())
         self.state = None
         if "diagram_id" in param_dict:
             self.state = DiagramState(param_dict["diagram_id"])
@@ -119,13 +119,23 @@ class WorkerBase(ManagedService, threading.Thread):
         #用来记录正在处理的一条从服务器收到的消息的timestamp，这样服务器检测到进程已经在处理最后一条消息
         #则可以继续给worker发送新的消息
         self.last_timestamp = 0
+        self.worker_init()
+
+    def worker_init(self):
+        pass
 
     def get_last_processing_timestamp(self):
         return self.last_timestamp
 
     def get_task_signature(self):
         app_name = super(WorkerBase, self).get_task_signature()
-        signature = "%s:worker:%s" % (self.get_input_msg_queue_name(),
+        service_msg_q_name = super(WorkerBase, self).get_input_msg_queue_name()
+        signature = "%s:worker:%s" % (service_msg_q_name,
                                       self.get_output_msg_q_name())
+        return signature
 
-
+    '''
+    #The ManagedService will use "input" param as input queue so we do not need to override this func
+    def get_input_msg_queue_name(self):
+        super(WorkerBase, self).get_input_msg_queue_name()
+    '''

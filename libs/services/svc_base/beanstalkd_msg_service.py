@@ -48,6 +48,9 @@ class BeanstalkdMsgQ(object):
 
 class BeanstalkdReceiver(object):
     """
+    Will use
+    tube_name as data input
+    tube_name + "_cmd_tube" as command input
     """
     #如果采用不是指定timestamp放回消息队列，并且指令和数据使用同一个tube的话，会产生一个问题：
     #因为不能先从指令队列接收消息，所以可能会有很多数据队列的数据被接收

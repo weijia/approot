@@ -60,7 +60,7 @@ class DefaultServiceClass(ManagedService):
         if self.is_processing(task_signature):
             print 'input tube already processing: ', task_signature
             return True  # Return True if we do not need to exit msg_loop
-        #TODO: add some checking for worker thread, so if no input and output, the work thread can
+            #TODO: add some checking for worker thread, so if no input and output, the work thread can
         #refuse to work
         t.add_task_info(msg)
         self.add_worker_thread(task_signature, t)
@@ -74,6 +74,7 @@ class DefaultServiceClass(ManagedService):
         """
         for task in self.task_signature_to_worker_thread:
             task.stop()
+
 
 class SimpleService(object):
     def __init__(self, param_dict, service_class=None, worker_thread_class=None):
@@ -91,8 +92,9 @@ class SimpleService(object):
             param[i] = args[i]
         for i in ['session_id', 'diagram_id']:
             param[i] = args[i]
-        #Confirm service for this app is started
-        service_manager = MsgBasedServiceManager({"input_msg_q_name": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
+            #Confirm service for this app is started
+        service_manager = MsgBasedServiceManager(
+            {"input_msg_q_name": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
         #print "exe filename:", __main__.__file__
         #import __main__
         app_name = get_main_file()

@@ -36,6 +36,12 @@ def getFreeName(path, nameWithoutExt, ext):
 
 
 def getFreeNameFromFullPath(fullPath):
+    """
+    Just give a full path like: d:/good/bad.txt, generate a new path with a number in it and will not conflict with
+    the files in that path. such as d:/good/bad-5.txt
+    :param fullPath:
+    :return:
+    """
     path = os.path.dirname(fullPath)
     ext = os.path.splitext(fullPath)[1]
     basename = os.path.basename(fullPath)

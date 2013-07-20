@@ -70,7 +70,7 @@ def start_diagram(diagram_obj, connection_prefix=u''):
     """
     log_str = str(diagram_obj)
     print diagram_obj
-    session_id = time.time()
+    #session_id = time.time()
 
     for processor in Processor.objects.filter(diagram_obj=diagram_obj):
         print 'processing processor', processor.ufsobj.ufs_url
@@ -93,7 +93,7 @@ def start_diagram(diagram_obj, connection_prefix=u''):
             if 0 != processor.outputs.count():
                 param['output'] = connection_prefix + u"." + processor.outputs.all()[0].connection_uuid
             processor_ufs_url = processor.ufsobj.ufs_url
-            param['session_id'] = session_id
+            #param['session_id'] = session_id
             param['diagram_id'] = diagram_obj.uuid
             log_str += "starting:" + processor_ufs_url + "+" +str(param)
             log_str += start_app(processor_ufs_url, param)

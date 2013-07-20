@@ -106,8 +106,12 @@ class MsgProcessor(Service):
         return self.receiver.receive(timeout)
 
     def get_input_msg_queue_name(self):
-        print "receiving from:", self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
-        return self.param_dict.get("input_msg_q_name", self.__class__.__name__ + "_default_input_msg_q_name")
+        """
+        This function will use "input" param so child class need not override this function
+        :return:
+        """
+        print "receiving from:", self.param_dict.get("input", self.__class__.__name__ + "_default_input_msg_q_name")
+        return self.param_dict.get("input", self.__class__.__name__ + "_default_input_msg_q_name")
 
     def startServer(self):
         """

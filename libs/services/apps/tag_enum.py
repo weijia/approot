@@ -8,6 +8,8 @@ from libs.services.svc_base.managed_service import WorkerBase
 from libs.tagging.models import TaggedItem
 
 
+gIgnoringTagNameList = ["system:auto_app"]
+
 class AllTagEnum(WorkerBase):
     """
     没有Service结尾的作为worker thread
@@ -22,8 +24,8 @@ class AllTagEnum(WorkerBase):
 
         #Send all retrieved items
         for tagged_item in tagged_item_list:
-            if "system:auto-app" in tagged_item.tag.name:
-                #Ignore system auto app tag
+            for tagged_item.tag.name in gIgnoringTagNameList:
+                #Ignore some system tags
                 continue
             obj_tag = tagged_item.tag.name
             obj = tagged_item.object
