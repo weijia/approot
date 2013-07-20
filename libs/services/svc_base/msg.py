@@ -45,7 +45,7 @@ class Msg(collections.MutableMapping):
         return self.store.__str__()
 
     def add_path(self, full_path):
-        self.__setitem__("full_path", full_path)
+        self.store["full_path"] = full_path
 
     def get_path(self):
         return self["full_path"]
@@ -88,7 +88,7 @@ class Msg(collections.MutableMapping):
         return self
 
     def has_app_name(self):
-        return self.has_key(self.APP_NAME_ATTR_NAME)
+        return self.APP_NAME_ATTR_NAME in self.store
 
     def get_app_name(self):
         return self[self.APP_NAME_ATTR_NAME]

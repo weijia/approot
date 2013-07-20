@@ -6,6 +6,7 @@ import sys
 import os
 from libs.services.svc_base.gui_service import GuiService
 from libs.utils.process_mgr import gProcessMgr
+from django.contrib.auth.models import User, Group
 
 class ExtAppMgrIntf(object):
     def __init__(self):
@@ -91,10 +92,15 @@ class MongoDbApp(ExtAppMgrIntf):
 if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
+    #Check if initial database is OK. If it is not OK, syncdb.bat will be called.
+    anonymous_list = User.objects.filter(username="AnonymousUser")
+    if 0 == anonymous_list.count():
+        os.environ["SYNCDB"] = "YES"
+
     #Other initial apps need to be launched may be added to initial_launcher
     #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
     #start_app_shortcut("start_ext")
-    sys.stdout.flush()
+    #sys.stdout.flush()
     #wait_for_app(["start_ext"])
     #wait_for_app(["runserver"])
     #start_app_shortcut("tagging")

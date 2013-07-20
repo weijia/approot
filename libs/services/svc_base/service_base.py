@@ -82,6 +82,9 @@ class MsgProcessor(Service):
     """
     This class provides the basic message handling mechanism, it is not threaded. If thread for msg
     processing is needed, please use ThreadedMsgProcessor
+
+    Service default data input msg queue name: service class name + "_default_input_msg_q_name"
+
     """
     def __init__(self, param_dict):
         super(MsgProcessor, self).__init__(param_dict)

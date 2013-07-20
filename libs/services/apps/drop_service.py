@@ -11,7 +11,7 @@ from configuration import g_config_dict
 from libs.utils.string_tools import SpecialEncoder
 
 
-class DroppingService(WorkerBase):
+class DropService(WorkerBase):
     """
     没有Service结尾的作为worker thread
     """
@@ -36,5 +36,5 @@ if __name__ == "__main__":
     s = SimpleService({
         "output": "Output msg queue for output the dropped file",
         "tip": "Tip for dropping window"
-    }, worker_thread_class=DroppingService)
+    }, worker_thread_class=DropService)
     s.run()

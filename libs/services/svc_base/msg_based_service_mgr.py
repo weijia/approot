@@ -12,6 +12,7 @@ gMsgBasedServiceManagerMsgQName = "msg_based_service_manager_msg_queue_name"
 
 class MsgBasedServiceManager(MsgProcessor):
     def __init__(self, param_dict):
+        param_dict["input"] = gMsgBasedServiceManagerMsgQName
         super(MsgBasedServiceManager, self).__init__(param_dict)
         self.app_name_to_info = {}
 
@@ -37,7 +38,7 @@ class MsgBasedServiceManager(MsgProcessor):
             msg = self.receiver.receive()
             #print msg
             if msg.get_session_id() != self.param_dict["session_id"]:
-                print "ignore legacy session msg", msg
+                print "ignore legacy session msg", msg, self.param_dict["session_id"]
                 continue
             if not self.process(msg):
                 break
@@ -55,7 +56,7 @@ class MsgBasedServiceManager(MsgProcessor):
                         print "Unneeded start app, app already started"
                     else:
                         gui_service = GuiService()
-                        gui_service.addItem({"command": "LaunchApp", "app_name": msg.get_app_name(),
+                        gui_service.send_to_self({"command": "LaunchApp", "app_name": msg.get_app_name(),
                                              "param": ['--startserver', '--session_id', self.param_dict["session_id"]]})
             elif msg.is_stop_msg():
                 for app_name in self.app_name_to_info:
@@ -74,5 +75,5 @@ if __name__ == "__main__":
     parser.add_argument("--session_id", help="the session id for all processors in one diagram is unique," +
                                              "so processors can identify legacy data in tubes using this")
     args = vars(parser.parse_args())
-    s = MsgBasedServiceManager({"input": gMsgBasedServiceManagerMsgQName, "session_id": args["session_id"]})
+    s = MsgBasedServiceManager({"session_id": args["session_id"]})
     s.start_service()

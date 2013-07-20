@@ -133,7 +133,7 @@ class WorkerBase(ManagedService, threading.Thread):
         app_name = super(WorkerBase, self).get_task_signature()
         service_msg_q_name = super(WorkerBase, self).get_input_msg_queue_name()
         signature = "%s:worker:%s" % (service_msg_q_name,
-                                      self.get_output_msg_q_name())
+                                      self.get_output_msg_queue_name())
         return signature
 
     '''

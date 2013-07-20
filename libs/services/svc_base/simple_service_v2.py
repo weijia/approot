@@ -1,5 +1,6 @@
 import argparse
 import os
+from libs.logsys.logSys import cl
 from libs.services.svc_base.msg import Msg
 from libs.utils.filetools import get_main_file
 import libsys
@@ -33,18 +34,24 @@ class SimpleWorkThread(beanstalkWorkingThread):
 class DefaultServiceClass(ManagedService):
     """
     Default main service class
+    Service default data input msg queue name: worker thread class name + "_default_input_msg_q_name"
     """
-
     def __init__(self, param_dict, worker_thread_class):
         """
         Constructor
         """
-        super(DefaultServiceClass, self).__init__(param_dict)
+        # Must set worker_thread_class before calling __init__. As it will be used in get_input_msg_queue_name
         self.worker_thread_class = worker_thread_class
+        cl(self.worker_thread_class.__name__)
+        super(DefaultServiceClass, self).__init__(param_dict)
         self.task_signature_to_worker_thread = {}
 
     def add_worker_thread(self, task_signature, thread_instance):
         self.task_signature_to_worker_thread[task_signature] = thread_instance
+
+    def get_input_msg_queue_name(self):
+        cl("service input msg queue name", self.worker_thread_class.__name__ + "_default_input_msg_q_name")
+        return self.worker_thread_class.__name__ + "_default_input_msg_q_name"
 
     def is_processing(self, task_signature):
         return self.task_signature_to_worker_thread.has_key(task_signature)
@@ -56,7 +63,7 @@ class DefaultServiceClass(ManagedService):
         :return:
         """
         t = self.worker_thread_class(msg)
-        task_signature = t.get_task_signiture()
+        task_signature = t.get_task_signature()
         if self.is_processing(task_signature):
             print 'input tube already processing: ', task_signature
             return True  # Return True if we do not need to exit msg_loop
@@ -94,12 +101,14 @@ class SimpleService(object):
             param[i] = args[i]
             #Confirm service for this app is started
         service_manager = MsgBasedServiceManager(
-            {"input_msg_q_name": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
+            {"input": gMsgBasedServiceManagerMsgQName, "session_id": param["session_id"]})
         #print "exe filename:", __main__.__file__
         #import __main__
         app_name = get_main_file()
         msg = Msg()
         msg.add_app_name(app_name)
+        msg.add_session_id(param["session_id"])
+        msg.add_cmd("start")
         service_manager.add_msg(msg)
         print 'start app'
         service_instance.add_msg(param)
