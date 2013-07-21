@@ -26,12 +26,13 @@ def get_collection(path):
             if 0 != len(tag_list):
                 tags += " tags:(%s)" % (','.join(tag_list))
         if os.path.isdir(full_path):
+            id_for_js = string_tools.jsIdEncoding(u"local_filesystem://" + full_path)
             res.append({"data": filename + tags,
                         "attr": {
                             "url": u"/object_filter/?query_base=" + string_tools.quote_unicode(
                                 u"/filemanager/filesystem_rest/?full_path=" +
                                 unicode(full_path)),
-                            "id": string_tools.quote_unicode(u"local_filesystem://" + full_path)
+                            "id": string_tools.quote_unicode(id_for_js)
                         },
                         "state": "closed"
             })

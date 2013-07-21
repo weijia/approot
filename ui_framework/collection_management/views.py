@@ -58,10 +58,11 @@ def collections_jstree(request):
         data = request.POST
     parent_uuid = request.REQUEST["node"]
     unquoted_parent = string_tools.unquote_unicode(parent_uuid)
-    if obj_tools.isUfsUrl(unquoted_parent):
+    decoded_parent = string_tools.jsIdDecoding(unquoted_parent)
+    if obj_tools.isUfsUrl(decoded_parent):
         #cl("Ufs URL use correct module")
         #print "is ufs url"
-        res = get_collection_by_protocol(unquoted_parent)
+        res = get_collection_by_protocol(decoded_parent)
         #print res
         response = json.dumps(res, sort_keys=True, indent=4)
         return HttpResponse(response, mimetype="application/json")

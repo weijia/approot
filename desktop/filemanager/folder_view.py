@@ -24,11 +24,12 @@ def root(request):
     driver_list = getDriverList()
     res = []
     for driver in driver_list:
+        id_for_js = string_tools.jsIdEncoding(u"local_filesystem://" + driver)
         res.append({"data": driver,
                     "attr":
                         {"url": "/object_filter?query_base=" +
                                 string_tools.quote_unicode(u"/filemanager/filesystem_rest/?full_path=") + driver,
-                         "id": string_tools.quote_unicode(u"local_filesystem://" + driver)
+                         "id": string_tools.quote_unicode(id_for_js)
                         },
                     "state": "closed"
         })
