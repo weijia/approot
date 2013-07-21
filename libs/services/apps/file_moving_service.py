@@ -33,7 +33,7 @@ class FileMover(WorkerBase):
             target_path = getFreeNameFromFullPath(target_path)
 
         cl("moving from: %s to %s" % (obj.full_path, target_path))
-        #shutil.move(obj.full_path, target_path)
+        shutil.move(obj.full_path, target_path)
 
         #Create a tracking for the moving
         description = json.loads(obj.description)
