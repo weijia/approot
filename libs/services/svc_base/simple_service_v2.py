@@ -36,7 +36,8 @@ class DefaultServiceClass(ManagedService):
     Default main service class
     Service default data input msg queue name: worker thread class name + "_default_input_msg_q_name"
     """
-    def __init__(self, param_dict, worker_thread_class):
+
+    def __init__(self, param_dict, worker_thread_class, default_service_input_msg_queue_name=None):
         """
         Constructor
         """
@@ -84,13 +85,17 @@ class DefaultServiceClass(ManagedService):
 
 
 class SimpleService(object):
-    def __init__(self, param_dict, service_class=None, worker_thread_class=None):
+    def __init__(self, param_dict, service_class=None, worker_thread_class=None,
+                 service_default_input_msg_queue_name=None):
         #print "inside service.__init__()"
         #param_dict() # Prove that function definition has completed
         #print param_dict
         self.param_dict = param_dict
         self.service_class = service_class
         self.worker_thread_class = worker_thread_class
+        self.default_class_param_dict = {}
+        if not (service_default_input_msg_queue_name is None):
+            self.default_class_param_dict = {"input": service_default_input_msg_queue_name}
 
     def add_task_and_run_service(self, service_instance, args):
         #Generate params
@@ -153,7 +158,7 @@ class SimpleService(object):
         if self.service_class is None:
             if self.worker_thread_class is None:
                 raise "Neither a service class nor a thread class is given, we will not work with nothing"
-            service_instance = DefaultServiceClass(args, self.worker_thread_class)
+            service_instance = DefaultServiceClass(self.default_class_param_dict, self.worker_thread_class)
         else:
             service_instance = self.service_class(args)
 
