@@ -86,7 +86,7 @@ def start_diagram(diagram_obj, connection_prefix=u''):
             #print "starting processor: ", processor.ufsobj.ufs_url
             try:
                 param = json.loads(processor.param_descriptor)
-            except TypeError:
+            except:
                 param = {}
             if 0 != processor.inputs.count():
                 param['input'] = connection_prefix + u"." + processor.inputs.all()[0].connection_uuid

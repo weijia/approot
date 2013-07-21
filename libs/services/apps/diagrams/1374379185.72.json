@@ -28,7 +28,7 @@
         }, 
         "jsPlumb_1_1": {
             "inputs": [], 
-            "params": "{'tip': 'archive', 'tags': 'archive'}", 
+            "params": "{\"tip\": \"archive\", \"tags\": \"archive\"}",
             "ufs_url": "ufs://Richard-PC/D:/codes/python/codes/ufs_django/approot/libs/services/apps/drop_service.py", 
             "outputs": [
                 0

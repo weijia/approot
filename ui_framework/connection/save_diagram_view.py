@@ -44,7 +44,7 @@ def save_diagram(req_param, user, export_diagram=True):
             info += i + ","
             diagram_obj = get_diagram_obj(diagram_id, user)
 
-            if "param" in processor_list[i]:
+            if "params" in processor_list[i]:
                 param_str = processor_list[i]["params"]
             else:
                 param = {}
@@ -53,7 +53,7 @@ def save_diagram(req_param, user, export_diagram=True):
             #This object may be a script file object or a diagram object
             obj = get_ufs_obj_from_ufs_url(processor_list[i]["ufs_url"])
 
-            processor = create_processor(diagram_obj, obj, param)
+            processor = create_processor(diagram_obj, obj, param_str)
 
             for connection in processor_list[i]["inputs"]:
                 #connection is 0, 1 .... created in jquery diagram
