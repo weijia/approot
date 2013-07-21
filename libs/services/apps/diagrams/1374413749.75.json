@@ -1,0 +1,22 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "scache_storage", 
+                "ufs_url": "ufs://home-celeron/E:/codes/env/codes/ufs_django/approot/libs/services/apps/scache_storage.py", 
+                "full_path": "E:/codes/env/codes/ufs_django/approot/libs/services/apps/scache_storage.py"
+            }, 
+            null
+        ], 
+        [
+            {
+                "data": "scache", 
+                "ufs_url": "ufs://home-celeron/E:/codes/env/codes/ufs_django/approot/libs/services/external_app/scache.bat", 
+                "full_path": "E:/codes/env/codes/ufs_django/approot/libs/services/external_app/scache.bat"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {}, 
+    "diagram_id": "74f805c4-3823-461f-be8c-0b07b2e66467"
+}
