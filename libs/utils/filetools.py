@@ -88,3 +88,20 @@ def findNamePatternInProduct(pattern):
 def findAppInProduct(filename):
     #filename = filename.replace('-', '\-')
     return findNamePatternInProduct('^' + filename + "((\.bat$)|(\.py$)|(\.exe$)|(\.com$))")
+
+
+def collect_files_in_dir(file_root_path, ext=None, ignoreFileList=[]):
+    res = []
+    if os.path.exists(file_root_path) and os.path.isdir(file_root_path):
+        for filename in os.listdir(file_root_path):
+            if filename in ignoreFileList:
+                print "ignoring: ", filename
+                continue
+            if (ext is None) or (ext in filename):
+                #To ensure .pyc is not included
+                if len(filename.split(ext)[1]) != 0:
+                    continue
+                full_path = os.path.join(file_root_path, filename)
+                print full_path
+                res.append(full_path)
+    return res

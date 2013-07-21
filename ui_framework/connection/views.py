@@ -4,6 +4,7 @@ import uuid
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
 from django.utils import timezone
+from libs.diagram.diagram import Diagram, import_diagram
 from libs.services.svc_base.service_starter import start_diagram
 import libsys
 from models import Connection, Processor
@@ -194,53 +195,29 @@ gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
 ]
 
 
-def collect_apps(app_root_dir, ext=None):
-    res = []
-    if os.path.exists(app_root_dir) and os.path.isdir(app_root_dir):
-        for filename in os.listdir(app_root_dir):
-            if filename in gIgnoreAppList:
-                print "ignoring: ", filename
-                continue
-            if (ext is None) or (ext in filename):
-                #To ensure .pyc is not included
-                if len(filename.split(ext)[1]) != 0:
-                    continue
-                full_path = os.path.join(app_root_dir, filename)
-                print full_path
-                res.append(FullPathApp(full_path))
-    return res
-
-
 def get_service_apps(request):
-    app_list = []
+    app_path_list = []
     #for app_name in gDefaultServices:
     #    app_list.append(NamedApp(app_name))
     #Add root folder .exe, (used for built apps)
     root_dir = libsys.get_root_dir()
     for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py")]:
-        app_list.extend(collect_apps(sub_dir, ext))
+        app_path_list.extend(file_tools.collect_files_in_dir(sub_dir, ext, gIgnoreAppList))
+    app_list = []
+    for full_path in app_path_list:
+        app_list.append(FullPathApp(full_path))
     return get_list_in_json(app_list)
-
-
-class Diagram(object):
-    def __init__(self, diagram_obj):
-        self.diagram_obj = diagram_obj
-
-    def get_info(self):
-        tag_list = []
-        for tag in self.diagram_obj.tags:
-            tag_list.append(tag.name)
-
-        processor_list = []
-        for processor in Processor.objects.filter(diagram_obj=self.diagram_obj):
-            processor_list.append(processor.ufsobj.ufs_url)
-
-        return {"data": self.diagram_obj.ufs_url, "full_path": self.diagram_obj.ufs_url,
-                "ufs_url": self.diagram_obj.ufs_url, "tags": tag_list, "description": "<br/>".join(processor_list)}
 
 
 def get_diagrams(request):
     diagram_list = []
+    diagram_file_list = []
+    for sub_dir, ext in [("/libs/service/apps/diagrams/", ".json"), ("/diagrams/", ".json")]:
+        diagram_file_list.extend(file_tools.collect_files_in_dir(sub_dir, ext))
+
+    for full_path in diagram_file_list:
+        import_diagram(full_path)
+
     for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
         diagram_list.append(Diagram(diagram_obj))
     return get_content_item_list_in_json_rest(diagram_list)
