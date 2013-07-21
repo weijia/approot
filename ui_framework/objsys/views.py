@@ -251,7 +251,7 @@ def rm_objs_for_path(request):
             cnt += 1
         #Remove tags first?
         #TaggedItem.objects.filter(object__ufs_url__startswith=data["ufs_url"]).delete()
-        UfsObj.objects.filter(ufs_url__startswith=data["ufs_url"]).delete()
+        UfsObj.objects.filter(ufs_url__startswith=prefix).delete()
         return HttpResponse(res, mimetype="application/json")
         
         
