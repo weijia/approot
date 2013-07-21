@@ -93,9 +93,17 @@ if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
     #Check if initial database is OK. If it is not OK, syncdb.bat will be called.
-    anonymous_list = User.objects.filter(username="AnonymousUser")
-    if 0 == anonymous_list.count():
-        os.environ["SYNCDB"] = "YES"
+    flag_file = os.path.join(libsys.get_root_dir(), "syncdb_needed.txt")
+    try:
+        anonymous_list = User.objects.filter(username="AnonymousUser")
+        if 0 == anonymous_list.count(): raise "bad"
+        if os.path.exists(flag_file):
+            os.remove(flag_file)
+    except:
+        #print "set SYNCDB flag"
+        #os.environ["SYNCDB"] = "YES"
+        if not os.path.exists(flag_file):
+            open(flag_file, "w").close()
 
     #Other initial apps need to be launched may be added to initial_launcher
     #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")

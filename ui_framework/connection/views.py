@@ -212,9 +212,10 @@ def get_service_apps(request):
 def get_diagrams(request):
     diagram_list = []
     diagram_file_list = []
-    for sub_dir, ext in [("/libs/service/apps/diagrams/", ".json"), ("/diagrams/", ".json")]:
+    for sub_dir, ext in [("/libs/services/apps/diagrams/", ".json"), ("/diagrams/", ".json")]:
         diagram_file_list.extend(file_tools.collect_files_in_dir(sub_dir, ext))
 
+    print diagram_file_list
     for full_path in diagram_file_list:
         import_diagram(full_path)
 

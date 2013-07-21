@@ -6,6 +6,7 @@ import re
 #The following codes are copied from http://stackoverflow.com/questions/606561/how-to-get-filename-of-the-main-module-in-python
 import imp
 import sys
+import libsys
 
 
 def main_is_frozen():
@@ -92,6 +93,10 @@ def findAppInProduct(filename):
 
 def collect_files_in_dir(file_root_path, ext=None, ignoreFileList=[]):
     res = []
+    if file_root_path[0] == "/":
+        file_root_path = file_root_path[1:]
+    file_root_path = os.path.join(libsys.get_root_dir(), file_root_path)
+    print file_root_path
     if os.path.exists(file_root_path) and os.path.isdir(file_root_path):
         for filename in os.listdir(file_root_path):
             if filename in ignoreFileList:
