@@ -28,7 +28,7 @@ class FileMover(WorkerBase):
         #Create the original object in UFS
         obj = get_ufs_obj_from_full_path(msg.get_path())
         basename = os.path.basename(obj.full_path)
-        target_path = os.path.join(self.target_dir, basename)
+        target_path = os.path.abspath(os.path.join(self.target_dir, basename))
         if os.path.exists(target_path):
             target_path = getFreeNameFromFullPath(target_path)
 
@@ -41,6 +41,7 @@ class FileMover(WorkerBase):
         moved_to.append(target_path)
         description["moved_to"] = moved_to
         obj.description = json.dumps(description)
+        obj.save()
 
         #Create the new object in database
         new_obj = get_ufs_obj_from_full_path(target_path)
