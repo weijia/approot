@@ -22,6 +22,7 @@ class ScacheStorageServiceApp(ManagedService):
 
     def process(self, msg):
         url = msg["url"]
+        print "received url:", url
         cached_path = msg["cached_path"]
         cached_path = transform.transformDirToInternal(cached_path)
         o = UfsObj.objects.filter(ufs_url=url)
