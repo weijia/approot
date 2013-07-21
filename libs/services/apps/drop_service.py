@@ -41,6 +41,8 @@ class DropService(WorkerBase):
             full_path = i.replace("file:///","")
             from ui_framework.objsys.models import get_ufs_obj_from_full_path
             obj = get_ufs_obj_from_full_path(full_path)
+            if "tags" in self.param_dict:
+                obj.tags = self.param_dict["tags"]
             msg = Msg()
             msg.add_path(obj.full_path)
             msg_q = MsgQ(self.get_output_msg_queue_name())
@@ -50,6 +52,7 @@ class DropService(WorkerBase):
 if __name__ == "__main__":
     s = SimpleService({
         "output": "Output msg queue for output the dropped file",
-        "tip": "Tip for dropping window"
+        "tags": 'default tags applied to the dropped items, use colon to separate such as tag1, tag2',
+        "tip": "Tip for dropping window",
     }, worker_thread_class=DropService)
     s.run()
