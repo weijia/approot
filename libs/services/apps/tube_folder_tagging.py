@@ -1,3 +1,4 @@
+from libs.services.svc_base.managed_service import WorkerBase
 import libsys
 from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
 #from libs.services.servicebase import service
@@ -15,11 +16,10 @@ import uuid
 import os
 from libs.logsys.logSys import *
 import libs.utils.objTools as obj_tools
-from libs.services.svc_base.simpleservice import SimpleService, SimpleWorkThread
+#from libs.services.svc_base.simpleservice import SimpleService, SimpleWorkThread
 from libs.services.svc_base.state import StatefulProcessor
 from libs.utils.misc import ensureDir as ensure_dir
 import libs.utils.transform as transform
-
 
 
 def add_tag_for_full_path(full_path, tag, tag_app = None):
@@ -56,7 +56,7 @@ gDefaultAutoTagIgnoreFolderList = [".git", '.svn',]
 gDefaultAutoTagIgnoreFileList = ['autorun.inf', 'Thumbs.db', ]
 gAutoTagServiceAppName = 'app:folder_tagging'
     
-class FolderTaggingThread(SimpleWorkThread, StatefulProcessor):
+class FolderTaggingThread(WorkerBase, StatefulProcessor):
     def thread_init(self):
         self.last_timestamp = 0
     def processItem(self, job, item):

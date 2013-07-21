@@ -83,8 +83,12 @@ def filesystem_rest(request):
             break
         full_path = os.path.join(parent, filename)
         full_path = transform.transformDirToInternal(full_path)
+        tags = []
+        for obj in UfsObj.objects.filter(full_path=full_path):
+            for tag in obj.tags:
+                tags.append(tag.name)
         res.append(
-            {"ufs_url": obj_tools.getUfsUrl(full_path), "full_path": full_path, "description": full_path, "tags": []})
+            {"ufs_url": obj_tools.getUfsUrl(full_path), "full_path": full_path, "description": full_path, "tags": tags})
 
     response = json.dumps(
         {"objects": res, "meta":

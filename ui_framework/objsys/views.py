@@ -240,14 +240,17 @@ def rm_objs_for_path(request):
     cnt = 0
     if "ufs_url" in data:
         res = []
-        for i in UfsObj.objects.filter(ufs_url__startswith=data["ufs_url"]):
+        prefix = data["ufs_url"]
+        if prefix[-1] != "/":
+            prefix += "/"
+        for i in UfsObj.objects.filter(ufs_url__startswith=prefix):
             if cnt < 100:
                 res.append(i.full_path)
             else:
                 break
             cnt += 1
         #Remove tags first?
-        TaggedItem.objects.filter(object__ufs_url__startswith=data["ufs_url"]).delete()
+        #TaggedItem.objects.filter(object__ufs_url__startswith=data["ufs_url"]).delete()
         UfsObj.objects.filter(ufs_url__startswith=data["ufs_url"]).delete()
         return HttpResponse(res, mimetype="application/json")
         

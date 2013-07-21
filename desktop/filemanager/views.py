@@ -296,6 +296,7 @@ from django.template import Context, loader
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 
+
 def handler(request): 
     #req.content_type = 'text/plain' 
     #req.write("Hello World!") 
