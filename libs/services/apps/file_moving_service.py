@@ -45,7 +45,7 @@ class FileMover(WorkerBase):
 
         #Create the new object in database
         new_obj = get_ufs_obj_from_full_path(target_path)
-
+        new_obj.tags = obj.tags
         return True
 
 

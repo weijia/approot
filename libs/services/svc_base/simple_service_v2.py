@@ -120,7 +120,8 @@ class SimpleService(object):
         service_manager.add_msg(msg)
         '''
         #print 'start app'
-        service_instance.add_msg(param)
+        if ("input" in param) or ("output" in param):
+            service_instance.add_msg(param)
         service_instance.start_service()
 
     def parse_service_args(self):

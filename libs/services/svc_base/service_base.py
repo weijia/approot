@@ -171,7 +171,7 @@ class MsgProcessor(Service):
         try:
             return self.process(msg)
         except:
-            print msg
+            print "process exception captured, msg:", msg
             import traceback
             traceback.print_exc()
         return True

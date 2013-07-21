@@ -133,15 +133,19 @@ def item_properties(request):
     full_path = data.get("full_path", None)
     if full_path is None:
         return HttpResponse("{result: Error, no full_path provided}", mimetype="application/json")
-    proc = execute_app(full_path, ["--help"])
-    out = proc.communicate()[0]
-    #print the output of the child process to stdout
-    #print out
-    res = parse_help(out)
+    if "scache.bat" in full_path:
+        #Ignore scache
+        res = {}
+    else:
+        proc = execute_app(full_path, ["--help"])
+        out = proc.communicate()[0]
+        #print the output of the child process to stdout
+        #print out
+        res = parse_help(out)
 
-    #json_serializer = serializers.get_serializer("json")()
-    #response =  json_serializer.serialize(res, ensure_ascii=False, indent=2, use_natural_keys=True)\
-    response = json.dumps(res, sort_keys=True, indent=4)
+        #json_serializer = serializers.get_serializer("json")()
+        #response =  json_serializer.serialize(res, ensure_ascii=False, indent=2, use_natural_keys=True)\
+        response = json.dumps(res, sort_keys=True, indent=4)
     #print response
     return HttpResponse(response, mimetype="application/json")
 
@@ -191,7 +195,19 @@ def get_list_in_json(item_list):
 
 
 gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
-                  #tagging will always be started currently
+                  "postgresql.bat",
+                  "postgresql_stop.bat",
+                  "start_ext.bat",
+                  "start_ext_app.bat",
+                  "startBeanstalkd.bat",
+                  #"syncdb.bat",
+                  #"tornado.bat",
+                  #"tornado_app.bat",
+                  #"runserver.bat",
+                  #"makedoc.bat"
+                  #"activate.bat"
+                  #"activate_app.bat",
+                  #"cmd_prompt.bat"
 ]
 
 
@@ -201,7 +217,9 @@ def get_service_apps(request):
     #    app_list.append(NamedApp(app_name))
     #Add root folder .exe, (used for built apps)
     root_dir = libsys.get_root_dir()
-    for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py")]:
+    for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py"),
+                         ("libs/services/external_app/", ".bat"),
+                         ("/external/", ".bat")]:
         app_path_list.extend(file_tools.collect_files_in_dir(sub_dir, ext, gIgnoreAppList))
     app_list = []
     for full_path in app_path_list:
