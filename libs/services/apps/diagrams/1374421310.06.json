@@ -1,0 +1,38 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "drop_service", 
+                "ufs_url": "ufs://home-celeron/E:/codes/env/codes/ufs_django/approot/libs/services/apps/drop_service.py", 
+                "full_path": "E:/codes/env/codes/ufs_django/approot/libs/services/apps/drop_service.py"
+            }, 
+            "--tags TAGS           default tags applied to the dropped items, use colon to separate such as tag1, tag2"
+        ], 
+        [
+            {
+                "data": "git_puller", 
+                "ufs_url": "ufs://home-celeron/E:/codes/env/codes/ufs_django/approot/libs/services/apps/git_puller.py", 
+                "full_path": "E:/codes/env/codes/ufs_django/approot/libs/services/apps/git_puller.py"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {
+        "jsPlumb_1_4": {
+            "inputs": [], 
+            "params": "--tags TAGS           default tags applied to the dropped items, use colon to separate such as tag1, tag2", 
+            "ufs_url": "ufs://home-celeron/E:/codes/env/codes/ufs_django/approot/libs/services/apps/drop_service.py", 
+            "outputs": [
+                0
+            ]
+        }, 
+        "jsPlumb_1_1": {
+            "inputs": [
+                0
+            ], 
+            "ufs_url": "ufs://home-celeron/E:/codes/env/codes/ufs_django/approot/libs/services/apps/git_puller.py", 
+            "outputs": []
+        }
+    }, 
+    "diagram_id": "ecd84642-3644-422f-9fa9-29a8d2fc999f"
+}

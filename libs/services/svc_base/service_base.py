@@ -178,10 +178,15 @@ class MsgProcessor(Service):
 
     def process(self, msg):
         """
-        Process the received msg,
+        Process the received msg,default operation is to discard message from other sessions
         :param msg:
         :return: False: need to exit msg_loop
         """
+        if msg.get_session_id() == self.param_dict.get("session_id", 0):
+            return self.process_cur_session_msg(msg)
+        return True
+
+    def process_cur_session_msg(self, msg):
         pass
 
 

@@ -200,6 +200,7 @@ gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
                   "start_ext.bat",
                   "start_ext_app.bat",
                   "startBeanstalkd.bat",
+                  #"mongodb.bat"
                   #"syncdb.bat",
                   #"tornado.bat",
                   #"tornado_app.bat",
