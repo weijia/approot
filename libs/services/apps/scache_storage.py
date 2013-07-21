@@ -16,6 +16,10 @@ import beanstalkc
 from libs.services.svc_base.simple_service_v2 import SimpleService
 
 class ScacheStorageServiceApp(ManagedService):
+    def __init__(self, param_dict):
+        param_dict.update({"input": "ScacheStorageServiceApp_default_cmd_input_tube_name"})
+        super(ScacheStorageServiceApp, self).__init__(param_dict)
+
     def process(self, msg):
         url = msg["url"]
         cached_path = msg["cached_path"]
