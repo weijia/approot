@@ -1,5 +1,7 @@
 # -*- coding: utf8 -*-
 import libsys
+from libs.services.svc_base.msg_service import MsgQ
+from libs.services.svc_base.msg import Msg
 from libs.logsys.logSys import cl
 from libs.services.svc_base.simple_service_v2 import SimpleService
 from libs.services.svc_base.managed_service import ManagedService, WorkerBase
@@ -35,7 +37,14 @@ class DropService(WorkerBase):
         e = SpecialEncoder()
         cl(msg)
         for i in msg["urls"]:
-            print i
+            cl(i)
+            full_path = i.replace("file:///","")
+            from ui_framework.objsys.models import get_ufs_obj_from_full_path
+            obj = get_ufs_obj_from_full_path(full_path)
+            msg = Msg()
+            msg.add_path(obj.full_path)
+            msg_q = MsgQ(self.get_output_msg_queue_name())
+            msg_q.send(msg)
         return True
 
 if __name__ == "__main__":

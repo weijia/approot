@@ -96,6 +96,8 @@ class SimpleService(object):
         #Generate params
         param = {}
         for i in self.param_dict:
+            if args[i] is None:
+                continue
             param[i] = args[i]
         for i in ['session_id', 'diagram_id']:
             param[i] = args[i]

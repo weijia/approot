@@ -18,18 +18,22 @@ class FileMover(WorkerBase):
     """
     没有Service结尾的作为worker thread
     """
+    def worker_init(self):
+        super(FileMover, self).worker_init()
+        default_target = os.path.join(libsys.get_root_dir(), "../default_move_target/")
+        self.target_dir = self.param_dict.get("target_path", default_target)
+        ensureDir(self.target_dir)
 
     def process(self, msg):
         #Create the original object in UFS
         obj = get_ufs_obj_from_full_path(msg.get_path())
         basename = os.path.basename(obj.full_path)
-        default_target = os.path.join(libsys.get_root_dir(), "../default_move_target/")
-        target = self.param_dict.get("target_path", default_target)
-        ensureDir(target)
-        target_path = os.path.join(target, basename)
+        target_path = os.path.join(self.target_dir, basename)
         if os.path.exists(target_path):
             target_path = getFreeNameFromFullPath(target_path)
-        shutil.move(obj.full_path, target_path)
+
+        cl("moving from: %s to %s" % (obj.full_path, target_path))
+        #shutil.move(obj.full_path, target_path)
 
         #Create a tracking for the moving
         description = json.loads(obj.description)
@@ -40,6 +44,8 @@ class FileMover(WorkerBase):
 
         #Create the new object in database
         new_obj = get_ufs_obj_from_full_path(target_path)
+
+        return True
 
 
 from libs.services.svc_base.simple_service_v2 import SimpleService
