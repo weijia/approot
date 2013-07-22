@@ -43,7 +43,7 @@ class DefaultServiceClass(ManagedService):
         """
         # Must set worker_thread_class before calling __init__. As it will be used in get_input_msg_queue_name
         self.worker_thread_class = worker_thread_class
-        cl(self.worker_thread_class.__name__)
+        #cl(self.worker_thread_class.__name__)
         super(DefaultServiceClass, self).__init__(param_dict)
         self.task_signature_to_worker_thread = {}
 
@@ -82,6 +82,12 @@ class DefaultServiceClass(ManagedService):
         """
         for task in self.task_signature_to_worker_thread:
             task.stop()
+
+    def handle_cmd(self, msg):
+        cl("received cmd:", msg)
+        if msg["cmd"] == "broadcast_cmd":
+            for task_signature in self.task_signature_to_worker_thread:
+                self.task_signature_to_worker_thread[task_signature].put(msg["msg"])
 
 
 class SimpleService(object):

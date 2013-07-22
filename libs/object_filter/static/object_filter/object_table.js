@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#object-table').on("click", "button.start", function(e){
+    function request_op(event, target_url) {
         //console.log($(event.currentTarget).parents("tr").index());
         //console.log("debug: waiting-repair-table button.edit");
         //var o = $( "#waiting-repair-table" ).data("tableData").objects[$(event.currentTarget).parents("tr").attr("id")];
@@ -11,14 +11,19 @@ $(document).ready(function() {
         console.log(aData, aData.ufs_url);
         /*var jqTds = $('>td', nRow);
 
-        for(var i = 0; i<3; i++){
-            jqTds[i].innerHTML = '<input type="text" value="'+jqTds[i].innerText+'">';
-        }
-        $('button.edit', $(nRow)).text('save').addClass("save").removeClass("edit").after('<button class="cancel">Cancel Edit</button>');
-        */
-        $.getJSON("/connection/start_diagram/?ufs_url="+encodeURI(aData.ufs_url));
+         for(var i = 0; i<3; i++){
+         jqTds[i].innerHTML = '<input type="text" value="'+jqTds[i].innerText+'">';
+         }
+         $('button.edit', $(nRow)).text('save').addClass("save").removeClass("edit").after('<button class="cancel">Cancel Edit</button>');
+         */
+         $.getJSON(target_url + encodeURI(aData.ufs_url));
+    }
+    $('#object-table').on("click", "button.start", function(e){
+        request_op(e, "/connection/start_diagram/?ufs_url=");
     });
-    $('#object-table').on("click", "button.stop", function(e){});
+    $('#object-table').on("click", "button.stop", function(e){
+        request_op(e, "/connection/stop_diagram/?ufs_url=");
+    });
     $('#object-table').on("click", "button.auto-start", function(e){});
     $('#object-table').dataTable({bJQueryUI:true,
         "sAjaxSource": "/connection/diagram_list/",

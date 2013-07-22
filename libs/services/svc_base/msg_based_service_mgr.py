@@ -37,15 +37,20 @@ class MsgBasedServiceManager(MsgProcessor):
         while True:
             msg = self.receiver.receive()
             #print msg
-            if msg.get_session_id() != self.param_dict["session_id"]:
-                print "ignore legacy session msg", msg, self.param_dict["session_id"]
+            if self.is_ignoring_legacy_session_msg(msg):
                 continue
             if not self.process(msg):
                 break
         cl('quiting msg based service manager')
 
+    def broadcast_cmd_msg(self, msg):
+        for app_name in self.app_name_to_info:
+            MsgQ(self.app_name_to_info[app_name].get_cmd_q_name()).send_cmd(msg)
+        return True
+
     def process(self, msg):
         cl(msg)
+        is_not_quit = True
         if "cmd" in msg:
             if msg["cmd"] == "registration":
                 self.handle_registration(msg)
@@ -58,15 +63,17 @@ class MsgBasedServiceManager(MsgProcessor):
                         gui_service = GuiService()
                         gui_service.send_to_self({"command": "LaunchApp", "app_name": msg.get_app_name(),
                                              "param": ['--startserver', '--session_id', self.param_dict["session_id"]]})
+            elif msg["cmd"] == "broadcast_cmd":
+                #Broadcast a message to all managed service
+                self.broadcast_cmd_msg(msg)
             elif msg.is_stop_msg():
-                for app_name in self.app_name_to_info:
-                    stop_msg = Msg()
-                    stop_msg.add_cmd("stop")
-                    MsgQ(self.app_name_to_info[app_name].get_cmd_q_name()).send_cmd(stop_msg)
-                return False
+                stop_msg = Msg()
+                stop_msg.add_cmd("stop")
+                self.broadcast_cmd_msg(stop_msg)
+                is_not_quit = False   # Break from message loop
             else:
                 cl("Unexpected command")
-        return True
+        return is_not_quit
 
 
 if __name__ == "__main__":

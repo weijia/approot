@@ -5,6 +5,8 @@ from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
 from django.utils import timezone
 from libs.diagram.diagram import Diagram, import_diagram
+from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
+from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_starter import start_diagram
 import libsys
 from models import Connection, Processor
@@ -146,7 +148,7 @@ def item_properties(request):
         #json_serializer = serializers.get_serializer("json")()
         #response =  json_serializer.serialize(res, ensure_ascii=False, indent=2, use_natural_keys=True)\
         response = json.dumps(res, sort_keys=True, indent=4)
-    #print response
+        #print response
     return HttpResponse(response, mimetype="application/json")
 
 
@@ -243,10 +245,24 @@ def get_diagrams(request):
     return get_content_item_list_in_json_rest(diagram_list)
 
 
-def handle_start_diagram(request):
+def handle_start_diagram_req(request):
     data = get_param(request)
     diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
     log_str = start_diagram(diagram_obj)
     res = {"log": log_str}
+    response = json.dumps(res, sort_keys=True, indent=4)
+    return HttpResponse(response, mimetype="application/json")
+
+
+def handle_stop_diagram_req(request):
+    data = get_param(request)
+    diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
+    MsgQ(gMsgBasedServiceManagerMsgQName).send_cmd({"cmd": "broadcast_cmd",
+                                                    "session_id": os.environ["ufs_console_mgr_session_id"],
+                                                    "msg": {"cmd": "stop_diagram",
+                                                            "diagram_id": diagram_obj.uuid,
+                                                            "session_id": os.environ["ufs_console_mgr_session_id"]}
+    })
+    res = {"result": data["ufs_url"] + ":" + diagram_obj.uuid + " stop diagram message sent"}
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")

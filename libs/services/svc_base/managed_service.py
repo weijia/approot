@@ -138,6 +138,21 @@ class WorkerBase(ManagedService, threading.Thread):
                                       self.get_output_msg_queue_name())
         return signature
 
+    def handle_cmd(self, msg):
+        if self.is_diagram_stop(msg):
+            self.internal_do_quit()
+
+    def is_diagram_stop(self, msg):
+        if msg["cmd"] == "stop_diagram":
+            cl("diagram stop received: ", self.get_task_info(), msg)
+            if self.get_task_info()["diagram_id"] == msg["diagram_id"]:
+                cl("diagram_id matched")
+                return True
+            else:
+                cl("diagram_id not match")
+                pass
+        return False
+
     def run(self):
         self.start_service()
     '''

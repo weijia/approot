@@ -25,6 +25,7 @@ class CrossGuiLauncher(object):
         '''
         self.gui_factory = gui_factory
         self.session_id = time.time()
+        os.environ["ufs_console_mgr_session_id"] = "%f" % self.session_id
         self.taskbar_icon_app = self.gui_factory.create_taskbar_icon_app()
         self.app_list_ui = self.gui_factory.get_app_list()
         self.taskbar_icon_app["Open Main Page"] = self.open_main

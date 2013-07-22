@@ -20,7 +20,11 @@ class Service(object):
         self.is_stopped = False
 
     def add_task_info(self, msg):
+        cl("adding task_info: ", msg)
         self.task_info = msg
+
+    def get_task_info(self):
+        return self.task_info
 
     def get_output_msg_queue_name(self):
         return self.param_dict.get("output", None)
@@ -103,6 +107,12 @@ class MsgProcessor(Service):
         """
         self.send_to_self(msg_dict)
 
+    def is_ignoring_legacy_session_msg(self, msg):
+        if msg.get_session_id() != self.param_dict["session_id"]:
+            print "ignore legacy session msg", msg, self.param_dict["session_id"]
+            return True
+        return False
+
     def add_msg(self, msg_dict):
         q = MsgQ(self.get_input_msg_queue_name())
         self.send_to_self(msg_dict)
@@ -143,6 +153,14 @@ class MsgProcessor(Service):
     def handle_cmd(self, msg):
         pass
 
+    def internal_do_quit(self):
+        """
+        Call on_stop, if app does not want to quit directly, it should override on_stop and return False
+        If app do not want to do any clean up stuff, just return True to let service stop.
+        :return:
+        """
+        self.is_stopped = self.on_stop()
+
     def msg_loop(self):
         """
         This function will loop to receive message. The following messages will be handled in this level:
@@ -157,15 +175,13 @@ class MsgProcessor(Service):
             msg = self.receive()
             if msg.is_cmd():
                 if msg.is_stop_msg():
-                    self.is_stopped = True
-                    if self.on_stop():
-                        #Check if really need to stop
-                        break
+                    self.internal_do_quit()
                 else:
                     self.handle_cmd(msg)
             elif not self.process_msg_with_exception_captured(msg):
                 break
                 #msg.set_processed()
+        print "quitting message loop"
 
     def process_msg_with_exception_captured(self, msg):
         try:
@@ -174,7 +190,7 @@ class MsgProcessor(Service):
             print "process exception captured, msg:", msg
             import traceback
             traceback.print_exc()
-        return True
+        return True   # Do not quit if we got exception
 
     def process(self, msg):
         """
