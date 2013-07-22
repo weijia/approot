@@ -7,6 +7,7 @@ class GuiServiceMsgHandler(object):
         super(GuiServiceMsgHandler, self).__init__()
         self.gui_factory = gui_factory
         self.wnd2target = {}
+        self.target2wnd = {}
         self.handle2browser = {}
 
     def handle_msg(self, msg):
@@ -17,6 +18,13 @@ class GuiServiceMsgHandler(object):
             if not (tip is None):
                 drop_wnd.label.setText(tip)
             self.wnd2target[drop_wnd] = target
+            self.target2wnd[target] = drop_wnd
+        if msg["command"] == "DestroyDropWnd":
+            wnd = self.target2wnd[msg["target"]]
+            del self.target2wnd[msg["target"]]
+            del self.wnd2target[wnd]
+            #del self.target2wnd[msg]
+            wnd.deleteLater()
         if msg["command"] == "Browser":
             url = msg["url"]
             handle = msg["handle"]

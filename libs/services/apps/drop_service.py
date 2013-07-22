@@ -24,7 +24,7 @@ class DropService(WorkerBase):
     没有Service结尾的作为worker thread
     """
     def worker_init(self):
-        cl("--------------------------")
+        #cl("--------------------------")
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube
         self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name(),
@@ -48,6 +48,13 @@ class DropService(WorkerBase):
             msg.add_session_id(self.param_dict.get("session_id", 0))
             msg_q = MsgQ(self.get_output_msg_queue_name())
             msg_q.send(msg)
+        return True
+
+    def on_stop(self):
+        self.gui_service = GuiService()
+        #Register to drop service. Service will create drop window and send the dropped items to tube
+        self.gui_service.put({"command": "DestroyDropWnd",
+                              "target": self.get_input_msg_queue_name()})
         return True
 
 if __name__ == "__main__":
