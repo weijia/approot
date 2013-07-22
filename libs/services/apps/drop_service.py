@@ -45,7 +45,7 @@ class DropService(WorkerBase):
                 obj.tags = self.param_dict["tags"]
             msg = Msg()
             msg.add_path(obj.full_path)
-            msg.add_session_id(self.param_dict.get("sesion_id", 0))
+            msg.add_session_id(self.param_dict.get("session_id", 0))
             msg_q = MsgQ(self.get_output_msg_queue_name())
             msg_q.send(msg)
         return True
