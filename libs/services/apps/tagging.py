@@ -41,6 +41,11 @@ class TaggingService(ManagedService):
     def is_server_only(self):
         return True
 
+    def on_stop(self):
+        self.gui_service = GuiService()
+        #Register to drop service. Service will create drop window and send the dropped items to tube
+        self.gui_service.put({"command": "DestroyBrowser", "handle": "tagging"})
+        return True   # Return true to accept stop
 
 if __name__ == "__main__":
     s = SimpleService({}, TaggingService)

@@ -41,7 +41,6 @@ class PyQtGuiFactory(GuiFactoryBase):
         #print "trigger called:", msg
         self.console_man.app_list.msg_signal.emit(msg)
 
-
     def set_msg_callback(self, callback):
         self.console_man.app_list.set_msg_callback(callback)
 
@@ -75,10 +74,15 @@ class PyQtGuiFactory(GuiFactoryBase):
         return self.console_man
 
     def create_drop_target(self, callback):
-        droppable_wnd = Droppable()
-        self.droppable_list.append(droppable_wnd)
-        droppable_wnd.set_drop_callback(callback)
-        return droppable_wnd
+        drop_target_wnd = Droppable()
+        self.droppable_list.append(drop_target_wnd)
+        drop_target_wnd.set_drop_callback(callback)
+        return drop_target_wnd
+
+    def remove_browser(self, handle):
+        if handle in self.browser_list:
+            self.browser_list[handle].deleteLater()
+            del self.browser_list[handle]
 
     def show_browser(self, handle, url):
         #when calling load, url will be quoted? Seems yes.
@@ -104,4 +108,3 @@ class PyQtGuiFactory(GuiFactoryBase):
 
     def msg(self, msg):
         self.trayIcon.msg(msg)
-        

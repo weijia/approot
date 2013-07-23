@@ -29,6 +29,9 @@ class GuiServiceMsgHandler(object):
             url = msg["url"]
             handle = msg["handle"]
             self.gui_factory.show_browser(handle, url)
+        if msg["command"] == "DestroyBrowser":
+            handle = msg["handle"]
+            self.gui_factory.remove_browser(handle)
         if msg["command"] == "notify":
             msg_str = msg["msg"]
             self.gui_factory.msg(msg_str)
