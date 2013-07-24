@@ -49,7 +49,7 @@ class FileMover(SimpleServiceWorker):
             target_tags = []
             for tag in obj.tags:
                 target_tags.append(tag.name)
-            cl("!!!!!!!!!!!!!!!!! Is it OK for tags? %s" % ",".join(obj.tags))
+            #cl("!!!!!!!!!!!!!!!!! Is it OK for tags? %s" % ",".join(obj.tags))
             new_obj.tags = ",".join(target_tags)
         else:
             cl("File does not exist: %s" % msg.get_path())
