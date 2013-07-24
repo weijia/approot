@@ -1,5 +1,5 @@
 import libsys
-from libs.services.svc_base.managed_service import WorkerBase
+#from libs.services.svc_base.managed_service import WorkerBase
 #from libs.services.servicebase import service
 #from django.conf import settings
 #from ui_framework.objsys.models import UfsObj
@@ -23,10 +23,10 @@ from subprocess import (
 import git
 import win32con
 from libs.services.svc_base.gui_service import GuiService
-from libs.services.svc_base.simple_service_v2 import SimpleService
+from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 
 
-class GitPullerThread(WorkerBase):
+class GitPullerThread(SimpleServiceWorker):
     def pull_and_push_changes(self, branch, full_path, remote_branch, remote_repo):
         #print remote_branch#gitbucket/20130313_diagram_rewrite
         if branch.name in remote_branch.__str__():

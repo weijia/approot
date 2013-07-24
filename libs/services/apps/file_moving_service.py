@@ -7,19 +7,19 @@ import shutil
 import libsys
 from libs.logsys.logSys import *
 from django.conf import settings
-from libs.services.svc_base.managed_service import WorkerBase
+#from libs.services.svc_base.managed_service import WorkerBase
 from libs.tagging.models import TaggedItem
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
 from libs.utils.misc import ensureDir
 from libs.utils.filetools import getFreeNameFromFullPath
 
 
-class FileMover(WorkerBase):
+class FileMover(SimpleServiceWorker):
     """
     没有Service结尾的作为worker thread
     """
-    def worker_init(self):
-        super(FileMover, self).worker_init()
+    def on_register_ok(self):
+        super(FileMover, self).on_register_ok()
         default_target = os.path.join(libsys.get_root_dir(), "../default_move_target/")
         self.target_dir = self.param_dict.get("target_path", default_target)
         ensureDir(self.target_dir)
@@ -56,7 +56,7 @@ class FileMover(WorkerBase):
         return True
 
 
-from libs.services.svc_base.simple_service_v2 import SimpleService
+from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 
 if __name__ == "__main__":
     s = SimpleService({

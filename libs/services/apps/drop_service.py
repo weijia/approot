@@ -3,8 +3,8 @@ import libsys
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.msg import Msg
 from libs.logsys.logSys import cl
-from libs.services.svc_base.simple_service_v2 import SimpleService
-from libs.services.svc_base.managed_service import ManagedService, WorkerBase
+from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
+#from libs.services.svc_base.managed_service import ManagedService, WorkerBase
 from libs.services.svc_base.gui_service import GuiService
 #import urllib
 from django.conf import settings
@@ -19,7 +19,7 @@ class NoInputWorker(WorkerBase):
 '''
 
 
-class DropService(WorkerBase):
+class DropService(SimpleServiceWorker):
     """
     没有Service结尾的作为worker thread
     """
@@ -27,6 +27,7 @@ class DropService(WorkerBase):
         """
         Called after registration is OK
         """
+        super(DropService, self).on_register_ok()
         self.gui_service = GuiService()
         #Register to drop service. Service will create drop window and send the dropped items to tube
         self.gui_service.put({"command": "DropWnd", "target": self.get_input_msg_queue_name(),

@@ -5,30 +5,20 @@ from libs.services.svc_base.msg import Msg
 from libs.utils.filetools import get_main_file
 import libsys
 import sys
-from managed_service import ManagedService
+from managed_service import ManagedService, WorkerBase
 from msg_based_service_mgr import MsgBasedServiceManager, gMsgBasedServiceManagerMsgQName
 
 
-'''
-class SimpleWorkThread(beanstalkWorkingThread):
-    def __init__(self, input_tube, output_tube):
-        super(SimpleWorkThread, self).__init__(input_tube)
-        self.output_tube = output_tube
-        self.thread_init()
-        
-    def thread_init(self):
+class SimpleServiceWorker(WorkerBase):
+    def set_parent(self, parent):
+        self.parent = parent
 
-        #A function sub-class can override to do some initialization.
-        pass
-        
-    def add_task_info(self, item):
-        self.task_info_item = item
-        self.diagram_id = item["diagram_id"]
-        self.session_id = item["session_id"]
-        
-    def output(self, item):
-        self.put_item(item, self.output_tube)
-'''
+    def notify_parent(self, msg):
+        self.parent.notify(msg)
+
+    def run(self):
+        super(SimpleServiceWorker, self).run()
+        self.parent.on_child_notify({"cmd": "quit"}, self)
 
 
 class DefaultServiceClass(ManagedService):
@@ -68,6 +58,7 @@ class DefaultServiceClass(ManagedService):
             cl("Received legacy session request, ignore it:", msg, self.get_session_id())
             return True
         t = self.worker_thread_class(msg)
+        t.set_parent(self)
         task_signature = t.get_task_signature()
         if self.is_processing(task_signature):
             print 'input tube already processing: ', task_signature
@@ -86,6 +77,7 @@ class DefaultServiceClass(ManagedService):
         """
         for task in self.task_signature_to_worker_thread:
             task.stop()
+        return True
 
     def handle_cmd(self, msg):
         cl("received cmd:", msg)
@@ -93,6 +85,13 @@ class DefaultServiceClass(ManagedService):
             for task_signature in self.task_signature_to_worker_thread:
                 self.task_signature_to_worker_thread[task_signature].put(msg["msg"])
 
+    def on_child_notify(self, msg, child):
+        if "cmd" in msg:
+            if msg["cmd"] == "quit":
+                del self.task_signature_to_worker_thread[child.get_task_signature()]
+                if 0 == len(self.task_signature_to_worker_thread):
+                    cl("All tasks quit, quit service as well, sending stop msg to self")
+                    self.put({"cmd": "stop", "session_id": self.get_session_id()})
 
 class SimpleService(object):
     def __init__(self, param_dict, service_class=None, worker_thread_class=None,
