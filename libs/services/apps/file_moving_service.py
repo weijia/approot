@@ -12,7 +12,7 @@ from libs.tagging.models import TaggedItem
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
 from libs.utils.misc import ensureDir
 from libs.utils.filetools import getFreeNameFromFullPath
-
+from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 
 class FileMover(SimpleServiceWorker):
     """
@@ -55,8 +55,6 @@ class FileMover(SimpleServiceWorker):
             cl("File does not exist: %s" % msg.get_path())
         return True
 
-
-from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 
 if __name__ == "__main__":
     s = SimpleService({
