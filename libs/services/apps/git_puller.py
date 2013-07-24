@@ -94,8 +94,6 @@ class GitPullerThread(SimpleServiceWorker):
         return True
 
         
-    
-        
 if __name__ == "__main__":
     s = SimpleService({
                             "input": "Input msg queue for path to pull and push",

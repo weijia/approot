@@ -152,9 +152,12 @@ Example:
         
         import os
         #print os.environ["http_proxy"]
-        proxy = urllib2.ProxyHandler({'http': os.environ["http_proxy"], 'https': os.environ["https_proxy"]})
-        opener = urllib2.build_opener(proxy)
-        urllib2.install_opener(opener)
+        try:
+            proxy = urllib2.ProxyHandler({'http': os.environ["http_proxy"], 'https': os.environ["https_proxy"]})
+            opener = urllib2.build_opener(proxy)
+            urllib2.install_opener(opener)
+        except:
+            pass
         req=urllib2.urlopen(url)
         return json.loads(req.read())
         

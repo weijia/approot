@@ -32,6 +32,7 @@ class KingsoftDisk(SimpleServiceWorker):
         super(KingsoftDisk, self).worker_init()
         #self.is_authorized = False
         self.authorize_state = self.AUTHORIZE_NOT_STARTED
+        self.failed_cnt = 0
 
     def process(self, msg):
         if self.authorize_state == self.AUTHORIZE_PAGE_OPENED_STATE:
@@ -39,7 +40,7 @@ class KingsoftDisk(SimpleServiceWorker):
             print 'oauth_token', self.token["oauth_token"]
             print 'oauth_token_secret', self.token['oauth_token_secret']
             print self.kp.account_info()
-            self.kp.create_folder("UfsAutoCreated")
+            self.kp.create_folder("ufs")
             self.authorize_state = self.AUTHORIZED
 
         if self.authorize_state == self.AUTHORIZED:
@@ -47,8 +48,21 @@ class KingsoftDisk(SimpleServiceWorker):
             if os.path.exists(msg.get_path()):
                 obj = get_ufs_obj_from_full_path(msg.get_path())
                 basename = os.path.basename(obj.full_path)
-                self.kp.upload(basename, obj.full_path)
-                cl("File uploaded successfully")
+                try:
+                    self.kp.upload(basename, obj.full_path, root="app_folder/ufs")
+                    self.gui_service = GuiService()
+                    self.gui_service.put({"command": "notify",
+                                          "msg": "File %s uploaded." % obj.full_path})
+                    self.failed_cnt = 0
+                    #cl("File uploaded successfully")
+                except:
+                    import traceback
+                    traceback.print_exc()
+                    #cl("File upload failed will retry")
+                    self.put(msg, 30)
+                    self.failed_cnt += 1
+                    if self.self.failed_cnt > 10:
+                        self.authorize_state = self.AUTHORIZE_NOT_STARTED
             else:
                 cl("File does not exist: %s" % msg.get_path())
         else:
@@ -64,7 +78,7 @@ class KingsoftDisk(SimpleServiceWorker):
                 self.authorize_state = self.AUTHORIZE_PAGE_OPENED_STATE
 
             #Put the file back
-            self.put(msg, 300)
+            self.put(msg, 30)
         return True
 
 
