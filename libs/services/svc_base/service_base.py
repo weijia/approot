@@ -95,17 +95,17 @@ class MsgProcessor(Service):
         super(MsgProcessor, self).__init__(param_dict)
         self.receiver = Receiver(self.get_input_msg_queue_name())
 
-    def send_to_self(self, msg_dict):
+    def send_to_self(self, msg_dict, delay=0):
         q = MsgQ(self.get_input_msg_queue_name())
-        q.send(msg_dict)
+        q.send(msg_dict, delay=delay)
 
-    def put(self, msg_dict):
+    def put(self, msg_dict, delay=0):
         """
         A quick function for send to self
         :param msg_dict:
         :return:
         """
-        self.send_to_self(msg_dict)
+        self.send_to_self(msg_dict, delay)
 
     def is_ignoring_legacy_session_msg(self, msg):
         if msg.get_session_id() != self.param_dict["session_id"]:
