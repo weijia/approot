@@ -130,3 +130,22 @@ class RegMsg(Msg):
             return True
         else:
             return False
+
+
+class UnRegMsg(RegMsg):
+    def to_json(self):
+        pid = os.getpid()
+        print "current pid: ", pid
+        if (self.APP_NAME_ATTR_NAME in self.store) and (self.CMD_MSG_Q_NAME_ATTR in self.store):
+            #Added other required fields for registration msg
+            self["cmd"] = "unregistration"
+            self["pid"] = pid
+            return super(RegMsg, self).to_json()
+        else:
+            raise "Invalid reg msg"
+
+    def set_unregistration_result(self, is_ok):
+        self["unregistration_result"] = is_ok
+
+    def is_unregister_ok(self):
+        return self["unregistration_result"]

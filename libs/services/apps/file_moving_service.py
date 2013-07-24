@@ -26,26 +26,33 @@ class FileMover(WorkerBase):
 
     def process(self, msg):
         #Create the original object in UFS
-        obj = get_ufs_obj_from_full_path(msg.get_path())
-        basename = os.path.basename(obj.full_path)
-        target_path = os.path.abspath(os.path.join(self.target_dir, basename))
-        if os.path.exists(target_path):
-            target_path = getFreeNameFromFullPath(target_path)
+        if os.path.exists(msg.get_path()):
+            obj = get_ufs_obj_from_full_path(msg.get_path())
+            basename = os.path.basename(obj.full_path)
+            target_path = os.path.abspath(os.path.join(self.target_dir, basename))
+            if os.path.exists(target_path):
+                target_path = getFreeNameFromFullPath(target_path)
 
-        cl("moving from: %s to %s" % (obj.full_path, target_path))
-        shutil.move(obj.full_path, target_path)
+            cl("moving from: %s to %s" % (obj.full_path, target_path))
+            shutil.move(obj.full_path, target_path)
 
-        #Create a tracking for the moving
-        description = json.loads(obj.description)
-        moved_to = description.get("moved_to", [])
-        moved_to.append(target_path)
-        description["moved_to"] = moved_to
-        obj.description = json.dumps(description)
-        obj.save()
+            #Create a tracking for the moving
+            description = json.loads(obj.description)
+            moved_to = description.get("moved_to", [])
+            moved_to.append(target_path)
+            description["moved_to"] = moved_to
+            obj.description = json.dumps(description)
+            obj.save()
 
-        #Create the new object in database
-        new_obj = get_ufs_obj_from_full_path(target_path)
-        new_obj.tags = obj.tags
+            #Create the new object in database
+            new_obj = get_ufs_obj_from_full_path(target_path)
+            target_tags = []
+            for tag in obj.tags:
+                target_tags.append(tag.name)
+            cl("!!!!!!!!!!!!!!!!! Is it OK for tags? %s" % ",".join(obj.tags))
+            new_obj.tags = ",".join(target_tags)
+        else:
+            cl("File does not exist: %s" % msg.get_path())
         return True
 
 

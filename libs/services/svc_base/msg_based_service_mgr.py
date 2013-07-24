@@ -4,7 +4,7 @@ from libs.services.svc_base.gui_service import GuiService
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_base import MsgProcessor
 from libs.logsys.logSys import *
-from libs.services.svc_base.msg import RegMsg, Msg
+from libs.services.svc_base.msg import RegMsg, Msg, UnRegMsg
 import argparse
 
 gMsgBasedServiceManagerMsgQName = "msg_based_service_manager_msg_queue_name"
@@ -33,6 +33,23 @@ class MsgBasedServiceManager(MsgProcessor):
             else:
                 print "invalid registration msg"
 
+    def handle_unregistration(self, msg):
+        if self.get_session_id() != msg.get_session_id():
+            print "Received a registration request for legacy session, ignore it"
+        else:
+            unreg_msg = UnRegMsg(msg)
+            if unreg_msg.is_valid():
+                if unreg_msg.get_app_name() in self.app_name_to_info:
+                    del self.app_name_to_info[unreg_msg.get_app_name()]
+                    unreg_msg.set_unregistration_result(True)
+                    cl("App unregister success: %s" % unreg_msg.get_app_name())
+                else:
+                    cl("App not registered: %s" % msg.get_app_name())
+                    unreg_msg.set_unregistration_result(False)
+                MsgQ(msg.get_cmd_q_name()).send_cmd(unreg_msg)
+            else:
+                print "invalid unregistration msg"
+
     def msg_loop(self):
         while True:
             msg = self.receiver.receive()
@@ -54,6 +71,8 @@ class MsgBasedServiceManager(MsgProcessor):
         if "cmd" in msg:
             if msg["cmd"] == "registration":
                 self.handle_registration(msg)
+            elif msg["cmd"] == "unregistration":
+                self.handle_unregistration(msg)
             elif msg["cmd"] == "start":
                 #Start an app if not started
                 if msg.has_app_name():
@@ -72,7 +91,7 @@ class MsgBasedServiceManager(MsgProcessor):
                 self.broadcast_cmd_msg(stop_msg)
                 is_not_quit = False   # Break from message loop
             else:
-                cl("Unexpected command")
+                cl("Unexpected command:", msg)
         return is_not_quit
 
 

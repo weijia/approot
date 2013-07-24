@@ -63,6 +63,10 @@ class DefaultServiceClass(ManagedService):
         :param msg:
         :return:
         """
+        if msg.get_session_id() != self.get_session_id():
+            #Task request received by service normally only valid in current session.
+            cl("Received legacy session request, ignore it:", msg, self.get_session_id())
+            return True
         t = self.worker_thread_class(msg)
         task_signature = t.get_task_signature()
         if self.is_processing(task_signature):
@@ -125,9 +129,13 @@ class SimpleService(object):
         msg.add_cmd("start")
         service_manager.add_msg(msg)
         '''
-        #print 'start app'
+        ########################
+        # Add task
         if ("input" in param) or ("output" in param):
+            cl("sending task request:", param)
             service_instance.add_msg(param)
+        ########################
+        # Start service
         service_instance.start_service()
 
     def parse_service_args(self):

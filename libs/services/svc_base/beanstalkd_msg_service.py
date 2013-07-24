@@ -99,6 +99,7 @@ class BeanstalkdReceiver(object):
             raise
             #return None, None
         if job is None:
+            cl("Receive message timeout")
             return None
         msg = self.extract_msg_body(job)
         job.delete()
