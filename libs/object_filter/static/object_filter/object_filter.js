@@ -18,7 +18,7 @@ $(document).ready(function() {
     $("#obj-pane").on("mouseenter", ".element-root", function(e){
         //The this pointer is pointing to ".element-root"
         $("#toolBar").remove();
-        $(this).append('<div id="toolBar" style="position:absolute;top:10px;left:20px;z-index:999">' +
+        $(this).append('<div id="toolBar" class="tool-bar-class">' +
                            '<p id="delButton">delete</p><p id="delDirectories">delete dir</p></div>');
         //console.log("created tool bar for ", e.target);
     });

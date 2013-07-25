@@ -2,6 +2,7 @@
 import os
 import time
 import threading
+import traceback
 from libs.services.svc_base.service_base import MsgProcessor
 from libs.services.svc_base.msg import RegMsg, UnRegMsg
 from libs.services.svc_base.msg_service import *
@@ -56,11 +57,15 @@ class ManagedService(MsgProcessor):
             #It is the master service app, shall be responsible for clean stop msg if there is some?????
             #注册到data消息队列
             cl('Register OK for', self.get_task_signature())
-            self.on_register_ok()
+            try:
+                self.on_register_ok()
+            except:
+                cl("Captured exception, ignore it.")
+                traceback.print_exc()
             self.receiver.register_to_data_msg_q()
             #开始消息循环处理消息
             self.msg_loop()
-            cl("Unregister from system")
+            cl("Unregistering from system")
             self.wait_for_unregister_result()
             cl("Quitting")
         else:

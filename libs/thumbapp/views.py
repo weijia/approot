@@ -31,10 +31,9 @@ def get_icon(full_path, file_type=None):
 
     if 'Zip archive data' in file_type:
         ext = full_path.split('.')[-1]
-        if 'xlsx' in ext:
-            return '/static/image/icons/online/512px/' + 'xls' + '.png'
-        if 'docx' in ext:
-            return '/static/image/icons/online/512px/' + 'doc' + '.png'
+        for ext_prefix in ["xls", "doc", "ppt"]:
+            if ext_prefix+"x" in ext:
+                return '/static/image/icons/online/512px/' + ext_prefix + '.png'
 
     ext_icons = ['html', 'xml', 'pdf']
     for i in ext_icons:

@@ -124,7 +124,7 @@ class CrossGuiLauncher(object):
             self.gui_factory.set_msg_callback(self.handle_msg)
             self.pyqt_service = GuiService(self.gui_factory)
             self.pyqt_service.start()
-            self.gui_factory.msg("App starting")
+            #self.gui_factory.msg("App starting")
         except:
             traceback.print_exc()
 
