@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 {% load pagination_tags %}
-
-{% autopaginate objects 10 %}
+<script>
+    var gContentWorkArround = "/objsys/listing/";
+</script>
+{% autopaginate objects 30 %}
 {% for object in objects %}
- {{ object.ufs_url }}<br/>
+ <a href="/ui_framework/start?{{ object.full_path }}">{{ object.ufs_url }}</a><br/>
 {% endfor %}
 
 {% paginate %}

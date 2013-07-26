@@ -11,6 +11,7 @@ class ConnectionAdmin(GuardedModelAdmin):
 
 import libs.utils.string_tools as string_tools
 
+register_menu(u'connection/', u'processor creator')
 register_menu(u'object_filter/?query_base='+string_tools.quote_unicode(u'/connection/diagram_list/'), u'diagram management')
 
 

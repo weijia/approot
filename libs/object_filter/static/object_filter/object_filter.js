@@ -29,7 +29,12 @@ $(document).ready(function() {
                                                             $("#obj-pane").addClass("detailed-view");
                                                         }
     );
-
+    $("#thumb-view-button").button().click(
+                                            function () {
+                                                            $("#obj-pane").removeClass("detailed-view");
+                                                            $("#obj-pane").addClass("thumb-view");
+                                                        }
+    );
 
     function genHtml(data)
     {
