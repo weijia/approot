@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.conf import settings
 import django.utils.timezone as timezone
 from libs.logsys.logSys import cl
+from libs.tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
 from models import UfsObj, get_ufs_obj_from_ufs_url
 from django.core.context_processors import csrf
@@ -252,42 +253,76 @@ def listing(request):
                               context_instance=RequestContext(request))
 
 
-class TaggerThread(threading.Thread):
+class UfsFilter(object):
     def set_data(self, data):
         self.data = data
+
+    def set_tag_app(self, tag_app):
+        self.tag_app = tag_app
+
+    def get_obj_filters(self):
+        #print "Filtering"
+        q = UfsObj.objects.all()
+        if "existing_tags" in self.data:
+            existing_tags = self.data["existing_tags"]
+            if existing_tags:
+                #cl(existing_tags)
+                tags = existing_tags.split(",")
+                q = TaggedItem.objects.get_by_model(UfsObj, Tag.objects.filter(name__in=tags))
+        if "url_contains" in self.data:
+            url_contains = self.data["url_contains"]
+            if url_contains:
+                #cl(url_prefix)
+                q = q.filter(ufs_url__contains=url_contains)
+        if "full_path_contains" in self.data:
+            full_path_contains = self.data["full_path_contains"]
+            if full_path_contains:
+                #cl(full_path_prefix)
+                q = q.filter(full_path__contains=full_path_contains)
+        return q
+
+
+class ApplyTagsThread(UfsFilter, threading.Thread):
 
     def run(self):
         if not ("tags" in self.data):
             return
 
-        print "Filtering"
-        q = UfsObj.objects.all()
-        if "existing_tags" in self.data:
-            existing_tags = self.data["existing_tags"]
-            if existing_tags:
-                cl(existing_tags)
-                tags = existing_tags.split(",")
-                q = TaggedItem.objects.get_by_model(UfsObj, Tag.objects.filter(name__in=tags))
+        for obj in self.get_obj_filters():
+            #print obj
+            #obj.tags = self.data["tags"]
+            Tag.objects.add_tag(obj, self.data["tags"], tag_app=self.tag_app)
 
-        if "url_contains" in self.data:
-            url_prefix = self.data["url_contains"]
-            if url_prefix:
-                cl(url_prefix)
-                q = q.filter(ufs_url__contains=url_prefix)
-        if "full_path_contains" in self.data:
-            full_path_prefix = self.data["full_path_contains"]
-            if full_path_prefix:
-                cl(full_path_prefix)
-                q = q.filter(full_path__contains=full_path_prefix)
 
-        for obj in q:
-            print obj
-            obj.tags = self.data["tags"]
+class RemoveTagsThread(UfsFilter, threading.Thread):
+    def run(self):
+        if not ("tags" in self.data):
+            return
+
+        for obj in self.get_obj_filters():
+            #print obj
+            #obj.tags = self.data["tags"]
+            removing_tag_list = parse_tag_input(self.data["tags"])
+            final_tags = []
+            for tag in obj.tags:
+                if not (tag.name in removing_tag_list):
+                    final_tags.append(tag.name)
+            obj.tags = ",".join(final_tags)
 
 
 def apply_tags_to(request):
     data = retrieve_param(request)
-    t = TaggerThread()
+    t = ApplyTagsThread()
     t.set_data(data)
+    t.set_tag_app('user:' + request.user.username)
     t.start()
-    return HttpResponse('{"result": "tagging processing"}', mimetype="application/json")
+    return HttpResponse('{"result": "Apply tags processing"}', mimetype="application/json")
+
+
+def remove_tags_from(request):
+    data = retrieve_param(request)
+    t = RemoveTagsThread()
+    t.set_data(data)
+    t.set_tag_app('user:' + request.user.username)
+    t.start()
+    return HttpResponse('{"result": "Remove tags processing"}', mimetype="application/json")

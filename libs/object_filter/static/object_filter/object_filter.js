@@ -1,10 +1,26 @@
+function getFilterString() {
+    var queryParam = "";
+    var full_path = $("#full-path").val();
+    if (full_path != "") {
+        queryParam += "&full_path_contains=" + encodeURI(full_path);
+    }
+    var ufs_url = $("#ufs-url").val();
+    if (ufs_url != "") {
+        queryParam += "&url_contains=" + encodeURI(ufs_url);
+    }
+    var existing_tags = $("#tag").val();
+    if (existing_tags != "") {
+        queryParam += "&existing_tags=" + encodeURI(existing_tags);
+    }
+    return queryParam;
+}
 $(document).ready(function() {
 
 
 
     $('#scrolling-pane').on("dblclick", ".element-root", function(event){
         //console.log("dblclicked", event, $(event.currentTarget).attr("full_path"));
-        
+
         $.getJSON("/ui_framework/start?"+$(event.currentTarget).attr("full_path"), function(data){});
     });
 
@@ -37,25 +53,22 @@ $(document).ready(function() {
     );
     $("#apply-tags-button").button().click(
                 function () {
-                                var tags = $("#apply-tags-input").val();
+                                var tags = $("#using-tags-input").val();
                                 if(tags == "") return;
                                 var queryParam = "tags="+tags;
-                                var full_path = $("#full-path").val();
-                                if(full_path!=""){
-                                    queryParam += "&full_path_contains="+encodeURI(full_path);
-                                }
-                                var ufs_url = $("#ufs-url").val();
-                                if(ufs_url!=""){
-                                    queryParam += "&url_contains="+encodeURI(ufs_url);
-                                }
-                                var existing_tags = $("#tag").val();
-                                if(existing_tags!=""){
-                                    queryParam += "&existing_tags="+encodeURI(existing_tags);
-                                }
-                                 $.getJSON("/objsys/apply_tags_to/?"+queryParam);
+                                queryParam += getFilterString(queryParam);
+                                $.getJSON("/objsys/apply_tags_to/?"+queryParam);
                             }
     );
-
+    $("#remove-tags-button").button().click(
+                function () {
+                                var tags = $("#using-tags-input").val();
+                                if(tags == "") return;
+                                var queryParam = "tags="+tags;
+                                queryParam += getFilterString(queryParam);
+                                $.getJSON("/objsys/remove_tags_from/?"+queryParam);
+                            }
+    );
     function genHtml(data)
     {
         //console.log(data);
