@@ -1,29 +1,28 @@
 # Create your views here.
 #from django.template import Context, loader
 #from django.http import HttpResponse
+import os
+import json
+import uuid
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.conf import settings
 import django.utils.timezone as timezone
-import os
+from libs.logsys.logSys import cl
+from libs.utils.django_utils import retrieve_param
 from models import UfsObj, get_ufs_obj_from_ufs_url
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from libs.services.svc_base.gui_service import GuiService
-import libsys
 from libs.utils.string_tools import SpecialEncoder
 import libs.utils.objTools as objtools
 from tagging.models import Tag, TaggedItem
-import json
-import uuid
-
+from django.template import RequestContext
 
 @login_required
 def tagging(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
 
     #Load saved url
     if request.session.has_key("saved_urls"):
@@ -33,7 +32,7 @@ def tagging(request):
     selected_url = []
     urls = []
     close_flag = False
-    if data.has_key("encoding"):
+    if "encoding" in data:
         encoding = data["encoding"]
     else:
         encoding = "utf8"
@@ -116,20 +115,14 @@ def tagging(request):
 
 
 def manager(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     c = {"user": request.user, "tree": {"name": "left_tree", "url": "/collection_management/jstree/?node="}}
     c.update(csrf(request))
     return render_to_response('objsys/manager.html', c)
 
 
 def query(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     c = {"user": request.user}
     c.update(csrf(request))
     return render_to_response('objsys/query.html', c)
@@ -148,10 +141,7 @@ class StarterThread(threading.Thread):
 
 
 def remove_tag(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     if data.has_key('ufs_url') and data.has_key('tag'):
         #print data['ufs_url']
         obj_list = UfsObj.objects.filter(ufs_url=data['ufs_url'])
@@ -176,10 +166,7 @@ def get_tags(request):
 
 
 def add_tag(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     if data.has_key('ufs_url') and data.has_key('tag'):
         obj = get_ufs_obj_from_ufs_url(data['ufs_url'])
         Tag.objects.add_tag(obj, data["tag"], tag_app='user:' + request.user.username)
@@ -212,10 +199,7 @@ def start(request):
 
 
 def remove_thumb_for_paths(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     cnt = 0
     if data.has_key("path"):
         path = data["path"]
@@ -233,10 +217,7 @@ def remove_thumb_for_paths(request):
 
         
 def rm_objs_for_path(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     cnt = 0
     if "ufs_url" in data:
         res = []
@@ -253,13 +234,10 @@ def rm_objs_for_path(request):
         #TaggedItem.objects.filter(object__ufs_url__startswith=data["ufs_url"]).delete()
         UfsObj.objects.filter(ufs_url__startswith=prefix).delete()
         return HttpResponse(res, mimetype="application/json")
-        
-        
+
+
 def rm_obj_from_db(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
     if "ufs_url" in data:
         for obj in UfsObj.objects.filter(ufs_url=data["ufs_url"]):
             obj.tags = ""
@@ -267,9 +245,49 @@ def rm_obj_from_db(request):
         return HttpResponse('{"result": "removed: %s"}' % (data["ufs_url"]), mimetype="application/json")
     return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
 
-from django.template import RequestContext
 
 def listing(request):
     objects = UfsObj.objects.all()
     return render_to_response('objsys/listing.html', {"objects": objects},
                               context_instance=RequestContext(request))
+
+
+class TaggerThread(threading.Thread):
+    def set_data(self, data):
+        self.data = data
+
+    def run(self):
+        if not ("tags" in self.data):
+            return
+
+        print "Filtering"
+        q = UfsObj.objects.all()
+        if "existing_tags" in self.data:
+            existing_tags = self.data["existing_tags"]
+            if existing_tags:
+                cl(existing_tags)
+                tags = existing_tags.split(",")
+                q = TaggedItem.objects.get_by_model(UfsObj, Tag.objects.filter(name__in=tags))
+
+        if "url_contains" in self.data:
+            url_prefix = self.data["url_contains"]
+            if url_prefix:
+                cl(url_prefix)
+                q = q.filter(ufs_url__contains=url_prefix)
+        if "full_path_contains" in self.data:
+            full_path_prefix = self.data["full_path_contains"]
+            if full_path_prefix:
+                cl(full_path_prefix)
+                q = q.filter(full_path__contains=full_path_prefix)
+
+        for obj in q:
+            print obj
+            obj.tags = self.data["tags"]
+
+
+def apply_tags_to(request):
+    data = retrieve_param(request)
+    t = TaggerThread()
+    t.set_data(data)
+    t.start()
+    return HttpResponse('{"result": "tagging processing"}', mimetype="application/json")

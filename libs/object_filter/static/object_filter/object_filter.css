@@ -1,6 +1,6 @@
 .clear-div{clear:both;}
 /*#scrolling-pane{overflow-y:hidden;height: 400px;}
 #main-container{height:500px;overflow:hidden;}*/
-div {border: 1px solid;}
+/*div {border: 1px solid;}*/
 .thumb-view div.tool-bar-class {position:absolute; top:10px; left:20px; z-index:999}
 .detailed-view div.tool-bar-class {position:absolute; top:10px; left:800px; z-index:999}

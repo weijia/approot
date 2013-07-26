@@ -35,6 +35,26 @@ $(document).ready(function() {
                                                             $("#obj-pane").addClass("thumb-view");
                                                         }
     );
+    $("#apply-tags-button").button().click(
+                function () {
+                                var tags = $("#apply-tags-input").val();
+                                if(tags == "") return;
+                                var queryParam = "tags="+tags;
+                                var full_path = $("#full-path").val();
+                                if(full_path!=""){
+                                    queryParam += "&full_path_contains="+encodeURI(full_path);
+                                }
+                                var ufs_url = $("#ufs-url").val();
+                                if(ufs_url!=""){
+                                    queryParam += "&url_contains="+encodeURI(ufs_url);
+                                }
+                                var existing_tags = $("#tag").val();
+                                if(existing_tags!=""){
+                                    queryParam += "&existing_tags="+encodeURI(existing_tags);
+                                }
+                                 $.getJSON("/objsys/apply_tags_to/?"+queryParam);
+                            }
+    );
 
     function genHtml(data)
     {

@@ -1,4 +1,5 @@
 from tastypie.resources import ModelResource
+from libs.utils.django_utils import retrieve_param
 from models import UfsObj
 from tastypie.authentication import SessionAuthentication
 from tastypie.authentication import Authentication
@@ -6,6 +7,7 @@ from tastypie.authorization import DjangoAuthorization
 #from django.contrib.auth.models import User, Group
 from tagging.models import Tag
 from tagging.models import TaggedItem
+
 
 class DjangoUserAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
@@ -17,15 +19,13 @@ class DjangoUserAuthentication(Authentication):
     def get_identifier(self, request):
         return request.user.username
 
+
 class UfsObjResource(ModelResource):
     #json_indent = 2
-    
+
     def get_object_list(self, request):
         #return super(UfsObjResource, self).get_object_list(request).filter(start_date__gte=now)
-        if request.method == "GET":
-            data = request.GET
-        else:
-            data = request.POST
+        data = retrieve_param(request)
         tag = None
         if request.session.has_key("tag"):
             if data.has_key("offset"):
@@ -33,11 +33,10 @@ class UfsObjResource(ModelResource):
             else:
                 #Do not have offset means it may be a new serial of object query
                 del request.session["tag"]
-            
 
-        if data.has_key("tag"):
+        if "tag" in data:
             tag = data["tag"]
-            
+
         if tag is None:
             return super(UfsObjResource, self).get_object_list(request)
         else:
@@ -49,14 +48,15 @@ class UfsObjResource(ModelResource):
                 objs = UfsObj.objects.none()
             return objs
 
-        
+
     def dehydrate(self, bundle):
         res = []
         for tag in bundle.obj.tags:
             res.append(tag)
         bundle.data["tags"] = res
         return bundle
-    '''    
+
+    '''
     def build_filters(self, filters=None):
         if filters is None:
             filters = {}
@@ -69,7 +69,8 @@ class UfsObjResource(ModelResource):
             orm_filters["pk__in"] = [i.pk for i in sqs]
 
         return orm_filters
-    '''    
+    '''
+
     class Meta:
         queryset = UfsObj.objects.all().order_by("timestamp")
         resource_name = 'ufsobj'
@@ -80,6 +81,8 @@ class UfsObjResource(ModelResource):
             "ufs_url": ('contains',),
             "full_path": ('contains', 'iendswith'),
         }
+
+
 '''
 class TagResource(ModelResource):
     class Meta:
@@ -88,8 +91,8 @@ class TagResource(ModelResource):
         #authentication = SessionAuthentication()
         authentication = DjangoUserAuthentication()
         authorization = DjangoAuthorization()
-'''        
-        
+'''
+
 '''
 class UserResource(ModelResource):
     class Meta:
