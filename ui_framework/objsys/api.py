@@ -27,8 +27,8 @@ class UfsObjResource(ModelResource):
         #return super(UfsObjResource, self).get_object_list(request).filter(start_date__gte=now)
         data = retrieve_param(request)
         tag = None
-        if request.session.has_key("tag"):
-            if data.has_key("offset"):
+        if "tag" in request.session:
+            if "offset" in data:
                 tag = request.session["tag"]
             else:
                 #Do not have offset means it may be a new serial of object query

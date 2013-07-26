@@ -1,177 +1,70 @@
-function getFilterString() {
-    var queryParam = "";
-    var full_path = $("#full-path").val();
-    if (full_path != "") {
-        queryParam += "&full_path_contains=" + encodeURI(full_path);
+
+function genHtml(data)
+{
+    //console.log(data);
+    var resHtml = ""
+    $.each(data.objects, function(key, value)
+    {
+        var objName = "";
+        if(value.object_name)
+        {
+            objName = value.object_name;
+        }
+        else
+        {
+            objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
+        }
+        resHtml += String.format('<div class="element-root" style="position:relative" ufs_url="{0}" full_path="{1}">'+
+                    '<img class="element-thumb" src="/thumb/?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
+                    value.ufs_url, value.full_path, '<li>'+value.tags.join('</li><li>')+'</li>',
+                    objName, value.description.replace(/"/g,''),
+                    encodeURI(value.full_path));
+    });
+    if(null != data.meta.next){
+        $("#next-page-pane").html(String.format('<a href="{0}">Next Page</a>', data.meta.next));
     }
-    var ufs_url = $("#ufs-url").val();
-    if (ufs_url != "") {
-        queryParam += "&url_contains=" + encodeURI(ufs_url);
+    else{
+        $("#next-page-pane").html(String.format('<a href="{0}">Next Page</a>', data.meta.next));
     }
-    var existing_tags = $("#tag").val();
-    if (existing_tags != "") {
-        queryParam += "&existing_tags=" + encodeURI(existing_tags);
-    }
-    return queryParam;
+    $("#obj-pane").append(resHtml);
+    //$('.tag-list-no-autocomplete').tagit().removeClass('tag-list-no-autocomplete');
+    $('.tag-list-no-autocomplete').tagit({
+                                            autocomplete:{ appendTo: "#obj-pane",
+                                                    source: function( request, response ) {
+                                                            $.getJSON("/objsys/get_tags/").success(function( data ) {
+                                                                    //console.log(data);
+                                                                    var res = new Array();
+                                                                    if(0 == data.length){
+                                                                        return [];
+                                                                    }
+
+                                                                    for(var i=0; i< data.length; i++)
+                                                                    {
+                                                                        res.push({label: data[i], value: data[i]});
+                                                                    }
+                                                                    return response(res);
+                                                                });
+
+                                                    }
+                                            },
+                                            beforeTagRemoved: function(event, ui){
+                                                //console.log(ui, ui.tag);
+                                                //ui.tag.parents('.element-root').attr('ufs_url')
+                                                var req = $.getJSON('/objsys/remove_tag/?ufs_url='+encodeURIComponent(ui.tag.parents('.element-root').attr('ufs_url'))+
+                                                                    '&tag='+ui.tagLabel);
+                                            },
+                                            beforeTagAdded: function(event, ui){
+                                                var req = $.getJSON('/objsys/add_tag/?ufs_url='+encodeURIComponent($(this).parents('.element-root').attr('ufs_url'))+
+                                                                    '&tag='+ui.tagLabel);
+                                            }
+                                        })
+        .removeClass('tag-list-no-autocomplete');
 }
+
 $(document).ready(function() {
 
 
 
-    $('#scrolling-pane').on("dblclick", ".element-root", function(event){
-        //console.log("dblclicked", event, $(event.currentTarget).attr("full_path"));
-
-        $.getJSON("/ui_framework/start?"+$(event.currentTarget).attr("full_path"), function(data){});
-    });
-
-    $("#obj-pane").on("click", "#delButton", function(e){
-        $.getJSON("/objsys/rm_obj_from_db/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
-    });
-    $("#obj-pane").on("click", "#delDirectories", function(e){
-        $.getJSON("/objsys/rm_objs_for_path/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
-    });
-
-    $("#obj-pane").on("mouseenter", ".element-root", function(e){
-        //The this pointer is pointing to ".element-root"
-        $("#toolBar").remove();
-        $(this).append('<div id="toolBar" class="tool-bar-class">' +
-                           '<p id="delButton">delete</p><p id="delDirectories">delete dir</p></div>');
-        //console.log("created tool bar for ", e.target);
-    });
-
-    $("#detail-view-button").button().click(
-                                            function () {
-                                                            $("#obj-pane").removeClass("thumb-view");
-                                                            $("#obj-pane").addClass("detailed-view");
-                                                        }
-    );
-    $("#thumb-view-button").button().click(
-                                            function () {
-                                                            $("#obj-pane").removeClass("detailed-view");
-                                                            $("#obj-pane").addClass("thumb-view");
-                                                        }
-    );
-    $("#apply-tags-button").button().click(
-                function () {
-                                var tags = $("#using-tags-input").val();
-                                if(tags == "") return;
-                                var queryParam = "tags="+tags;
-                                queryParam += getFilterString(queryParam);
-                                $.getJSON("/objsys/apply_tags_to/?"+queryParam);
-                            }
-    );
-    $("#remove-tags-button").button().click(
-                function () {
-                                var tags = $("#using-tags-input").val();
-                                if(tags == "") return;
-                                var queryParam = "tags="+tags;
-                                queryParam += getFilterString(queryParam);
-                                $.getJSON("/objsys/remove_tags_from/?"+queryParam);
-                            }
-    );
-    function genHtml(data)
-    {
-        //console.log(data);
-        var resHtml = ""
-        $.each(data.objects, function(key, value)
-        {
-            var objName = "";
-            if(value.object_name)
-            {
-                objName = value.object_name;
-            }
-            else
-            {
-                objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
-            }
-            resHtml += String.format('<div class="element-root" style="position:relative" ufs_url="{0}" full_path="{1}">'+
-                        '<img class="element-thumb" src="/thumb/?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
-                        value.ufs_url, value.full_path, '<li>'+value.tags.join('</li><li>')+'</li>', 
-                        objName, value.description.replace(/"/g,''),
-                        encodeURI(value.full_path));
-        });
-        if(null != data.meta.next){
-            $("#next-page-pane").html(String.format('<a href="{0}">Next Page</a>', data.meta.next));
-        }
-        else{
-            $("#next-page-pane").html(String.format('<a href="{0}">Next Page</a>', data.meta.next));
-        }
-        $("#obj-pane").append(resHtml);
-        //$('.tag-list-no-autocomplete').tagit().removeClass('tag-list-no-autocomplete');
-        $('.tag-list-no-autocomplete').tagit({
-                                                autocomplete:{ appendTo: "#obj-pane", 
-                                                        source: function( request, response ) {
-                                                                $.getJSON("/objsys/get_tags/").success(function( data ) {
-                                                                        //console.log(data);
-                                                                        var res = new Array();
-                                                                        if(0 == data.length){
-                                                                            return [];
-                                                                        }
-
-                                                                        for(var i=0; i< data.length; i++)
-                                                                        {
-                                                                            res.push({label: data[i], value: data[i]});
-                                                                        }
-                                                                        return response(res);
-                                                                    });
-
-                                                        }
-                                                },
-                                                beforeTagRemoved: function(event, ui){
-                                                    //console.log(ui, ui.tag);
-                                                    //ui.tag.parents('.element-root').attr('ufs_url')
-                                                    var req = $.getJSON('/objsys/remove_tag/?ufs_url='+encodeURIComponent(ui.tag.parents('.element-root').attr('ufs_url'))+
-                                                                        '&tag='+ui.tagLabel);                                                    
-                                                },
-                                                beforeTagAdded: function(event, ui){
-                                                    var req = $.getJSON('/objsys/add_tag/?ufs_url='+encodeURIComponent($(this).parents('.element-root').attr('ufs_url'))+
-                                                                        '&tag='+ui.tagLabel);
-                                                }
-                                            })
-            .removeClass('tag-list-no-autocomplete');
-    }
-    $('#full-path, #ufs-url, #tag').autocomplete({
-        source: function( request, response ) {
-            //console.log(request, response, this);
-            //console.log(this.element[0].id);
-            //var query = this.element[0].id.replace("-", "_")+"__contains";
-            $("#obj-pane").html("");
-
-            if(this.element[0].id == "full-path"){
-                var queryData = {
-                        full_path__iendswith: request.term,
-                        format: "json"
-                    };
-            }
-            else if(this.element[0].id == "ufs-url") {
-                var queryData = {
-                        ufs_url__contains: request.term,
-                        format: "json"
-                    };
-            }
-            else{
-                var queryData = {
-                        tag: request.term,
-                        format: "json"
-                    };
-            }
-            var url = "/objsys/api/ufsobj/ufsobj/?";
-            if($("#query-base").length > 0)
-            {
-                url = $("#query-base").val();
-            }
-            $.ajax({
-                    url: url,
-                    dataType: "json",
-                    data: queryData,
-                    success: function( data ) {
-                        genHtml(data);
-                    }
-                });
-                
-
-        }
-    });//End of $('path-contains').autocomplete({
     var parent = null;
     //console.log('-----------------', $('#content').length);
     if(0 == $('#content').length){
