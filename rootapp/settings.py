@@ -36,7 +36,7 @@ if postgresql:
     MYSQL_HOST_S = '127.0.0.1' 
     MYSQL_PORT = '3306' 
     '''
-    print 'using postgresql'
+    print 'using postgresql', postgresql, postgresql_port
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -172,7 +172,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
     "django.core.context_processors.static",
-    'ui_framework.objsys.custom_context_processors.head_form'
+    'ui_framework.objsys.custom_context_processors.head_form',
+    'django.core.context_processors.request',
 )
 ANONYMOUS_USER_ID = -1
 
@@ -189,6 +190,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'pagination.middleware.PaginationMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -238,6 +240,7 @@ INSTALLED_APPS = (
     'win_smb',
     'object_filter',
     'thumbapp',
+    'pagination',
 )
 
 # A sample logging configuration. The only tangible logging

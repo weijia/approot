@@ -266,3 +266,10 @@ def rm_obj_from_db(request):
             obj.delete()
         return HttpResponse('{"result": "removed: %s"}' % (data["ufs_url"]), mimetype="application/json")
     return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
+
+from django.template import RequestContext
+
+def listing(request):
+    objects = UfsObj.objects.all()
+    return render_to_response('objsys/listing.html', {"objects": objects},
+                              context_instance=RequestContext(request))

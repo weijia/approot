@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-from libs.services.svc_base.gui_service import GuiService
+#from libs.services.svc_base.gui_service import GuiService
 
 pwd = os.getcwd()
 sys.path.insert(0, os.path.join(pwd, "libs"))

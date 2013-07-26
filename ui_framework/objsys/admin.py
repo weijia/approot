@@ -9,6 +9,7 @@ class CollectionItemAdmin(GuardedModelAdmin):
     pass
 
 register_menu(u'connection', u'processor creator')
+register_menu(u'objsys/listing', u'object listing')
 
 admin.site.register(UfsObj)
 admin.site.register(CollectionItem, CollectionItemAdmin)

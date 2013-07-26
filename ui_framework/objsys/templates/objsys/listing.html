@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+{% load pagination_tags %}
+
+{% autopaginate objects 10 %}
+{% for object in objects %}
+ {{ object.ufs_url }}<br/>
+{% endfor %}
+
+{% paginate %}
