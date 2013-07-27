@@ -11,3 +11,9 @@ obs
 /config.json
 /static
 /libs/jinshankuaipan/jinshan_key.py
+
+/libs/services/beanstalkdServices
+
+/libs/services/clients
+
+/libs/services/tests

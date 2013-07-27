@@ -13,6 +13,10 @@ from pyftpdlib.handlers import TLS_FTPHandler
 import libsys
 from configuration import g_config_dict
 
+
+logging.basicConfig(level=logging.DEBUG)
+
+
 def main():
     authorizer = DummyAuthorizer()
     authorizer.add_user('user', '12345abcdef6789', 'c:\\', perm='elradfmw')

@@ -69,6 +69,13 @@ $(document).ready(function () {
                                                             $("#obj-pane").addClass("thumb-view");
                                                         }
     );
+    $("#export-tags-button").button().click(
+                function () {
+                                var queryParam = "";
+                                queryParam += getFilterParams(queryParam);
+                                $.getJSON("/object_filter/export_tags/?"+queryParam);
+                            }
+    );
     $("#apply-tags-button").button().click(
                 function () {
                                 var tags = $("#using-tags-input").val();
