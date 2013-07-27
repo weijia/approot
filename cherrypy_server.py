@@ -13,7 +13,16 @@ from django.conf import settings
 from django.core.handlers.wsgi import WSGIHandler
 from django.http import HttpResponseServerError
 import libsys
-import sys
+#import sys
+from cherrypy.lib.static import serve_file
+
+
+class Thumb:
+    @cherrypy.expose
+    def cherry(self, target):
+        return serve_file("D:\\codes\\python\\codes\\ufs_django\\build\\thumb\\bmp_T.jpg")
+
+
  
 class Server(object):
     def __init__(self, port):
@@ -35,7 +44,7 @@ class Server(object):
  
         if hasattr(engine, "console_control_handler"):
             engine.console_control_handler.subscribe()
- 
+        cherrypy.tree.mount(Thumb(), '/thumb/')
         engine.start()
         engine.block()
  
