@@ -3,6 +3,7 @@ import os
 import threading
 import time
 from libs.tagging.models import TaggedItem
+from libs.utils.objTools import getHostName
 import libsys
 from django.http import HttpResponse
 from django.core.context_processors import csrf
@@ -46,7 +47,7 @@ class ExportTagsThread(UfsFilter, threading.Thread):
         ######
         # Quitting, so save last_timestamp
         if 0 != len(final_data):
-            export_json_to_folder(final_data, "../tag_dump/")
+            export_json_to_folder({"data": final_data, "host": getHostName()}, "../tag_dump/")
         else:
             print "No more tag applied"
 
