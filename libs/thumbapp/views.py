@@ -6,7 +6,7 @@ from libs.obj_related.local_obj import LocalObj
 
 import libsys
 from django.http import HttpResponse
-from ui_framework.objsys.models import UfsObj
+from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_full_path
 from libs.utils.transform import transformDirToInternal
 from models import ThumbCache
 import libs.utils.objTools as objtools
@@ -18,6 +18,34 @@ from django.utils.http import urlquote
 from libs.logsys.logSys import *
 
 from urllib import unquote
+
+
+def get_thumb_file(target_file):
+    full_path = transformDirToInternal(target_file)
+    if not os.path.exists(full_path):
+        the_file = '/static/image/icons/file-broken-icon.png'
+    else:
+        obj = get_ufs_obj_from_full_path(full_path)
+        thumb_list = ThumbCache.objects.filter(obj=obj)
+
+        if 0 == thumb_list.count():
+
+            #Thumb not generated, generate it
+            target_dir = os.path.join(libsys.get_root_dir(), "../thumb")
+            ensure_dir(target_dir)
+
+            the_file = get_thumb(target_file, target_dir)
+
+            if not (the_file is None):
+                ThumbCache(obj=obj, thumb_full_path=the_file).save()
+
+        else:
+            the_file = thumb_list[0].thumb_full_path
+
+        if the_file is None:
+            the_file = get_icon(full_path, obj.get_type())
+            raise "No thumb"
+    return the_file
 
 
 def get_icon(full_path, file_type=None):
@@ -66,48 +94,7 @@ def thumb(request):
 
     full_path = transformDirToInternal(target_file)
 
-    if not os.path.exists(full_path):
-        '''
-        response = HttpResponse("",
-                                content_type='text/plain')    
-        return response
-        
-        raise "File not exists"
-        '''
-        return redirect('/static/image/icons/file-broken-icon.png')
-
-    obj_list = UfsObj.objects.filter(full_path=full_path).order_by('timestamp')
-
-    if 0 == obj_list.count():
-        ufs_url = objtools.getUfsUrlForPath(full_path)
-        obj = UfsObj(ufs_url=ufs_url, uuid=unicode(uuid.uuid4()), timestamp=timezone.now(), user=request.user,
-                     full_path=full_path)
-        obj.save()
-    else:
-        obj = obj_list[0]
-
-    thumb_list = ThumbCache.objects.filter(obj=obj)
-
-    if 0 == thumb_list.count():
-
-
-        #Thumb not generated, generate it        
-        target_dir = os.path.join(libsys.get_root_dir(), "../thumb")
-        ensure_dir(target_dir)
-
-        the_file = get_thumb(target_file, target_dir)
-
-        if not (the_file is None):
-            ThumbCache(obj=obj, thumb_full_path=the_file).save()
-
-    else:
-        the_file = thumb_list[0].thumb_full_path
-
-    if the_file is None:
-        icon_path = get_icon(full_path, obj.get_type())
-        if not (icon_path is None):
-            return redirect(icon_path)
-        return HttpResponse("")
+    get_thumb_file(full_path)
 
     #the_file = '/some/file/name.png'
     filename = os.path.basename(unicode(the_file))
