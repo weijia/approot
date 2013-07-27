@@ -119,6 +119,27 @@ def gen_spec(settings, existing_config):
         'django.conf.urls.defaults',
         'django.dispatch.dispatcher',
 
+        #Needed when using cherrypy, copied from http://blog.robotercoding.com/?p=124
+        'email.mime.audio',
+        'email.mime.base',
+        'email.mime.image',
+        'email.mime.message',
+        'email.mime.multipart',
+        'email.mime.nonmultipart',
+        'email.mime.text',
+        'email.charset',
+        'email.encoders',
+        'email.errors',
+        'email.feedparser',
+        'email.generator',
+        'email.header',
+        'email.iterators',
+        'email.message',
+        'email.parser',
+        'email.utils',
+        'email.base64mime',
+        'email.quoprimime',
+
 
         #"django.middleware.common",
         #"django.contrib.sessions.middleware",

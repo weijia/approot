@@ -60,12 +60,18 @@ includes = ["PyQt4.QtCore",
             'magic',
             'desktop.filemanager.folder_view',
             #'libs.custom_collections',
-            'libs.custom_collections.modules.local_filesystem'
+            'libs.custom_collections.modules.local_filesystem',
+            #For Cherrypy
+            #"django.contrib.messages",
+            "email",
+            "email.message"
 ]
 
 script_list = ['rootapp', 'tornado_main', 'tagging', 'ext_svr', 'sftpserver',
                #'BeanstalkdLauncherService',
-               'manage', 'initial_launcher',
+               'manage',
+               #'initial_launcher',
+               'cherrypy_server',
                'service_starter','msg_based_service_mgr',
                # ('monitor.py', 'libs/services/apps/monitor.exe'),
                # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
