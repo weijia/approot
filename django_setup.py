@@ -16,14 +16,14 @@ def add_django_module_from_list(module_list, includes):
 
 
 def gen_spec(settings, existing_config):
-    for i in settings.INSTALLED_APPS:
+    for loaded_django_app in settings.INSTALLED_APPS:
         #print i
-        module_i = __import__(i)
+        module_i = __import__(loaded_django_app)
 
         #print 'name:', module_i.__name__
         #print 'full name:', i
         #print i.split(".")[1:]
-        module_path = "/".join(i.split(".")[1:])
+        module_path = "/".join(loaded_django_app.split(".")[1:])
         #print module_path
         module_root = os.path.join(module_i.__path__[0], module_path)
         #print module_i.__path__
@@ -39,7 +39,7 @@ def gen_spec(settings, existing_config):
                     templatetags_file_full_path = os.path.join(possible_template_path, templatetags_file)
 
                     if not os.path.isdir(templatetags_file_full_path):
-                        existing_config['includes'].append(i + ".templatetags." + name)
+                        existing_config['includes'].append(loaded_django_app + ".templatetags." + name)
                         #print i+".templatetags."+name
 
 
@@ -65,10 +65,15 @@ def gen_spec(settings, existing_config):
         for django_sub_module in ['urls', 'views', 'admin', 'api', 'models', 'forms', 'decorators', 'mixins',
                                   'management']:
             try:
-                sub_module = __import__(i + "." + django_sub_module)
-                existing_config['includes'].append(i + "." + django_sub_module)
-            except ImportError:
-                pass
+                sub_module = __import__(loaded_django_app + "." + django_sub_module)
+                existing_config['includes'].append(loaded_django_app + "." + django_sub_module)
+            except ImportError, e:
+                #print e
+                #print e.message
+                #print e.args
+                if ("No module named %s" % django_sub_module) == e.message:
+                    continue
+                raise
 
                 #########
                 # TODO: import module from url
@@ -160,6 +165,7 @@ def gen_spec(settings, existing_config):
         "tags",
         "ui_framework.connection",
         "desktop.filemanager",
+        #"thumbapp.views"
     ]
     )
 
