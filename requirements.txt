@@ -14,3 +14,4 @@ libmagic
 pillow
 PyQt
 pywin32
+cherrypy
