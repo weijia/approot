@@ -135,6 +135,9 @@ class CrossGuiLauncher(object):
             param.extend(data["param"])
             print 'launching: ', param
             self.create_console_wnd_for_app(param)
+        if data["command"] == "LaunchWithoutSession":
+            param[0] = self.find_app(param[0])
+            self.create_console_wnd_for_app(param)
         elif data["command"] == "LaunchApp":
             self.start_app_by_name_with_session_id(data["app_name"], data["param"])
         else:
@@ -199,15 +202,19 @@ class CrossGuiLauncher(object):
         self.app_list_ui[app_path_and_param_gen_str] = {"checked": False, "action": self.on_app_item_selected}
         return collector
 
-    def start_app_by_name_with_session_id(self, app_name, param=[]):
+    def find_app(self, app_name):
         full_path = fileTools.findFileInProduct(app_name)
         if full_path is None:
             full_path = fileTools.findAppInProduct(app_name)
-            if full_path is None:
-                print app_name, 'not found ---- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-                return None
-        all_param = [full_path, '--session_id', "%f" % self.session_id]
+        return full_path
+
+    def start_app_by_name_with_session_id(self, app_name, param=[]):
+        full_path = self.find_app(app_name)
+        if full_path is None:
+            return
+        all_param = [full_path]
         all_param.extend(param)
+        all_param.extend(['--session_id', "%f" % self.session_id])
         return self.create_console_wnd_for_app(all_param)
 
 

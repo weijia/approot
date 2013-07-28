@@ -11,6 +11,9 @@
 <SCRIPT type="text/javascript" src="/static/js/infinite-scroll/jquery.infinitescroll.js"></SCRIPT>
 {% endblock %}
 {% block body_content %}
+<script>
+var gThumbServerBase = "{{ thumb_server_base }}";
+</script>
 <div id="main-container">
     <div id="filter-pane">
     {% if query_base_exists %}

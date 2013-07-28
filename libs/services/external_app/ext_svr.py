@@ -1,4 +1,5 @@
 import libsys
+from libs.services.svc_base.launcher import Launcher
 import configuration
 import libs.utils.filetools as fileTools
 import psycopg2
@@ -19,10 +20,12 @@ class ExtAppMgrIntf(object):
         pass
 
 
+'''
 def start_app_shortcut(app_name, param = []):
     #print "-------------------------", os.environ["POSTGRESQL_ROOT"]
     gui_service = GuiService()
     gui_service.put({"command": "LaunchApp", "app_name": app_name, "param": param})
+'''
 
 
 def wait_for_app(app_and_param_list):
@@ -42,7 +45,7 @@ class PostgreSqlApp(ExtAppMgrIntf):
         ###########################
         # Start postgresql
         ###########################
-        start_app_shortcut('postgresql')
+        Launcher().start_app_with_name_no_wait('postgresql')
 
         #Define our connection string
         conn_string = "host='localhost' dbname='postgres' user='postgres' password=''"
@@ -105,6 +108,9 @@ if __name__ == "__main__":
         if not os.path.exists(flag_file):
             open(flag_file, "w").close()
 
+    thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
+    #Start thumb server
+    Launcher().start_app_with_name_no_wait("cherrypy_server", ["%d"%thumb_port])
     #Other initial apps need to be launched may be added to initial_launcher
     #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
     #start_app_shortcut("start_ext")

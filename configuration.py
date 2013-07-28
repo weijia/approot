@@ -28,6 +28,7 @@ g_config_dict = {
     "ufs_beanstalkd_port": gServerStartPort+2,
     "POSTGRESQL_PORT": gServerStartPort+3,
     "drop_wnd_color": None,
+    "thumb_server_port": gServerStartPort+4,
 }
 import traceback
 loaded_config = {}

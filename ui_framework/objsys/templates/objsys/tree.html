@@ -4,22 +4,24 @@
 <script src="/static/content_loader.js" type="text/javascript"></script>
 
 <script>
-$("#{{tree.name}}").jstree({
-    "plugins" : ["contextmenu", "cookies", "json_data", "themes","ui","checkbox"],
-    "json_data" : { 
-        "ajax" : {
-            "url" : function (n) {
-                if(n != -1)
-                {
-                    //console.debug(n);
-                    n = n.attr('id');
+$(function(){
+    $("#{{tree.name}}").jstree({
+        "plugins" : ["contextmenu", "cookies", "json_data", "themes","ui","checkbox"],
+        "json_data" : {
+            "ajax" : {
+                "url" : function (n) {
+                    if(n != -1)
+                    {
+                        //console.debug(n);
+                        n = n.attr('id');
 
-                }
-                return "{{tree.url}}"+encodeURI(n);
-            },
-            "type":"POST"
+                    }
+                    return "{{tree.url}}"+encodeURI(n);
+                },
+                "type":"POST"
+            }
         }
-    }
+    })
 });
 
 

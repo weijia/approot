@@ -15,10 +15,12 @@ function genHtml(data)
             objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
         }
         resHtml += String.format('<div class="element-root" style="position:relative" ufs_url="{0}" full_path="{1}">'+
-                    '<img class="element-thumb" src="/thumb/cherry/?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
+                    '<img class="element-thumb" src="{6}?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
                     value.ufs_url, value.full_path, '<li>'+value.tags.join('</li><li>')+'</li>',
                     objName, value.description.replace(/"/g,''),
-                    encodeURI(value.full_path));
+                    encodeURI(value.full_path),
+                    gThumbServerBase
+        );
     });
     if(null != data.meta.next){
         $("#next-page-pane").html(String.format('<a href="{0}">Next Page</a>', data.meta.next));
@@ -54,6 +56,7 @@ function genHtml(data)
                                                                     '&tag='+ui.tagLabel);
                                             },
                                             beforeTagAdded: function(event, ui){
+                                                if(ui.duringInitialization) return;
                                                 var req = $.getJSON('/objsys/add_tag/?ufs_url='+encodeURIComponent($(this).parents('.element-root').attr('ufs_url'))+
                                                                     '&tag='+ui.tagLabel);
                                             }
