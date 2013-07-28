@@ -3,6 +3,8 @@ import mimetypes
 from django.core.servers.basehttp import FileWrapper
 from thumb.thumbInterface import get_thumb
 from libs.obj_related.local_obj import LocalObj
+from libs.thumbapp.qrcode_image import get_qr_code
+from libs.utils.django_utils import retrieve_param
 
 import libsys
 from django.http import HttpResponse
@@ -16,6 +18,8 @@ from libs.utils.misc import ensureDir as ensure_dir
 from django.shortcuts import render_to_response, redirect
 from django.utils.http import urlquote
 from libs.logsys.logSys import *
+from django.template import RequestContext
+
 
 from urllib import unquote
 
@@ -84,26 +88,32 @@ def get_icon(full_path, file_type=None):
 
 
 def thumb(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param(request)
 
     target_file = unquote(data["target"])
-    cl(target_file)
-
+    #cl(target_file)
     full_path = transformDirToInternal(target_file)
+    the_file = get_thumb_file(full_path)
+    return return_file_data(the_file)
 
-    get_thumb_file(full_path)
 
-    #the_file = '/some/file/name.png'
+def return_file_data(the_file):
     filename = os.path.basename(unicode(the_file))
-
     response = HttpResponse(FileWrapper(open(the_file, 'rb')),
                             content_type=mimetypes.guess_type(the_file)[0])
-
     response['Content-Length'] = os.path.getsize(the_file)
-
     response['Content-Disposition'] = u"attachment; filename=%s" % urlquote(filename)
-
     return response
+
+
+def image(request):
+    data = retrieve_param(request)
+    the_file = data["path"]
+    return return_file_data(the_file)
+
+
+def gen_qr_code(request):
+    #objects = UfsObj.objects.all()
+    data = retrieve_param(request)
+    return render_to_response('qrcode.html', {"qrcode_file_path": get_qr_code(data["data"])},
+                              context_instance=RequestContext(request))

@@ -23,7 +23,11 @@ class Thumb:
         from libs.thumbapp.views import get_thumb_file
         the_file = get_thumb_file(target)
         return serve_file(the_file)
-        #return serve_file("D:\\codes\\python\\codes\\ufs_django\\build\\thumb\\bmp_T.jpg")
+
+    @cherrypy.expose
+    def image(self, path):
+        return serve_file(path)
+
 
 
  

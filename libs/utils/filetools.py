@@ -58,6 +58,13 @@ def getFreeNameFromFullPath(fullPath):
 
 
 def getTimestampWithFreeName(path, ext, prefix=''):
+    """
+    Return a unused filename according to current time.
+    :param path:
+    :param ext: should start with "."
+    :param prefix:
+    :return:
+    """
     #print path, ext, prefix
     filename = unicode(prefix + str(time.time()))
     return getFreeName(path, filename, ext)

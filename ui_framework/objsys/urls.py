@@ -1,4 +1,5 @@
 #from django.conf.urls import patterns, include, url
+#import libsys
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 from models import UfsObj
@@ -15,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^tagging/$', 'ui_framework.objsys.views.tagging'),
     url(r'^manager/$', 'ui_framework.objsys.views.manager'),
     url(r'^listing/$', 'ui_framework.objsys.views.listing'),
+    url(r'^qrcode/$', 'thumbapp.views.gen_qr_code'),
+    url(r'^image/$', 'thumbapp.views.image'),
     url(r'^apply_tags_to/$', 'ui_framework.objsys.views.apply_tags_to'),
     url(r'^remove_tags_from/$', 'ui_framework.objsys.views.remove_tags_from'),
     url(r'^query/$', 'ui_framework.objsys.views.query'),

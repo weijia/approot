@@ -1,0 +1,10 @@
+{% extends "ui_framework/index.html" %}
+{% load i18n %}
+{% block title %}
+<TITLE>{% trans "QR code" %}</TITLE>
+{% endblock %}
+{% block content_block %}
+<div id="content">
+<img src="/thumb/image/?path={{ qrcode_file_path }}"/>
+</div>
+{% endblock %}
