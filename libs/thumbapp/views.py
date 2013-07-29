@@ -1,27 +1,23 @@
 import os
 import mimetypes
-from django.core.servers.basehttp import FileWrapper
-from thumb.thumbInterface import get_thumb
-from libs.obj_related.local_obj import LocalObj
-from libs.thumbapp.qrcode_image import get_qr_code
-from libs.utils.django_utils import retrieve_param
+from urllib import unquote
 
-import libsys
+from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
-from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_full_path
-from libs.utils.transform import transformDirToInternal
-from models import ThumbCache
-import libs.utils.objTools as objtools
-import uuid
-from django.utils import timezone
-from libs.utils.misc import ensureDir as ensure_dir
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response
 from django.utils.http import urlquote
-from libs.logsys.logSys import *
 from django.template import RequestContext
 
-
-from urllib import unquote
+from libs.thumb.thumbInterface import get_thumb
+from libs.obj_related.local_obj import LocalObj
+from libs.utils.qrcode_image import get_qr_code
+from libs.utils.django_utils import retrieve_param
+import libsys
+from ui_framework.objsys.models import get_ufs_obj_from_full_path
+from libs.utils.transform import transformDirToInternal
+from models import ThumbCache
+from libs.utils.misc import ensureDir as ensure_dir
+from libs.logsys.logSys import *
 
 
 def get_thumb_file(target_file):

@@ -1,10 +1,13 @@
 import argparse
+import json
 import os
+import uuid
+
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-import sys
-import uuid
+
+from libs.utils.qrcode_image import get_qr_code
 
 
 def main(port, root_dir, username, password):
@@ -39,17 +42,61 @@ def main(port, root_dir, username, password):
     # start ftp server
     server.serve_forever()
 
+
+import socket
+
+#Ref: http://www.pythonclub.org/python-network-application/get-ip-address
+def get_local_ip():
+    localIP = socket.gethostbyname(socket.gethostname())
+    print "local ip:%s " % localIP
+
+    ipList = socket.gethostbyname_ex(socket.gethostname())
+    print ipList
+    for i in ipList[2]:
+        if i != localIP:
+            print "external IP:%s" % i
+            if "192.168" in i:
+                return i
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     ############################
     # Default parameters
     parser.add_argument("--port", help="Ftp server port", default=21)
     parser.add_argument("--folder", help="Folder to serve", default=os.getcwd())
-    parser.add_argument("--username", help="Username for access the Ftpserver", default=str(uuid.uuid4()))
-    parser.add_argument("--password", help="Password for access the Ftpserver", default=str(uuid.uuid4()))
+    #parser.add_argument("--username", help="Username for access the Ftpserver", default=None)
+    #parser.add_argument("--password", help="Password for access the Ftpserver", default=None)
     #parser.add_argument("other", help="other options", nargs='*')
     #print sys.argv
     #print parser
     args = vars(parser.parse_args())
-    print args["username"], args["password"]
-    main(int(args["port"]), args["folder"], args["username"], args["password"])
+
+    setting_path = os.path.join(os.getcwd(), "setting.txt")
+    try:
+        f = open(setting_path, "r")
+        setting = json.load(f)
+        f.close()
+    except:
+        setting = {"username": str(uuid.uuid4()), "password": str(uuid.uuid4())}
+
+    username = setting["username"]
+    password = setting["password"]
+
+    try:
+        f = open(setting_path, "w")
+        json.dump(setting, f, indent=4)
+        f.close()
+    except:
+        print "Save setting error"
+
+    print username, password
+
+    local_ip = get_local_ip()
+
+    url = "ftp://%s:%s@%s:%d" % (username, password, local_ip, int(args["port"]))
+    print url
+
+    qrcode_path = get_qr_code(url)
+    os.startfile(qrcode_path)
+    main(int(args["port"]), args["folder"], username, password)
