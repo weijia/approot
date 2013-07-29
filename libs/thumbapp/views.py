@@ -2,7 +2,6 @@ import os
 import mimetypes
 from urllib import unquote
 
-from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils.http import urlquote
@@ -11,7 +10,7 @@ from django.template import RequestContext
 from libs.thumb.thumbInterface import get_thumb
 from libs.obj_related.local_obj import LocalObj
 from libs.utils.mobile.qrcode_image import get_qr_code
-from libs.utils.django_utils import retrieve_param
+from libs.utils.django_utils import retrieve_param, return_file_data
 import libsys
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
 from libs.utils.transform import transformDirToInternal
@@ -91,15 +90,6 @@ def thumb(request):
     full_path = transformDirToInternal(target_file)
     the_file = get_thumb_file(full_path)
     return return_file_data(the_file)
-
-
-def return_file_data(the_file):
-    filename = os.path.basename(unicode(the_file))
-    response = HttpResponse(FileWrapper(open(the_file, 'rb')),
-                            content_type=mimetypes.guess_type(the_file)[0])
-    response['Content-Length'] = os.path.getsize(the_file)
-    response['Content-Disposition'] = u"attachment; filename=%s" % urlquote(filename)
-    return response
 
 
 def image(request):
