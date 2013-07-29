@@ -35,9 +35,7 @@ class MainView(GridLayout):
     def __init__(self, **kwargs):
         kwargs['cols'] = 1
         super(MainView, self).__init__(**kwargs)
-
         listview_modal = ListViewModal()
-
         self.add_widget(listview_modal)
 
 

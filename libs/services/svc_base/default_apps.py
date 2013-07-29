@@ -17,4 +17,5 @@ gDefaultServices = ['monitor',
                 'file_moving_service',
                 'drop_service',
                 'kingsoft_disk',
+                'video_convert_service',
                 ]
