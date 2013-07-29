@@ -7,7 +7,7 @@ from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 
-from libs.utils.qrcode_image import get_qr_code
+from libs.utils.mobile.qrcode_image import get_qr_code
 
 
 def main(port, root_dir, username, password):
