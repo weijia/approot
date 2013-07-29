@@ -5,8 +5,7 @@ from django.utils import timezone
 from models import Connection, Processor
 from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_ufs_url
 from django.http import HttpResponse
-from django.core import serializers
-import libs.utils.simplejson as json
+#from django.core import serializers
 from django.contrib.auth.decorators import login_required
 import time
 import json

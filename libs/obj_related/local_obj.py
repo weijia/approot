@@ -16,6 +16,7 @@ class LocalObj(object):
         if not os.path.exists(full_path):
             raise IOError
         self.full_path = full_path
+
     def get_header_md5(self):
         try:
             f = open(self.full_path, 'rb')

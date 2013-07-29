@@ -15,7 +15,7 @@ class LoggingThreadThread(SimpleServiceWorker):
     def __init__(self, param_dict):
         param_dict.update({"input": "system_tagging_service_input_msg_q"})
 
-    def processItem(self, msg):
+    def process(self, msg):
         q = MsgQ(self.get_output_msg_queue_name())
         q.send(msg)
 

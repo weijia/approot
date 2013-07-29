@@ -7,10 +7,11 @@ from django.conf import settings
 from ui_framework.objsys.models import UfsObj, CollectionItem
 #from tagging.models import Tag, TaggedItem, DoesNotExist
 import os
-import libs.utils.simplejson as json
+#import libs.utils.simplejson as json
 from ui_framework.connection.models import Connection, Processor
 import libs.utils.filetools as file_tools
 import time
+import json
 
 
 def get_app_name_from_ufs_url(app_ufs_url):
