@@ -4,8 +4,8 @@
 from os.path import basename
 import subprocess
 import os
-from libs.logsys.logSys import cl
 import libsys
+from libs.logsys.logSys import cl
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 from ui_framework.objsys.models import get_ufs_obj_from_full_path
@@ -28,8 +28,8 @@ def ffmpegDumpVideo(inFile, outFile):
     #retcode = subprocess.call([app, arg])
     #process = subprocess.Popen(cmd, shell=False)
     #CREATE_NO_WINDOW will hide the console window
-    process = subprocess.Popen(cmd, shell=False, creationflags=CREATE_NO_WINDOW)
-    #process = subprocess.Popen(cmd, shell=False)
+    #process = subprocess.Popen(cmd, shell=False, creationflags=CREATE_NO_WINDOW)
+    process = subprocess.Popen(cmd, shell=False)
     #wait is used to wait for the child process to complete
     process.wait()
     #sts = os.waitpid(process.pid, 0)[1]
