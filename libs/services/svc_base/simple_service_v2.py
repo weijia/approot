@@ -93,6 +93,7 @@ class DefaultServiceClass(ManagedService):
                     cl("All tasks quit, quit service as well, sending stop msg to self")
                     self.put({"cmd": "stop", "session_id": self.get_session_id()})
 
+
 class SimpleService(object):
     def __init__(self, param_dict, service_class=None, worker_thread_class=None,
                  service_default_input_msg_queue_name=None):
