@@ -1,0 +1,38 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "drop_service", 
+                "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/drop_service.py", 
+                "full_path": "D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/drop_service.py"
+            }, 
+            "--tags TAGS           default tags applied to the dropped items, use colon to separate such as tag1, tag2"
+        ], 
+        [
+            {
+                "data": "video_convert_service", 
+                "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/video_convert_service.py", 
+                "full_path": "D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/video_convert_service.py"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {
+        "jsPlumb_1_6": {
+            "inputs": [], 
+            "params": "--tags TAGS           default tags applied to the dropped items, use colon to separate such as tag1, tag2", 
+            "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/drop_service.py", 
+            "outputs": [
+                0
+            ]
+        }, 
+        "jsPlumb_1_1": {
+            "inputs": [
+                0
+            ], 
+            "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/video_convert_service.py", 
+            "outputs": []
+        }
+    }, 
+    "diagram_id": "e39d0ee4-df57-4b65-811f-b7b7f51071a5"
+}
