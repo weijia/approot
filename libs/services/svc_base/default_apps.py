@@ -18,4 +18,5 @@ gDefaultServices = ['monitor',
                 'drop_service',
                 'kingsoft_disk',
                 'video_convert_service',
+                'http_sniffer'
                 ]
