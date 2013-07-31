@@ -22,7 +22,13 @@ class BeanstalkdMsgQ(object):
         if msg_q_name is None:
             raise MsgQueueNameIsNone
         self.msg_q_name = msg_q_name
-        #self.beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
+        #ncl('port: ', gBeanstalkdServerPort)
+        self.beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
+        try:
+            self.beanstalk.use(self.msg_q_name)
+        except:
+            print 'using: "%s" failed', self.msg_q_name
+            raise
 
     def send_cmd(self, msg_dict, delay=0):
         """
@@ -35,14 +41,8 @@ class BeanstalkdMsgQ(object):
         self.send_msg(Msg(msg_dict), priority, delay)
 
     def send_msg(self, msg, priority=DEFAULT_PRIORITY, delay=0):
-        #ncl('port: ', gBeanstalkdServerPort)
-        beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
-        try:
-            beanstalk.use(self.msg_q_name)
-        except:
-            print 'using: "%s" failed', self.msg_q_name
         cl('sending to:', self.msg_q_name, msg)
-        job = beanstalk.put(msg.to_json(), priority=priority, delay=delay)
+        job = self.beanstalk.put(msg.to_json(), priority=priority, delay=delay)
         return job
 
 
