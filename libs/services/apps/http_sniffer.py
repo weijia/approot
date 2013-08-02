@@ -5,10 +5,13 @@ from libs.utils.network.http_request_sniffer import get_active_adapter, capture_
 
 def main():
     #pc = pcap.pcap()
-    pc = pcap.pcap()
+    pc = pcap.pcap(get_active_adapter())
     pc.setfilter('tcp port 80')
-    for uri, method, host in capture_http_request(pc):
-        print uri, method, host
+    for uri, method, host, headers, body in capture_http_request(pc):
+        if "cang.baidu.com" in host:
+            print method, uri, host, headers, body
+        else:
+            print method, uri, host, headers
 
 
 if __name__ == "__main__":
