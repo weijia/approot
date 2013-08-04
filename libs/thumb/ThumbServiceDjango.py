@@ -55,7 +55,6 @@ def internal_get_thumb(path, targetDir, mime_type = None):
     return transformDirToInternal(newPath)
 
 
-
 def get_thumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
     if isUfsFs(path):
         full_path = getPathForUfsUrl(path)
@@ -64,4 +63,3 @@ def get_thumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
     #cl(path)
     full_path = transformDirToInternal(full_path)
     return internal_get_thumb(full_path, targetDir, mime_type)
-        

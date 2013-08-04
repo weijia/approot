@@ -1,6 +1,7 @@
 import subprocess
 #from subprocess import *
 import os
+from libs.services.apps.tube_folder_tagging import add_tag_for_full_path
 
 app = "..\\others\\ffmpeg\\bin\\ffmpeg.exe"
 CREATE_NO_WINDOW = 0x8000000
@@ -43,6 +44,7 @@ def genVideoThumb(local_path, dest_dir):
     if not os.path.exists(thumb_path):
         ffmpegDumpVideo(local_path, thumb_path, 1)
     if os.path.exists(thumb_path):
+        add_tag_for_full_path(local_path, "system:video", "app:thumb_generator")
         return thumb_path
     return None
 
