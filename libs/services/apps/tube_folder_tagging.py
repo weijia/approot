@@ -44,7 +44,8 @@ def add_tag_for_full_path(full_path, tag, tag_app = None):
             Tag.objects.add_tag(obj, "system:pic", tag_app)
         else:
             isVideo = False
-            for signature in ['RIFF (little-endian) data, AVI', 'RealMedia file', 'Matroska data']:
+            for signature in ['RIFF (little-endian) data, AVI', 'RealMedia file', 
+                                'Matroska data', 'Macromedia Flash Video']:
                 if signature in obj_type:
                     Tag.objects.add_tag(obj, "system:video", tag_app)
                     break
