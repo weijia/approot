@@ -8,7 +8,7 @@ def get_up_net():
     objSWbemServices = objWMIService.ConnectServer(strComputer,"root\cimv2")
     colItems = objSWbemServices.ExecQuery("Select * from Win32_NetworkAdapterConfiguration")
     for objItem in colItems:
-        '''
+
         print '-----------------------------------------------------'
         print "Arp Always Source Route: ", objItem.ArpAlwaysSourceRoute
         print "Arp Use EtherSNAP: ", objItem.ArpUseEtherSNAP
@@ -125,7 +125,7 @@ def get_up_net():
         print "WINS Primary Server: ", objItem.WINSPrimaryServer
         print "WINS Scope ID: ", objItem.WINSScopeID
         print "WINS Secondary Server: ", objItem.WINSSecondaryServer
-        '''
+
         if objItem.IPEnabled:
             #if "VirtualBox" in objItem.Description:
             #    print "virtual box adapter", objItem.Description

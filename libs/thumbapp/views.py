@@ -22,7 +22,7 @@ from libs.logsys.logSys import *
 def get_thumb_file(target_file):
     full_path = transformDirToInternal(target_file)
     if not os.path.exists(full_path):
-        the_file = '/static/image/icons/file-broken-icon.png'
+        the_file = os.path.join(libsys.get_root_dir(), 'static/image/icons/file-broken-icon.png')
     else:
         obj = get_ufs_obj_from_full_path(full_path)
         thumb_list = ThumbCache.objects.filter(obj=obj)
@@ -42,14 +42,14 @@ def get_thumb_file(target_file):
             the_file = thumb_list[0].thumb_full_path
 
         if the_file is None:
-            the_file = get_icon(full_path, obj.get_type())
-            raise "No thumb"
+            the_file = os.path.join(libsys.get_root_dir(), get_icon(full_path, obj.get_type()))
+            #raise "No thumb"
     return the_file
 
 
 def get_icon(full_path, file_type=None):
     if os.path.isdir(full_path):
-        return '/static/image/icons/folder-images-icon.png'
+        return 'static/image/icons/folder-images-icon.png'
 
     if file_type is None:
         file_type = LocalObj(full_path).get_type()
@@ -58,27 +58,28 @@ def get_icon(full_path, file_type=None):
 
     if 'Zip archive data' in file_type:
         ext = full_path.split('.')[-1]
-        for ext_prefix in ["xls", "doc", "ppt"]:
-            if ext_prefix+"x" in ext:
-                return '/static/image/icons/online/512px/' + ext_prefix + '.png'
+        for new_office_ext in ["xlsx", "docx", "pptx"]:
+            if new_office_ext in ext:
+                return 'static/image/icons/online/512px/' + new_office_ext + '.png'
 
     ext_icons = ['html', 'xml', 'pdf']
     for i in ext_icons:
         if i in file_type.lower().split(" "):
-            return '/static/image/icons/online/512px/' + i + '.png'
+            return 'static/image/icons/online/512px/' + i + '.png'
 
     complex_icon = [["Microsoft Excel", 'xls'], ['Microsoft Office Word', 'doc'],
                     ['Microsoft Office PowerPoint', 'ppt'], ['RAR archive data', 'rar']]
     for i in complex_icon:
         if i[0] in file_type:
-            return '/static/image/icons/online/512px/' + i[1] + '.png'
+            #print "file_type:", i[1]
+            return 'static/image/icons/online/512px/' + i[1] + '.png'
 
     if 'text' in file_type.lower():
         if '.py' in full_path:
-            return '/static/image/icons/online/512px/' + 'py' + '.png'
+            return 'static/image/icons/online/512px/' + 'py' + '.png'
         if '.cpp' in full_path:
-            return '/static/image/icons/online/512px/' + 'cpp' + '.png'
-        return '/static/image/icons/online/512px/' + 'txt' + '.png'
+            return 'static/image/icons/online/512px/' + 'cpp' + '.png'
+        return 'static/image/icons/online/512px/' + 'txt' + '.png'
     return None
 
 

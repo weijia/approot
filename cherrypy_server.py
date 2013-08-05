@@ -22,6 +22,7 @@ class Thumb:
     def cherry(self, target):
         from libs.thumbapp.views import get_thumb_file
         the_file = get_thumb_file(target)
+        #print the_file
         return serve_file(the_file)
 
     @cherrypy.expose

@@ -8,6 +8,7 @@ import sys
 import socket
 import pcap
 import struct
+import traceback
 
 
 def connection_id_to_str(cid, v=4):
@@ -196,14 +197,14 @@ def decode_tcp(pcap):
 gDefaultSnifferOutputMsgQueueName = 'default_sniffer_output_msg_q'
 
 
-def capture_http_request(pc):
+def capture_http_request(pc, port=80):
     """This is the outer loop that prints strings that have been captured from the TCP streams, terminated by a packet that
 has the PUSH flag set."""
     #MsgQ(gDefaultSnifferOutputMsgQueueName)
     for connection_id, received_string, ip_version in decode_tcp(pc):
         #print connection_id_to_str(connection_id, ip_version)#, received_string
         try:
-            if connection_id[3] == 80:
+            if connection_id[3] == port:
                 #print socket.gethostbyaddr(connection_id[2])
                 http = dpkt.http.Request(received_string)
                 #print http.uri
@@ -216,7 +217,8 @@ has the PUSH flag set."""
                 yield ( http.uri, http.method, http.headers["host"], http.headers, http.body )
         except:
             #print tcp.data
-            pass
+            #pass
+            traceback.print_exc()
         #connection_id = (ip.src, tcp.sport, ip.dst, tcp.dport)
         '''
         if connection_id[1] == 80:
