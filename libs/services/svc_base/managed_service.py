@@ -6,7 +6,7 @@ import traceback
 from libs.services.svc_base.service_base import MsgProcessor
 from libs.services.svc_base.msg import RegMsg, UnRegMsg
 from libs.services.svc_base.msg_service import *
-from libs.services.svc_base.diagram_state import DiagramState
+#from libs.services.svc_base.diagram_state import DiagramState
 from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 from libs.logsys.logSys import *
 from libs.utils.filetools import get_main_file
@@ -27,9 +27,9 @@ class ManagedService(MsgProcessor):
         cl("creating service with params:", self.param_dict)
         #if not (self.param_dict.get("output", None) is None):
         #    self.output = MsgQ(self.get_output_msg_queue_name())
-        self.state = None
-        if "diagram_id" in param_dict:
-            self.state = DiagramState(param_dict["diagram_id"])
+        #self.state = None
+        #if "diagram_id" in param_dict:
+        #    self.state = DiagramState(param_dict["diagram_id"])
 
     def get_task_signature(self):
         #import __main__

@@ -1,0 +1,14 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "http_sniffer", 
+                "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/http_sniffer.py", 
+                "full_path": "D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/http_sniffer.py"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {}, 
+    "diagram_id": "fca12ccd-056d-4300-ad98-f8fd5e9c1d10"
+}

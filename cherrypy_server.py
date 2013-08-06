@@ -30,8 +30,6 @@ class Thumb:
         return serve_file(path)
 
 
-
- 
 class Server(object):
     def __init__(self, port):
         self.base_dir = os.path.join(os.path.abspath(os.getcwd()), "")

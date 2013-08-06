@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
     thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
     #Start thumb server
-    Launcher().start_app_with_name_no_wait("cherrypy_server", ["%d"%thumb_port])
+    #Launcher().start_app_with_name_no_wait("managed_cherrypy_server", ["--port", "%d" % thumb_port])
     #Other initial apps need to be launched may be added to initial_launcher
     #print 'POSTGRESQL_PORT:', os.environ.get("POSTGRESQL_PORT")
     #start_app_shortcut("start_ext")

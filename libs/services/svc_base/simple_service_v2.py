@@ -1,12 +1,12 @@
 import argparse
 import os
 from libs.logsys.logSys import cl
-from libs.services.svc_base.msg import Msg
-from libs.utils.filetools import get_main_file
+#from libs.services.svc_base.msg import Msg
+#from libs.utils.filetools import get_main_file
 import libsys
 import sys
 from managed_service import ManagedService, WorkerBase
-from msg_based_service_mgr import MsgBasedServiceManager, gMsgBasedServiceManagerMsgQName
+#from msg_based_service_mgr import MsgBasedServiceManager, gMsgBasedServiceManagerMsgQName
 
 
 class SimpleServiceWorker(WorkerBase):

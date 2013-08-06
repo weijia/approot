@@ -1,0 +1,14 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "managed_cherrypy_server", 
+                "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/managed_cherrypy_server.py", 
+                "full_path": "D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/managed_cherrypy_server.py"
+            }, 
+            "{\"port\":8114}"
+        ]
+    ], 
+    "processorList": {}, 
+    "diagram_id": "0a475613-2ade-4cd4-b80f-8432720bc533"
+}
