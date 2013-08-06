@@ -215,6 +215,8 @@ has the PUSH flag set."""
                 #  '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'body', 'data',
                 #  'headers', 'method', 'pack', 'pack_hdr', 'unpack', 'uri', 'version']
                 yield ( http.uri, http.method, http.headers["host"], http.headers, http.body )
+            else:
+                print connection_id_to_str(connection_id, ip_version), received_string
         except:
             #print tcp.data
             #pass

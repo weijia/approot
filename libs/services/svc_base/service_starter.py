@@ -48,7 +48,7 @@ def service_starter():
         start_diagram(coll_item.obj)
 
 
-gAutoStartTagName = "system:auto_start"
+gAutoStartTagName = "system:autostart"
 
 
 def start_diagram_by_tag():

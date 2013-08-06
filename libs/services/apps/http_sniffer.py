@@ -11,9 +11,9 @@ def main():
     pc.setfilter('tcp port %d' % port)
     for uri, method, host, headers, body in capture_http_request(pc, port):
         if "cang.baidu.com" in host:
-            print method, uri, host, headers, body
+            print "cang: ", method, host, uri, headers, body
         else:
-            print method, uri, host, headers
+            print "other: ", method, host, uri, headers
 
 
 if __name__ == "__main__":
