@@ -18,7 +18,9 @@ class CherryPyServerThread(threading.Thread):
 class CherryPyServerService(SingletonServiceBase):
     def on_register_ok(self):
         #Start cherry py server
-        port = int(self.param_dict["port"])
+        #port = int(self.param_dict["port"])
+        import configuration
+        port = int(configuration.g_config_dict["thumb_server_port"])
         self.server = CherryPyServerThread(port)
         self.server.start()
 
@@ -29,7 +31,7 @@ class CherryPyServerService(SingletonServiceBase):
 if __name__ == "__main__":
     s = SimpleService(
         {
-            "port": "Server port"
+            #"port": "Server port"
         },
         CherryPyServerService)
     s.run()

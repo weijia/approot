@@ -6,7 +6,7 @@
                 "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/managed_cherrypy_server.py", 
                 "full_path": "D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/managed_cherrypy_server.py"
             }, 
-            "{\"port\":8114}"
+            "{}"
         ]
     ], 
     "processorList": {}, 
