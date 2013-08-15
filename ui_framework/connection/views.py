@@ -1,10 +1,11 @@
 import os
 import uuid
+import json
 
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
 from django.utils import timezone
-from libs.diagram.diagram import Diagram, import_diagram
+from libs.diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
 from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_starter import start_diagram
@@ -13,7 +14,7 @@ from models import Connection, Processor
 from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_ufs_url
 from django.http import HttpResponse
 from django.core import serializers
-import json
+
 #import libs.utils.simplejson as json
 from django.contrib.auth.decorators import login_required
 from libs.utils.django_utils import retrieve_param
@@ -224,14 +225,7 @@ def get_service_apps(request):
 
 
 def get_diagrams(request):
-    diagram_list = []
-    diagram_file_list = []
-    for sub_dir, ext in [("/libs/services/apps/diagrams/", ".json"), ("/diagrams/", ".json")]:
-        diagram_file_list.extend(file_tools.collect_files_in_dir(sub_dir, ext))
-
-    print diagram_file_list
-    for full_path in diagram_file_list:
-        import_diagram(full_path)
+    diagram_list = save_all_diagram_from_predefined_folders()
 
     for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
         diagram_list.append(Diagram(diagram_obj))

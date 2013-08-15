@@ -17,3 +17,5 @@ obs
 /libs/services/clients
 
 /libs/services/tests
+
+/syncdb_needed.txt

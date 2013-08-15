@@ -1,17 +1,18 @@
-Django==1.4.5
-mimeparse>=0.1.3
-python-dateutil>=2.1
+Django==1.4.6
+mimeparse
+python-dateutil
 lxml
 defusedxml
 PyYAML
 python-digest
 biplist
-python_digest
-mimeparse
-django-tastypie
+django-tastypie==0.9.12
+qrcode
 libmagic
+cherrypy
 #Install from exe
 pillow
 PyQt
 pywin32
-cherrypy
+psycopg2
+cx_Freeze

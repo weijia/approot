@@ -1,6 +1,7 @@
 #from setuptools import find_packages
 import os
 
+
 from cx_Freeze import setup, Executable
 
 from rootapp import settings
@@ -122,6 +123,27 @@ build_exe_params = {
 os.environ["POSTGRESQL_ROOT"] = ""
 os.system("syncdb.bat")
 os.system("collectstatic.bat")
+
+#Need to remove port_v3 for QT for cx_freeze when packaging PyQt
+
+
+#Workarround for cx_freeze packaging cherrypy
+import _tkinter
+from os.path import dirname
+
+python_dir = dirname(dirname(_tkinter.__file__))
+
+#print os.environ["TCL_LIBRARY"]
+#print os.environ["TK_LIBRARY"]
+#os.environ["TCL_LIBRARY"] = os.path.join(python_dir, "tcl/tcl8.5")
+#os.environ["TK_LIBRARY"] = os.path.join(python_dir, "tcl/tk8.5")
+
+tcl_lib_path_name = "tcl/tcl"+_tkinter.TCL_VERSION
+tk_lib_path_name = "tcl/tk"+_tkinter.TCL_VERSION
+
+os.environ["TCL_LIBRARY"] = os.path.join(python_dir, tcl_lib_path_name)
+os.environ["TK_LIBRARY"] = os.path.join(python_dir, tk_lib_path_name)
+
 
 gen_spec(settings, build_exe_params)
 
