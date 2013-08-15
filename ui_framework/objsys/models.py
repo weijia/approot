@@ -18,15 +18,19 @@ def get_new_uuid():
 class UfsObj(models.Model):
     full_path = models.TextField(null=True, blank=True)
     ufs_url = models.TextField(help_text='start with ufs:// or uuid:// etc.')
-    uuid = models.CharField(max_length=60, default=get_new_uuid, help_text='the uuid string of the object, no "uuid" prefix needed')
-    head_md5 = models.CharField(max_length=60, null=True, blank=True, help_text="the md5 for the header of the object")
-	total_md5 = models.CharField(max_length=60, null=True, blank=True, help_text="the entire object's md5 hash value")
+    uuid = models.CharField(max_length=60, default=get_new_uuid,
+                            help_text='the uuid string of the object, no "uuid" prefix needed')
+    head_md5 = models.CharField(max_length=60, null=True, blank=True,
+                                help_text="the md5 for the header of the object")
+    total_md5 = models.CharField(max_length=60, null=True, blank=True,
+                                 help_text="the entire object's md5 hash value")
     timestamp = models.DateTimeField('date published', auto_now_add=True)
     size = models.BigIntegerField(null=True, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
     description = models.TextField(null=True, blank=True, help_text="JSON description for this object")
-	valid = models.BooleanField(default=True, help_text="is this field valid")
-	relations = models.ManyToManyField("self", related_name='relations', null=True, blank=True, help_text="Related other information objects")
+    valid = models.BooleanField(default=True, help_text="is this field valid")
+    relations = models.ManyToManyField("self", related_name='relations', null=True, blank=True,
+                                       help_text="Related other information objects")
 
     def __unicode__(self):
         return unicode(self.ufs_url + ' uuid:' + self.uuid)

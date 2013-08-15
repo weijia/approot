@@ -1,4 +1,4 @@
-Django==1.4
+Django==1.4.6
 mimeparse
 python-dateutil
 lxml
@@ -6,7 +6,8 @@ defusedxml
 PyYAML
 python-digest
 biplist
-django-tastypie
+django-tastypie==0.9.12
+qrcode
 libmagic
 cherrypy
 #Install from exe
