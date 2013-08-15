@@ -64,7 +64,8 @@ includes = ["PyQt4.QtCore",
             #For Cherrypy
             #"django.contrib.messages",
             "email",
-            "email.message"
+            "email.message",
+            "cherrypy",
 ]
 
 script_list = ['rootapp', 'tornado_main', 'tagging', 'ext_svr', 'sftpserver',
