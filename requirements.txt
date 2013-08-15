@@ -15,3 +15,4 @@ pillow
 PyQt
 pywin32
 psycopg2
+cx_Freeze

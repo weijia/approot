@@ -1,13 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
-try:
-    import tagging
-
-    tagging.register(UfsObj)
-except:
-    pass
+import libs.utils.transform as transform
+import libs.utils.objTools as obj_tools
 
 
 def get_new_uuid():
@@ -29,7 +24,7 @@ class UfsObj(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
     description = models.TextField(null=True, blank=True, help_text="JSON description for this object")
     valid = models.BooleanField(default=True, help_text="is this field valid")
-    relations = models.ManyToManyField("self", related_name='relations', null=True, blank=True,
+    relations = models.ManyToManyField("self", related_name='related_objs', null=True, blank=True,
                                        help_text="Related other information objects")
 
     def __unicode__(self):
@@ -89,10 +84,6 @@ class UfsObj(models.Model):
 
                     traceback.print_exc()
         return 'unknown'
-
-
-import libs.utils.transform as transform
-import libs.utils.objTools as obj_tools
 
 
 def get_ufs_obj_from_full_path(full_path):
