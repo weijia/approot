@@ -1,6 +1,7 @@
 import libsys
+from libs.diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, gDiagramRootCollectionUuid
 from libs.tagging.models import TaggedItem
-from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
+#from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
 from libs.services.svc_base.gui_service import GuiService
 import urllib
 from django.conf import settings
@@ -35,12 +36,9 @@ def start_app(app_path, param_dict):
     return "done"
 
 
-diagram_root = 'b4852a45-af7b-4a38-8025-15cf12212701'
-
-
 def service_starter():
     #Get all diagrams
-    diagram_lists = CollectionItem.objects.filter(uuid=diagram_root)
+    diagram_lists = CollectionItem.objects.filter(uuid=gDiagramRootCollectionUuid)
 
     created_processor = []
     for coll_item in diagram_lists:
@@ -48,11 +46,8 @@ def service_starter():
         start_diagram(coll_item.obj)
 
 
-gAutoStartTagName = "system:autostart"
-
-
 def start_diagram_by_tag():
-    obj_list = TaggedItem.objects.get_by_model(UfsObj.objects.order_by('timestamp'), gAutoStartTagName)
+    obj_list = TaggedItem.objects.get_by_model(UfsObj.objects.order_by('timestamp'), gAutoStartDiagramTagName)
     for obj in obj_list:
         if "diagram://" in obj.ufs_url:
             start_diagram(obj)
@@ -103,4 +98,5 @@ def start_diagram(diagram_obj, connection_prefix=u''):
 
 if __name__ == "__main__":
     print 'starting diagrams --------------------------------------'
+    save_all_diagram_from_predefined_folders()
     start_diagram_by_tag()

@@ -10,5 +10,6 @@
         ]
     ], 
     "processorList": {}, 
-    "diagram_id": "0a475613-2ade-4cd4-b80f-8432720bc533"
+    "diagram_id": "0a475613-2ade-4cd4-b80f-8432720bc533",
+    "auto_start": true
 }
