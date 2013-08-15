@@ -18,5 +18,6 @@ gDefaultServices = ['monitor',
                 'drop_service',
                 'kingsoft_disk',
                 'video_convert_service',
-                'http_sniffer'
+                'http_sniffer',
+                'managed_cherrypy_server',
                 ]
