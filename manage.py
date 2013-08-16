@@ -5,6 +5,7 @@ import sys
 
 pwd = os.getcwd()
 sys.path.insert(0, os.path.join(pwd, "libs"))
+sys.path.insert(0, os.path.join(pwd, "ui_framework"))
 
 
 import os

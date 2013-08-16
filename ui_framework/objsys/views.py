@@ -4,41 +4,102 @@
 import os
 import json
 import uuid
+from django.contrib.auth import authenticate, login
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.conf import settings
 import django.utils.timezone as timezone
-from libs.logsys.logSys import cl
+#from libs.logsys.logSys import cl
 from libs.tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
-from models import UfsObj, get_ufs_obj_from_ufs_url
+from libs.utils.objTools import get_ufs_obj_from_ufs_url
+from models import UfsObj
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
-from libs.services.svc_base.gui_service import GuiService
+#from libs.services.svc_base.gui_service import GuiService
 from libs.utils.string_tools import SpecialEncoder
 import libs.utils.objTools as objtools
 from tagging.models import Tag, TaggedItem
 from django.template import RequestContext
+
+
+def append_tags_to_url(user, tags, url):
+    #Tag object
+    '''
+    try:
+        objs = UfsObj.objects.filter(ufs_url = url)
+        if 0 != len(objs):
+            for obj in objs:
+                obj.tags = tags
+            continue
+    except UfsObj.DoesNotExist:
+        pass
+    '''
+    if objtools.is_web_url(url):
+        full_path = None
+        obj_qs = UfsObj.objects.filter(ufs_url=url)
+        ufs_url = url
+    else:
+        full_path = objtools.get_full_path_for_local_os(url)
+        obj_qs = UfsObj.objects.filter(full_path=full_path)
+        ufs_url = objtools.getUfsUrlForPath(full_path)
+
+    if 0 == obj_qs.count():
+        obj = UfsObj(ufs_url=ufs_url, uuid=unicode(uuid.uuid4()), timestamp=timezone.now(),
+                     user=user, full_path=full_path)
+        obj.save()
+        obj_qs = [obj]
+
+    for obj in obj_qs:
+        #obj.tags = tags
+        Tag.objects.update_tags(obj, tags, tag_app='user:' + user.username)
+
+
+def handle_append_tags_request(request):
+    data = retrieve_param(request)
+    if not request.user.is_authenticated():
+        # Do something for authenticated users.
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+
+            else:
+                # Return a 'disabled account' error message
+                return HttpResponse({"error": "disabled account"}, mimetype="application/json")
+
+        # Return an 'invalid login' error message.
+        return HttpResponse({"error": "invalid login"}, mimetype="application/json")
+
+    if "tags" in data:
+        tags = data["tags"]
+        for query_param_list in data.lists():
+            if query_param_list[0] == "selected_url":
+                for url in query_param_list[1]:
+                    append_tags_to_url(request.user, tags, url)
+    return HttpResponse({"result": "OK"}, mimetype="application/json")
 
 @login_required
 def tagging(request):
     data = retrieve_param(request)
 
     #Load saved url
-    if request.session.has_key("saved_urls"):
+    if "saved_urls" in request.session:
         stored_urls = request.session["saved_urls"]
     else:
         stored_urls = []
     selected_url = []
     urls = []
-    close_flag = False
+    close_window_flag = False
     if "encoding" in data:
         encoding = data["encoding"]
     else:
         encoding = "utf8"
 
-    if data.has_key("tags"):
+    if "tags" in data:
         tags = data["tags"]
     else:
         tags = []
@@ -56,40 +117,11 @@ def tagging(request):
                     #print query_param_list, urls
                     urls.append(url)
         if query_param_list[0] == 'selected_url':
-            close_flag = True
+            close_window_flag = True
             for url in query_param_list[1]:
                 if not (url in selected_url):
                     selected_url.append(url)
-                    #Tag object
-                    '''
-                    try:
-                        objs = UfsObj.objects.filter(ufs_url = url)
-                        if 0 != len(objs):
-                            for obj in objs:
-                                obj.tags = tags
-                            continue
-                    except UfsObj.DoesNotExist:
-                        pass
-                    '''
-
-                    full_path = objtools.get_full_path_for_local_os(url)
-                    obj_qs = UfsObj.objects.filter(full_path=full_path)
-
-                    if 0 != obj_qs.count():
-                        for obj in obj_qs:
-                            #obj.tags = tags
-                            Tag.objects.update_tags(obj, tags, tag_app='user:' + request.user.username)
-                        continue
-                        #print "Create new item"
-
-                    #from django.utils import timezone
-
-                    ufs_url = objtools.getUfsUrlForPath(full_path)
-                    obj = UfsObj(ufs_url=ufs_url, uuid=unicode(uuid.uuid4()), timestamp=timezone.now(),
-                                 user=request.user, full_path=full_path)
-                    obj.save()
-                    #obj.tags = tags
-                    Tag.objects.update_tags(obj, tags, tag_app='user:' + request.user.username)
+                    append_tags_to_url(request.user, tags, url)
 
     class UrlTagPair:
         def __init__(self, url, tags):
@@ -110,7 +142,7 @@ def tagging(request):
                 tags.extend(obj.tags)
         urls_with_tags.append(UrlTagPair(url, tags))
 
-    c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags}
+    c = {"urls": urls, "user": request.user, "close_flag": close_window_flag, "urls_with_tags": urls_with_tags}
     c.update(csrf(request))
     return render_to_response('objsys/tagging.html', c)
 

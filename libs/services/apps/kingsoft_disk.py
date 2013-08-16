@@ -5,6 +5,7 @@ from django.utils.timezone import utc
 import os
 #import shutil
 from urllib2 import HTTPError
+from libs.utils.objTools import get_ufs_obj_from_full_path
 import libsys
 from libs.services.svc_base.state import StatefulProcessor
 from libs.services.svc_base.gui_service import GuiService
@@ -12,7 +13,6 @@ from libs.logsys.logSys import *
 from django.conf import settings
 #from libs.services.svc_base.managed_service import WorkerBase
 from libs.tagging.models import TaggedItem
-from ui_framework.objsys.models import get_ufs_obj_from_full_path
 #from libs.utils.misc import ensureDir
 #from libs.utils.filetools import getFreeNameFromFullPath
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker

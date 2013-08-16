@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+from libs.utils.objTools import get_ufs_obj_from_full_path
 import libsys
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.msg import Msg
@@ -42,7 +43,6 @@ class DropService(SimpleServiceWorker):
         for i in msg["urls"]:
             cl(i)
             full_path = i.replace("file:///","")
-            from ui_framework.objsys.models import get_ufs_obj_from_full_path
             obj = get_ufs_obj_from_full_path(full_path)
             if "tags" in self.param_dict:
                 obj.tags = self.param_dict["tags"]

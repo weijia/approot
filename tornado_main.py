@@ -16,6 +16,7 @@ from django.conf import settings
 
 pwd = os.getcwd()
 sys.path.insert(0, os.path.join(pwd, "libs"))
+sys.path.insert(0, os.path.join(pwd, "ui_framework"))
 print sys.argv
 
 define('port', type=int, default=int(sys.argv[1]))
