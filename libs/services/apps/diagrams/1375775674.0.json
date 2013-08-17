@@ -1,0 +1,15 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "managed_cherrypy_server", 
+                "ufs_url": "ufs://CY25LQ1/D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/managed_cherrypy_server.py", 
+                "full_path": "D:/codes/mine/env/codes/ufs_django/approot/libs/services/apps/managed_cherrypy_server.py"
+            }, 
+            "{\"is_thumb_server\": \"true\"}"
+        ]
+    ], 
+    "processorList": {}, 
+    "diagram_id": "379831fa-3e44-4f21-92dd-a10812a1463a",
+    "auto_start": true
+}

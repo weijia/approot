@@ -35,7 +35,7 @@ def collections(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-import libs.utils.objTools as obj_tools
+import libs.utils.obj_tools as obj_tools
 import libs.utils.string_tools as string_tools
 
 

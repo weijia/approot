@@ -7,7 +7,8 @@ from libs.utils import filetools as file_tools
 import libsys
 from ui_framework.connection import libsys
 from ui_framework.connection.models import Processor, Connection
-from ui_framework.objsys.models import UfsObj, get_ufs_obj_from_ufs_url
+from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_ufs_url
+from ui_framework.objsys.models import UfsObj
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone

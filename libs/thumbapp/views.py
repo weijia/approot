@@ -12,11 +12,11 @@ from libs.obj_related.local_obj import LocalObj
 from libs.utils.mobile.qrcode_image import get_qr_code
 from libs.utils.django_utils import retrieve_param, return_file_data
 import libsys
-from ui_framework.objsys.models import get_ufs_obj_from_full_path
 from libs.utils.transform import transformDirToInternal
 from models import ThumbCache
 from libs.utils.misc import ensureDir as ensure_dir
 from libs.logsys.logSys import *
+from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_full_path
 
 
 def get_thumb_file(target_file):

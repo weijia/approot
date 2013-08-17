@@ -9,3 +9,5 @@ class SingletonServiceBase(ManagedService):
     def on_stop(self):
         pass
 
+    def get_task_signature(self):
+        return super(SingletonServiceBase, self).get_task_signature()
