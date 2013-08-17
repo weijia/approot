@@ -209,8 +209,9 @@ def add_tag(request):
 
 
 def start(request):
-    full_path = request.META['QUERY_STRING']
-    print full_path
+    #full_path = request.META['QUERY_STRING']
+    #print full_path
+    full_path = retrieve_param(request)["full_path"]
     try:
         ext = os.path.splitext(full_path)[1]
     except:

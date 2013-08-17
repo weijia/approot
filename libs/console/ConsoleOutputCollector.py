@@ -192,8 +192,10 @@ class ConsoleOutputCollector:
                 #print "pid: %d, %s use normal priority"%(p.pid, progAndParam[0])
                 pass
                 #print 'taskid:%d, pid:%d'%(int(p._handle), int(p.pid))
-            normal_log_path = logDir.logDir(os.path.basename(progAndParam[0]) + str(progAndParam[1:]) + "_normal")
-            err_log_path = logDir.logDir(os.path.basename(progAndParam[0]) + str(progAndParam[1:]) + "_error")
+
+            log_path_base_name = os.path.basename(progAndParam[0])# + str(progAndParam[1:])
+            normal_log_path = logDir.logDir(log_path_base_name + "_normal")
+            err_log_path = logDir.logDir(log_path_base_name + "_error")
             thr1 = taskConsoleThread(target, p.stdout, progAndParam[0], False, normal_log_path.getLogFilePath())
             thr1.start()
             self.log_collector_thread_list.append(thr1)
