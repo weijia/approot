@@ -26,7 +26,7 @@ def object_filter(request):
         c["query_base_exists"] = True
     thumb_server_port = configuration.g_config_dict.get("thumb_server_port", 8114)
 
-    c["thumb_server_base"] = "http://127.0.0.1:%d/thumb/cherry/" % thumb_server_port
+    c["thumb_server_base"] = "http://%s:%d/thumb/cherry/" % (request.META['HTTP_HOST'].split(":")[0], thumb_server_port)
 
     c.update(csrf(request))
     return render_to_response('object_filter/index.html', c)

@@ -6,4 +6,4 @@ python libs\services\svc_base\service_starter.py
 echo calling runserver.bat
 rem call runserver.bat
 rem call tornado.bat
-python -u cherrypy_server.py
+rem python -u cherrypy_server.py

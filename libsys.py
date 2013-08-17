@@ -11,5 +11,3 @@ def get_root_dir():
 if not (get_root_dir() in sys.path):
     sys.path.insert(0, get_root_dir())
 
-import root_lib_sys
-import rootapp.settings

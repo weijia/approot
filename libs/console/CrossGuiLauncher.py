@@ -177,7 +177,7 @@ class CrossGuiLauncher(object):
         Start an app with full path and parameters passed in a list
         param: [appFullPath, param1, param2, ...]
         """
-        l = logDir.logDir(os.path.basename(param[0]) + str(param[1:]))
+        l = logDir.logDir(os.path.basename(param[0]))
         child_wnd = self.gui_factory.create_console_output_wnd(self, l.getLogFilePath())
         collector = ConsoleOutputCollector()
         cwd = libsys.get_root_dir()
