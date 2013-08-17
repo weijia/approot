@@ -13,15 +13,15 @@ import django.utils.timezone as timezone
 #from libs.logsys.logSys import cl
 from libs.tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
-from libs.utils.objTools import get_ufs_obj_from_ufs_url
 from models import UfsObj
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 #from libs.services.svc_base.gui_service import GuiService
 from libs.utils.string_tools import SpecialEncoder
-import libs.utils.objTools as objtools
+import libs.utils.obj_tools as objtools
 from tagging.models import Tag, TaggedItem
 from django.template import RequestContext
+from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_ufs_url
 
 
 def append_tags_to_url(user, tags, url):

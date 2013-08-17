@@ -38,6 +38,7 @@ class Server(object):
         #cherrypy.config.update(conf_path)
         cherrypy.config.update({
                         'server.socket_port': port,
+                        'server.socket_host': '0.0.0.0',
                        })
         # This registers a plugin to handle the Django app
         # with the CherryPy engine, meaning the app will

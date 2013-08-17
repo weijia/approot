@@ -4,7 +4,6 @@ import datetime
 import json
 import os
 import shutil
-from libs.utils.objTools import get_ufs_obj_from_full_path
 import libsys
 from libs.logsys.logSys import *
 from django.conf import settings
@@ -13,6 +12,8 @@ from libs.tagging.models import TaggedItem
 from libs.utils.misc import ensureDir
 from libs.utils.filetools import getFreeNameFromFullPath
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
+from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_full_path
+
 
 class FileMover(SimpleServiceWorker):
     """

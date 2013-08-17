@@ -3,7 +3,7 @@ import urllib2
 import libsys
 import libs.utils.string_tools as string_tools
 from ui_framework.objsys.models import UfsObj
-from libs.utils.objTools import get_formatted_full_path
+from libs.utils.obj_tools import get_formatted_full_path
 
 
 def get_collection(path):

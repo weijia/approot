@@ -9,9 +9,9 @@ from libs.diagram.diagram import Diagram, save_all_diagram_from_predefined_folde
 from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_starter import start_diagram
-from libs.utils.objTools import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
 import libsys
 from models import Connection, Processor
+from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
 from ui_framework.objsys.models import UfsObj
 from django.http import HttpResponse
 from django.core import serializers
