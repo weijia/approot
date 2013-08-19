@@ -6,7 +6,7 @@ import os
 import localLibSys
 from libs.logsys.logSys import *
 from libs.utils.transform import transformDirToInternal
-from libs.utils.objTools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
+from libs.utils.obj_tools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
 import traceback
 
 

@@ -1,7 +1,8 @@
 $(document).ready(function () {
     $('#scrolling-pane').on("dblclick", ".element-root", function(event){
         //console.log("dblclicked", event, $(event.currentTarget).attr("full_path"));
-        $.getJSON("/ui_framework/start?"+$(event.currentTarget).attr("full_path"), function(data){});
+        $.getJSON("/ui_framework/start?full_path="+encodeURI($(event.currentTarget).attr("full_path")),
+            function(data){});
     });
     $("#obj-pane").on("click", "#delButton", function(e){
         $.getJSON("/objsys/rm_obj_from_db/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));

@@ -12,8 +12,8 @@ from cherrypy import _cplogging, _cperror
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIHandler
 from django.http import HttpResponseServerError
-import libsys
-#import sys
+
+import libs.root_lib_sys
 from cherrypy.lib.static import serve_file
 
 
@@ -38,6 +38,7 @@ class Server(object):
         #cherrypy.config.update(conf_path)
         cherrypy.config.update({
                         'server.socket_port': port,
+                        'server.socket_host': '0.0.0.0',
                        })
         # This registers a plugin to handle the Django app
         # with the CherryPy engine, meaning the app will

@@ -7,7 +7,6 @@ from django.contrib.auth.models import User, Group
 
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
-
 from django.conf import settings
 from guardian.shortcuts import assign
 
@@ -102,7 +101,6 @@ def register_menu(subitem_url, subitem_text, parent_path = "/", permmited_group 
     
 
 def register_to_sys(class_inst, admin_class = None):
-    from ui_framework.normal_admin.admin import user_admin_site
     if admin_class is None:
         admin_class = type(class_inst.__name__+"Admin", (GuardedModelAdmin, ), {})
     try:
@@ -110,6 +108,7 @@ def register_to_sys(class_inst, admin_class = None):
     except:
         pass
     try:
+        from ui_framework.normal_admin.admin import user_admin_site
         user_admin_site.register(class_inst, admin_class)
     except:
         pass

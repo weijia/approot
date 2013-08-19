@@ -1,5 +1,6 @@
-import libsys
-import libs.qtconsole.fileTools as file_tools
+import pprint
+import libs.root_lib_sys
+#import libs.qtconsole.fileTools as file_tools
 import os
 
 
@@ -18,7 +19,14 @@ def add_django_module_from_list(module_list, includes):
 def gen_spec(settings, existing_config):
     for loaded_django_app in settings.INSTALLED_APPS:
         #print i
-        module_i = __import__(loaded_django_app)
+        try:
+            module_i = __import__(loaded_django_app)
+        except ImportError, e:
+            import sys
+            print "no app:", loaded_django_app
+
+            pprint.pprint(sys.path)
+            raise
 
         #print 'name:', module_i.__name__
         #print 'full name:', i
@@ -65,6 +73,7 @@ def gen_spec(settings, existing_config):
         for django_sub_module in ['urls', 'views', 'admin', 'api', 'models', 'forms', 'decorators', 'mixins',
                                   'management']:
             try:
+                print loaded_django_app + "." + django_sub_module
                 sub_module = __import__(loaded_django_app + "." + django_sub_module)
                 existing_config['includes'].append(loaded_django_app + "." + django_sub_module)
             except ImportError, e:
@@ -73,7 +82,7 @@ def gen_spec(settings, existing_config):
                 #print e.args
                 if ("No module named %s" % django_sub_module) == e.message:
                     continue
-                raise
+                #raise
 
                 #########
                 # TODO: import module from url

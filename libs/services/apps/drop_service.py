@@ -11,6 +11,7 @@ from django.conf import settings
 from configuration import g_config_dict
 #import time
 from libs.utils.string_tools import SpecialEncoder
+from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_full_path
 
 '''
 class NoInputWorker(WorkerBase):
@@ -42,7 +43,6 @@ class DropService(SimpleServiceWorker):
         for i in msg["urls"]:
             cl(i)
             full_path = i.replace("file:///","")
-            from ui_framework.objsys.models import get_ufs_obj_from_full_path
             obj = get_ufs_obj_from_full_path(full_path)
             if "tags" in self.param_dict:
                 obj.tags = self.param_dict["tags"]

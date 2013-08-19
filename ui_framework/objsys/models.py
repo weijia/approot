@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -63,7 +65,6 @@ class UfsObj(models.Model):
             import os
 
             if os.path.exists(self.full_path):
-                import libsys
 
                 try:
                     from libs.obj_related.local_obj import LocalObj

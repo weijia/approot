@@ -65,14 +65,17 @@ includes = ["PyQt4.QtCore",
             #For Cherrypy
             #"django.contrib.messages",
             "email",
-            "email.message"
+            "email.message",
+            "cherrypy",
 ]
 
-script_list = ['rootapp', 'tornado_main', 'tagging', 'ext_svr', 'sftpserver',
+script_list = ['rootapp',
+               #'tornado_main',
+               'tagging', 'ext_svr', 'sftpserver',
                #'BeanstalkdLauncherService',
                'manage',
                #'initial_launcher',
-               'cherrypy_server',
+               #'cherrypy_server',
                'service_starter','msg_based_service_mgr',
                # ('monitor.py', 'libs/services/apps/monitor.exe'),
                # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
@@ -82,7 +85,7 @@ script_list = ['rootapp', 'tornado_main', 'tagging', 'ext_svr', 'sftpserver',
 from libs.services.svc_base.default_apps import gDefaultServices
 
 script_list.extend(gDefaultServices)
-print script_list
+#print script_list
 
 includefiles = [("libs/qtconsole/gf-16x16.png", "gf-16x16.png"),
                 ("libs/qtconsole/app_list.ui", "app_list.ui"),
@@ -99,7 +102,7 @@ includefiles = [("libs/qtconsole/gf-16x16.png", "gf-16x16.png"),
                 ("libs/zlib1.dll", "libs/zlib1.dll"),
                 ("libs/regex2.dll", "libs/regex2.dll"),
                 ("libs/magic1.dll", "libs/magic1.dll"),
-                ("tornado_app.bat", "tornado.bat"),
+                #("tornado_app.bat", "tornado.bat"),
                 ("activate_app.bat", "activate.bat"),
                 ("share", "share"),
                 #("../others", "../others"),

@@ -10,14 +10,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.conf import settings
 import django.utils.timezone as timezone
-from libs.logsys.logSys import cl
+#from libs.logsys.logSys import cl
 from libs.tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
 from models import UfsObj
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from libs.utils.string_tools import SpecialEncoder
-import libs.utils.objTools as objtools
+import libs.utils.obj_tools as objtools
 from tagging.models import Tag, TaggedItem
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
