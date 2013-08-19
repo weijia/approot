@@ -8,5 +8,11 @@ def get_root_dir():
         c = os.path.dirname(c)
     return os.path.join(c, 'approot')
 
-sys.path.insert(0, get_root_dir())
-sys.path.insert(0, os.path.join(get_root_dir(),"libs"))
+if not (get_root_dir() in sys.path):
+    sys.path.insert(0, get_root_dir())
+
+try:
+    #This is used for approot only
+    import libs.root_lib_sys
+except:
+    pass

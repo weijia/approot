@@ -1,9 +1,6 @@
 import socket
-
 import configurationTools as config
 from libs.utils import transform as transform
-import transform
-#import localLibSys
 from libs.logsys.logSys import *
 from objsys.models import UfsObj
 

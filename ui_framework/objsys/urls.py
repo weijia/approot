@@ -14,7 +14,7 @@ ufsobj_resource = UfsObjResource()
 
 urlpatterns = patterns('',
     url(r'^tagging/$', 'objsys.views.tagging'),
-    url(r'^manager/$', 'ui_framework.objsys.views.manager'),
+    url(r'^manager/$', 'objsys.views.manager'),
     #url(r'^listing/$', 'ui_framework.objsys.views.listing'),
     #url(r'^qrcode/$', 'thumbapp.views.gen_qr_code'),
     #url(r'^image/$', 'thumbapp.views.image'),
