@@ -1,5 +1,6 @@
 # -*- coding: gbk -*-
 import libsys
+from libs.services.svc_base.launcher import Launcher
 from libs.services.svc_base.gui_service import GuiService
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_base import MsgProcessor
@@ -79,9 +80,8 @@ class MsgBasedServiceManager(MsgProcessor):
                     if msg.get_app_name() in self.app_name_to_info:
                         print "Unneeded start app, app already started"
                     else:
-                        gui_service = GuiService()
-                        gui_service.send_to_self({"command": "LaunchApp", "app_name": msg.get_app_name(),
-                                             "param": ['--startserver', '--session_id', self.param_dict["session_id"]]})
+                        Launcher().start_app_with_name_param_list_with_session_no_wait(msg.get_app_name(),
+                                                                                       ['--startserver'])
             elif msg["cmd"] == "broadcast_cmd":
                 #Broadcast a message to all managed service
                 self.broadcast_cmd_msg(msg)

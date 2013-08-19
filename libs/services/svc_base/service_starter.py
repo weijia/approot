@@ -1,39 +1,15 @@
 import libsys
-from libs.diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, gDiagramRootCollectionUuid
+from libs.services.svc_base.launcher import Launcher
+from libs.diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, \
+    gDiagramRootCollectionUuid
 from libs.tagging.models import TaggedItem
 #from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
-from libs.services.svc_base.gui_service import GuiService
-import urllib
 from django.conf import settings
 from ui_framework.objsys.models import UfsObj, CollectionItem
 #from tagging.models import Tag, TaggedItem, DoesNotExist
-import os
 #import libs.utils.simplejson as json
-from ui_framework.connection.models import Connection, Processor
-import libs.utils.filetools as file_tools
-import time
+from ui_framework.connection.models import Processor
 import json
-
-
-def get_app_name_from_ufs_url(app_ufs_url):
-    return get_app_name_from_path(app_ufs_url)
-
-
-def get_app_name_from_path(app_path):
-    app_filename = os.path.basename(app_path)
-    app_name = app_filename.split(".")[0]
-    return app_name
-
-
-def start_app(app_path, param_dict):
-    param = []
-    for i in param_dict:
-        param.append('--%s' % i)
-        param.append('%s' % (param_dict[i]))
-    gui_service = GuiService()
-    gui_service.put({"command": "LaunchApp", "app_name": get_app_name_from_path(app_path), "param": param})
-    #print {"command": "Launch", "path": path, "param": param}
-    return "done"
 
 
 def service_starter():
@@ -51,7 +27,6 @@ def start_diagram_by_tag():
     for obj in obj_list:
         if "diagram://" in obj.ufs_url:
             start_diagram(obj)
-
 
 
 def start_diagram(diagram_obj, connection_prefix=u''):
@@ -91,8 +66,8 @@ def start_diagram(diagram_obj, connection_prefix=u''):
             processor_ufs_url = processor.ufsobj.ufs_url
             #param['session_id'] = session_id
             param['diagram_id'] = diagram_obj.uuid
-            log_str += "starting:" + processor_ufs_url + "+" +str(param)
-            log_str += start_app(processor_ufs_url, param)
+            log_str += "starting:" + processor_ufs_url + "+" + str(param)
+            log_str += Launcher().start_app_with_same_filename_with_param_dict(processor_ufs_url, param)
     return log_str
 
 

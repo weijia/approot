@@ -5,7 +5,6 @@ import libs.utils.filetools as fileTools
 import psycopg2
 import sys
 import os
-from libs.services.svc_base.gui_service import GuiService
 from libs.utils.process_mgr import gProcessMgr
 from django.contrib.auth.models import User, Group
 
@@ -18,14 +17,6 @@ class ExtAppMgrIntf(object):
 
     def shutdown(self):
         pass
-
-
-'''
-def start_app_shortcut(app_name, param = []):
-    #print "-------------------------", os.environ["POSTGRESQL_ROOT"]
-    gui_service = GuiService()
-    gui_service.put({"command": "LaunchApp", "app_name": app_name, "param": param})
-'''
 
 
 def wait_for_app(app_and_param_list):
@@ -45,7 +36,7 @@ class PostgreSqlApp(ExtAppMgrIntf):
         ###########################
         # Start postgresql
         ###########################
-        Launcher().start_app_with_name_no_wait('postgresql')
+        Launcher().start_app_with_name_param_list_with_session_no_wait('postgresql')
 
         #Define our connection string
         conn_string = "host='localhost' dbname='postgres' user='postgres' password=''"

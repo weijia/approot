@@ -4,6 +4,7 @@
 import os
 import json
 import uuid
+from django.contrib.auth import authenticate, login
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -12,21 +13,83 @@ import django.utils.timezone as timezone
 from libs.logsys.logSys import cl
 from libs.tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
-from models import UfsObj, get_ufs_obj_from_ufs_url
+from models import UfsObj
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
-from libs.services.svc_base.gui_service import GuiService
 from libs.utils.string_tools import SpecialEncoder
 import libs.utils.objTools as objtools
 from tagging.models import Tag, TaggedItem
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+
+def append_tags_to_url(user, tags, url):
+    #Tag object
+    '''
+    try:
+        objs = UfsObj.objects.filter(ufs_url = url)
+        if 0 != len(objs):
+            for obj in objs:
+                obj.tags = tags
+            continue
+    except UfsObj.DoesNotExist:
+        pass
+    '''
+    if objtools.is_web_url(url):
+        full_path = None
+        obj_qs = UfsObj.objects.filter(ufs_url=url)
+        ufs_url = url
+    else:
+        full_path = objtools.get_full_path_for_local_os(url)
+        obj_qs = UfsObj.objects.filter(full_path=full_path)
+        ufs_url = objtools.getUfsUrlForPath(full_path)
+
+    if 0 == obj_qs.count():
+        obj = UfsObj(ufs_url=ufs_url, uuid=unicode(uuid.uuid4()), timestamp=timezone.now(),
+                     user=user, full_path=full_path)
+        obj.save()
+        obj_qs = [obj]
+
+    for obj in obj_qs:
+        #obj.tags = tags
+        Tag.objects.update_tags(obj, tags, tag_app='user:' + user.username)
+
+
+@csrf_exempt
+def handle_append_tags_request(request):
+    data = retrieve_param(request)
+    if not request.user.is_authenticated():
+        # Do something for authenticated users.
+        username = data['username']
+        password = data['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+
+            else:
+                # Return a 'disabled account' error message
+                print 'disabled account'
+                return HttpResponse('{"error": "disabled account"}', mimetype="application/json")
+        else:
+            # Return an 'invalid login' error message.
+            print 'invalid login'
+            return HttpResponse('{"error": "invalid login", "username": "%s", "password": "%s"}' % (username, password),
+                                mimetype="application/json")
+
+    if "tags" in data:
+        tags = data["tags"]
+        for query_param_list in data.lists():
+            if query_param_list[0] == "selected_url":
+                for url in query_param_list[1]:
+                    append_tags_to_url(request.user, tags, url)
+    return HttpResponse('{"result": "OK"}', mimetype="application/json")
 
 @login_required
 def tagging(request):
     data = retrieve_param(request)
 
     #Load saved url
-    if request.session.has_key("saved_urls"):
+    if "saved_urls" in request.session:
         stored_urls = request.session["saved_urls"]
     else:
         stored_urls = []
@@ -38,7 +101,7 @@ def tagging(request):
     else:
         encoding = "utf8"
 
-    if data.has_key("tags"):
+    if "tags" in data:
         tags = data["tags"]
     else:
         tags = []
@@ -60,36 +123,7 @@ def tagging(request):
             for url in query_param_list[1]:
                 if not (url in selected_url):
                     selected_url.append(url)
-                    #Tag object
-                    '''
-                    try:
-                        objs = UfsObj.objects.filter(ufs_url = url)
-                        if 0 != len(objs):
-                            for obj in objs:
-                                obj.tags = tags
-                            continue
-                    except UfsObj.DoesNotExist:
-                        pass
-                    '''
-
-                    full_path = objtools.get_full_path_for_local_os(url)
-                    obj_qs = UfsObj.objects.filter(full_path=full_path)
-
-                    if 0 != obj_qs.count():
-                        for obj in obj_qs:
-                            #obj.tags = tags
-                            Tag.objects.update_tags(obj, tags, tag_app='user:' + request.user.username)
-                        continue
-                        #print "Create new item"
-
-                    #from django.utils import timezone
-
-                    ufs_url = objtools.getUfsUrlForPath(full_path)
-                    obj = UfsObj(ufs_url=ufs_url, uuid=unicode(uuid.uuid4()), timestamp=timezone.now(),
-                                 user=request.user, full_path=full_path)
-                    obj.save()
-                    #obj.tags = tags
-                    Tag.objects.update_tags(obj, tags, tag_app='user:' + request.user.username)
+                    append_tags_to_url(request.user, tags, url)
 
     class UrlTagPair:
         def __init__(self, url, tags):
@@ -185,8 +219,8 @@ def start(request):
         ext = ''
     if True:  #try:
         if False:  #(ext in ['.bat', '.py']):
-            gui_service = GuiService()
-            gui_service.addItem({"command": "Launch", "path": path, "param": ['--startserver']})
+            from libs.services.svc_base.launcher import Launcher
+            Launcher().start_app_with_exact_full_path_and_param_list_no_wait(full_path, ['--startserver'])
             #raise "stop here"
             #return "app"
         else:
