@@ -7,11 +7,21 @@ from tastypie.authorization import DjangoAuthorization
 #from django.contrib.auth.models import User, Group
 from tagging.models import Tag
 from tagging.models import TaggedItem
+from django.contrib.auth import authenticate, login
 
 
 class DjangoUserAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
-        if request.user.is_authenticated():
+        data = retrieve_param(request)
+        if not request.user.is_authenticated():
+            username = data['username']
+            password = data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return True
+        else:
             return True
         return False
 
