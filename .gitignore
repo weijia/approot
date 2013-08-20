@@ -21,3 +21,5 @@ obs
 /syncdb_needed.txt
 
 /rootapp/local_keys.py
+
+/rootapp/secret_key.py

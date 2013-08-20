@@ -156,7 +156,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'g-yjv2wm_=_+r2j9v2u3ak$!b+i2qz=#e2#h3nmrt2l6+_wps$'
+#SECRET_KEY = 'g-yjv2wm_=_+r2j9v2u3ak$!b+i2qz=#e2#h3nmrt2l6+_wps$'
 try:
     from secret_key import *
 except ImportError:
