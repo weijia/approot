@@ -36,4 +36,5 @@ urlpatterns = patterns('',
     #(r'^api/tag/', include(tag_resource.urls)),      
     #url(r'^$', 'desktop.filemanager.views.index'),
     #url(r'^.+$', 'desktop.filemanager.views.handler'),
+    url(r'^create_admin/$', 'objsys.views.create_admin')
 )
