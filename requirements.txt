@@ -10,6 +10,7 @@ django-tastypie==0.9.12
 qrcode
 libmagic
 cherrypy
+django-social-auth
 #Install from exe
 pillow
 PyQt

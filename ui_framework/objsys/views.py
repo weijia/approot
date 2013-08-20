@@ -364,9 +364,6 @@ def remove_tags_from(request):
 	
 
 def create_admin(request):
-    #user = User.objects.create_user('richard', 'r@j.cn', 'johnpassword')
-    #from django.contrib.auth.create_superuser import createsuperuser
-    #createsuperuser()
     from django.contrib.auth import models as auth_models
     auth_models.User.objects.create_superuser('admin', 'r@j.cn', 'admin')
     return HttpResponse("Done")

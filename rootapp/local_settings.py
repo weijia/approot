@@ -4,7 +4,7 @@ INSTALLED_APPS += (
     'social_auth',
 )
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS += (
     #'social_auth.backends.twitter.TwitterBackend',
     #'social_auth.backends.facebook.FacebookBackend',
     #'social_auth.backends.google.GoogleOAuthBackend',
