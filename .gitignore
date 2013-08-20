@@ -19,3 +19,5 @@ obs
 /libs/services/tests
 
 /syncdb_needed.txt
+
+/rootapp/local_keys.py

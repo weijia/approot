@@ -157,6 +157,20 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'g-yjv2wm_=_+r2j9v2u3ak$!b+i2qz=#e2#h3nmrt2l6+_wps$'
+try:
+    from secret_key import *
+except ImportError:
+    from django.utils.crypto import get_random_string
+    import os
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+    secret_key = get_random_string(50, chars)
+    SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
+
+    secret_file = open(os.path.join(SETTINGS_DIR, 'secret_key.py'), 'w')
+    secret_file.write("SECRET_KEY='%s'" % secret_key)
+    secret_file.close()
+    from secret_key import *
+
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -271,3 +285,15 @@ LOGGING = {
         },
     }
 }
+
+
+#Added for app config
+import os
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+'''
+for app in INSTALLED_APPS:
+    local_settings = os.path.join(PROJECT_DIR, app, 'local_settings.py')
+    if os.path.isfile(local_settings):
+        execfile(local_settings)
+'''
+execfile(os.path.join(PROJECT_DIR, "local_settings.py"))
