@@ -16,6 +16,7 @@ from django.http import HttpResponseServerError
 import libs.root_lib_sys
 from cherrypy.lib.static import serve_file
 
+g_oauth_fixed_redirect_port = 8188
 
 class Thumb:
     @cherrypy.expose
@@ -37,6 +38,16 @@ class Oauth:
 
     @cherrypy.expose
     def oauth_complete(self, *args, **kwargs):
+        import configuration
+        if cherrypy.config['server.socket_port'] == g_oauth_fixed_redirect_port:
+            param_str = ""
+            for key in kwargs:
+                param_str +=key+"="+kwargs[key]+"&"
+            port = configuration.g_config_dict["ufs_web_server_port"]
+            redirect_url = "http://%s:%d/oauth/oauth_complete/?%s" % \
+                           (cherrypy.request.headers.get("host").split(":")[0], port, param_str)
+            print "redirecting to", redirect_url
+            raise cherrypy.HTTPRedirect(redirect_url)
         return "params" + str(*args) + "," + str(kwargs)
 
 
