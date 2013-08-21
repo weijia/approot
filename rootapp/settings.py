@@ -297,3 +297,5 @@ for app in INSTALLED_APPS:
         execfile(local_settings)
 '''
 execfile(os.path.join(PROJECT_DIR, "local_settings.py"))
+
+from local_keys import *

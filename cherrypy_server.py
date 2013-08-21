@@ -30,7 +30,7 @@ class Thumb:
     def image(self, path):
         return serve_file(path)
 
-
+'''
 class Oauth:
     @cherrypy.expose
     def quit(self):
@@ -49,7 +49,7 @@ class Oauth:
             print "redirecting to", redirect_url
             raise cherrypy.HTTPRedirect(redirect_url)
         return "params" + str(*args) + "," + str(kwargs)
-
+'''
 
 class Server(object):
     def __init__(self, port):
@@ -73,7 +73,7 @@ class Server(object):
         if hasattr(engine, "console_control_handler"):
             engine.console_control_handler.subscribe()
         cherrypy.tree.mount(Thumb(), '/thumb/')
-        cherrypy.tree.mount(Oauth(), '/oauth/')
+        #cherrypy.tree.mount(Oauth(), '/oauth/')
         engine.start()
         engine.block()
 

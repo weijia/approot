@@ -57,7 +57,7 @@ WEIBO_CLIENT_KEY = ''
 WEIBO_CLIENT_SECRET = ''
 
 LOGIN_URL          = '/login-form/'
-LOGIN_REDIRECT_URL = '/admin/'
+LOGIN_REDIRECT_URL = '/objsys/manager/'
 LOGIN_ERROR_URL    = '/login-error/'
 
 #Use this for weibo only generate a char string as name
