@@ -2,14 +2,14 @@ import json
 import os
 import threading
 import time
+import libsys
 from libs.tagging.models import TaggedItem
 from libs.utils.obj_tools import getHostName
-import libsys
 from django.http import HttpResponse
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from libs.utils.django_utils import retrieve_param
-from ui_framework.objsys.views import ApplyTagsThread, UfsFilter
+from objsys.views import ApplyTagsThread, UfsFilter
 from django.contrib.contenttypes.models import ContentType
 from libs.utils.misc import ensureDir as ensure_dir
 
