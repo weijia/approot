@@ -115,7 +115,7 @@ class ManagedService(MsgProcessor):
                 q.send_cmd(msg)
                 #TODO: maybe should sleep random seconds
                 time.sleep(1)
-                cl("msg sent back, back to msg loop")
+                cl("msg sent back, back to msg loop", os.getpid(), msg["pid"], msg.reg_timestamp, msg.get("timestamp", 0))
 
         #All retry failed, quit this task
         return False

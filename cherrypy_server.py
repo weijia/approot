@@ -30,6 +30,16 @@ class Thumb:
         return serve_file(path)
 
 
+class Oauth:
+    @cherrypy.expose
+    def quit(self):
+        cherrypy.engine.exit()
+
+    @cherrypy.expose
+    def oauth_complete(self, *args, **kwargs):
+        return "params" + str(*args) + "," + str(kwargs)
+
+
 class Server(object):
     def __init__(self, port):
         self.base_dir = os.path.join(os.path.abspath(os.getcwd()), "")
@@ -52,9 +62,11 @@ class Server(object):
         if hasattr(engine, "console_control_handler"):
             engine.console_control_handler.subscribe()
         cherrypy.tree.mount(Thumb(), '/thumb/')
+        cherrypy.tree.mount(Oauth(), '/oauth/')
         engine.start()
         engine.block()
- 
+
+
 class DjangoAppPlugin(plugins.SimplePlugin):
     def __init__(self, bus, base_dir):
         """
@@ -83,7 +95,8 @@ class DjangoAppPlugin(plugins.SimplePlugin):
         static_handler = cherrypy.tools.staticdir.handler(section="/", dir="static",
                                                           root=self.base_dir)
         cherrypy.tree.mount(static_handler, '/static')
- 
+
+
 class HTTPLogger(_cplogging.LogManager):
     def __init__(self, app):
         _cplogging.LogManager.__init__(self, id(self), cherrypy.log.logger_root)

@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^mapping_driver/', include('win_smb.urls')),
     url(r'^object_filter/', include('object_filter.urls')),
     url(r'^thumb/', include('thumbapp.urls')),
+    url(r'', include('social_auth.urls')),
 )
 
 ##############################

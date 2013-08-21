@@ -120,6 +120,9 @@ class MsgProcessor(Service):
     def receive(self, timeout=None):
         return self.receiver.receive(timeout)
 
+    def get_task_signature(self):
+        return self.__class__.__name__
+
     def get_input_msg_queue_name(self):
         """
         This function will use "input" param so child class need not override this function
@@ -131,13 +134,13 @@ class MsgProcessor(Service):
         if output_msg_q_name is None:
             output_msg_q_name = "no_input"
         cl("receiving from:", self.param_dict.get("input",
-                                                  self.__class__.__name__ +
-                                                  "_default_input_msg_q_name_with_output" +
+                                                  self.get_task_signature() +
+                                                  "_default_input_msg_q_name_with_output_" +
                                                   output_msg_q_name
         ))
         return self.param_dict.get("input",
-                                   self.__class__.__name__ +
-                                   "_default_input_msg_q_name_with_output" +
+                                   self.get_task_signature() +
+                                   "_default_input_msg_q_name_with_output_" +
                                    output_msg_q_name)
 
     def startServer(self):
