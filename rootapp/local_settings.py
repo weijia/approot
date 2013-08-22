@@ -27,6 +27,8 @@ AUTHENTICATION_BACKENDS += (
     #'social_auth.backends.OpenIDBackend',
     #'django.contrib.auth.backends.ModelBackend',
     'social_auth.backends.contrib.weibo.WeiboBackend',
+    'social_auth.backends.contrib.douban.DoubanBackend2',
+    'social_auth.backends.contrib.baidu.BaiduBackend',
 )
 
 TWITTER_CONSUMER_KEY         = ''
