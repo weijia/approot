@@ -28,7 +28,7 @@ def object_filter(request):
         thumb_server_port = configuration.g_config_dict.get("thumb_server_port", 8114)
         c["thumb_server_base"] = "http://%s:%d/thumb/cherry/" % (request.META['HTTP_HOST'].split(":")[0], thumb_server_port)
     except:
-        c["thumb_server_base"] = "/"
+        c["thumb_server_base"] = "/static/img/icons/16px/html.png"
 
     c.update(csrf(request))
     return render_to_response('object_filter/index.html', c)
