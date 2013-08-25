@@ -3,7 +3,7 @@ import time
 import libs.utils.transform as transform
 import libs.utils.filetools as fileTools
 
-def ensureDir(fullPath):
+def ensure_dir(fullPath):
     if not os.path.exists(fullPath):
         os.makedirs(fullPath)
 
@@ -33,7 +33,7 @@ def get_date_based_path(root_folder, ext = ".7z"):
     dayStr = time.strftime("%d", gTimeV)
     dateTimeDir = yearStr+"/"+monthStr+"/"+dayStr
     newEncDir = unicode(os.path.join(root_folder, dateTimeDir))
-    ensureDir(newEncDir)
+    ensure_dir(newEncDir)
     file_full_path = transform.transformDirToInternal(
         fileTools.getTimestampWithFreeName(newEncDir, ext))
     return file_full_path

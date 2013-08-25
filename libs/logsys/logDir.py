@@ -10,7 +10,7 @@ class logDir:
         self.logName = logName.replace("\\","_").replace("/","_").replace(":","_").replace("'","").replace('"',"").replace("?","").replace("*","").replace(" ","")
         self.logFullPath = os.path.join(logRootPath, self.logName)
         self.maxLogFile = maxLogFile
-        misc.ensureDir(self.logFullPath)
+        misc.ensure_dir(self.logFullPath)
     def getLogFilePath(self):
         fileList = {}
         numberList = []

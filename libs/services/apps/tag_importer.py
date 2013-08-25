@@ -15,7 +15,7 @@ import os
 from libs.logsys.logSys import *
 import libs.utils.obj_tools as objtools
 from libs.services.svc_base.simpleservice import SimpleService
-from libs.utils.misc import ensureDir as ensure_dir
+from libs.utils.misc import ensure_dir as ensure_dir
 from libs.services.svc_base.state import StatefulProcessor
 
 gTagImporterProcessorId = '90843930-0481-4106-8ec8-c7bb1f508f4b'

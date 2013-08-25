@@ -1,10 +1,7 @@
 #from django.conf.urls import patterns, include, url
 #import libsys
 from django.conf.urls.defaults import patterns, include, url
-from django.conf import settings
-from models import UfsObj
-import os
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView
 from tagging.models import Tag
 from api import UfsObjResource
 
@@ -36,5 +33,6 @@ urlpatterns = patterns('',
     #(r'^api/tag/', include(tag_resource.urls)),      
     #url(r'^$', 'desktop.filemanager.views.index'),
     #url(r'^.+$', 'desktop.filemanager.views.handler'),
-    url(r'^create_admin/$', 'objsys.views.create_admin')
+    url(r'^create_admin_user/$', 'objsys.views.create_admin_user'),
+    url(r'^homepage/$', 'objsys.views.homepage'),
 )

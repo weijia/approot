@@ -1,13 +1,14 @@
 import uuid
+
 from django.utils import timezone
-from models import UfsObj
-from models import CollectionItem
 import django.db.utils
 from django.contrib.auth.models import User, Group
-
 from django.contrib import admin
-from guardian.admin import GuardedModelAdmin
 from django.conf import settings
+
+from libs.objsys.models import UfsObj
+from libs.objsys.models import CollectionItem
+from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import assign
 
 

@@ -1,9 +1,10 @@
 from tastypie.resources import ModelResource
-from libs.utils.django_utils import retrieve_param
-from models import UfsObj
-from tastypie.authentication import SessionAuthentication
 from tastypie.authentication import Authentication
 from tastypie.authorization import DjangoAuthorization
+
+from libs.utils.django_utils import retrieve_param
+from libs.objsys.models import UfsObj
+
 #from django.contrib.auth.models import User, Group
 from tagging.models import Tag
 from tagging.models import TaggedItem

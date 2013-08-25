@@ -2,7 +2,7 @@ import os
 from libs.utils.filetools import getTimestampWithFreeName
 import libsys
 import qrcode
-from libs.utils.misc import ensureDir as ensure_dir
+from libs.utils.misc import ensure_dir as ensure_dir
 
 
 def get_qr_code(data):

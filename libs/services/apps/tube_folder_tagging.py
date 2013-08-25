@@ -18,7 +18,7 @@ from libs.logsys.logSys import *
 import libs.utils.obj_tools as obj_tools
 #from libs.services.svc_base.simpleservice import SimpleService, SimpleWorkThread
 from libs.services.svc_base.state import StatefulProcessor
-from libs.utils.misc import ensureDir as ensure_dir
+from libs.utils.misc import ensure_dir as ensure_dir
 import libs.utils.transform as transform
 
 

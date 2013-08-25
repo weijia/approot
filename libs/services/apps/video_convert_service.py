@@ -41,7 +41,7 @@ class VideoConvertThread(SimpleServiceWorker):
         import libs.utils.misc as misc
         target_data_folder_name = "converted"
         self.target_dir = os.path.join(libsys.get_root_dir(), "../"+target_data_folder_name)
-        misc.ensureDir(self.target_dir)
+        misc.ensure_dir(self.target_dir)
 
     def process(self, msg):
         obj = get_ufs_obj_from_full_path(msg.get_path())

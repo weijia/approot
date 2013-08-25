@@ -1,0 +1,22 @@
+<ul id="bookmark_list">
+    {% for bookmark in ufs_objs %}
+    <li class="bookmark">
+        <h4{% if not bookmark.author == user %} class="no_edit"{% endif %}>
+            <a href="{{ bookmark.ufs_url }}" target="_blank">{{ bookmark.ufs_url }}</a>
+            <p>{{ bookmark.description }}</p>
+        </h4>
+        {% if user.is_authenticated and bookmark.author == user %}
+        <ul class="edit_links">
+            <li><a href="">Edit</a></li>
+            <li><a href="">Delete</a></li>
+        </ul>
+        {% endif %}
+        <ul class="tags">
+            {% for tag in bookmark.tags %}
+            <li><a href="">{{ tag.name }}</a></li>
+            {% endfor %}
+            
+        </ul>
+    </li>
+    {% endfor %}
+</ul>

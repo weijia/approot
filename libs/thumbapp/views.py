@@ -14,7 +14,7 @@ from libs.utils.django_utils import retrieve_param, return_file_data
 import libsys
 from libs.utils.transform import transformDirToInternal
 from models import ThumbCache
-from libs.utils.misc import ensureDir as ensure_dir
+from libs.utils.misc import ensure_dir as ensure_dir
 from libs.logsys.logSys import *
 from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_full_path
 
