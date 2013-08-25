@@ -43,7 +43,7 @@ GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/userinfo.email',
                        'https://www.googleapis.com/auth/userinfo.profile']
 GOOGLEAPIS_EMAIL = 'https://www.googleapis.com/userinfo/email'
 GOOGLEAPIS_PROFILE = 'https://www.googleapis.com/oauth2/v1/userinfo'
-GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id'
+GOOGLE_OPENID_URL = 'https://www.google.com\accounts/o8/id'
 
 
 # Backends

@@ -1,12 +1,13 @@
 # -*- coding: gbk -*-
 from django.utils.timezone import utc
 #import datetime
-import json
+#import json
 import os
 #import shutil
 from urllib2 import HTTPError
 
 import libsys
+from libs.utils.obj_tools import get_ufs_obj_from_full_path
 from configuration import *
 from django.conf import settings
 from social_auth.db.django_models import UserSocialAuth
@@ -34,52 +35,52 @@ class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
     AUTHORIZE_BEFORE_GETTING_ACCESS_TOKEN = 1
     AUTHORIZED = 5
 
+    def set_storage(self):
+        print UserSocialAuth.objects.filter(provider='baidu')[0].extra_data
+        self.state = UserSocialAuth.objects.filter(provider='baidu')[0].extra_data
+        self.storage = BaiduClient(self.state["access_token"])
+        self.authorize_state = self.AUTHORIZED
+
+    def is_authorized_in_baidu(self):
+        #return False
+        return 0 != UserSocialAuth.objects.filter(provider='baidu')
+
+    def start_auth(self):
+        self.storage = None
+        self.authorize_state = self.AUTHORIZE_BEFORE_GETTING_ACCESS_TOKEN
+        authLink = 'http://localhost:8110/login/baidu/'
+        os.startfile(authLink)
+
     def on_register_ok(self):
         super(BaiduDisk, self).on_register_ok()
         self.failed_cnt = 0
-        state = self.get_state(self.get_task_signature(), {})
-        if "access_token" in state:
-            self.storage = BaiduClient(state["access_token"])
+        if self.is_authorized_in_baidu():
+            self.set_storage()
         else:
-            self.storage = None
-            authLink = 'http://localhost:8110/login/baidu/'
-            os.startfile(authLink)
-
-    def get_access_token(self):
-        state = json.loads(UserSocialAuth.objects.filter()[0].extra_data)
-        self.set_state(self.get_task_signature(), state)
-        self.authorize_state = self.AUTHORIZED
-        self.storage = BaiduClient(state["access_token"])
+            self.start_auth()
 
     def process(self, msg):
         if self.authorize_state == self.AUTHORIZE_BEFORE_GETTING_ACCESS_TOKEN:
-            try:
-                self.get_access_token()
-            except:
-                traceback.print_exc()
-
-        if self.authorize_state == self.AUTHORIZED:
+            self.start_auth()
+            #Put the file back
+            self.put(msg, 30)
+        elif self.authorize_state == self.AUTHORIZED:
             #Create the original object in UFS
             if os.path.exists(msg.get_path()):
                 self.upload_file_in_msg(msg)
             else:
                 cl("File does not exist: %s" % msg.get_path())
-        else:
-            if self.authorize_state == self.AUTHORIZE_NOT_STARTED:
-                self.get_request_token()
-
-            #Put the file back
-            self.put(msg, 30)
         return True
 
     def upload_file_in_msg(self, msg):
         obj = get_ufs_obj_from_full_path(msg.get_path())
         basename = os.path.basename(obj.full_path)
         try:
-            self.storage.upload_single("app_folder/ufs", obj.full_path, ondup=newcopy)
+            result = self.storage.upload_single("app_folder/ufs", obj.full_path, ondup='newcopy')
+            print result
             self.gui_service = GuiService()
             self.gui_service.put({"command": "notify",
-                                  "msg": "File %s uploaded." % obj.full_path})
+                                  "msg": "File %s uploaded. result: %s" % (obj.full_path, result)})
             self.failed_cnt = 0
             #cl("File uploaded successfully")
         except HTTPError, e:
