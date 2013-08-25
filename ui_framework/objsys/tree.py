@@ -6,8 +6,8 @@ from django.contrib.auth.models import User, Group
 from django.contrib import admin
 from django.conf import settings
 
-from libs.objsys.models import UfsObj
-from libs.objsys.models import CollectionItem
+from objsys.models import UfsObj
+from objsys.models import CollectionItem
 from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import assign
 

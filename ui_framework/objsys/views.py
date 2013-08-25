@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 
 from libs.utils.django_utils import retrieve_param
-from libs.objsys.models import UfsObj
+from objsys.models import UfsObj
 from tagging.models import Tag, TaggedItem
 from obj_tagging import *
 

@@ -13,7 +13,7 @@ from libs.tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
 from libs.utils.string_tools import SpecialEncoder
 import libs.utils.obj_tools as obj_tools
-from libs.objsys.models import UfsObj
+from objsys.models import UfsObj
 
 
 def append_tags_and_description_to_url(user, url, tags, description):

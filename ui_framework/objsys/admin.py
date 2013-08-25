@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from libs.objsys.models import UfsObj
-from libs.objsys.models import CollectionItem
+from objsys.models import UfsObj
+from objsys.models import CollectionItem
 from guardian.admin import GuardedModelAdmin
 
 

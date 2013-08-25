@@ -3,7 +3,7 @@ from tastypie.authentication import Authentication
 from tastypie.authorization import DjangoAuthorization
 
 from libs.utils.django_utils import retrieve_param
-from libs.objsys.models import UfsObj
+from objsys.models import UfsObj
 
 #from django.contrib.auth.models import User, Group
 from tagging.models import Tag
