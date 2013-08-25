@@ -10,8 +10,8 @@ import libsys
 from libs.tagging.models import TaggedItem
 from libs.utils.obj_tools import getHostName
 from libs.utils.django_utils import retrieve_param
-from libs.objsys.obj_tagging import UfsFilter
-from libs.utils.misc import ensureDir as ensure_dir
+from objsys.obj_tagging import UfsFilter
+from libs.utils.misc import ensure_dir
 
 
 __author__ = 'Administrator'
