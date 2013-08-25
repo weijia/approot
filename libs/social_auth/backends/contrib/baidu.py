@@ -73,7 +73,7 @@ class BaiduAuth(BaseOAuth2):
     SETTINGS_KEY_NAME = 'BAIDU_CLIENT_KEY'
     SETTINGS_SECRET_NAME = 'BAIDU_CLIENT_SECRET'
     REDIRECT_STATE = False
-    DEFAULT_SCOPE = ['netdisk']
+    DEFAULT_SCOPE = ['netdisk', 'basic']
 
     def user_data(self, access_token, *args, **kwargs):
         uid = kwargs.get('response', {}).get('uid')

@@ -39,6 +39,10 @@ class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
         print UserSocialAuth.objects.filter(provider='baidu')[0].extra_data
         self.state = UserSocialAuth.objects.filter(provider='baidu')[0].extra_data
         self.storage = BaiduClient(self.state["access_token"])
+        #result = self.storage.mkdir("/apps/")
+        #print result
+        result = self.storage.mkdir("/apps/ufs_django/ufs/")
+        print result
         self.authorize_state = self.AUTHORIZED
 
     def is_authorized_in_baidu(self):
@@ -76,7 +80,7 @@ class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
         obj = get_ufs_obj_from_full_path(msg.get_path())
         basename = os.path.basename(obj.full_path)
         try:
-            result = self.storage.upload_single("app_folder/ufs", obj.full_path, ondup='newcopy')
+            result = self.storage.upload_single("/apps/ufs_django/ufs/"+basename, obj.full_path, ondup='newcopy')
             print result
             self.gui_service = GuiService()
             self.gui_service.put({"command": "notify",
