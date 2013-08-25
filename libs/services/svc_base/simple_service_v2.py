@@ -169,7 +169,8 @@ class SimpleService(object):
 
         #print '-----------------everything OK'
         is_server = args["startserver"]
-        self.default_class_param_dict["session_id"] = args["session_id"]
+        print "session id is:", os.environ["ufs_console_mgr_session_id"]
+        self.default_class_param_dict["session_id"] = os.environ["ufs_console_mgr_session_id"]
         if self.service_class is None:
             if self.worker_thread_class is None:
                 raise "Neither a service class nor a thread class is given, we will not work with nothing"

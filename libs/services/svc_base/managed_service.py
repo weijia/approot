@@ -82,7 +82,7 @@ class ManagedService(MsgProcessor):
         msg.add_app_name(self.get_task_signature())
         msg.add_receiver(self.receiver)
         msg.add_timestamp()
-        msg.add_session_id(self.param_dict.get("session_id"))
+        msg.add_session_id(os.environ["ufs_console_mgr_session_id"])
         self.reg_timestamp = msg.get_timestamp()
         q = MsgQ(gMsgBasedServiceManagerMsgQName)
         q.send_msg(msg)

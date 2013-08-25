@@ -11,9 +11,12 @@ qrcode
 libmagic
 cherrypy
 django-social-auth
-#Install from exe
+requests
+git+https://github.com/weijia/django-social-auth.git
+#Install from exe or manually
 pillow
 PyQt
 pywin32
 psycopg2
 cx_Freeze
+git+https://github.com/xiaocong/baidu-pcs

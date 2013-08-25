@@ -111,7 +111,8 @@ if __name__ == "__main__":
     #start_app_shortcut("tagging")
     #The following is not working as tube logging service is not started automatically currently
     #start_app_shortcut("tube_logging_service", ["--input", "ufs_test_tube"])
-
+    from libs.services.apps.managed_cherrypy_server import main
+    main()
     
     
     
