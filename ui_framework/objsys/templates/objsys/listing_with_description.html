@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load pagination_tags %}
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}objsys/css/styles.min.css" type="text/css">
+</head>
+<body>
+{% autopaginate objects 30 %}
+<ul id="bookmark_list">
+    {% for bookmark in objects %}
+    <li class="bookmark">
+        <h4{% if not bookmark.author == user %} class="no_edit"{% endif %}>
+            <a href="{{ bookmark.ufs_url }}" target="_blank">{{ bookmark.ufs_url }}</a>
+            <p>{{ bookmark.description }}</p>
+        </h4>
+        {% if user.is_authenticated and bookmark.author == user %}
+        <ul class="edit_links">
+            <li><a href="">Edit</a></li>
+            <li><a href="">Delete</a></li>
+        </ul>
+        {% endif %}
+        <ul class="tags">
+            {% for tag in bookmark.tags %}
+            <li><a href="">{{ tag.name }}</a></li>
+            {% endfor %}
+
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+{% paginate %}
+</body>
+</html>

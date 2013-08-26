@@ -110,7 +110,12 @@ def rm_obj_from_db(request):
 
 def listing(request):
     objects = UfsObj.objects.all()
-    return render_to_response('objsys/listing.html', {"objects": objects},
+    return render_to_response('objsys/listing.html', {"objects": objects, "request": request},
+                              context_instance=RequestContext(request))
+
+def listing_with_description(request):
+    objects = UfsObj.objects.all()
+    return render_to_response('objsys/listing_with_description.html', {"objects": objects, "request": request},
                               context_instance=RequestContext(request))
 
 
