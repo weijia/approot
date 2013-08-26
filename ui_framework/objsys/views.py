@@ -114,7 +114,7 @@ def listing(request):
                               context_instance=RequestContext(request))
 
 def listing_with_description(request):
-    objects = UfsObj.objects.all()
+    objects = UfsObj.objects.filter(user=request.user)
     return render_to_response('objsys/listing_with_description.html', {"objects": objects, "request": request},
                               context_instance=RequestContext(request))
 
@@ -128,5 +128,5 @@ def create_admin_user(request):
 
 def homepage(request):
     context = {}
-    context['ufs_objs'] = UfsObj.objects.all()
+    context['ufs_objs'] = UfsObj.objects.filter(user=request.user)
     return render(request, 'objsys/index.html', context)
