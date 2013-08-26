@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}objsys/css/styles.min.css" type="text/css">
 </head>
 <body>
-{% autopaginate objects 30 %}
+{% autopaginate objects 10 %}
 <ul id="bookmark_list">
     {% for bookmark in objects %}
     <li class="bookmark">
