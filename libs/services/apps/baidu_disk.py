@@ -6,7 +6,9 @@ import os
 #import shutil
 from urllib2 import HTTPError
 
+
 import libsys
+import configuration
 from libs.utils.obj_tools import get_ufs_obj_from_full_path
 from configuration import *
 from django.conf import settings
@@ -41,22 +43,29 @@ class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
         self.storage = BaiduClient(self.state["access_token"])
         #result = self.storage.mkdir("/apps/")
         #print result
-        result = self.storage.mkdir("/apps/ufs_django/ufs/")
-        print result
-        self.authorize_state = self.AUTHORIZED
+        try:
+            result = self.storage.mkdir("/apps/ufs_django/ufs/")
+            print result
+        except:
+            pass
+
+        #self.authorize_state = self.AUTHORIZED
 
     def is_authorized_in_baidu(self):
         #return False
-        return 0 != UserSocialAuth.objects.filter(provider='baidu')
+        return 0 != UserSocialAuth.objects.filter(provider='baidu').count()
 
     def start_auth(self):
         self.storage = None
-        self.authorize_state = self.AUTHORIZE_BEFORE_GETTING_ACCESS_TOKEN
-        authLink = 'http://localhost:8110/login/baidu/'
+        #self.authorize_state = self.AUTHORIZE_BEFORE_GETTING_ACCESS_TOKEN
+        authLink = 'http://127.0.0.1:%d/login/baidu/' % configuration.g_config_dict["ufs_web_server_port"]
         os.startfile(authLink)
 
     def on_register_ok(self):
         super(BaiduDisk, self).on_register_ok()
+        self.invalid_auth_list = []
+        self.current_auth = 0
+
         self.failed_cnt = 0
         if self.is_authorized_in_baidu():
             self.set_storage()
@@ -64,11 +73,11 @@ class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
             self.start_auth()
 
     def process(self, msg):
-        if self.authorize_state == self.AUTHORIZE_BEFORE_GETTING_ACCESS_TOKEN:
+        if not self.is_authorized_in_baidu():
             self.start_auth()
             #Put the file back
             self.put(msg, 30)
-        elif self.authorize_state == self.AUTHORIZED:
+        else:
             #Create the original object in UFS
             if os.path.exists(msg.get_path()):
                 self.upload_file_in_msg(msg)
@@ -92,7 +101,7 @@ class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
             if 401 == e.code:
                 # Unauthorized
                 self.put(msg, 30)
-                self.authorize_state = self.AUTHORIZE_NOT_STARTED
+                #self.authorize_state = self.AUTHORIZE_NOT_STARTED
                 state = self.get_state(self.get_task_signature(), {"oauth_token": None})
                 del state["oauth_token"]
                 #state["oauth_token_secret"] = self.token['oauth_token_secret']
