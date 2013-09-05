@@ -1,6 +1,6 @@
 # -*- coding: gbk -*-
 import libsys
-from libs.services.svc_base.launcher import Launcher
+from libs.services.svc_base.launcher_interface import Launcher
 from libs.services.svc_base.gui_service import GuiService
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_base import MsgProcessor

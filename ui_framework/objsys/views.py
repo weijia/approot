@@ -45,7 +45,7 @@ def start(request):
         ext = ''
     if True:  #try:
         if False:  #(ext in ['.bat', '.py']):
-            from libs.services.svc_base.launcher import Launcher
+            from libs.services.svc_base.launcher_interface import Launcher
 
             Launcher().start_app_with_exact_full_path_and_param_list_no_wait(full_path, ['--startserver'])
             #raise "stop here"

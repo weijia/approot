@@ -90,6 +90,7 @@ def findNamePatternInProduct(pattern):
                 continue
                 #print 'found item:', pattern, i
             return os.path.join(dirpath, i)
+    print "path not found", pattern
     return None
 
 

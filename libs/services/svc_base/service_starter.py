@@ -1,5 +1,5 @@
 import libsys
-from libs.services.svc_base.launcher import Launcher
+from libs.services.svc_base.launcher_interface import Launcher
 from libs.diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, \
     gDiagramRootCollectionUuid
 from libs.tagging.models import TaggedItem

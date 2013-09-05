@@ -2,7 +2,7 @@ import threading
 import urllib2
 import libsys
 import configuration
-from libs.services.svc_base.launcher import Launcher
+from libs.services.svc_base.launcher_interface import Launcher
 from libs.services.svc_base.msg import Msg
 from libs.services.svc_base.simple_service_v2 import SimpleService
 from libs.services.svc_base.singleton_service_base import SingletonServiceBase
