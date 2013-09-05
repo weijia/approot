@@ -1,7 +1,6 @@
 # Create your views here.
 import os
 import threading
-
 from django.http import HttpResponse
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, render
@@ -11,6 +10,7 @@ from libs.utils.django_utils import retrieve_param
 from objsys.models import UfsObj
 from tagging.models import Tag, TaggedItem
 from obj_tagging import *
+from django.contrib.auth.decorators import login_required
 
 
 def manager(request):
@@ -113,8 +113,9 @@ def listing(request):
     return render_to_response('objsys/listing.html', {"objects": objects, "request": request},
                               context_instance=RequestContext(request))
 
+@login_required
 def listing_with_description(request):
-    objects = UfsObj.objects.filter(user=request.user)
+    objects = UfsObj.objects.filter(user=request.user).order_by('-timestamp')
     return render_to_response('objsys/listing_with_description.html', {"objects": objects, "request": request},
                               context_instance=RequestContext(request))
 
