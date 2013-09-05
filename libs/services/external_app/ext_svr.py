@@ -1,3 +1,4 @@
+from libs.services.external_app.postgres_app import PostgreSqlApp
 import libsys
 from libs.services.svc_base.launcher_interface import Launcher
 import configuration
@@ -8,15 +9,7 @@ import os
 from libs.utils.process_mgr import gProcessMgr
 from django.contrib.auth.models import User, Group
 
-class ExtAppMgrIntf(object):
-    def __init__(self):
-        pass
 
-    def check_complet(self):
-        pass
-
-    def shutdown(self):
-        pass
 
 
 def wait_for_app(app_and_param_list):
@@ -31,33 +24,7 @@ def wait_for_app(app_and_param_list):
     gProcessMgr().wait_for_complete_without_console(app_full_path_and_param_list, cur_working_dir)
 
 
-class PostgreSqlApp(ExtAppMgrIntf):
-    def __init__(self):
-        ###########################
-        # Start postgresql
-        ###########################
-        Launcher().start_app_with_name_param_list_with_session_no_wait('postgresql')
 
-        #Define our connection string
-        conn_string = "host='localhost' dbname='postgres' user='postgres' password=''"
-        conn_string += " port='%d'" % configuration.g_config_dict['POSTGRESQL_PORT']
-
-        # print the connection string we will use to connect
-        print "Connecting to database\n	->%s" % (conn_string)
-
-        #Check if postgresql started correctly
-        retry_cnt = 0
-        while True:
-            try:
-                # get a connection, if a connect cannot be made an exception will be raised here
-                conn = psycopg2.connect(conn_string)
-                break
-            except psycopg2.OperationalError:
-                retry_cnt += 1
-                print "retrying to connect postgresql server"
-                if retry_cnt > 80:
-                    print "postgresql start failed"
-                    break
 
 
 class MongoDbApp(ExtAppMgrIntf):
