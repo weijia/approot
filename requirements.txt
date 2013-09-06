@@ -12,11 +12,11 @@ libmagic
 cherrypy
 django-social-auth
 requests
-git+https://github.com/weijia/django-social-auth.git
+-e git+https://github.com/weijia/django-social-auth.git#egg=diango-social-auth
 #Install from exe or manually
 pillow
 PyQt
 pywin32
 psycopg2
 cx_Freeze
-git+https://github.com/xiaocong/baidu-pcs
+-e git+https://github.com/xiaocong/baidu-pcs#egg=baidu-pcs
