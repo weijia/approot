@@ -78,7 +78,7 @@ def create_diagram_obj(request):
                         mimetype="application/json")
 
 
-from libs.console.ConsoleOutputCollector import execute_app
+#from libs.console.ConsoleOutputCollector import execute_app
 
 
 def parse_help(help_str):
