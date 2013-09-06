@@ -1,6 +1,6 @@
 import sys
-from libs.utils.filetools import findAppInProduct
 import libsys
+from libs.utils.filetools import findAppInProduct
 from libs.services.svc_base.postgres_app import PostgreSqlApp
 import configuration
 import os
