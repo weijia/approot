@@ -1,6 +1,9 @@
 import os
 import sys
 ####################################
+import time
+
+
 def get_root_dir():
     c = os.getcwd()
     while c.find('approot') != -1:
@@ -48,6 +51,7 @@ for i in g_config_dict:
 os.environ["POSTGRESQL_ROOT"] = os.path.join(root_dir, "..\\others\\pgsql\\")
 os.environ["CLASSPATH"] = os.path.join(root_dir, "..\\others\\scache\\src\\Beanstemc.jar")
 os.environ["DJANGO_SETTINGS_MODULE"] = "rootapp.settings"
+os.environ["ufs_console_mgr_session_id"] = str(time.time())
 ###################################
 try:
     os.mkdir(log_root)
