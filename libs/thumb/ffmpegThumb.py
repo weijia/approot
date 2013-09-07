@@ -1,7 +1,8 @@
 import subprocess
 #from subprocess import *
 import os
-from libs.services.apps.tube_folder_tagging import add_tag_for_full_path
+from libs.tags.views import add_tag_for_full_path
+
 
 app = "..\\others\\ffmpeg\\bin\\ffmpeg.exe"
 CREATE_NO_WINDOW = 0x8000000

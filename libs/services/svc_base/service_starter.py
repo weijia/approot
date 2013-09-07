@@ -2,7 +2,7 @@ import libsys
 from libs.services.svc_base.launcher_interface import Launcher
 from libs.diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, \
     gDiagramRootCollectionUuid
-from libs.tagging.models import TaggedItem
+from tagging.models import TaggedItem
 #from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
 from django.conf import settings
 from ui_framework.objsys.models import UfsObj, CollectionItem

@@ -8,8 +8,8 @@ from django.shortcuts import render_to_response
 import django.utils.timezone as timezone
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from libs.tagging.models import Tag, TaggedItem
-from libs.tagging.utils import parse_tag_input
+from tagging.models import Tag, TaggedItem
+from tagging.utils import parse_tag_input
 from libs.utils.django_utils import retrieve_param
 from libs.utils.string_tools import SpecialEncoder
 import libs.utils.obj_tools as obj_tools

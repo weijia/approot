@@ -1,12 +1,11 @@
 import os
-import re
-import libsys
+from libs.tags.views import add_tag_for_full_path
 import libs.utils.transform as transform
 
-from libs.services.apps.tube_folder_tagging import add_tag_for_full_path
 from libs.obj_related.local_obj import LocalObj
 
 g_default_thumb_size = 256
+
 
 class pictureFormatNotSupported:
     pass
@@ -63,7 +62,7 @@ def genPicThumb(local_path, dest_dir, mime_type = None):
 def returnThumbString(local_path):
     import Image #Using PIL lib 
     import cStringIO
-    import StringIO
+
     im = Image.open(local_path)
     # convert to thumbnail image
     im.thumbnail((128, 128), Image.ANTIALIAS)

@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.contrib.contenttypes.models import ContentType
 
 import libsys
-from libs.tagging.models import TaggedItem
+from tagging.models import TaggedItem
 from libs.utils.obj_tools import getHostName
 from libs.utils.django_utils import retrieve_param
 from objsys.obj_tagging import UfsFilter

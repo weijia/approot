@@ -15,7 +15,7 @@ cherrypy
 -e git+https://github.com/weijia/django-social-auth.git#egg=django-social-auth
 -e git+https://github.com/weijia/django-tagging-ng.git#egg=django-tagging-ng
 django-registration
-django-registration-default
+-e git+https://github.com/weijia/django-registration-defaults.git#egg=django-registration-defaults
 requests
 -e git+https://github.com/weijia/baidu-pcs.git#egg=baidu-pcs
 #Install from exe or manually

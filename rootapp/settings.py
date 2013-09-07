@@ -185,10 +185,8 @@ TEMPLATE_LOADERS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     "django.core.context_processors.request",
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
     "django.core.context_processors.static",
-    'ui_framework.objsys.custom_context_processors.head_form',
+    #'ui_framework.objsys.custom_context_processors.head_form',
     'django.core.context_processors.request',
 )
 ANONYMOUS_USER_ID = -1

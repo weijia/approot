@@ -1,10 +1,13 @@
 # Create your views here.
+import os
 
 from django.http import HttpResponse
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from tagging.models import Tag, TaggedItem
 #from django.core import serializers
+from libs.logsys.logSys import cl
+from libs.utils import transform as transform, obj_tools
 from ui_framework.objsys.models import UfsObj, CollectionItem
 import json
 
@@ -71,3 +74,32 @@ def pane(request):
     c = {"user": request.user, "data_url": data_url}
     c.update(csrf(request))
     return render_to_response('tags/pane.html', c)
+
+
+def add_tag_for_full_path(full_path, tag, tag_app = None):
+    full_path = transform.transformDirToInternal(full_path)
+    obj_list = UfsObj.objects.filter(full_path = full_path)
+    if 0 == obj_list.count():
+        ufs_url = obj_tools.getUfsUrlForPath(full_path)
+        obj = UfsObj(ufs_url = ufs_url, full_path=full_path)
+        obj.save()
+    else:
+        obj = obj_list[0]
+    Tag.objects.add_tag(obj, tag, tag_app)
+
+    #Add folder tag
+    if os.path.isdir(full_path):
+        Tag.objects.add_tag(obj, "system:folder", tag_app)
+    else:
+        #Add media tags
+        obj_type = obj.get_type()
+        cl(full_path, obj_type)
+        if 'image' in obj_type:
+            Tag.objects.add_tag(obj, "system:pic", tag_app)
+        else:
+            isVideo = False
+            for signature in ['RIFF (little-endian) data, AVI', 'RealMedia file',
+                                'Matroska data', 'Macromedia Flash Video']:
+                if signature in obj_type:
+                    Tag.objects.add_tag(obj, "system:video", tag_app)
+                    break

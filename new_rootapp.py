@@ -1,4 +1,6 @@
 import os
+import traceback
+import urllib2
 import webbrowser
 from iconizer import Iconizer
 from libs.utils.filetools import findAppInProduct
@@ -8,8 +10,14 @@ import configuration
 def stop_postgresql():
     os.system(findAppInProduct("postgresql_stop"))
 
+
 def stop_web_servers():
-    pass
+    print "stopping web servers"
+    try:
+        urllib2.urlopen('http://localhost:%d/stop/' % configuration.g_config_dict["ufs_web_server_port"] )
+        urllib2.urlopen('http://localhost:%d/stop/' % configuration.g_config_dict["thumb_server_port"] )
+    except:
+        traceback.print_exc()
 
 def open_main():
     webbrowser.open("http://127.0.0.1:" + str(configuration.g_config_dict["ufs_web_server_port"]) +
