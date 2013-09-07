@@ -10,9 +10,12 @@ django-tastypie==0.9.12
 qrcode
 libmagic
 cherrypy
-django-social-auth
-requests
+#django-social-auth
+#Use the following instead of the original to support baidu PCS
 -e git+https://github.com/weijia/django-social-auth.git#egg=diango-social-auth
+django-registration
+django-registration-default
+requests
 -e git+https://github.com/weijia/baidu-pcs.git#egg=baidu-pcs
 #Install from exe or manually
 pillow
