@@ -8,6 +8,8 @@ import configuration
 def stop_postgresql():
     os.system(findAppInProduct("postgresql_stop"))
 
+def stop_web_servers():
+    pass
 
 def open_main():
     webbrowser.open("http://127.0.0.1:" + str(configuration.g_config_dict["ufs_web_server_port"]) +
@@ -16,7 +18,8 @@ def open_main():
 def main():
     try:
         i = Iconizer()
-        i.add_close_listener(stop_postgresql)
+        i.add_close_listener(stop_web_servers)
+        i.add_final_close_listener(stop_postgresql)
         i.gui_launch_manger.taskbar_icon_app["Open Main Page"] = open_main
         i.execute({"ext_svr": [findAppInProduct("new_ext_svr")]})
 
