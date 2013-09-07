@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic.simple import redirect_to
+from django.views.generic import RedirectView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -13,20 +13,17 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'rootapp.views.home', name='home'),
     # url(r'^rootapp/', include('rootapp.foo.urls')),
-    
-    (r'^accounts/', include('allauth.urls')),
-    url(r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'index.html' }),
-    url(r'^accounts/profile/$', 'django.views.generic.simple.direct_to_template', {'template': 'profile.html' }),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
+    (r'^admin/', include('smuggler.urls')), # put it before admin url patterns
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^filemanager/', include('desktop.filemanager.urls')),                       
-    url(r'^ui_framework/', include('ui_framework.urls')),                       
-    #url(r'^$', redirect_to, {'url': '/filemanager/'}),
-    url(r'^objsys/', include('ui_framework.objsys.urls')),
+    url(r'^objsys/', include('objsys.urls')),
+    url(r'', include('social_auth.urls')),
+    (r'^accounts/', include('registration.backends.default.urls')),
+
     url(r'^collection_management/', include('ui_framework.collection_management.urls')),
     url(r'^tags/', include('tags.urls')),
     url(r'^connection/', include('ui_framework.connection.urls')),
@@ -34,7 +31,10 @@ urlpatterns = patterns('',
     url(r'^mapping_driver/', include('win_smb.urls')),
     url(r'^object_filter/', include('object_filter.urls')),
     url(r'^thumb/', include('thumbapp.urls')),
-    url(r'', include('social_auth.urls')),
+    #url(r'^$', redirect_to, {'url': '/filemanager/'}),
+    url(r'^filemanager/', include('desktop.filemanager.urls')),                       
+    url(r'^ui_framework/', include('ui_framework.urls')),                       
+    (r'^$', RedirectView.as_view(url='/objsys/homepage/')),
 )
 
 ##############################

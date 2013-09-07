@@ -155,8 +155,10 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+'''
 # Make this unique, and don't share it with anybody.
 #SECRET_KEY = 'g-yjv2wm_=_+r2j9v2u3ak$!b+i2qz=#e2#h3nmrt2l6+_wps$'
+'''
 try:
     from secret_key import *
 except ImportError:
@@ -191,13 +193,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 ANONYMOUS_USER_ID = -1
 
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    'guardian.backends.ObjectPermissionBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -233,16 +228,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'tagging',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    #'allauth.socialaccount.providers.facebook',
-    #'allauth.socialaccount.providers.google',
-    #'allauth.socialaccount.providers.github',
-    #'allauth.socialaccount.providers.linkedin',
-    #'allauth.socialaccount.providers.openid',
-    #'allauth.socialaccount.providers.soundcloud',
-    #'allauth.socialaccount.providers.twitter',
     'desktop.filemanager',
     'ui_framework',
     'ui_framework.objsys',

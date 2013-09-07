@@ -2,8 +2,19 @@ ANONYMOUS_USER_ID = -1
 
 INSTALLED_APPS += (
     'social_auth',
+    'socialprofile',
+    'smuggler',
+    'registration',
+    'registration_defaults',
+    'pagination',
 )
-
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    'guardian.backends.ObjectPermissionBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    #"allauth.account.auth_backends.AuthenticationBackend",
+)
 AUTHENTICATION_BACKENDS += (
     #'social_auth.backends.twitter.TwitterBackend',
     #'social_auth.backends.facebook.FacebookBackend',
@@ -58,9 +69,24 @@ READABILITY_CONSUMER_SECRET  = ''
 WEIBO_CLIENT_KEY = ''
 WEIBO_CLIENT_SECRET = ''
 
-LOGIN_URL          = '/login-form/'
+#LOGIN_URL          = '/login-form/'
+LOGIN_URL          = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/objsys/manager/'
 LOGIN_ERROR_URL    = '/login-error/'
 
 #Use this for weibo only generate a char string as name
 #SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+
+
+#For django-registration
+ACCOUNT_ACTIVATION_DAYS = 3
+
+try:
+    from objsys.baidu_mail import EmailBackend
+    EMAIL_BACKEND = 'objsys.baidu_mail.EmailBackend'
+except:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+MIDDLEWARE_CLASSES += (
+    'pagination.middleware.PaginationMiddleware',
+)
