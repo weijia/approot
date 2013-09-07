@@ -1,7 +1,6 @@
 #from setuptools import find_packages
 import os
 
-
 from cx_Freeze import setup, Executable
 
 from rootapp import settings
@@ -71,12 +70,12 @@ includes = ["PyQt4.QtCore",
 
 script_list = ['new_rootapp',
                #'tornado_main',
-               'tagging', 'ext_svr', 'sftpserver',
+               'tagging', 'new_ext_svr', 'sftpserver',
                #'BeanstalkdLauncherService',
                'manage',
                #'initial_launcher',
                #'cherrypy_server',
-               'service_starter','msg_based_service_mgr',
+               'service_starter', 'msg_based_service_mgr',
                # ('monitor.py', 'libs/services/apps/monitor.exe'),
                # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
                # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
@@ -86,27 +85,28 @@ from libs.services.svc_base.default_apps import gDefaultServices
 
 script_list.extend(gDefaultServices)
 #print script_list
+from iconizer.qtconsole.fileTools import find_resource_in_pkg
 
 includefiles = [
-                #("libs/qtconsole/gf-16x16.png", "gf-16x16.png"),
-                #("libs/qtconsole/app_list.ui", "app_list.ui"),
-                #("libs/qtconsole/droppable.ui", "droppable.ui"),
-                #("libs/qtconsole/notification.ui", "notification.ui"),
-                ("libs/services/external_app/startBeanstalkd.bat", "startBeanstalkd.bat"),
-                ("libs/services/external_app/scache.bat", "external_app/scache.bat"),
-                ("libs/services/external_app/sftpserver.bat", "external_app/sftpserver.bat"),
-                ("libs/services/external_app/postgresql.bat", "postgresql.bat"),
-                ("libs/services/external_app/postgresql_stop.bat", "postgresql_stop.bat"),
-                ("libs/services/external_app/start_ext_app.bat", "start_ext.bat"),
-                ("libs/services/apps/diagrams/", "diagrams"),
-                #("libs/allauth/fixtures/initial_data.json", "initial_data.json"),
-                ("libs/zlib1.dll", "libs/zlib1.dll"),
-                ("libs/regex2.dll", "libs/regex2.dll"),
-                ("libs/magic1.dll", "libs/magic1.dll"),
-                #("tornado_app.bat", "tornado.bat"),
-                ("activate_app.bat", "activate.bat"),
-                ("share", "share"),
-                #("../others", "../others"),
+    (find_resource_in_pkg("gf-16x16.png"), "gf-16x16.png"),
+    (find_resource_in_pkg("app_list.ui"), "app_list.ui"),
+    (find_resource_in_pkg("droppable.ui"), "droppable.ui"),
+    (find_resource_in_pkg("notification.ui"), "notification.ui"),
+    ("libs/services/external_app/startBeanstalkd.bat", "startBeanstalkd.bat"),
+    ("libs/services/external_app/scache.bat", "external_app/scache.bat"),
+    ("libs/services/external_app/sftpserver.bat", "external_app/sftpserver.bat"),
+    ("libs/services/external_app/postgresql.bat", "postgresql.bat"),
+    ("libs/services/external_app/postgresql_stop.bat", "postgresql_stop.bat"),
+    ("libs/services/external_app/start_ext_app.bat", "start_ext.bat"),
+    ("libs/services/apps/diagrams/", "diagrams"),
+    #("libs/allauth/fixtures/initial_data.json", "initial_data.json"),
+    ("libs/zlib1.dll", "libs/zlib1.dll"),
+    ("libs/regex2.dll", "libs/regex2.dll"),
+    ("libs/magic1.dll", "libs/magic1.dll"),
+    #("tornado_app.bat", "tornado.bat"),
+    ("activate_app.bat", "activate.bat"),
+    ("share", "share"),
+    #("../others", "../others"),
 ]
 excludefiles = []
 zip_includes = []
@@ -141,12 +141,11 @@ python_dir = dirname(dirname(_tkinter.__file__))
 #os.environ["TCL_LIBRARY"] = os.path.join(python_dir, "tcl/tcl8.5")
 #os.environ["TK_LIBRARY"] = os.path.join(python_dir, "tcl/tk8.5")
 
-tcl_lib_path_name = "tcl/tcl"+_tkinter.TCL_VERSION
-tk_lib_path_name = "tcl/tk"+_tkinter.TCL_VERSION
+tcl_lib_path_name = "tcl/tcl" + _tkinter.TCL_VERSION
+tk_lib_path_name = "tcl/tk" + _tkinter.TCL_VERSION
 
 os.environ["TCL_LIBRARY"] = os.path.join(python_dir, tcl_lib_path_name)
 os.environ["TK_LIBRARY"] = os.path.join(python_dir, tk_lib_path_name)
-
 
 gen_spec(settings, build_exe_params)
 
