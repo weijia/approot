@@ -12,7 +12,8 @@ libmagic
 cherrypy
 #django-social-auth
 #Use the following instead of the original to support baidu PCS
--e git+https://github.com/weijia/django-social-auth.git#egg=diango-social-auth
+-e git+https://github.com/weijia/django-social-auth.git#egg=django-social-auth
+-e git+https://github.com/weijia/django-tagging-ng.git#egg=django-tagging-ng
 django-registration
 django-registration-default
 requests
