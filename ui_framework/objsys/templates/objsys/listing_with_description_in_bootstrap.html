@@ -1,12 +1,9 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load pagination_tags %}
-<html>
-<head>
-    <title></title>
-    <link rel="stylesheet" href="{{ STATIC_URL }}objsys/css/styles.min.css" type="text/css">
-</head>
-<body>
-<div><div style="float:left;margin-left: 40px;line-height:30px;">Hi {{request.user.username}}</div><div style="clear:both"></div></div>
+
+{% block container %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}objsys/css/styles.css" type="text/css">
+
 {% autopaginate objects 10 %}
 <ul id="bookmark_list">
     {% for bookmark in objects %}
@@ -31,5 +28,4 @@
     {% endfor %}
 </ul>
 {% paginate %}
-</body>
-</html>
+{% endblock %}

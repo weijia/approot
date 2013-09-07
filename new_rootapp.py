@@ -14,8 +14,8 @@ def stop_postgresql():
 def stop_web_servers():
     print "stopping web servers"
     try:
-        urllib2.urlopen('http://localhost:%d/stop/' % configuration.g_config_dict["ufs_web_server_port"] )
-        urllib2.urlopen('http://localhost:%d/stop/' % configuration.g_config_dict["thumb_server_port"] )
+        urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["ufs_web_server_port"] )
+        urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["thumb_server_port"] )
     except:
         traceback.print_exc()
 
@@ -29,7 +29,7 @@ def main():
         i.add_close_listener(stop_web_servers)
         i.add_final_close_listener(stop_postgresql)
         i.gui_launch_manger.taskbar_icon_app["Open Main Page"] = open_main
-        i.execute({"ext_svr": [findAppInProduct("new_ext_svr")]})
+        i.execute({"new_ext_svr": [findAppInProduct("new_ext_svr")]})
 
     except (KeyboardInterrupt, SystemExit):
         raise

@@ -113,10 +113,13 @@ def listing(request):
     return render_to_response('objsys/listing.html', {"objects": objects, "request": request},
                               context_instance=RequestContext(request))
 
+
 @login_required
 def listing_with_description(request):
     objects = UfsObj.objects.filter(user=request.user).order_by('-timestamp')
-    return render_to_response('objsys/listing_with_description.html', {"objects": objects, "request": request},
+    return render_to_response('objsys/listing_with_description_in_bootstrap.html',
+                              {"objects": objects, "request": request, "title": "My bookmarks",
+                               "email": "richardwangwang@gmail.com", "author": "Richard"},
                               context_instance=RequestContext(request))
 
 
@@ -127,7 +130,9 @@ def create_admin_user(request):
     return HttpResponse("Done")
 
 
+'''
 def homepage(request):
     context = {}
     context['ufs_objs'] = UfsObj.objects.filter(user=request.user)
     return render(request, 'objsys/index.html', context)
+'''

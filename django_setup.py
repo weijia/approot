@@ -161,10 +161,10 @@ def gen_spec(settings, existing_config):
         "management.commands.syncdb",
         "management.commands.loaddata",
         ##############
-        "allauth",
-        "allauth.account",
+        #"allauth",
+        #"allauth.account",
         "argparse",
-        "allauth.socialaccount",
+        #"allauth.socialaccount",
         "guardian",
         "win_smb",
         "ui_framework",

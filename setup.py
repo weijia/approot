@@ -6,7 +6,7 @@ from cx_Freeze import setup, Executable
 
 from rootapp import settings
 from django_setup import gen_spec
-import libs.qtconsole.fileTools as filetools
+import libs.utils.filetools as filetools
 
 
 ####################
@@ -69,7 +69,7 @@ includes = ["PyQt4.QtCore",
             "cherrypy",
 ]
 
-script_list = ['rootapp',
+script_list = ['new_rootapp',
                #'tornado_main',
                'tagging', 'ext_svr', 'sftpserver',
                #'BeanstalkdLauncherService',
@@ -87,10 +87,11 @@ from libs.services.svc_base.default_apps import gDefaultServices
 script_list.extend(gDefaultServices)
 #print script_list
 
-includefiles = [("libs/qtconsole/gf-16x16.png", "gf-16x16.png"),
-                ("libs/qtconsole/app_list.ui", "app_list.ui"),
-                ("libs/qtconsole/droppable.ui", "droppable.ui"),
-                ("libs/qtconsole/notification.ui", "notification.ui"),
+includefiles = [
+                #("libs/qtconsole/gf-16x16.png", "gf-16x16.png"),
+                #("libs/qtconsole/app_list.ui", "app_list.ui"),
+                #("libs/qtconsole/droppable.ui", "droppable.ui"),
+                #("libs/qtconsole/notification.ui", "notification.ui"),
                 ("libs/services/external_app/startBeanstalkd.bat", "startBeanstalkd.bat"),
                 ("libs/services/external_app/scache.bat", "external_app/scache.bat"),
                 ("libs/services/external_app/sftpserver.bat", "external_app/sftpserver.bat"),
@@ -98,7 +99,7 @@ includefiles = [("libs/qtconsole/gf-16x16.png", "gf-16x16.png"),
                 ("libs/services/external_app/postgresql_stop.bat", "postgresql_stop.bat"),
                 ("libs/services/external_app/start_ext_app.bat", "start_ext.bat"),
                 ("libs/services/apps/diagrams/", "diagrams"),
-                ("libs/allauth/fixtures/initial_data.json", "initial_data.json"),
+                #("libs/allauth/fixtures/initial_data.json", "initial_data.json"),
                 ("libs/zlib1.dll", "libs/zlib1.dll"),
                 ("libs/regex2.dll", "libs/regex2.dll"),
                 ("libs/magic1.dll", "libs/magic1.dll"),

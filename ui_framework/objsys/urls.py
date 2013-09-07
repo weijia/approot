@@ -35,5 +35,5 @@ urlpatterns = patterns('',
     #url(r'^$', 'desktop.filemanager.views.index'),
     #url(r'^.+$', 'desktop.filemanager.views.handler'),
     url(r'^create_admin_user/$', 'objsys.views.create_admin_user'),
-    url(r'^homepage_all/$', 'objsys.views.homepage'),
+    #url(r'^homepage_all/$', 'objsys.views.homepage'),
 )

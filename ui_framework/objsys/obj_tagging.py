@@ -30,7 +30,7 @@ def append_tags_and_description_to_url(user, url, tags, description):
     '''
     if obj_tools.is_web_url(url):
         full_path = None
-        obj_qs = UfsObj.objects.filter(ufs_url=url)
+        obj_qs = UfsObj.objects.filter(ufs_url=url, user=user)
         ufs_url = url
     else:
         full_path = obj_tools.get_full_path_for_local_os(url)
@@ -57,13 +57,15 @@ class RequestWithAuth(object):
         self.error_json = ''
 
     def is_authenticated(self):
-        if not self.request.user.is_authenticated():
+        if ('username'in self.data) and ('password' in self.data):
             username = self.data['username']
             password = self.data['password']
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     login(self.request, user)
+                    print 'login OK'
+                    return True
                 else:
                     # Return a 'disabled account' error message
                     print 'disabled account'
@@ -73,13 +75,11 @@ class RequestWithAuth(object):
                 print 'invalid login'
                 self.error_json = '{"error": "invalid login", "username": "%s", "password": "%s"}' % (username, password)
                 return False
-        return True
+        self.error_json = '{"error": "no username and password"}'
+        return False
 
     def get_error_json(self):
         return self.error_json
-
-
-
 
 
 @csrf_exempt
@@ -90,11 +90,13 @@ def handle_append_tags_request(request):
 
     tags = req_with_auth.data.get("tags", None)
     description = req_with_auth.data.get("description", None)
+    addedCnt = 0
     for query_param_list in req_with_auth.data.lists():
         if query_param_list[0] == "selected_url":
             for url in query_param_list[1]:
                 append_tags_and_description_to_url(request.user, url, tags, description)
-    return HttpResponse('{"result": "OK"}', mimetype="application/json")
+                addedCnt += 1
+    return HttpResponse('{"result": "OK", "added": %d}' % addedCnt, mimetype="application/json")
 
 
 @login_required

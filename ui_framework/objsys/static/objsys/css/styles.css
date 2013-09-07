@@ -1,0 +1,143 @@
+/*html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video
+{
+	border: 0;
+	font: inherit;
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
+{
+	display: block;
+}
+body
+{
+	line-height: 1;
+}*/
+ol,ul
+{
+	list-style: none;
+}
+blockquote,q
+{
+	quotes: none;
+}
+blockquote:before,blockquote:after,q:before,q:after
+{
+	content: '';
+	content: none;
+}
+table
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+ul,li
+{
+	list-style-type: none;
+	padding: 0;
+}
+body
+{
+	font-family: arial;
+	font-size: 13px;
+	text-align: center;
+}
+#main_content
+{
+	margin: 0 auto;
+	text-align: left;
+	width: 1280px;
+}
+#sidebar
+{
+	float: right;
+	width: 300px;
+}
+#sidebar ul
+{
+	margin-bottom: 10px;
+}
+#bookmark_list
+{
+	padding-left: 30px;
+	padding-right: 325px;
+	text-align: left;
+}
+h1
+{
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+h2
+{
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 7px;
+}
+ul.nav
+{
+	margin-bottom: 5px;
+}
+a
+{
+	color: #1259c7;
+	text-decoration: none;
+}
+a:hover
+{
+	text-decoration: underline;
+}
+ul.nav li
+{
+	display: inline-block;
+	margin-right: 9px;
+}
+ul.edit_links li
+{
+	display: inline-block;
+	margin-right: 12px;
+}
+.edit_links li a
+{
+	color: #999;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+li.bookmark
+{
+	border-top: 1px solid #dcdcdc;
+	margin-bottom: 8px;
+	position: relative;
+}
+li.bookmark h4
+{
+	font-size: 1.4em;
+	font-weight: normal;
+	margin-bottom: 5px;
+	margin-top: 9px;
+}
+li.bookmark h4.no_edit
+{
+	margin-bottom: 25px;
+}
+li.bookmark ul.tags
+{
+	position: absolute;
+	right: 0;
+	top: 25px;
+}
+ul.tags li
+{
+	background: #dcdcdc;
+	display: inline-block;
+	margin-left: 4px;
+	padding: 4px;
+}
+ul.tags li a
+{
+	color: #000;
+}

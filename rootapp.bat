@@ -1,3 +1,3 @@
 call ..\..\..\venv\Scripts\activate.bat
 rem xpython
-python rootapp.py
+python new_rootapp.py

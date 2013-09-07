@@ -18,6 +18,7 @@ from cherrypy.lib.static import serve_file
 
 g_oauth_fixed_redirect_port = 8188
 
+
 class Thumb:
     @cherrypy.expose
     def cherry(self, target):
@@ -51,6 +52,7 @@ class Stop:
             raise cherrypy.HTTPRedirect(redirect_url)
         return "params" + str(*args) + "," + str(kwargs)
     '''
+
 
 class Server(object):
     def __init__(self, port):
