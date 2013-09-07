@@ -29,7 +29,7 @@ import traceback
 jinshan_root = os.path.join(libsys.get_root_dir(), "libs/jinshankuaipan/")
 sys.path.insert(0, jinshan_root)
 
-from libs.baidu_pcs.pcs import Client as BaiduClient
+from baidu_pcs.baidu_pcs import Client as BaiduClient
 
 
 class BaiduDisk(SimpleServiceWorker, StatefulProcessor):
