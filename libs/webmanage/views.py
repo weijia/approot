@@ -25,7 +25,8 @@ def index(request):
 
     execute_from_command_line(["manage.py", "syncdb", "--noinput"])
     '''
-    SyncDb().handle_noargs(**{"interactive": False, "verbosity": 1, "database": DEFAULT_DB_ALIAS})
+    #load_initial_data should be False so no directory searching for this command
+    SyncDb().handle_noargs(**{"interactive": False, "verbosity": 1, "database": DEFAULT_DB_ALIAS, 'load_initial_data': False})
     result = log_out.getvalue()
     sys.stdout = saveout
     return HttpResponse(result.replace("\n","<br/>"))
