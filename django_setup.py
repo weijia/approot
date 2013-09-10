@@ -15,8 +15,19 @@ def add_django_module_from_list(module_list, includes):
     for i in module_list:
         add_django_module(i, includes)
 
+def get_other_processor_modules(settings):
+    res = []
+    for i in ['MIDDLEWARE_CLASSES', 'AUTHENTICATION_BACKENDS',
+                                 'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_LOADERS']:
+        try:
+            res += getattr(settings, i)
+        except AttributeError:
+            print "no attr:", i
+    return res
+        
 
 def gen_spec(settings, existing_config):
+    print dir(settings)
     for loaded_django_app in settings.INSTALLED_APPS:
         #print i
         try:
@@ -178,8 +189,7 @@ def gen_spec(settings, existing_config):
     ]
     )
 
-    add_django_module_from_list([settings.MIDDLEWARE_CLASSES, settings.AUTHENTICATION_BACKENDS,
-                                 settings.TEMPLATE_CONTEXT_PROCESSORS, settings.TEMPLATE_LOADERS],
+    add_django_module_from_list(get_other_processor_modules(settings),
                                 existing_config['includes'])
     existing_config['includes'].extend(settings.INSTALLED_APPS)
 
