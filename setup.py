@@ -85,7 +85,7 @@ script_list = ['new_rootapp',
 from libs.services.svc_base.default_apps import gDefaultServices
 
 script_list.extend(gDefaultServices)
-#print script_list
+print script_list, '-------------------'
 from iconizer.qtconsole.fileTools import find_resource_in_pkg
 
 includefiles = [
@@ -153,7 +153,7 @@ print os.environ["DJANGO_SETTINGS_MODULE"], '---------------------------'
 gen_spec(getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]), os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]), build_exe_params)
 
 final_script_list = gen_executables_list(script_list)
-
+print build_exe_params
 setup(
     version="0.1", #This is required or build process will have exception.
     description="application starter",

@@ -13,6 +13,7 @@ def add_django_module(class_list, includes):
 
 def add_django_module_from_list(module_list, includes):
     for i in module_list:
+        #print i, '[[[[[[[[[[[[[[[[[[[[['
         add_django_module(i, includes)
 
 def get_other_processor_modules(settings):
@@ -20,9 +21,11 @@ def get_other_processor_modules(settings):
     for i in ['MIDDLEWARE_CLASSES', 'AUTHENTICATION_BACKENDS',
                                  'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_LOADERS']:
         try:
-            res += getattr(settings, i)
+            #print getattr(settings, i), '----------------------'
+            res.append(getattr(settings, i))
         except AttributeError:
             print "no attr:", i
+    #print res, '============================'
     return res
         
 
@@ -188,9 +191,11 @@ def gen_spec(settings, existing_config):
         #"thumbapp.views"
     ]
     )
-
+    #print existing_config['includes']
     add_django_module_from_list(get_other_processor_modules(settings),
                                 existing_config['includes'])
+    #print existing_config['includes'], '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1'
+
     existing_config['includes'].extend(settings.INSTALLED_APPS)
 
     existing_config['include_files'].append("static")
