@@ -2,106 +2,32 @@
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-######### Added for relative path start
-import os
-PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-RUNNING_PATH = os.path.abspath(os.getcwd())
-########## Added for relative path end
-
-
-################Start of login
-#Added for login redirect
-LOGIN_REDIRECT_URL = "/objsys/manager/"
-#If need a url name for default redirect, use the following setting instead of the above one. allauth will reverse the following name to url.
-#LOGIN_REDIRECT_URLNAME
-
-################End of login
-
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
-from os import environ
-postgresql = environ.get("POSTGRESQL_ROOT", "")
-postgresql_port = environ.get("POSTGRESQL_PORT", "")
-if postgresql:
-    #Local database
-    '''
-    MYSQL_DB = 'mysite' 
-    MYSQL_USER = 'root' 
-    MYSQL_PASS = '' 
-    MYSQL_HOST_M = '127.0.0.1' 
-    MYSQL_HOST_S = '127.0.0.1' 
-    MYSQL_PORT = '3306' 
-    '''
-    print 'using postgresql', postgresql, postgresql_port
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'postgres',                      # Or path to database file if using sqlite3.
-            'USER': 'postgres',                      # Not used with sqlite3.
-            'PASSWORD': '',                  # Not used with sqlite3.
-            'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': str(postgresql_port),                      # Set to empty string for default. Not used with sqlite3.
-        }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
-else:
+}
 
-    debug = not environ.get("APP_NAME", "") 
-    if debug:
-        #Local database
-        '''
-        MYSQL_DB = 'mysite' 
-        MYSQL_USER = 'root' 
-        MYSQL_PASS = '' 
-        MYSQL_HOST_M = '127.0.0.1' 
-        MYSQL_HOST_S = '127.0.0.1' 
-        MYSQL_PORT = '3306' 
-        '''
-        print 'using sqlite3'
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-                'NAME': 'data.db',                      # Or path to database file if using sqlite3.
-                'USER': '',                      # Not used with sqlite3.
-                'PASSWORD': '',                  # Not used with sqlite3.
-                'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-                'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-            }
-        }
-        
-    else: 
-    #SAE
-        import sae.const 
-        MYSQL_DB = sae.const.MYSQL_DB 
-        MYSQL_USER = sae.const.MYSQL_USER 
-        MYSQL_PASS = sae.const.MYSQL_PASS 
-        MYSQL_HOST_M = sae.const.MYSQL_HOST 
-        MYSQL_HOST_S = sae.const.MYSQL_HOST_S 
-        MYSQL_PORT = sae.const.MYSQL_PORT
-        
-        DATABASES = { 
-            'default': { 
-                'ENGINE': 'django.db.backends.mysql', 
-                'NAME': MYSQL_DB, 
-                'USER': MYSQL_USER, 
-                'PASSWORD': MYSQL_PASS, 
-                'HOST': MYSQL_HOST_M, 
-                'PORT': MYSQL_PORT, 
-            } 
-        }
-
-
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = []
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
-# On Unix systems, a value of None will cause Django to use the same
-# timezone as the operating system.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
+# In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
@@ -134,7 +60,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, '../static')
+STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -155,24 +81,8 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-'''
 # Make this unique, and don't share it with anybody.
-#SECRET_KEY = 'g-yjv2wm_=_+r2j9v2u3ak$!b+i2qz=#e2#h3nmrt2l6+_wps$'
-'''
-try:
-    from secret_key import *
-except ImportError:
-    from django.utils.crypto import get_random_string
-    import os
-    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-    secret_key = get_random_string(50, chars)
-    SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
-
-    secret_file = open(os.path.join(SETTINGS_DIR, 'secret_key.py'), 'w')
-    secret_file.write("SECRET_KEY='%s'" % secret_key)
-    secret_file.close()
-    from secret_key import *
-
+SECRET_KEY = '5gwmg8-#=x&amp;rvaz#1lz+=buzytm_r0wm*w-vz#rr)35-)obza='
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -180,16 +90,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
-#################################
-# Added for auth
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    "django.core.context_processors.request",
-    "django.core.context_processors.static",
-    #'ui_framework.objsys.custom_context_processors.head_form',
-    'django.core.context_processors.request',
-)
-ANONYMOUS_USER_ID = -1
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -197,7 +97,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'pagination.middleware.PaginationMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -211,7 +110,6 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(RUNNING_PATH, 'templates'),   # The comma is a must as otherwise, it will not be treated as a set?
 )
 
 INSTALLED_APPS = (
@@ -222,22 +120,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'tagging',
-    'desktop.filemanager',
-    'ui_framework',
-    'ui_framework.objsys',
-    'ui_framework.collection_management',
-    'guardian',
-    'tags',
-    'ui_framework.connection',
-    'ui_framework.normal_admin',
-    'win_smb',
-    'object_filter',
-    'thumbapp',
-    #'pagination',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -268,17 +153,3 @@ LOGGING = {
         },
     }
 }
-
-
-#Added for app config
-import os
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-'''
-for app in INSTALLED_APPS:
-    local_settings = os.path.join(PROJECT_DIR, app, 'local_settings.py')
-    if os.path.isfile(local_settings):
-        execfile(local_settings)
-'''
-execfile(os.path.join(PROJECT_DIR, "local_settings.py"))
-
-from local_keys import *

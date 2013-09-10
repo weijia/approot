@@ -17,7 +17,8 @@ sys.stderr = unbuffered_err
 
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rootapp.settings")
+    #os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rootapp.settings")
+    import rootapp.ufs_django_settings
 
     if False:  # try:
         from django.core.management import execute_from_command_line

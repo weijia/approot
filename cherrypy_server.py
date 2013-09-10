@@ -95,9 +95,20 @@ class DjangoAppPlugin(plugins.SimplePlugin):
  
         # Well this isn't quite as clean as I'd like so
         # feel free to suggest something more appropriate
-        from rootapp.settings import *
-        app_settings = locals().copy()
-        del app_settings['self']
+        #from rootapp.settings import *
+        #app_settings = locals().copy()
+        #del app_settings['self']
+        #The following line just set the environment string
+        import rootapp.ufs_django_settings
+        print os.environ["DJANGO_SETTINGS_MODULE"]
+        settings_module = __import__(os.environ["DJANGO_SETTINGS_MODULE"])
+        app_settings = {}
+        #print '------------------------------------'
+        #print dir(settings_module)
+        #print getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1])
+        #print dir(getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]))
+        for attr in dir(settings_module):
+            app_settings[attr] = getattr(settings_module, attr)
         settings.configure(**app_settings)
  
         self.bus.log("Mounting the Django application")
