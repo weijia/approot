@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 def get_new_uuid():
     return str(uuid.uuid4())
 
+class Description(models.Model):
+    content = models.TextField(null=True, blank=True, help_text="Content for the description")
+    
 
 # Create your models here.
 class UfsObj(models.Model):
@@ -21,10 +24,12 @@ class UfsObj(models.Model):
     timestamp = models.DateTimeField('date published', auto_now_add=True)
     size = models.BigIntegerField(null=True, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
-    description = models.TextField(null=True, blank=True, help_text="JSON description for this object")
+    description_json = models.TextField(null=True, blank=True, help_text="JSON description for this object")
     valid = models.BooleanField(default=True, help_text="is this field valid")
     relations = models.ManyToManyField("self", related_name='related_objs', null=True, blank=True,
                                        help_text="Related other information objects")
+    descriptions = models.ManyToManyField(Description, related_name='descriptions', null=True, blank=True,
+                                       help_text="Descriptions for this object")
 
     def __unicode__(self):
         return unicode(self.ufs_url + '---------> uuid:' + self.uuid)
