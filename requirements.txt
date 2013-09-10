@@ -9,6 +9,7 @@ biplist
 django-tastypie==0.9.12
 qrcode
 libmagic
+django-guardian
 cherrypy
 #django-social-auth
 #Use the following instead of the original to support baidu PCS
