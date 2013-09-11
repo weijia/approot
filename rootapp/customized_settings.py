@@ -113,21 +113,18 @@ setting_module_name_list += modules_in_folder
 import sys
 sys.path.append(PROJECT_DIR)
 print setting_module_name_list
-for setting_module_name in setting_module_name_list:
-    settings_module = getattr(__import__("separate_settings."+setting_module_name), setting_module_name)
-    #print "importing", "separate_settings."+setting_module_name #,dir(getattr(settings_module, setting_module_name))
-    for attr in dir(settings_module):
-        if attr[0:2] == "__":
-            #Ignore built in attributes
-            continue
-        if attr != attr.upper():
-            #Only import uppercase var
-            continue
-        #print attr, ": ", globals().get(attr, ""), getattr(settings_module, attr)
-        try:
-            globals()[attr] = getattr(settings_module, attr)
-        except:
-            import traceback
-            traceback.print_exc()
-        print attr, ": ", globals().get(attr, "")
 
+
+for setting_module_name in setting_module_name_list:
+    #settings_module = getattr(__import__("separate_settings."+setting_module_name), setting_module_name)
+    config_module = __import__("separate_settings."+setting_module_name, globals(), locals(), -1)
+
+    # Load the config settings properties into the local scope.
+    for setting in dir(config_module):
+        if setting == setting.upper():
+            print setting, getattr(config_module, setting)
+            locals()[setting] = getattr(config_module, setting)
+
+
+
+# Import the configuration settings file - REPLACE projectname with your project
