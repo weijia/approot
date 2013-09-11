@@ -1,4 +1,5 @@
 import sys
+from libs.platform.executor import execute_app_from_name_and_wait_for_complete
 import libsys
 from libs.utils.filetools import findAppInProduct
 from libs.services.svc_base.postgres_app import PostgreSqlApp
@@ -27,8 +28,8 @@ if __name__ == "__main__":
             open(flag_file, "w").close()
 
     thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
-    os.system(findAppInProduct("syncdb"))
-    os.system(sys.executable+" "+findAppInProduct("cherrypy_server"))
+    execute_app_from_name_and_wait_for_complete("syncdb")
+    execute_app_from_name_and_wait_for_complete("cherrypy_server")
     
     
     
