@@ -1,10 +1,10 @@
-
 #Codes from http://www.defuze.org/archives/262-hosting-a-django-application-on-a-cherrypy-server.html
 # Python stdlib imports
 import sys
 import logging
-import os, os.path
- 
+import os
+import os.path
+
 # Third-party imports
 import cherrypy
 from cherrypy.process import wspbus, plugins
@@ -23,6 +23,7 @@ class Thumb:
     @cherrypy.expose
     def cherry(self, target):
         from libs.thumbapp.views import get_thumb_file
+
         the_file = get_thumb_file(target)
         #print the_file
         return serve_file(the_file)
@@ -57,22 +58,22 @@ class Stop:
 class Server(object):
     def __init__(self, port):
         self.base_dir = os.path.join(os.path.abspath(os.getcwd()), "")
- 
+
         conf_path = os.path.join(self.base_dir, "..", "server.cfg")
         #cherrypy.config.update(conf_path)
         cherrypy.config.update({
-                        'server.socket_port': port,
-                        'server.socket_host': '0.0.0.0',
-                       })
+            'server.socket_port': port,
+            'server.socket_host': '0.0.0.0',
+        })
         # This registers a plugin to handle the Django app
         # with the CherryPy engine, meaning the app will
         # play nicely with the process bus that is the engine.
         DjangoAppPlugin(cherrypy.engine, self.base_dir).subscribe()
- 
+
     def run(self):
         engine = cherrypy.engine
         engine.signal_handler.subscribe()
- 
+
         if hasattr(engine, "console_control_handler"):
             engine.console_control_handler.subscribe()
         cherrypy.tree.mount(Thumb(), '/thumb/')
@@ -89,10 +90,10 @@ class DjangoAppPlugin(plugins.SimplePlugin):
         """
         plugins.SimplePlugin.__init__(self, bus)
         self.base_dir = base_dir
- 
+
     def start(self):
         self.bus.log("Configuring the Django application")
- 
+
         # Well this isn't quite as clean as I'd like so
         # feel free to suggest something more appropriate
         #from rootapp.settings import *
@@ -100,21 +101,24 @@ class DjangoAppPlugin(plugins.SimplePlugin):
         #del app_settings['self']
         #The following line just set the environment string
         import rootapp.ufs_django_settings
+
         print os.environ["DJANGO_SETTINGS_MODULE"]
-        settings_module = getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]), os.environ["DJANGO_SETTINGS_MODULE"].rsplit(".", 1)[1])
+        settings_module = getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]),
+                                  os.environ["DJANGO_SETTINGS_MODULE"].rsplit(".", 1)[1])
         app_settings = {}
         #print '------------------------------------'
         #print dir(settings_module)
         #print getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1])
         #print dir(getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]))
         for attr in dir(settings_module):
-            print attr, ":", getattr(settings_module, attr)
-            app_settings[attr] = getattr(settings_module, attr)
+            if attr == attr.upper():
+                #print attr, ":", getattr(settings_module, attr)
+                app_settings[attr] = getattr(settings_module, attr)
         settings.configure(**app_settings)
- 
+
         self.bus.log("Mounting the Django application")
         cherrypy.tree.graft(HTTPLogger(WSGIHandler()))
- 
+
         self.bus.log("Setting up the static directory to be served")
         # We server static files through CherryPy directly
         # bypassing entirely Django
@@ -127,7 +131,7 @@ class HTTPLogger(_cplogging.LogManager):
     def __init__(self, app):
         _cplogging.LogManager.__init__(self, id(self), cherrypy.log.logger_root)
         self.app = app
- 
+
     def __call__(self, environ, start_response):
         """
         Called as part of the WSGI stack to log the incoming request
@@ -141,7 +145,7 @@ class HTTPLogger(_cplogging.LogManager):
         except:
             self.error(traceback=True)
             return HttpResponseServerError(_cperror.format_exc())
- 
+
     def access(self, environ, response):
         """
         Special method that logs a request following the common
@@ -157,27 +161,29 @@ class HTTPLogger(_cplogging.LogManager):
                  'b': str(len(response.content)),
                  'f': environ.get('HTTP_REFERER', ''),
                  'a': environ.get('HTTP_USER_AGENT', ''),
-                 }
+        }
         for k, v in atoms.items():
             if isinstance(v, unicode):
                 v = v.encode('utf8')
             elif not isinstance(v, str):
                 v = str(v)
-            # Fortunately, repr(str) escapes unprintable chars, \n, \t, etc
+                # Fortunately, repr(str) escapes unprintable chars, \n, \t, etc
             # and backslash for us. All we have to do is strip the quotes.
             v = repr(v)[1:-1]
             # Escape double-quote.
             atoms[k] = v.replace('"', '\\"')
- 
+
         try:
             self.access_log.log(logging.INFO, self.access_log_format % atoms)
         except:
             self.error(traceback=True)
- 
+
+
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
     else:
         import configuration
+
         port = configuration.g_config_dict["ufs_web_server_port"]
     Server(port).run()
