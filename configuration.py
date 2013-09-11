@@ -47,10 +47,14 @@ for i in g_config_dict:
     
 os.environ["POSTGRESQL_ROOT"] = os.path.join(root_dir, "..\\others\\pgsql\\")
 os.environ["CLASSPATH"] = os.path.join(root_dir, "..\\others\\scache\\src\\Beanstemc.jar")
-os.environ["DJANGO_SETTINGS_MODULE"] = "rootapp.settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "rootapp.customized_settings"
 ###################################
 try:
     os.mkdir(log_root)
     print "created dir:", log_root
 except:
     pass
+
+#Manually import these modules for build
+import rootapp.separate_settings.build_settings
+import rootapp.separate_settings.local_postgresql_settings

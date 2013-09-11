@@ -85,4 +85,5 @@ DEFAULT_DJANGO_MODULES = [
     "ui_framework.connection",
     "desktop.filemanager",
     #"thumbapp.views"
+    "south.db.postgresql_psycopg2"
 ]

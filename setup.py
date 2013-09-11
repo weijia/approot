@@ -104,6 +104,7 @@ includefiles = [
     ("libs/magic1.dll", "libs/magic1.dll"),
     #("tornado_app.bat", "tornado.bat"),
     ("activate_app.bat", "activate.bat"),
+    ("syncdb.bat", "syncdb.bat"),
     ("share", "share"),
     #("../others", "../others"),
 ]

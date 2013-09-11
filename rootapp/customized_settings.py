@@ -1,5 +1,7 @@
-from settings import *
 import os
+
+from settings import *
+
 
 DATABASES = {
     'default': {
@@ -97,17 +99,20 @@ print "start importing"
 
 setting_module_name_list = []
 
-modules_in_folder = []
 try:
-    for filename in os.listdir(os.path.join(PROJECT_DIR, 'separate_settings')):
-        if 0 == filename.find('__init__'):
-            continue
-        if -1 != filename.find(".pyc"):
-            continue
-        modules_in_folder.append(filename.replace(".py", ""))
+    from static_settings_module_list import modules_in_folder
 except:
-    #In case listdir is not permitted (in BAE or SAE)
-    pass
+    modules_in_folder = []
+    try:
+        for filename in os.listdir(os.path.join(PROJECT_DIR, 'separate_settings')):
+            if 0 == filename.find('__init__'):
+                continue
+            if -1 != filename.find(".pyc"):
+                continue
+            modules_in_folder.append(filename.replace(".py", ""))
+    except:
+        #In case listdir is not permitted (in BAE or SAE)
+        pass
 
 setting_module_name_list += modules_in_folder
 import sys
@@ -122,9 +127,11 @@ for setting_module_name in setting_module_name_list:
     # Load the config settings properties into the local scope.
     for setting in dir(config_module):
         if setting == setting.upper():
-            print setting, getattr(config_module, setting)
+            #print setting, getattr(config_module, setting)
             locals()[setting] = getattr(config_module, setting)
 
 
 
 # Import the configuration settings file - REPLACE projectname with your project
+
+print '--------------------------',DATABASES

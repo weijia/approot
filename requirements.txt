@@ -19,6 +19,7 @@ django-registration
 -e git+https://github.com/weijia/django-registration-defaults.git#egg=django-registration-defaults
 requests
 -e git+https://github.com/weijia/baidu-pcs.git#egg=baidu-pcs
+-e git+https://github.com/weijia/iconizer.git#egg=iconizer
 #Install from exe or manually
 pillow
 PyQt
