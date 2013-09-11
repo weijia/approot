@@ -4,9 +4,9 @@ import os
 from cx_Freeze import setup, Executable
 
 #from rootapp import settings
-from django_setup import gen_spec
+from libs.django_build.django_setup import DjangoCxFreezeBuildSpecGenerator
 import libs.utils.filetools as filetools
-
+import rootapp.ufs_django_settings
 
 ####################
 # Dependancy
@@ -44,29 +44,27 @@ def get_executable(app_param):
         return Executable(script=app_path, targetName=app_param[1])
 
 
-import rootapp.ufs_django_settings
-
 ###########################
 # Add python module that is not automatically included in the build below. Such as Django app
 # file with special names other than: models, urls, admin, views etc.
 ###########################
 includes = [
-            os.environ["DJANGO_SETTINGS_MODULE"],#rootapp
-            "PyQt4.QtCore",
-            "yaml",
-            "rootapp.urls",
-            "ui_framework.connection.save_diagram_view",
-            "ui_framework.manifest",
-            'django',
-            'magic',
-            'desktop.filemanager.folder_view',
-            #'libs.custom_collections',
-            'libs.custom_collections.modules.local_filesystem',
-            #For Cherrypy
-            #"django.contrib.messages",
-            "email",
-            "email.message",
-            "cherrypy",
+    os.environ["DJANGO_SETTINGS_MODULE"], #rootapp
+    "PyQt4.QtCore",
+    "yaml",
+    "rootapp.urls",
+    "ui_framework.connection.save_diagram_view",
+    "ui_framework.manifest",
+    'django',
+    'magic',
+    'desktop.filemanager.folder_view',
+    #'libs.custom_collections',
+    'libs.custom_collections.modules.local_filesystem',
+    #For Cherrypy
+    #"django.contrib.messages",
+    "email",
+    "email.message",
+    "cherrypy",
 ]
 
 script_list = ['new_rootapp',
@@ -150,7 +148,9 @@ os.environ["TK_LIBRARY"] = os.path.join(python_dir, tk_lib_path_name)
 
 print os.environ["DJANGO_SETTINGS_MODULE"], '---------------------------'
 
-gen_spec(getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]), os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]), build_exe_params)
+DjangoCxFreezeBuildSpecGenerator().gen_spec(
+    getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]), os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]),
+    build_exe_params)
 
 final_script_list = gen_executables_list(script_list)
 print build_exe_params
