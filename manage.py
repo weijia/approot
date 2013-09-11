@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import sys
-#from libs.services.svc_base.gui_service import GuiService
 
 pwd = os.getcwd()
 sys.path.insert(0, os.path.join(pwd, "libs"))
@@ -17,15 +16,7 @@ sys.stderr = unbuffered_err
 
 
 if __name__ == "__main__":
-    #os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rootapp.settings")
-    import rootapp.ufs_django_settings
+    import configuration
 
-    if False:  # try:
-        from django.core.management import execute_from_command_line
-    else:   # except:
-        from management import execute_from_command_line
-
-    #gui = GuiService()
-    #gui.put({"command": "notify",
-    #                  "msg": "Starting background service"})
+    from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)

@@ -12,8 +12,8 @@ import django
 from django.core.management.commands.syncdb import Command as SyncDb
 from django.db import DEFAULT_DB_ALIAS
 
-def index(request):
 
+def index(request):
     saveout = sys.stdout
     log_out = StringIO.StringIO()  
     sys.stdout = log_out

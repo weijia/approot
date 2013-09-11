@@ -52,7 +52,7 @@ INSTALLED_APPS += (
     'guardian',
     'social_auth',
     'socialprofile',
-    #'smuggler',
+    'smuggler',
     'registration',
     'registration_defaults',
     'pagination',

@@ -65,13 +65,19 @@ includes = [
     "email",
     "email.message",
     "cherrypy",
+    #For social auth
+    "social_auth.db.django_models",
+    #For registration
+    'registration.backends.default.urls',
+    'registration.auth_urls'
 ]
 
 script_list = ['new_rootapp',
                #'tornado_main',
                'tagging', 'new_ext_svr', 'sftpserver',
                #'BeanstalkdLauncherService',
-               'manage',
+               #'manage',
+               #'syncdb'
                #'initial_launcher',
                'cherrypy_server',
                'service_starter', 'msg_based_service_mgr',
@@ -104,7 +110,7 @@ includefiles = [
     ("libs/magic1.dll", "libs/magic1.dll"),
     #("tornado_app.bat", "tornado.bat"),
     ("activate_app.bat", "activate.bat"),
-    ("syncdb.bat", "syncdb.bat"),
+    #("syncdb.bat", "syncdb.bat"),
     ("share", "share"),
     #("../others", "../others"),
 ]
