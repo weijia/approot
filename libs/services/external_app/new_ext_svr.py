@@ -1,6 +1,5 @@
-import sys
-from libs.platform.executor import execute_app_from_name_and_wait_for_complete
 import libsys
+from libs.platform.executor import execute_app_from_name_and_wait_for_complete
 from libs.utils.filetools import findAppInProduct
 from libs.services.svc_base.postgres_app import PostgreSqlApp
 import configuration

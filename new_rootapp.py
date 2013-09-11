@@ -28,7 +28,7 @@ def main():
         i = Iconizer()
         i.add_close_listener(stop_web_servers)
         i.add_final_close_listener(stop_postgresql)
-        i.gui_launch_manger.taskbar_icon_app["Open Main Page"] = open_main
+        i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
         i.execute({"new_ext_svr": [findAppInProduct("new_ext_svr")]})
 
     except (KeyboardInterrupt, SystemExit):
