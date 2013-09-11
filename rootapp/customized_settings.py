@@ -130,8 +130,13 @@ for setting_module_name in setting_module_name_list:
             #print setting, getattr(config_module, setting)
             locals()[setting] = getattr(config_module, setting)
 
-
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    "django.core.context_processors.request",
+    "django.core.context_processors.static",
+    #'ui_framework.objsys.custom_context_processors.head_form',
+    'django.core.context_processors.request',
+)
 
 # Import the configuration settings file - REPLACE projectname with your project
-
-print '--------------------------',DATABASES
+#print '--------------------------',DATABASES
