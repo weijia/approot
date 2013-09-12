@@ -1,8 +1,9 @@
-from cbsettings import DjangoDefaults
+#from cbsettings import DjangoDefaults
+from rootapp.cbsettings_root import RootSettings
 
 
-class WithUiFramework(DjangoDefaults):
-    INSTALLED_APPS = DjangoDefaults.INSTALLED_APPS + (
+class WithUiFramework(RootSettings):
+    INSTALLED_APPS = RootSettings.INSTALLED_APPS + (
         #'desktop.filemanager',
         'ui_framework',
         'ui_framework.collection_management',

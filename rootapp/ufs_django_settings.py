@@ -2,8 +2,10 @@ import os
 import cbsettings
 from django.conf import settings
 
-os.environ.setdefault('DJANGO_SETTINGS_FACTORY', 'rootapp.cbsettings_root.RootSettings')
+os.environ.setdefault('DJANGO_SETTINGS_FACTORY', 'rootapp.separated_setting_classes.with_ui_framework.WithUiFramework')
 cbsettings.configure()
+#import sys
+#print sys.modules
 
 
 def initialize_settings():
@@ -13,11 +15,15 @@ def initialize_settings():
     #app_settings = locals().copy()
     #del app_settings['self']
     #The following line just set the environment string
-    import rootapp.ufs_django_settings
-
+    #import rootapp.ufs_django_settings
+    '''
     print os.environ["DJANGO_SETTINGS_MODULE"]
     settings_module = getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]),
                               os.environ["DJANGO_SETTINGS_MODULE"].rsplit(".", 1)[1])
+    '''
+    from rootapp.separated_setting_classes.with_ui_framework import WithUiFramework
+    s = WithUiFramework()
+    settings_module = s.__class__
     app_settings = {}
     #print '------------------------------------'
     #print dir(settings_module)
