@@ -1,7 +1,7 @@
-from cbsettings import DjangoDefaults
+from separated_setting_classes.with_ui_framework import WithUiFramework
 
 
-class RootSettings(DjangoDefaults):
+class RootSettings(WithUiFramework):
     pass
 
 

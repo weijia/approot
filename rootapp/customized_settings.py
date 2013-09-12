@@ -96,7 +96,7 @@ for app in INSTALLED_APPS:
 #TIME_ZONE = 'America/Chicago'
 
 print "start importing"
-'''
+
 setting_module_name_list = []
 
 try:
@@ -104,7 +104,7 @@ try:
 except:
     modules_in_folder = []
     try:
-        for filename in os.listdir(os.path.join(PROJECT_DIR, 'separate_settings')):
+        for filename in os.listdir(os.path.join(PROJECT_DIR, 'separated_settings')):
             if 0 == filename.find('__init__'):
                 continue
             if -1 != filename.find(".pyc"):
@@ -121,15 +121,15 @@ print setting_module_name_list
 
 
 for setting_module_name in setting_module_name_list:
-    #settings_module = getattr(__import__("separate_settings."+setting_module_name), setting_module_name)
-    config_module = __import__("separate_settings."+setting_module_name, **globals(), locals(), -1)
+    config_module = getattr(__import__("separated_settings."+setting_module_name), setting_module_name)
+    #config_module = __import__("separated_settings."+setting_module_name, globals(), locals(), -1)
 
     # Load the config settings properties into the local scope.
     for setting in dir(config_module):
         if setting == setting.upper():
             #print setting, getattr(config_module, setting)
             locals()[setting] = getattr(config_module, setting)
-'''
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     "django.core.context_processors.request",
