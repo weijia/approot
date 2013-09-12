@@ -1,14 +1,26 @@
 import os
 import cbsettings
 from django.conf import settings
+import importlib
 
-os.environ.setdefault('DJANGO_SETTINGS_FACTORY', 'rootapp.separated_setting_classes.with_ui_framework.WithUiFramework')
+settings_class_str = 'rootapp.separated_setting_classes.with_ui_framework.WithUiFramework'
+
+os.environ.setdefault('DJANGO_SETTINGS_FACTORY', settings_class_str)
 cbsettings.configure()
 
 
+def get_settings_module_name():
+    print settings_class_str.rsplit('.', 1)[0]
+    return settings_class_str.rsplit('.', 1)[0]
+
+
+def get_settings_class_name():
+    print settings_class_str.rsplit('.', 1)[1]
+    return settings_class_str.rsplit('.', 1)[1]
+
+
 def get_settings():
-    from rootapp.separated_setting_classes.with_ui_framework import WithUiFramework
-    return WithUiFramework.__class__
+    return getattr(importlib.import_module(get_settings_module_name()), get_settings_class_name()).__class__
 
 
 def initialize_settings():
