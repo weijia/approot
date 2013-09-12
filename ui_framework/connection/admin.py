@@ -3,7 +3,7 @@ from models import Connection, Processor
 from django.contrib import admin
 
 from guardian.admin import GuardedModelAdmin
-from ui_framework.objsys.tree import register_menu
+from objsys.tree import register_menu
 
 
 class ConnectionAdmin(GuardedModelAdmin):

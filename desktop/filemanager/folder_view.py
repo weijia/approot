@@ -4,9 +4,8 @@ from django.shortcuts import render_to_response, redirect
 import os
 from tagging.models import Tag, TaggedItem
 #from django.core import serializers
-from ui_framework.objsys.models import UfsObj, CollectionItem
+from objsys.models import UfsObj, CollectionItem
 import json
-import libsys
 from libs.windows.windowsDriver import getDriverList
 import urllib2
 import libs.utils.string_tools as string_tools

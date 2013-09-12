@@ -20,7 +20,7 @@ import urllib2
 '''
 
 from django.core import serializers
-from ui_framework.objsys.models import UfsObj, CollectionItem
+from objsys.models import UfsObj, CollectionItem
 
 
 def collections(request):

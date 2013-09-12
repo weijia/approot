@@ -6,5 +6,5 @@ import os
 urlpatterns = patterns('',
     url(r'^$', 'ui_framework.views.index'),
     url(r'manifest', 'ui_framework.manifest.manifest'),
-    url(r'start', 'ui_framework.objsys.views.start'),
+    url(r'start', 'objsys.views.start'),
 )

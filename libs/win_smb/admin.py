@@ -1,4 +1,4 @@
-from ui_framework.objsys.tree import register_menu
+from objsys.tree import register_menu
 from models import NetDriver
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin

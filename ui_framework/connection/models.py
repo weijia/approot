@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy
-from ui_framework.objsys.models import UfsObj, get_new_uuid
+from objsys.models import UfsObj, get_new_uuid
 
 class Connection(models.Model):
     '''

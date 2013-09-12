@@ -1,17 +1,5 @@
 import libsys
-#from libs.services.svc_base.managed_service import WorkerBase
-#from libs.services.servicebase import service
-#from django.conf import settings
-#from ui_framework.objsys.models import UfsObj
-#from tagging.models import Tag, TaggedItem
-#import threading
-#import traceback
-#import libs.utils.transform as transform
 import os
-#import time
-#import json
-#import beanstalkc
-#from configuration import g_config_dict
 import traceback
 os.environ["PATH"] = os.environ["PATH"]+";"+"C:\\Program Files (x86)\\Git\\bin"
 from subprocess import (

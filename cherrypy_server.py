@@ -15,6 +15,7 @@ from django.http import HttpResponseServerError
 
 import libs.root_lib_sys
 from cherrypy.lib.static import serve_file
+import cbsettings
 
 g_oauth_fixed_redirect_port = 8188
 
@@ -101,6 +102,8 @@ class DjangoAppPlugin(plugins.SimplePlugin):
         #del app_settings['self']
         #The following line just set the environment string
         import rootapp.ufs_django_settings
+        
+        cbsettings.configure()
 
         print os.environ["DJANGO_SETTINGS_MODULE"]
         settings_module = getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]),
@@ -112,7 +115,7 @@ class DjangoAppPlugin(plugins.SimplePlugin):
         #print dir(getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]))
         for attr in dir(settings_module):
             if attr == attr.upper():
-                #print attr, ":", getattr(settings_module, attr)
+                print attr, ":", getattr(settings_module, attr)
                 app_settings[attr] = getattr(settings_module, attr)
         settings.configure(**app_settings)
 

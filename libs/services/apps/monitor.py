@@ -1,11 +1,6 @@
 import libsys
 from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread, beanstalkServiceApp
-#from libs.services.servicebase import service
-#from django.conf import settings
-#from ui_framework.objsys.models import UfsObj
-#from tagging.models import Tag, TaggedItem
-#import threading
-#import traceback
+
 from libs.windows.changeNotifyThread import changeNotifyThread
 import libs.utils.transform as transform
 import os

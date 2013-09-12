@@ -1,7 +1,7 @@
 import libsys
 from libs.services.svc_base.managed_service import ManagedService
 #from django.conf import settings
-from ui_framework.objsys.models import UfsObj
+from objsys.models import UfsObj
 #from tagging.models import Tag, TaggedItem
 #import threading
 #import traceback

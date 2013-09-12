@@ -8,7 +8,6 @@ import libsys
 from libs.logsys.logSys import cl
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
-from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_full_path
 
 CREATE_NO_WINDOW = 0x8000000
 app = "..\\others\\ffmpeg\\bin\\ffmpeg.exe"

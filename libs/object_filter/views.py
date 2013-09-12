@@ -1,10 +1,5 @@
-from django.http import HttpResponse
 from django.core.context_processors import csrf
-from django.shortcuts import render_to_response, redirect
-from tagging.models import Tag, TaggedItem
-#from django.core import serializer
-#from ui_framework.objsys.models import UfsObj, CollectionItem
-#import json
+from django.shortcuts import render_to_response
 import libs.utils.string_tools as string_tools
 from operations import *
 

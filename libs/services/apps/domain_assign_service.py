@@ -11,7 +11,7 @@ import libsys
 import libs.utils.simplejson as json
 from libs.services.svc_base.simpleservice import SimpleService, SimpleWorkThread
 from django.conf import settings
-from ui_framework.objsys.models import UfsObj
+from objsys.models import UfsObj
 
 
 class DomainAssignThread(SimpleWorkThread):

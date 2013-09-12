@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 from django.db import models
-from ui_framework.objsys.models import UfsObj
+from objsys.models import UfsObj
 from django.utils.translation import ugettext_lazy
 
 # Create your models here.

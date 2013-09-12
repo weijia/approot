@@ -8,5 +8,6 @@ def get_root_dir():
         c = os.path.dirname(c)
     return os.path.join(c, 'approot')
 
-sys.path.insert(0, get_root_dir())
+#sys.path.insert(0, get_root_dir())
 sys.path.insert(0, os.path.join(get_root_dir(),"libs"))
+import root_lib_sys

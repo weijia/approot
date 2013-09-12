@@ -5,7 +5,7 @@ from libs.diagram.diagram import save_all_diagram_from_predefined_folders, gAuto
 from tagging.models import TaggedItem
 #from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
 from django.conf import settings
-from ui_framework.objsys.models import UfsObj, CollectionItem
+from objsys.models import UfsObj, CollectionItem
 #from tagging.models import Tag, TaggedItem, DoesNotExist
 #import libs.utils.simplejson as json
 from ui_framework.connection.models import Processor

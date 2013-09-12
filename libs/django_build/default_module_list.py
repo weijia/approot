@@ -80,7 +80,6 @@ DEFAULT_DJANGO_MODULES = [
     "ui_framework",
     "ui_framework.collection_management",
     "ui_framework.normal_admin",
-    "ui_framework.objsys",
     "tags",
     "ui_framework.connection",
     "desktop.filemanager",

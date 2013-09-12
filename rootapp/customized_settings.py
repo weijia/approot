@@ -96,7 +96,7 @@ for app in INSTALLED_APPS:
 #TIME_ZONE = 'America/Chicago'
 
 print "start importing"
-
+'''
 setting_module_name_list = []
 
 try:
@@ -122,14 +122,14 @@ print setting_module_name_list
 
 for setting_module_name in setting_module_name_list:
     #settings_module = getattr(__import__("separate_settings."+setting_module_name), setting_module_name)
-    config_module = __import__("separate_settings."+setting_module_name, globals(), locals(), -1)
+    config_module = __import__("separate_settings."+setting_module_name, **globals(), locals(), -1)
 
     # Load the config settings properties into the local scope.
     for setting in dir(config_module):
         if setting == setting.upper():
             #print setting, getattr(config_module, setting)
             locals()[setting] = getattr(config_module, setting)
-
+'''
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     "django.core.context_processors.request",
@@ -140,3 +140,40 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Import the configuration settings file - REPLACE projectname with your project
 #print '--------------------------',DATABASES
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django.request': {
+            #'handlers': ['mail_admins'],
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}

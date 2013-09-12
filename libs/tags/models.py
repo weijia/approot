@@ -1,7 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from tagging.models import Tag, TaggedItem
-from ui_framework.objsys.models import UfsObj
 from libs.services.svc_base.beanstalkd_interface import beanstalkServiceBase
 import beanstalkc
 import time

@@ -12,8 +12,8 @@ from libs.services.svc_base.service_starter import start_diagram
 from libs.utils.obj_tools import get_ufs_obj_from_full_path, get_ufs_obj_from_ufs_url
 import libsys
 from models import Connection, Processor
-#from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
-from ui_framework.objsys.models import UfsObj
+
+from objsys.models import UfsObj
 from django.http import HttpResponse
 from django.core import serializers
 

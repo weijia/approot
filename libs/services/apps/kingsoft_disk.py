@@ -16,7 +16,6 @@ from libs.tagging.models import TaggedItem
 #from libs.utils.filetools import getFreeNameFromFullPath
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 import traceback
-from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_full_path
 
 jinshan_root = os.path.join(libsys.get_root_dir(), "libs/jinshankuaipan/")
 sys.path.insert(0, jinshan_root)
