@@ -8,6 +8,12 @@ cbsettings.configure()
 #print sys.modules
 
 
+def get_settings():
+    from rootapp.separated_setting_classes.with_ui_framework import WithUiFramework
+    s = WithUiFramework()
+    return s.__class__
+
+
 def initialize_settings():
     # Well this isn't quite as clean as I'd like so
     # feel free to suggest something more appropriate
@@ -21,9 +27,8 @@ def initialize_settings():
     settings_module = getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]),
                               os.environ["DJANGO_SETTINGS_MODULE"].rsplit(".", 1)[1])
     '''
-    from rootapp.separated_setting_classes.with_ui_framework import WithUiFramework
-    s = WithUiFramework()
-    settings_module = s.__class__
+
+    settings_module = get_settings()
     app_settings = {}
     #print '------------------------------------'
     #print dir(settings_module)

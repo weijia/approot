@@ -49,7 +49,7 @@ def get_executable(app_param):
 # file with special names other than: models, urls, admin, views etc.
 ###########################
 includes = [
-    os.environ["DJANGO_SETTINGS_MODULE"], #rootapp
+    #os.environ["DJANGO_SETTINGS_MODULE"], #rootapp
     "PyQt4.QtCore",
     "yaml",
     "rootapp.urls",
@@ -154,10 +154,15 @@ os.environ["TCL_LIBRARY"] = os.path.join(python_dir, tcl_lib_path_name)
 os.environ["TK_LIBRARY"] = os.path.join(python_dir, tk_lib_path_name)
 
 print os.environ["DJANGO_SETTINGS_MODULE"], '---------------------------'
-
-DjangoCxFreezeBuildSpecGenerator().gen_spec(
-    getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]), os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]),
-    build_exe_params)
+'''
+settings_package = __import__(os.environ["DJANGO_SETTINGS_MODULE"])
+print dir(settings_package)
+print os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1]
+settings_module = getattr(settings_package, os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1])
+'''
+print dir(rootapp.ufs_django_settings.get_settings())
+settings_module = rootapp.ufs_django_settings.get_settings()
+DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
 final_script_list = gen_executables_list(script_list)
 print build_exe_params

@@ -27,9 +27,8 @@ def get_other_processor_modules(settings):
             res.append(getattr(settings, i))
         except AttributeError:
             print "no attr:", i
-        #print res, '============================'
+            #print res, '============================'
     return res
-
 
 
 class DjangoCxFreezeBuildSpecGenerator(object):
@@ -100,7 +99,7 @@ class DjangoCxFreezeBuildSpecGenerator(object):
                 #existing_config['zip_includes'].append((data_folder,
                 #                        os.path.join(i.replace('.', '/'), django_data_folder)))
                 self.existing_config['include_files'].append((data_folder,
-                                                         'templates'))
+                                                              'templates'))
 
     def update_config_spec_for_installed_apps(self, django_app_name):
         #print i
@@ -109,6 +108,7 @@ class DjangoCxFreezeBuildSpecGenerator(object):
         except ImportError, e:
             print "no app:", django_app_name
             import sys
+
             pprint.pprint(sys.path)
             raise
 
