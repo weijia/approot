@@ -47,7 +47,7 @@ for i in g_config_dict:
     
 os.environ["POSTGRESQL_ROOT"] = os.path.join(root_dir, "..\\others\\pgsql\\")
 os.environ["CLASSPATH"] = os.path.join(root_dir, "..\\others\\scache\\src\\Beanstemc.jar")
-os.environ["DJANGO_SETTINGS_MODULE"] = "rootapp.customized_settings"
+import rootapp.ufs_django_settings
 ###################################
 try:
     os.mkdir(log_root)

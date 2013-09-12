@@ -22,6 +22,7 @@ requests
 -e git+https://github.com/weijia/iconizer.git#egg=iconizer
 #oauth2 will use pyutil or distutil. But distutil does not work with cx freeze. So use pyutil
 pyutil
+django-classbasedsettings
 #Install from exe or manually
 pillow
 PyQt
