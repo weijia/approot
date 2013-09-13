@@ -9,13 +9,14 @@ import os.path
 import cherrypy
 from cherrypy.process import wspbus, plugins
 from cherrypy import _cplogging, _cperror
-from django.conf import settings
+
+from rootapp.ufs_django_settings import initialize_settings
+
 from django.core.handlers.wsgi import WSGIHandler
 from django.http import HttpResponseServerError
 
 import libs.root_lib_sys
 from cherrypy.lib.static import serve_file
-import cbsettings
 
 g_oauth_fixed_redirect_port = 8188
 
@@ -95,29 +96,7 @@ class DjangoAppPlugin(plugins.SimplePlugin):
     def start(self):
         self.bus.log("Configuring the Django application")
 
-        # Well this isn't quite as clean as I'd like so
-        # feel free to suggest something more appropriate
-        #from rootapp.settings import *
-        #app_settings = locals().copy()
-        #del app_settings['self']
-        #The following line just set the environment string
-        import rootapp.ufs_django_settings
-        
-        cbsettings.configure()
-
-        print os.environ["DJANGO_SETTINGS_MODULE"]
-        settings_module = getattr(__import__(os.environ["DJANGO_SETTINGS_MODULE"]),
-                                  os.environ["DJANGO_SETTINGS_MODULE"].rsplit(".", 1)[1])
-        app_settings = {}
-        #print '------------------------------------'
-        #print dir(settings_module)
-        #print getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1])
-        #print dir(getattr(settings_module, os.environ["DJANGO_SETTINGS_MODULE"].split('.')[1]))
-        for attr in dir(settings_module):
-            if attr == attr.upper():
-                print attr, ":", getattr(settings_module, attr)
-                app_settings[attr] = getattr(settings_module, attr)
-        settings.configure(**app_settings)
+        initialize_settings()
 
         self.bus.log("Mounting the Django application")
         cherrypy.tree.graft(HTTPLogger(WSGIHandler()))

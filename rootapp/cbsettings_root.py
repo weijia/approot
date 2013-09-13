@@ -1,11 +1,16 @@
+#from separated_setting_classes.with_ui_framework import WithUiFramework
 from cbsettings import DjangoDefaults
-import customized_settings
+
 
 class RootSettings(DjangoDefaults):
     pass
-    
-i = RootSettings()
 
-for attr_name in dir(customized_settings):
-    if attr_name == attr_name.upper():
-        setattr(i.__class__, attr_name, getattr(customized_settings, attr_name))
+
+s = RootSettings()
+
+import customized_settings
+
+for attr in dir(customized_settings):
+    if attr != attr.upper():
+        continue
+    setattr(s.__class__, attr, getattr(customized_settings, attr))
