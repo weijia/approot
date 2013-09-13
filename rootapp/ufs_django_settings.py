@@ -20,12 +20,17 @@ def get_settings_class_name():
 
 
 def get_settings():
-    return getattr(importlib.import_module(get_settings_module_name()), get_settings_class_name()).__class__
+    settings_module = importlib.import_module(get_settings_module_name())
+    print settings_module
+    print getattr(settings_module, get_settings_class_name())
+    return getattr(settings_module, get_settings_class_name())().__class__
+    #return getattr(settings_module, get_settings_class_name()).__class__
 
 
 def initialize_settings():
 
     settings_module = get_settings()
+    print dir(settings_module)
     app_settings = {}
 
     for attr in dir(settings_module):
