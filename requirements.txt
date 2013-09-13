@@ -27,5 +27,8 @@ django-classbasedsettings
 pillow
 PyQt
 pywin32
+# pspcopg: http://www.stickpeople.com/projects/python/win-psycopg/2.5.0/psycopg2-2.5.win32-py2.7-pg9.2.4-release.exe
 psycopg2
 cx_Freeze
+# pyopenssl: https://pypi.python.org/pypi/pyOpenSSL
+pyopenssl

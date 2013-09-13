@@ -16,7 +16,7 @@ sys.stderr = unbuffered_err
 
 
 if __name__ == "__main__":
-    import configuration
+    import rootapp.ufs_django_settings
 
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)

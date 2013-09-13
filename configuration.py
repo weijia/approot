@@ -56,6 +56,6 @@ except:
     pass
 
 #Manually import these modules for build
-import rootapp.separated_settings.build_settings
-import rootapp.separated_settings.local_postgresql_settings
+#import rootapp.separated_settings.build_settings
+#import rootapp.separated_settings.local_postgresql_settings
 #import rootapp.separated_settings.with_ui_framework

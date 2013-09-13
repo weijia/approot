@@ -69,7 +69,13 @@ includes = [
     "social_auth.db.django_models",
     #For registration
     'registration.backends.default.urls',
-    'registration.auth_urls'
+    'registration.auth_urls',
+    'rootapp.separated_settings.build_settings',
+    'rootapp.separated_settings.local_postgresql_settings',
+    "django.core.management",
+    "django.core.management.commands.syncdb",
+    "django.core.management.commands.loaddata",
+    'rootapp.separated_setting_classes.with_ui_framework'
 ]
 
 script_list = ['new_rootapp',
@@ -131,6 +137,8 @@ build_exe_params = {
 #Create data.db for SQLITE so build process can run with SQLITE
 os.environ["POSTGRESQL_ROOT"] = ""
 os.system("syncdb.bat")
+import sys
+os.system(sys.executable + " ./manage.py migrate")
 os.system("collectstatic.bat")
 
 #Need to remove port_v3 for QT for cx_freeze when packaging PyQt
@@ -160,7 +168,7 @@ print dir(settings_package)
 print os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1]
 settings_module = getattr(settings_package, os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1])
 '''
-print dir(rootapp.ufs_django_settings.get_settings())
+#print dir(rootapp.ufs_django_settings.get_settings())
 settings_module = rootapp.ufs_django_settings.get_settings()
 DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
