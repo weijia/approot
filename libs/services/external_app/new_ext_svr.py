@@ -6,10 +6,10 @@ import configuration
 import os
 from django.contrib.auth.models import User, Group
 from django.core.management.commands.syncdb import Command as SyncDb
-try:
-    from south.management.commands.syncdb import Command as SyncDb
-except:
-    pass
+#try:
+#    from south.management.commands.syncdb import Command as SyncDb
+#except:
+#    pass
 from south.management.commands.migrate import Command as Migrate
 from django.db import DEFAULT_DB_ALIAS
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         SyncDb().handle_noargs(**{"interactive": False, "verbosity": 1, "database": DEFAULT_DB_ALIAS, 'load_initial_data': False})
         #SyncDb().execute(noinput=True)#http://stackoverflow.com/questions/2772990/programmatically-sync-the-db-in-django
         #Migrate().handle_noargs(**{"interactive": False, "verbosity": 1, "database": DEFAULT_DB_ALIAS, 'load_initial_data': False})
-        Migrate().handle()
+        #Migrate().handle()
 
     #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
     #execute_app_from_name_and_wait_for_complete("syncdb")

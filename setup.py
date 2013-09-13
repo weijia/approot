@@ -75,7 +75,9 @@ includes = [
     "django.core.management",
     "django.core.management.commands.syncdb",
     "django.core.management.commands.loaddata",
-    'rootapp.separated_setting_classes.with_ui_framework'
+    'rootapp.separated_setting_classes.with_ui_framework',
+    'south.management.commands.syncdb',
+    'south.management.commands.migrate',
 ]
 
 script_list = ['new_rootapp',
