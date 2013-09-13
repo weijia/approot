@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 def get_new_uuid():
     return str(uuid.uuid4())
 
+
 class Description(models.Model):
     content = models.TextField(null=True, blank=True, help_text="Content for the description")
     

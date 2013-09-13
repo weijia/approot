@@ -10,7 +10,9 @@
     <li class="bookmark">
         <h4{% if not bookmark.author == user %} class="no_edit"{% endif %}>
             <a href="{{ bookmark.ufs_url }}" target="_blank">{{ bookmark.ufs_url }}</a>
-            <p>{{ bookmark.description }}</p>
+            {%  for description in bookmark.descriptions.all %}
+            <p>{{ description.content }}</p>
+            {% endfor %}
         </h4>
         {% if user.is_authenticated and bookmark.author == user %}
         <ul class="edit_links">

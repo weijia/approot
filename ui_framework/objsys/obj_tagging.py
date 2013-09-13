@@ -14,6 +14,7 @@ from libs.utils.django_utils import retrieve_param
 from libs.utils.string_tools import SpecialEncoder
 import libs.utils.obj_tools as obj_tools
 from objsys.models import UfsObj
+from ui_framework.objsys.models import Description
 
 
 def append_tags_and_description_to_url(user, url, tags, description):
@@ -42,11 +43,11 @@ def append_tags_and_description_to_url(user, url, tags, description):
                      user=user, full_path=full_path)
         obj.save()
         obj_qs = [obj]
-
+    description_obj = Description.get_or_create(content=description)
     for obj in obj_qs:
         #obj.tags = tags
         Tag.objects.update_tags(obj, tags, tag_app='user:' + user.username)
-        obj.description = description
+        obj.descriptions.add(description_obj)
         obj.save()
 
 
