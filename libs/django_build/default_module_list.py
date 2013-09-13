@@ -67,9 +67,7 @@ DEFAULT_DJANGO_MODULES = [
 
     #"django.middleware.common",
     #"django.contrib.sessions.middleware",
-    "management",
-    "management.commands.syncdb",
-    "management.commands.loaddata",
+
     ##############
     #"allauth",
     #"allauth.account",
