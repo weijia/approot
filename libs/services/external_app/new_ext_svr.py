@@ -1,10 +1,11 @@
+import os
 import libsys
 from libs.platform.executor import execute_app_from_name_and_wait_for_complete
-from libs.utils.filetools import findAppInProduct
+
 from libs.services.svc_base.postgres_app import PostgreSqlApp
+#The following will set environment string for start web server.
 import configuration
-import os
-from django.contrib.auth.models import User, Group
+
 from django.core.management.commands.syncdb import Command as SyncDb
 try:
     from south.management.commands.syncdb import Command as SyncDb
@@ -63,22 +64,6 @@ if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
 
-    '''
-    flag_file = os.path.join(libsys.get_root_dir(), "syncdb_needed.txt")
-    try:
-        anonymous_list = User.objects.filter(username="AnonymousUser")
-        if 0 == anonymous_list.count():
-            raise "bad"
-        if os.path.exists(flag_file):
-            os.remove(flag_file)
-    except (KeyboardInterrupt, SystemExit):
-        raise
-    except:
-        #print "set SYNCDB flag"
-        #os.environ["SYNCDB"] = "YES"
-        if not os.path.exists(flag_file):
-            open(flag_file, "w").close()
-    '''
     sync_migrate_db()
     #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
     #execute_app_from_name_and_wait_for_complete("syncdb")
