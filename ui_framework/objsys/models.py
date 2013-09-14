@@ -10,7 +10,7 @@ def get_new_uuid():
 
 class Description(models.Model):
     content = models.TextField(null=True, blank=True, help_text="Content for the description")
-    
+
     def __unicode__(self):
         return unicode(self.content)
 
