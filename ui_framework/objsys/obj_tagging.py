@@ -43,8 +43,8 @@ def append_tags_and_description_to_url(user, url, tags, description):
                      user=user, full_path=full_path)
         obj.save()
         obj_qs = [obj]
-    description_obj = Description.objects.get_or_create(content=description)
-    description_obj[0].save()
+    description_obj, created = Description.objects.get_or_create(content=description)
+    description_obj.save()
     for obj in obj_qs:
         #obj.tags = tags
         Tag.objects.update_tags(obj, tags, tag_app='user:' + user.username)
