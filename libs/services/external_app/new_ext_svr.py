@@ -12,10 +12,12 @@ except:
     pass
 from south.management.commands.migrate import Command as Migrate
 from django.db import DEFAULT_DB_ALIAS
+from django.db import connection
+import django.core.management as core_management
 
 
 def sync_migrate_db():
-    global connection, core_management, get_commands
+    #Check if initial database is OK. If it is not OK, syncdb.bat will be called.
     if False:
         '''
         try:
@@ -27,11 +29,7 @@ def sync_migrate_db():
         except:
         '''
     else:
-        from django.db import connection
-
         print connection.introspection.table_names()
-
-        import django.core.management as core_management
         #_commands = []
         '''
         {'clean_nonces': 'social_auth', 'compilemessages': 'django.core', 'dumpdata': 'django.core',
@@ -64,7 +62,7 @@ def sync_migrate_db():
 if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
-    #Check if initial database is OK. If it is not OK, syncdb.bat will be called.
+
     '''
     flag_file = os.path.join(libsys.get_root_dir(), "syncdb_needed.txt")
     try:
