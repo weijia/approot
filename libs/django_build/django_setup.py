@@ -71,7 +71,7 @@ class DjangoCxFreezeBuildSpecGenerator(object):
         for django_sub_module in ['urls', 'views', 'admin', 'api', 'models', 'forms', 'decorators', 'mixins',
                                   'management']:
             try:
-                print django_app_name + "." + django_sub_module
+                #print django_app_name + "." + django_sub_module
                 sub_module = __import__(django_app_name + "." + django_sub_module)
                 self.add_module_to_includes(django_app_name + "." + django_sub_module)
             except ImportError, e:
