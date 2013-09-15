@@ -1,3 +1,4 @@
+from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.authentication import Authentication
 from tastypie.authorization import DjangoAuthorization
@@ -9,6 +10,7 @@ from objsys.models import UfsObj
 from tagging.models import Tag
 from tagging.models import TaggedItem
 from django.contrib.auth import authenticate, login
+from ui_framework.objsys.models import Description
 
 
 class DjangoUserAuthentication(Authentication):
@@ -31,8 +33,19 @@ class DjangoUserAuthentication(Authentication):
         return request.user.username
 
 
+class DescriptionResource(ModelResource):
+    class Meta:
+        queryset = Description.objects.all()
+        resource_name = 'description'
+        #authentication = SessionAuthentication()
+        authentication = DjangoUserAuthentication()
+        authorization = DjangoAuthorization()
+
+
 class UfsObjResource(ModelResource):
     #json_indent = 2
+    #descriptions = fields.ToOneField(DescriptionResource, 'descriptions')
+    descriptions = fields.ToManyField(DescriptionResource, 'descriptions', full=True)
 
     def get_object_list(self, request):
         #return super(UfsObjResource, self).get_object_list(request).filter(start_date__gte=now)
@@ -58,7 +71,6 @@ class UfsObjResource(ModelResource):
             except:
                 objs = UfsObj.objects.none()
             return objs
-
 
     def dehydrate(self, bundle):
         res = []
@@ -92,6 +104,7 @@ class UfsObjResource(ModelResource):
             "ufs_url": ('contains',),
             "full_path": ('contains', 'iendswith'),
         }
+
 
 
 '''
