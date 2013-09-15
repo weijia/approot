@@ -5,50 +5,53 @@ import os
 from default_module_list import DEFAULT_DJANGO_MODULES
 
 
-def add_django_module(class_list, includes):
-    for i in class_list:
-        module_name = i.split(".")[0:-1]
-        if not (module_name in includes):
-            includes.append(".".join(module_name))
-
-
-def add_django_module_from_list(module_list, includes):
-    for i in module_list:
-        #print i, '[[[[[[[[[[[[[[[[[[[[['
-        add_django_module(i, includes)
-
-
-def get_other_processor_modules(settings):
-    res = []
-    for i in ['MIDDLEWARE_CLASSES', 'AUTHENTICATION_BACKENDS',
-              'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_LOADERS']:
-        try:
-            #print getattr(settings, i), '----------------------'
-            res.append(getattr(settings, i))
-        except AttributeError:
-            print "no attr:", i
-            #print res, '============================'
-    return res
-
-
 class DjangoCxFreezeBuildSpecGenerator(object):
     def __init__(self):
         self.existing_config = None
+
+    def add_module_to_includes(self, item):
+        if type(item) == list:
+            raise "No list permitted"
+        if not (item in self.existing_config['includes']):
+            self.existing_config['includes'].append(item)
+
+    def extend_includes(self, includes_list):
+        for item in includes_list:
+            self.add_module_to_includes(item)
+
+    def get_module_name_from_class_name(self, class_name):
+        return ".".join(class_name.split(".")[0:-1])
+
+    def add_modules_from_class_name_list(self, class_name_list):
+        for clss_name_for_import in class_name_list:
+            #print i, '[[[[[[[[[[[[[[[[[[[[['
+            self.add_module_to_includes(self.get_module_name_from_class_name(clss_name_for_import))
 
     def gen_spec(self, settings, existing_config):
         self.existing_config = existing_config
         print dir(settings)
         for installed_app in settings.INSTALLED_APPS:
-            self.update_config_spec_for_installed_apps(installed_app)
+            self.update_config_spec_for_django_app(installed_app)
 
-        self.existing_config['includes'].extend(DEFAULT_DJANGO_MODULES)
+        self.extend_includes(DEFAULT_DJANGO_MODULES)
         #print existing_config['includes']
-        add_django_module_from_list(get_other_processor_modules(settings),
-                                    self.existing_config['includes'])
+        self.add_modules_from_class_name_list(self.get_class_names_included_in_settings(settings))
         #print existing_config['includes'], '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1'
 
-        self.existing_config['includes'].extend(settings.INSTALLED_APPS)
+        self.extend_includes(settings.INSTALLED_APPS)
         self.existing_config['include_files'].append("static")
+
+    def get_class_names_included_in_settings(self, settings):
+        res = []
+        for i in ['MIDDLEWARE_CLASSES', 'AUTHENTICATION_BACKENDS',
+                  'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_LOADERS']:
+            try:
+                #print getattr(settings, i), '----------------------'
+                res.extend(getattr(settings, i))
+            except AttributeError:
+                print "no attr:", i
+                #print res, '============================'
+        return res
 
     def add_templatetags_modules(self, django_app_name, module_root):
         possible_templatetags_folder = os.path.join(module_root, 'templatetags')
@@ -61,7 +64,7 @@ class DjangoCxFreezeBuildSpecGenerator(object):
                     templatetags_file_full_path = os.path.join(possible_templatetags_folder, templatetags_file)
 
                     if not os.path.isdir(templatetags_file_full_path):
-                        self.existing_config['includes'].append(django_app_name + ".templatetags." + name)
+                        self.add_module_to_includes(django_app_name + ".templatetags." + name)
                         #print i+".templatetags."+name
 
     def include_default_files_in_django_app(self, django_app_name):
@@ -70,7 +73,7 @@ class DjangoCxFreezeBuildSpecGenerator(object):
             try:
                 print django_app_name + "." + django_sub_module
                 sub_module = __import__(django_app_name + "." + django_sub_module)
-                self.existing_config['includes'].append(django_app_name + "." + django_sub_module)
+                self.add_module_to_includes(django_app_name + "." + django_sub_module)
             except ImportError, e:
                 #print e
                 #print e.message
@@ -101,7 +104,7 @@ class DjangoCxFreezeBuildSpecGenerator(object):
                 self.existing_config['include_files'].append((data_folder,
                                                               'templates'))
 
-    def update_config_spec_for_installed_apps(self, django_app_name):
+    def update_config_spec_for_django_app(self, django_app_name):
         #print i
         try:
             module_i = __import__(django_app_name)
