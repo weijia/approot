@@ -10,7 +10,7 @@ from objsys.models import UfsObj
 from tagging.models import Tag
 from tagging.models import TaggedItem
 from django.contrib.auth import authenticate, login
-from ui_framework.objsys.models import Description
+from objsys.models import Description
 
 
 class DjangoUserAuthentication(Authentication):
