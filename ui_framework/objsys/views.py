@@ -11,6 +11,7 @@ from objsys.models import UfsObj
 from tagging.models import Tag, TaggedItem
 from obj_tagging import *
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 
 def manager(request):
@@ -102,8 +103,13 @@ def rm_obj_from_db(request):
     data = retrieve_param(request)
     if "ufs_url" in data:
         for obj in UfsObj.objects.filter(ufs_url=data["ufs_url"]):
+            #obj.tags = ""
+            json_description = json.loads(obj.description_json)
+            json_description["tags_before_delete"] = obj.tags
+            obj.description_json = json.dumps(json_description)
             obj.tags = ""
-            obj.delete()
+            #obj.delete()
+            obj.valid=False
         return HttpResponse('{"result": "removed: %s"}' % (data["ufs_url"]), mimetype="application/json")
     return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
 
@@ -116,7 +122,7 @@ def listing(request):
 
 @login_required
 def listing_with_description(request):
-    objects = UfsObj.objects.filter(user=request.user).order_by('-timestamp')
+    objects = UfsObj.objects.filter(user=request.user,valid=True).order_by('-timestamp')
     return render_to_response('objsys/listing_with_description_in_bootstrap.html',
                               {"objects": objects, "request": request, "title": "My bookmarks",
                                "email": "richardwangwang@gmail.com", "author": "Richard"},
@@ -129,7 +135,24 @@ def create_admin_user(request):
     auth_models.User.objects.create_superuser('admin', 'r@j.cn', 'admin')
     return HttpResponse("Done")
 
+    
+class ObjOperator(object):
+    def __init__(self, pk):
+        self.pk = pk
+    
+    def rm(self):
+        for obj in UfsObj.objects.filter(pk=self.pk):
+            obj.valid = False
+            obj.save()
+    
 
+def do_operations(request):
+    data = retrieve_param(request)
+    if ("cmd" in data) and ("pk" in data):
+        operator = ObjOperator(int(data["pk"]))
+        getattr(operator, data["cmd"])()
+    return HttpResponseRedirect("/objsys/homepage/")
+    
 '''
 def homepage(request):
     context = {}

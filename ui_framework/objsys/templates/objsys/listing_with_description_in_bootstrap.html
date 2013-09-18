@@ -14,12 +14,9 @@
             <p>{{ description.content }}</p>
             {% endfor %}
         </h4>
-        {% if user.is_authenticated and bookmark.author == user %}
         <ul class="edit_links">
-            <li><a href="">Edit</a></li>
-            <li><a href="">Delete</a></li>
+            <li><a href="/objsys/operations/?cmd=rm&pk={{ bookmark.pk }}">Delete</a></li>
         </ul>
-        {% endif %}
         <ul class="tags">
             {% for tag in bookmark.tags %}
             <li><a href="">{{ tag.name }}</a></li>
