@@ -18,33 +18,6 @@ from timeslice.TimeSlice import TimeSlice, TimeSet
 from libs.datetime_storage.datetime_folders import DateTimeFolder
 from libs.utils.misc import ensure_dir
 
-dump_file_format = {"exported": [{"name1": "data1"}], "server_timestamps":
-    {"server1-timestamp": 1000000, "server2-timestamp": 20000000}}
-#Check the latest timestamp for a server
-
-parser = argparse.ArgumentParser()
-#print self.param_dict
-############################
-parser.add_argument("--server", help="server name to download from")
-
-print sys.argv
-#print parser
-args = vars(parser.parse_args())
-
-print args['server']
-p = urlparse.urlparse(args['server'])
-print p.netloc
-
-g_dump_root_folder = "d:/tmp/dumproot/"
-ensure_dir(g_dump_root_folder)
-g_dump_state_folder = "d:/tmp/dumpstate/"
-ensure_dir(g_dump_state_folder)
-
-root = DateTimeFolder(g_dump_root_folder)
-
-offset = 0
-
-
 class NewStyleObjectTimeSlice(TimeSlice, object):
     pass
 
@@ -52,51 +25,105 @@ class NewStyleObjectTimeSlice(TimeSlice, object):
 class NewStyleObjectTimeSet(TimeSet, object):
     pass
 
+def main():
 
-###################################
-# Load current state file from folder
-###################################
-state_file_path = os.path.join(g_dump_state_folder, "state.txt")
+    dump_file_format = {"exported": [{"name1": "data1"}], "server_timestamps":
+        {"server1-timestamp": 1000000, "server2-timestamp": 20000000}}
+    #Check the latest timestamp for a server
 
-if os.path.exists(state_file_path):
-    state_file = open(state_file_path, "r")
-    slices = jsonpickle.decode(state_file.read())
-    state_file.close()
+    parser = argparse.ArgumentParser()
+    #print self.param_dict
+    ############################
+    parser.add_argument("--server", help="server name to download from")
 
+    print sys.argv
+    #print parser
+    args = vars(parser.parse_args())
 
-def get_last_timestamp_for_server(server_loc):
-    for last_dump_file_path in root.enumerate_from_latest():
-        item = json.load(last_dump_file_path)
-        try:
-            return item["server_timestamps"][server_loc]
-        except KeyError:
-            pass
+    print args['server']
+    p = urlparse.urlparse(args['server'])
+    print p.netloc
 
-for folder_for_host in os.listdir(g_dump_root_folder):
-    host_dump_folder_full_path = os.path.join(g_dump_root_folder, folder_for_host)
+    g_dump_root_folder = "d:/tmp/dumproot/"
+    ensure_dir(g_dump_root_folder)
+    g_dump_state_folder = "d:/tmp/dumpstate/"
+    ensure_dir(g_dump_state_folder)
 
+    root = DateTimeFolder(g_dump_root_folder)
 
-time_set = NewStyleObjectTimeSet()
-
-
-def dump_data_for_time_slice(time_slice):
-    pass
-
-
-#Check if the first item on server is dumped
-if 0 == len(time_set):
-    start = datetime.datetime(datetime.MINYEAR, 1, 1)
-
-
-if (0 == len(time_set)) or (time_set[0].start.year != datetime.MINYEAR):
-    dump_data_for_time_slice()
-
-
-for index in range(0, len(time_set)):
-    time_slice = time_set[index]
+    offset = 0
 
 
 
-get_last_timestamp_for_server(p.netloc)
-#http://mycampus.duapp.com/objsys/api/ufsobj/ufsobj/?format=json
-first_url = "https://%s/objsys/api/ufsobj/ufsobj/?offset=%d&limit=%d&format=json" % (p.netloc, offset, 20)
+        
+    ##################################
+    # Load import state file
+    ##################################        
+        
+    ##################################
+    # Import existing data from file
+    ##################################
+    #Get hostname
+    self_host_name = getHostName()
+    #Scan other host's data directories.
+    for folder in os.listdir(g_dump_root_folder):
+        if folder == self_host_name:
+            continue
+        folder_full_path = os.path.join(g_dump_root_folder,  folder)
+        if os.path.isdir(folder_full_path):
+            date_time_folder = DateTimeFolder(folder_full_path)
+            for folder in date_time_folder.enumerate_from_latest():
+                pass
+    
+    
+    
+    
+
+
+    ###################################
+    # Load current state file from folder
+    ###################################
+    state_file_path = os.path.join(g_dump_state_folder, "state.txt")
+
+    if os.path.exists(state_file_path):
+        state_file = open(state_file_path, "r")
+        slices = jsonpickle.decode(state_file.read())
+        state_file.close()
+
+
+    def get_last_timestamp_for_server(server_loc):
+        for last_dump_file_path in root.enumerate_from_latest():
+            item = json.load(last_dump_file_path)
+            try:
+                return item["server_timestamps"][server_loc]
+            except KeyError:
+                pass
+
+    for folder_for_host in os.listdir(g_dump_root_folder):
+        host_dump_folder_full_path = os.path.join(g_dump_root_folder, folder_for_host)
+
+
+    time_set = NewStyleObjectTimeSet()
+
+
+    def dump_data_for_time_slice(time_slice):
+        pass
+
+
+    #Check if the first item on server is dumped
+    if 0 == len(time_set):
+        start = datetime.datetime(datetime.MINYEAR, 1, 1)
+
+
+    if (0 == len(time_set)) or (time_set[0].start.year != datetime.MINYEAR):
+        dump_data_for_time_slice()
+
+
+    for index in range(0, len(time_set)):
+        time_slice = time_set[index]
+
+
+
+    get_last_timestamp_for_server(p.netloc)
+    #http://mycampus.duapp.com/objsys/api/ufsobj/ufsobj/?format=json
+    first_url = "https://%s/objsys/api/ufsobj/ufsobj/?offset=%d&limit=%d&format=json" % (p.netloc, offset, 20)

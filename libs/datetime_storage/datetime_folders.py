@@ -34,13 +34,13 @@ class DateTimeFolder(object):
         return os.path.join(self.root_folder, "%s/%s/%s" % (now.year, now.month, time.time()))
 
 
+if __name__ == "__main__":
+    d = DateTimeFolder("d:/")
+    cnt = 0
+    for i in d.enumerate_from_latest():
+        print i
+        cnt += 1
+        if cnt > 6:
+            break
 
-d = DateTimeFolder("d:/")
-cnt = 0
-for i in d.enumerate_from_latest():
-    print i
-    cnt += 1
-    if cnt > 6:
-        break
-
-print d.get_folder_for_today()
+    print d.get_folder_for_today()
