@@ -23,3 +23,8 @@ obs
 /rootapp/local_keys.py
 
 /rootapp/secret_key.py
+
+/.ropeproject
+/_eric4project
+
+/*.e4p

@@ -58,7 +58,9 @@ def main():
         
     ##################################
     # Load import state file
-    ##################################        
+    ##################################
+        
+    sync_state = {"laptop1": {"downloaded_timeset": NewStyleObjectTimeSet()}}
         
     ##################################
     # Import existing data from file
@@ -66,12 +68,12 @@ def main():
     #Get hostname
     self_host_name = getHostName()
     #Scan other host's data directories.
-    for folder in os.listdir(g_dump_root_folder):
-        if folder == self_host_name:
+    for hostname_as_folder in os.listdir(g_dump_root_folder):
+        if hostname_as_folder == self_host_name:
             continue
-        folder_full_path = os.path.join(g_dump_root_folder,  folder)
-        if os.path.isdir(folder_full_path):
-            date_time_folder = DateTimeFolder(folder_full_path)
+        host_name_as_folder_full_path = os.path.join(g_dump_root_folder,  hostname_as_folder)
+        if os.path.isdir(host_name_as_folder_full_path):
+            date_time_folder = DateTimeFolder(host_name_as_folder_full_path)
             for folder in date_time_folder.enumerate_from_latest():
                 pass
     
