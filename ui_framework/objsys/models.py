@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
-
+# Create your models here.
 def get_new_uuid():
     return str(uuid.uuid4())
 
@@ -15,7 +15,6 @@ class Description(models.Model):
         return unicode(self.content)
 
 
-# Create your models here.
 class UfsObj(models.Model):
     full_path = models.TextField(null=True, blank=True)
     ufs_url = models.TextField(help_text='start with ufs:// or uuid:// etc.')
@@ -93,7 +92,14 @@ class UfsObj(models.Model):
                     traceback.print_exc()
         return 'unknown'
 
-
+        
+class ObjRelation(models.Model):
+    from_obj = models.ForeignKey(UfsObj, null=True, blank=True, related_name="from")
+    to_obj = models.ForeignKey(UfsObj, null=True, blank=True, related_name="to")
+    relation = models.CharField(max_length=60, null=True, blank=True,
+                                help_text="relation text")
+        
+        
 try:
     import tagging
 
