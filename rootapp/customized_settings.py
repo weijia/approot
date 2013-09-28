@@ -56,8 +56,6 @@ INSTALLED_APPS += (
     'registration',
     'registration_defaults',
     'pagination',
-    'objsys',
-    'object_filter',
     'webmanage',
     'tagging',
     'south',
