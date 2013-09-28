@@ -49,16 +49,6 @@ INSTALLED_APPS += (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'guardian',
-    'social_auth',
-    'socialprofile',
-    'smuggler',
-    'registration',
-    'registration_defaults',
-    'pagination',
-    'webmanage',
-    'tagging',
-    'south',
 )
 
 AUTHENTICATION_BACKENDS = (

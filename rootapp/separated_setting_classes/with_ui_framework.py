@@ -14,4 +14,12 @@ class WithUiFramework(RootSettings):
         'ui_framework.normal_admin',
         'win_smb',
         'thumbapp',
+        'guardian',
+        'social_auth',
+        'socialprofile',
+        'smuggler',
+        'registration',
+        'registration_defaults',
+        'pagination',
+        'tagging',
     )

@@ -1,19 +1,16 @@
 # Create your views here.
 #from django.template import Context, loader
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
-
-from django.conf import settings
-import os
-import StringIO
 import sys
 import django
-from django.core.management.commands.syncdb import Command as SyncDb
-from django.db import DEFAULT_DB_ALIAS
+
 
 
 def index(request):
+    import StringIO
+    from django.core.management.commands.syncdb import Command as SyncDb
+    from django.db import DEFAULT_DB_ALIAS
     saveout = sys.stdout
     log_out = StringIO.StringIO()  
     sys.stdout = log_out
