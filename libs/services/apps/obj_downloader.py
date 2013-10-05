@@ -16,7 +16,11 @@ import datetime
 import jsonpickle
 from timeslice.TimeSlice import TimeSlice, TimeSet
 from libs.datetime_storage.datetime_folders import DateTimeFolder
+from libs.folder_update_checker import FolderUpdateChecker
 from libs.utils.misc import ensure_dir
+from libs.utils.obj_tools import getHostName, get_ufs_obj_from_ufs_url, JsonDecoderForUfsObj, get_ufs_obj_from_json
+from ui_framework.objsys.models import UfsObj, ObjRelation
+
 
 class NewStyleObjectTimeSlice(TimeSlice, object):
     pass
@@ -67,19 +71,37 @@ def main():
     ##################################
     #Get hostname
     self_host_name = getHostName()
+    file_timestamp_keeper = []
     #Scan other host's data directories.
     for hostname_as_folder in os.listdir(g_dump_root_folder):
         if hostname_as_folder == self_host_name:
             continue
         host_name_as_folder_full_path = os.path.join(g_dump_root_folder,  hostname_as_folder)
+        '''
+        {"server":"allbookmarks.duapp.com", "downloaded":[
+        {"meta": {"limit": 20, "next": "/objsys/api/ufsobj/ufsobj/?offset=20&limit=20&format=json",
+        "offset": 0, "previous": null, "total_count": 184}, "objects": [{"description": "",
+        "full_path": "", "head_md5": "", "id": 2, "resource_uri": "/objsys/api/ufsobj/ufsobj/2/",
+        "size": null, "tags": ["all_history"], "timestamp": "2013-08-18T04:54:59", "total_md5": "",
+        "ufs_url": "http://blog.csdn.net/id19870510/article/details/8489486", "uuid":
+        "09006587-787a-4814-8133-1a716d8b5968", "valid": true}]}
+        ]}
+       '''
         if os.path.isdir(host_name_as_folder_full_path):
-            date_time_folder = DateTimeFolder(host_name_as_folder_full_path)
-            for folder in date_time_folder.enumerate_from_latest():
-                pass
-    
-    
-    
-    
+            checker = FolderUpdateChecker(host_name_as_folder_full_path, file_timestamp_keeper)
+            for updated_item_full_path in checker.enum_new_file():
+                fp = open(updated_item_full_path, "r")
+                info = json.load(fp)
+                fp.close()
+                server = info["server"]
+                for downloaded_item in info["downloaded"]:
+                    for item in ["objects"]:
+                        referencer_url = server + item["resource_uri"]
+                        referencer_obj, created = UfsObj.get_or_create(referencer_url, valid=True)
+                        referenced_obj = get_ufs_obj_from_json(item)
+                        referenced_obj.tags = ','.join(item["tags"])
+                        ObjRelation.get_or_create(from_obj=referencer_obj, to_obj=referenced_obj,
+                                                  relation="Referencing", valid=True)
 
 
     ###################################

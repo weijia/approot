@@ -15,7 +15,7 @@ class StorageWithTransactionInterface(object):
 
 
 class FolderUpdateChecker(object):
-    def __init__(self,  root_folder, collection):
+    def __init__(self,  root_folder, file_timestamp_keeper):
         """
         Folder structure:
             2013
@@ -26,7 +26,7 @@ class FolderUpdateChecker(object):
                 02
         """
         self.root_folder = root_folder
-        self.collection = collection
+        self.file_timestamp_keeper = file_timestamp_keeper
 
     def enum_new_file(self):
         """
@@ -36,7 +36,9 @@ class FolderUpdateChecker(object):
         for dirpath, dirnames, filenames in os.walk(self.root_folder):
             for filename in filenames:
                 full_path = os.path.join(dirpath, filename)
-                self.collection.is_updated()
+                if self.file_timestamp_keeper.is_updated(full_path):
+                    yield full_path
+
 
     '''
     def get_updated_sub_folders(self, folder_full_path):

@@ -98,7 +98,9 @@ class ObjRelation(models.Model):
     to_obj = models.ForeignKey(UfsObj, null=True, blank=True, related_name="to")
     relation = models.CharField(max_length=60, null=True, blank=True,
                                 help_text="relation text")
-        
+    valid = models.BooleanField(default=True, help_text="is this field valid")
+    timestamp = models.DateTimeField('date this object is published to database', auto_now_add=True)
+    last_modified = models.DateTimeField('the last modified date for the object in database', auto_now=True)
         
 try:
     import tagging
@@ -106,19 +108,3 @@ try:
     tagging.register(UfsObj)
 except:
     pass
-
-
-class CollectionItem(models.Model):
-    obj = models.ForeignKey(UfsObj)
-    uuid = models.CharField(max_length=60, default=get_new_uuid)
-    id_in_col = models.CharField(max_length=60)
-    timestamp = models.DateTimeField('date published', auto_now_add=True)
-    user = models.ForeignKey(User)
-
-    def __unicode__(self):
-        return unicode('collection:' + self.uuid + ' ' + self.obj.__unicode__() + '(' + self.id_in_col + ')')
-
-    class Meta:
-        permissions = (
-            ('view_collection_item', 'Can view collection item'),
-        )
