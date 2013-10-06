@@ -33,7 +33,7 @@ class UfsObj(models.Model):
     relations = models.ManyToManyField("self", related_name='related_objs', null=True, blank=True,
                                        help_text="Related other information objects")
     descriptions = models.ManyToManyField(Description, related_name='descriptions', null=True, blank=True,
-                                       help_text="Descriptions for this object")
+                                          help_text="Descriptions for this object")
 
     def __unicode__(self):
         return unicode(self.ufs_url + '---------> uuid:' + self.uuid)
@@ -65,7 +65,7 @@ class UfsObj(models.Model):
             else:
                 print 'is dir or not exist'
                 pass
-            #print 'full path is:', self.full_path, self.size, self.description, os.path.isdir(self.full_path)
+                #print 'full path is:', self.full_path, self.size, self.description, os.path.isdir(self.full_path)
         super(UfsObj, self).save(*args, **kwargs) # Call the "real" save() method.
 
     ####################
@@ -92,7 +92,7 @@ class UfsObj(models.Model):
                     traceback.print_exc()
         return 'unknown'
 
-        
+
 class ObjRelation(models.Model):
     from_obj = models.ForeignKey(UfsObj, null=True, blank=True, related_name="from")
     to_obj = models.ForeignKey(UfsObj, null=True, blank=True, related_name="to")
@@ -101,7 +101,8 @@ class ObjRelation(models.Model):
     valid = models.BooleanField(default=True, help_text="is this field valid")
     timestamp = models.DateTimeField('date this object is published to database', auto_now_add=True)
     last_modified = models.DateTimeField('the last modified date for the object in database', auto_now=True)
-        
+
+
 try:
     import tagging
 
