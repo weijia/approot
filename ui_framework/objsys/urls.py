@@ -4,6 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import ListView
 from tagging.models import Tag
 from api import UfsObjResource
+from ui_framework.objsys.rss import LatestEntriesFeed
 
 
 ufsobj_resource = UfsObjResource()
@@ -14,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^manager/$', 'objsys.views.manager'),
     url(r'^listing/$', 'objsys.views.listing'),
     url(r'^homepage/$', 'objsys.views.listing_with_description'),
+    (r'^latest/feed/$', LatestEntriesFeed()),
     #url(r'^qrcode/$', 'thumbapp.views.gen_qr_code'),
     #url(r'^image/$', 'thumbapp.views.image'),
     url(r'^append_tags/$', 'objsys.views.handle_append_tags_request'),
