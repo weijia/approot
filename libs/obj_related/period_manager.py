@@ -1,5 +1,14 @@
+import json
+import os
+from libs.app_framework.folders import get_app_data_folder
+from libs.utils.misc import ensure_dir
+import libsys
+
 
 class Period(object):
+    """
+    Include start and end
+    """
     def __init__(self, start, end):
         self.start = start
         self.end = end
@@ -15,7 +24,10 @@ class Period(object):
 
 
 class PeriodManagerInterface(object):
-    def enum_period(self):
+    def enum_spare_period(self):
+        pass
+
+    def add_period(self):
         pass
 
 
@@ -24,6 +36,36 @@ class NoPersistentOffsetPeriodManager(PeriodManagerInterface):
         self.offset = 0
         self.size = size
 
-    def enum_period(self):
+    def enum_spare_period(self):
         yield Period(self.offset, self.offset + self.size - 1)
         self.offset += self.size
+
+
+class SimpleOffsetPeriodManager(PeriodManagerInterface):
+    def __init__(self, period_state_file_full_path):
+        self.period_state_file_full_path = period_state_file_full_path
+        if os.path.exists(period_state_file_full_path):
+            fp = open(self.period_state_file_full_path, "r")
+            self.state = json.load(fp)
+            fp.close()
+        else:
+            self.state = {}
+
+    def enum_spare_period(self):
+        yield Period(self.offset, self.offset + self.size - 1)
+        self.offset += self.size
+
+    def add_period(self):
+        pass
+
+    def save(self):
+        fp = open(self.period_state_file_full_path, "w")
+        json.dump(self.state, fp)
+        fp.close()
+
+
+def get_tasty_client_period_manager(period_manager_id):
+    state_path = get_app_data_folder("period_state")
+    state_file_path = os.path.join(state_path, period_manager_id)
+    return SimpleOffsetPeriodManager(state_file_path)
+

@@ -1,7 +1,9 @@
+import argparse
 import json
 #import urllib2
+import libsys
 import httplib2
-from libs.obj_related.period_manager import NoPersistentOffsetPeriodManager
+from libs.obj_related.period_manager import NoPersistentOffsetPeriodManager, Period, get_tasty_client_period_manager
 
 
 class NoMoreItems(object): pass
@@ -24,29 +26,61 @@ class ServerInfo(object):
 
 
 class TastyPieClient(object):
-    @staticmethod
-    def get_dumped_data(server_info, period):
-        url = "http://%s/objsys/api/ufsobj/ufsobj/?offset=%d&limit=%d&format=json&" \
-              "username=%s&password=%s" % (server_info.get_hostname(), period.get_start(), period.get_size(),
-                                            server_info.get_username(), server_info.get_password())
+    def __init__(self, server_info):
+        self.server_info = server_info
 
+    def get_data_for_empty_periods(self, period_manager):
+        downloaded = []
+        for period in period_manager.enum_spare_period():
+            downloaded_items = self.get_data_for_period(period)
+            downloaded.append(downloaded_items)
+            downloaded_cnt = len(downloaded)
+            if downloaded_cnt != period.get_size():
+                new_period = Period(period.get_start(), period.get_start()+downloaded_cnt-1)
+                period_manager.add_period(new_period)
+                break
+            period_manager.add_period(period)
+
+        return downloaded
+
+    def get_data_for_period(self, period):
+        url = "http://%s/objsys/api/ufsobj/ufsobj/?offset=%d&limit=%d&format=json&" \
+              "username=%s&password=%s" % (self.server_info.get_hostname(), period.get_start(), period.get_size(),
+                                           self.server_info.get_username(), self.server_info.get_password())
         h = httplib2.Http()
         resp, content = h.request(url, "GET")
-        downloaded_item = json.loads(content)
-        print downloaded_item
-        if 0 == len(downloaded_item["objects"]):
-            raise NoMoreItems
-        return downloaded_item
+        downloaded_items = json.loads(content)
+        print downloaded_items
+        return downloaded_items
 
 
-def download_from_tasty_pie_server(server_info, period_enumerator):
+def download_from_tasty_pie_server(server_info, period_manager):
     res = {"server": server_info.get_hostname()}
-    NoPersistentOffsetPeriodManager()
-    downloaded = []
-    for period in period_enumerator.enum_period():
-        try:
-            downloaded.append(TastyPieClient.get_dumped_data(server_info, period))
-        except NoMoreItems:
-            break
+    client = TastyPieClient(server_info)
+    downloaded = client.get_data_for_empty_periods(period_manager)
     res["downloaded"] = downloaded
     return res
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    #parser.add_argument("-m", "--make-argument-true", help="optional boolean argument", action="store_true")
+    #parser.add_argument("-o","--make-other-argument-true", help="optional boolean argument 2", action="store_true",  default=True)
+    #parser.add_argument("-n","--number", help="an optional number", type=int)
+    #parser.add_argument("-r","--restricted-number", help="one of a few possible numbers", type=int, choices=[1,2,3],  default=2)
+    #parser.add_argument("-c", "--counting-argument", help="counting #occurrences", action="count")
+    #parser.add_argument("-d", "--default-value-argument", help="default value argument", type=float, default="3.14")
+    #group = parser.add_mutually_exclusive_group()
+    #group.add_argument("-v", "--verbose", action="store_true")
+    #group.add_argument("-q", "--quiet", action="store_true")
+    #parser.add_argument("posarg", help="positional argument", type=str)
+    parser.add_argument("-w", "--webserver", help="Web server hostname", type=str)
+    parser.add_argument("-u", "--username", help="Username", type=str)
+    parser.add_argument("-p", "--password", help="Password", type=str)
+    parser.add_argument("-s", "--state-id", help="Download state ID", type=str)
+
+    args = vars(parser.parse_args())
+    s = ServerInfo(args["webserver"], args["username"], args["password"])
+    periods = get_tasty_client_period_manager(args["state-id"])
+    res = download_from_tasty_pie_server(s, periods)
+    print res

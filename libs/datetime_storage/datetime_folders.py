@@ -29,7 +29,7 @@ class DateTimeFolder(object):
                          for filename in filenames:
                              yield os.path.join(month_folder_full_path, filename)
 
-    def get_folder_for_today(self):
+    def get_folder_name_for_today(self):
         now = datetime.datetime.utcnow()
         return os.path.join(self.root_folder, "%s/%s/%s" % (now.year, now.month, time.time()))
 
@@ -43,4 +43,4 @@ if __name__ == "__main__":
         if cnt > 6:
             break
 
-    print d.get_folder_for_today()
+    print d.get_folder_name_for_today()
