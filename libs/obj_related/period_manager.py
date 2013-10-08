@@ -63,7 +63,7 @@ class SimpleOffsetPeriodManager(PeriodManagerInterface):
             offset += self.size
 
     def add_period(self, period):
-        self.offset = period.get_end()
+        self.offset = period.get_end() + 1
 
     def save(self):
         self.state["offset"] = self.offset
