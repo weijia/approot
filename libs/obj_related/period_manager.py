@@ -48,17 +48,22 @@ class SimpleOffsetPeriodManager(PeriodManagerInterface):
             fp = open(self.period_state_file_full_path, "r")
             self.state = json.load(fp)
             fp.close()
+            self.offset = self.state["offset"]
+            self.size = self.state["size"]
         else:
-            self.state = {}
+            self.offset = 0
+            self.size = 40
 
     def enum_spare_period(self):
         yield Period(self.offset, self.offset + self.size - 1)
         self.offset += self.size
 
-    def add_period(self):
-        pass
+    def add_period(self, period):
+        self.offset = period.get_end()
 
     def save(self):
+        self.state["offset"] = self.offset
+        self.state["size"] = self.size
         fp = open(self.period_state_file_full_path, "w")
         json.dump(self.state, fp)
         fp.close()

@@ -24,8 +24,12 @@ class UfsObj(models.Model):
                                 help_text="the md5 for the header of the object")
     total_md5 = models.CharField(max_length=60, null=True, blank=True,
                                  help_text="the entire object's md5 hash value")
-    timestamp = models.DateTimeField('date this object is published to database', auto_now_add=True)
-    last_modified = models.DateTimeField('the last modified date for the object in database', auto_now=True)
+    timestamp = models.DateTimeField('date this object record is published to database', auto_now_add=True)
+    last_modified = models.DateTimeField('the last modified date for the object record in database', auto_now=True)
+
+    obj_created = models.DateTimeField('the last modified date for the object itself')
+    obj_last_modified = models.DateTimeField('the last modified date for the object itself')
+
     size = models.BigIntegerField(null=True, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
     description_json = models.TextField(null=True, blank=True, help_text="JSON description for this object")

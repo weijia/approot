@@ -1,6 +1,9 @@
 import argparse
+import httplib
 import json
 #import urllib2
+import urllib
+import urllib2
 import libsys
 import httplib2
 from libs.obj_related.period_manager import NoPersistentOffsetPeriodManager, Period, get_tasty_client_period_manager
@@ -47,8 +50,10 @@ class TastyPieClient(object):
         url = "http://%s/objsys/api/ufsobj/ufsobj/?offset=%d&limit=%d&format=json&" \
               "username=%s&password=%s" % (self.server_info.get_hostname(), period.get_start(), period.get_size(),
                                            self.server_info.get_username(), self.server_info.get_password())
-        h = httplib2.Http()
-        resp, content = h.request(url, "GET")
+        #h = httplib2.Http()
+        #resp, content = h.request(url, "GET")
+        response = urllib2.urlopen(url)
+        content = response.read()
         downloaded_items = json.loads(content)
         print downloaded_items
         return downloaded_items
