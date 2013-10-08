@@ -55,8 +55,10 @@ class SimpleOffsetPeriodManager(PeriodManagerInterface):
             self.size = 40
 
     def enum_spare_period(self):
+        #!!!Keep this value so even self.offset is updated somewhere else, the enumerate will not go wrong!!!
+        offset = self.offset
         yield Period(self.offset, self.offset + self.size - 1)
-        self.offset += self.size
+        offset += self.size
 
     def add_period(self, period):
         self.offset = period.get_end()

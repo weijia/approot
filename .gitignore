@@ -28,3 +28,5 @@ obs
 /_eric4project
 
 /*.e4p
+
+/libs/obj_related/test_keys.py
