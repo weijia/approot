@@ -35,9 +35,9 @@ class TastyPieClient(object):
     def get_data_for_empty_periods(self, period_manager):
         downloaded = []
         for period in period_manager.enum_spare_period():
-            downloaded_items = self.get_data_for_period(period)
-            downloaded.append(downloaded_items)
-            downloaded_cnt = len(downloaded)
+            downloaded_item = self.get_data_for_period(period)
+            downloaded.append(downloaded_item)
+            downloaded_cnt = len(downloaded_item["objects"])
             if downloaded_cnt != period.get_size():
                 new_period = Period(period.get_start(), period.get_start()+downloaded_cnt-1)
                 period_manager.add_period(new_period)

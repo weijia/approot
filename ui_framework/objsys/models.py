@@ -27,8 +27,8 @@ class UfsObj(models.Model):
     timestamp = models.DateTimeField('date this object record is published to database', auto_now_add=True)
     last_modified = models.DateTimeField('the last modified date for the object record in database', auto_now=True)
 
-    obj_created = models.DateTimeField('the last modified date for the object itself')
-    obj_last_modified = models.DateTimeField('the last modified date for the object itself')
+    obj_created = models.DateTimeField('the last modified date for the object itself', null=True, blank=True)
+    obj_last_modified = models.DateTimeField('the last modified date for the object itself', null=True, blank=True)
 
     size = models.BigIntegerField(null=True, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)

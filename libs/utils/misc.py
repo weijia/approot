@@ -37,5 +37,5 @@ def get_date_based_path(root_folder, ext=".7z"):
     newEncDir = unicode(os.path.join(root_folder, dateTimeDir))
     ensure_dir(newEncDir)
     file_full_path = transform.transformDirToInternal(
-        fileTools.getTimestampWithFreeName(newEncDir, ext))
+        fileTools.get_free_timestamp_filename_in_path(newEncDir, ext))
     return file_full_path

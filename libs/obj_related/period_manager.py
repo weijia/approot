@@ -1,6 +1,6 @@
 import json
 import os
-from libs.app_framework.folders import get_app_data_folder
+from libs.app_framework.folders import get_or_create_app_data_folder
 from libs.utils.misc import ensure_dir
 import libsys
 
@@ -51,14 +51,16 @@ class SimpleOffsetPeriodManager(PeriodManagerInterface):
             self.offset = self.state["offset"]
             self.size = self.state["size"]
         else:
+            self.state = {}
             self.offset = 0
             self.size = 40
 
     def enum_spare_period(self):
         #!!!Keep this value so even self.offset is updated somewhere else, the enumerate will not go wrong!!!
         offset = self.offset
-        yield Period(self.offset, self.offset + self.size - 1)
-        offset += self.size
+        while offset < 10000:  # prevent unexpected dead loop
+            yield Period(self.offset, self.offset + self.size - 1)
+            offset += self.size
 
     def add_period(self, period):
         self.offset = period.get_end()
@@ -72,7 +74,7 @@ class SimpleOffsetPeriodManager(PeriodManagerInterface):
 
 
 def get_tasty_client_period_manager(period_manager_id):
-    state_path = get_app_data_folder("period_state")
+    state_path = get_or_create_app_data_folder("period_state")
     state_file_path = os.path.join(state_path, period_manager_id)
     return SimpleOffsetPeriodManager(state_file_path)
 

@@ -33,7 +33,7 @@ class logDir:
                     os.remove(os.path.join(self.logFullPath, fileList[i]))
                 except WindowsError:
                     pass
-        return fileTools.getTimestampWithFreeName(self.logFullPath, '.log')
+        return fileTools.get_free_timestamp_filename_in_path(self.logFullPath, '.log')
         
         
 if __name__ == '__main__':

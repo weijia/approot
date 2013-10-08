@@ -57,7 +57,7 @@ def getFreeNameFromFullPath(fullPath):
     return res
 
 
-def getTimestampWithFreeName(path, ext, prefix=''):
+def get_free_timestamp_filename_in_path(path, ext, prefix=''):
     """
     Return a unused filename according to current time.
     :param path:
