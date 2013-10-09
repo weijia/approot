@@ -30,3 +30,7 @@ obs
 /*.e4p
 
 /libs/obj_related/test_keys.py
+
+/libs/webmanage/django_commands_dict.py
+
+/rootapp/separated_settings/bae_secrets.py

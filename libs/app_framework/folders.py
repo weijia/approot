@@ -20,4 +20,7 @@ def get_app_in_framework(folder, name):
 
 def get_app_full_path_by_name(name):
     if "7z" == name:
-        return get_app_in_framework("7z", "7za.exe")
+        try:
+            return get_app_in_framework("7z", "7za.exe")
+        except:
+            return get_app_in_framework("7za920", "7za.exe")

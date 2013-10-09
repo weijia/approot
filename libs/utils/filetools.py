@@ -79,7 +79,7 @@ def findFileInProduct(filename):
     return None
 
 
-def findNamePatternInProduct(pattern):
+def find_filename_in_app_framework_with_pattern(pattern):
     p = os.getcwd()
     #print 'current path:', p
     for dirpath, dirnames, filenames in os.walk(p):
@@ -94,9 +94,9 @@ def findNamePatternInProduct(pattern):
     return None
 
 
-def findAppInProduct(filename):
+def find_callable_in_app_framework(filename):
     #filename = filename.replace('-', '\-')
-    return findNamePatternInProduct('^' + filename + "((\.bat$)|(\.py$)|(\.exe$)|(\.com$))")
+    return find_filename_in_app_framework_with_pattern('^' + filename + "((\.bat$)|(\.py$)|(\.exe$)|(\.com$))")
 
 
 def collect_files_in_dir(file_root_path, ext=None, ignoreFileList=[]):

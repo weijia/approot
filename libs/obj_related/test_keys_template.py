@@ -1,3 +1,3 @@
 hostname = "mycampus.duapp.com"
-username = ''
-password = ''
+username = 'google'
+password = 'google123456'

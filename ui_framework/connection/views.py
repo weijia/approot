@@ -170,7 +170,7 @@ class FullPathApp(App):
 class NamedApp(App):
     def __init__(self, app_name):
         self.app_name = app_name
-        self.app_full_path = app_path = file_tools.findAppInProduct(self.app_name)
+        self.app_full_path = app_path = file_tools.find_callable_in_app_framework(self.app_name)
         if app_path is None:
             raise "Obj not exists"
 

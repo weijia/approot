@@ -25,8 +25,8 @@ app = "..\\otherBin\\7za920\\7za.exe"
 
 
 class EncZipFileOn7Zip(object):
-    def __init__(self, filename, mode="r", password='123'):
-        self.filename = filename
+    def __init__(self, file_path, mode="r", password='123'):
+        self.file_path = file_path
         self.password = unicode(password)
 
     def addfile(self, adding_file, arcname=None):
@@ -51,17 +51,17 @@ class EncZipFileOn7Zip(object):
             #sts = os.waitpid(process.pid, 0)[1]
             print (u'%s -y -i "%s" -f image2 -ss %d -vframes 1 -s 128x128 -an "%s"'%(app, inFile, frameTime, outFile)).encode('gbk')
         '''
-        if os.path.exists(self.filename):
-            original_size = os.stat(self.filename).st_size
+        if os.path.exists(self.file_path):
+            original_size = os.stat(self.file_path).st_size
         else:
             original_size = 0
-        cmd = (u'%s -p%s -mhe a "%s" "%s"' % (get_app_full_path_by_name("7z"), self.password, self.filename, adding_file)).encode(gLocalEncode)
+        cmd = (u'%s -p%s -mhe a "%s" "%s"' % (get_app_full_path_by_name("7z"), self.password, self.file_path, adding_file)).encode(gLocalEncode)
         print "command:", cmd
         print "current dir:", os.getcwd()
         process = subprocess.Popen(cmd, shell=False, creationflags=CREATE_NO_WINDOW)
         #wait is used to wait for the child process to complete
         process.wait()
-        increased_size = os.stat(self.filename).st_size - original_size
+        increased_size = os.stat(self.file_path).st_size - original_size
         return increased_size
 
     def close(self):

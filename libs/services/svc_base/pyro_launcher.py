@@ -1,5 +1,5 @@
 import os
-from libs.utils.filetools import findAppInProduct
+from libs.utils.filetools import find_callable_in_app_framework
 from iconizer import Iconizer
 
 __author__ = 'Administrator'
@@ -17,7 +17,7 @@ class Launcher(object):
         :return:
         """
         #GuiService().put({"command": "LaunchApp", "app_name": app_name, "param": param_list})
-        app_path = findAppInProduct(app_name)
+        app_path = find_callable_in_app_framework(app_name)
         #print app_path
         app_path_and_param = [app_path, ]
         app_path_and_param.extend(param_list)

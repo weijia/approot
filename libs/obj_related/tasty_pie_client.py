@@ -4,6 +4,10 @@ import json
 #import urllib2
 import urllib
 import urllib2
+from libs.app_framework.folders import get_or_create_app_data_folder
+from libs.compress.enc_7z import EncZipFileOn7Zip
+from libs.datetime_storage.datetime_folders import get_date_based_path_and_filename
+from libs.utils.filetools import get_free_timestamp_filename_in_path
 import libsys
 import httplib2
 from libs.obj_related.period_manager import NoPersistentOffsetPeriodManager, Period, get_tasty_client_period_manager
@@ -58,13 +62,30 @@ class TastyPieClient(object):
         print downloaded_items
         return downloaded_items
 
+    def download_from_tasty_pie_server(self, period_manager):
+        res = {"server": self.server_info.get_hostname()}
+        client = TastyPieClient(self.server_info)
+        downloaded = client.get_data_for_empty_periods(period_manager)
+        res["downloaded"] = downloaded
+        return res
 
-def download_from_tasty_pie_server(server_info, period_manager):
-    res = {"server": server_info.get_hostname()}
-    client = TastyPieClient(server_info)
-    downloaded = client.get_data_for_empty_periods(period_manager)
-    res["downloaded"] = downloaded
-    return res
+    def save_from_tasty_pie_data(self, state_name, output_filename):
+        period_manager = get_tasty_client_period_manager(state_name)
+        dump_data = self.download_from_tasty_pie_server(period_manager)
+        fp = open(output_filename, 'w')
+        json.dump(dump_data, fp, indent=4)
+        fp.close()
+        period_manager.save()
+
+    def export_and_encrypt_tasty_pie_data(self, state_name, password):
+        export_folder = get_or_create_app_data_folder("tasty_pie_exported")
+        output_filename = get_free_timestamp_filename_in_path(export_folder, ".txt")
+        self.save_from_tasty_pie_data(state_name, output_filename)
+        encrypted_folder = get_or_create_app_data_folder("tasty_pie_encrypted")
+        encrypted_file_path = get_date_based_path_and_filename(encrypted_folder)
+        storage = EncZipFileOn7Zip(encrypted_file_path, password=password)
+        storage.addfile(output_filename)
+        storage.close()
 
 
 if __name__ == "__main__":
