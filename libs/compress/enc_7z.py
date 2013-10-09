@@ -1,30 +1,34 @@
-#import zipfile
 import os.path
 import os
 
 import subprocess
+from libs.app_framework.folders import get_app_full_path_by_name
+
 CREATE_NO_WINDOW = 0x8000000
 
 gLocalEncode = 'gbk'
 
-def encode2Local(s):
+
+def encode2local(s):
     if type(s) == unicode:
         return s.encode(gLocalEncode)
     else:
         return s
 
-def decode2Local(s):
+
+def decode2local(s):
     return s.decode(gLocalEncode)
 
-#Every app will be start in the root dir of the source code (prodRoot)
-app = "..\\otherBin\\7za920\\7za.exe"        
 
-        
+#Every app will be start in the root dir of the source code (prodRoot)
+app = "..\\otherBin\\7za920\\7za.exe"
+
+
 class EncZipFileOn7Zip(object):
-    def __init__(self, filename, mode = "r", passwd = '123'):
+    def __init__(self, filename, mode="r", password='123'):
         self.filename = filename
-        self.passwd = unicode(passwd)
-        
+        self.password = unicode(password)
+
     def addfile(self, adding_file, arcname=None):
         '''
         def ffmpegDumpVideo(inFile, outFile, frameTime = 10):
@@ -51,16 +55,14 @@ class EncZipFileOn7Zip(object):
             original_size = os.stat(self.filename).st_size
         else:
             original_size = 0
-        cmd = (u'%s -p%s -mhe a "%s" "%s"'%(app, self.passwd, self.filename, adding_file)).encode(gLocalEncode)
+        cmd = (u'%s -p%s -mhe a "%s" "%s"' % (get_app_full_path_by_name("7z"), self.password, self.filename, adding_file)).encode(gLocalEncode)
         print "command:", cmd
         print "current dir:", os.getcwd()
-        process = subprocess.Popen(cmd, shell=False, creationflags = CREATE_NO_WINDOW)
+        process = subprocess.Popen(cmd, shell=False, creationflags=CREATE_NO_WINDOW)
         #wait is used to wait for the child process to complete
         process.wait()
         increased_size = os.stat(self.filename).st_size - original_size
         return increased_size
 
-          
     def close(self):
         pass
-    
