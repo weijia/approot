@@ -4,7 +4,33 @@
 from django.http import HttpResponse
 import sys
 import django
+from libs.utils.django_utils import retrieve_param
+from django.core.management import execute_from_command_line
 
+try:
+    import django_commands_dict
+except:
+    pass
+
+import django.core.management as core_management
+
+
+def cmd(request):
+    data = retrieve_param(request)
+    import StringIO
+    params = data["params"].split(",")
+    command_line_param = ["manage.py"]
+    command_line_param.extend(params)
+
+    old_out = sys.stdout
+    log_out = StringIO.StringIO()
+    sys.stdout = log_out
+    core_management._commands = django_commands_dict.django_commands_dict
+    execute_from_command_line(command_line_param)
+
+    result = log_out.getvalue()
+    sys.stdout = old_out
+    return HttpResponse(result.replace("\n","<br/>"))
 
 
 def index(request):

@@ -1,3 +1,4 @@
+import logging
 import os
 
 from settings import *
@@ -135,7 +136,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 try:
     from local_settings import *
 except:
-    print "No local_settings"
+    logging.error("No local_settings")
     pass
 try:
     from local_keys import *
@@ -156,7 +157,7 @@ for app in INSTALLED_APPS:
 # system time zone. Following is the default in settings.py
 #TIME_ZONE = 'America/Chicago'
 
-print "start importing"
+logging.error("start importing")
 
 setting_module_name_list = []
 
@@ -178,7 +179,7 @@ except:
 setting_module_name_list += modules_in_folder
 import sys
 sys.path.append(PROJECT_DIR)
-print setting_module_name_list
+logging.error(setting_module_name_list)
 
 
 for setting_module_name in setting_module_name_list:

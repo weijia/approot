@@ -22,5 +22,6 @@ class WithUiFramework(RootSettings):
         'registration_defaults',
         'pagination',
         'tagging',
-        'south'
+        'south',
+        'webmanage',
     )

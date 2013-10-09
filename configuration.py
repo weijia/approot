@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 ####################################
@@ -38,7 +39,7 @@ try:
     loaded_config = json.load(f)
 except:
     #traceback.print_exc()
-    print "no config file/ invalid config file, use default"
+    logging.error("no config file/ invalid config file, use default")
     
 for i in g_config_dict:
     if loaded_config.has_key(i):

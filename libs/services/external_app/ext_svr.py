@@ -10,8 +10,6 @@ from libs.utils.process_mgr import gProcessMgr
 from django.contrib.auth.models import User, Group
 
 
-
-
 def wait_for_app(app_and_param_list):
     name = app_and_param_list[0]
     app_full_path = fileTools.findAppInProduct(name)
@@ -22,9 +20,6 @@ def wait_for_app(app_and_param_list):
     app_full_path_and_param_list.extend(app_and_param_list[:1])
     cur_working_dir = libsys.get_root_dir()
     gProcessMgr().wait_for_complete_without_console(app_full_path_and_param_list, cur_working_dir)
-
-
-
 
 
 class MongoDbApp(ExtAppMgrIntf):
