@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 import libsys
-from libs.utils.obj_tools import get_ufs_obj_from_full_path
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.msg import Msg
 from libs.logsys.logSys import cl
@@ -13,6 +12,7 @@ from django.conf import settings
 from configuration import g_config_dict
 #import time
 from libs.utils.string_tools import SpecialEncoder
+from ui_framework.objsys.view_utils import get_ufs_obj_from_full_path
 
 '''
 class NoInputWorker(WorkerBase):

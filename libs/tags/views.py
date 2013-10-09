@@ -78,7 +78,7 @@ def pane(request):
 
 
 def add_tag_for_full_path(full_path, tag, tag_app = None):
-    full_path = transform.transformDirToInternal(full_path)
+    full_path = transform.format_folder_path(full_path)
     obj_list = UfsObj.objects.filter(full_path = full_path)
     if 0 == obj_list.count():
         ufs_url = obj_tools.getUfsUrlForPath(full_path)

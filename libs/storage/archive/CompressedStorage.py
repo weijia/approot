@@ -50,13 +50,13 @@ class CompressedStorage(object):
         return self.package_file_full_path
 
     def get_storage_id(self):
-        return "zip_file_storage://" + transform.transformDirToInternal(self.trunk_data_path)
+        return "zip_file_storage://" + transform.format_folder_path(self.trunk_data_path)
 
     ################################################
     # The following functions are not recommended to be called from outside of this class
     def get_current_archive_file(self):
         if self.package_file is None:
-            self.package_file_full_path = transform.transformDirToInternal(
+            self.package_file_full_path = transform.format_folder_path(
                 get_free_timestamp_filename_in_path(self.trunk_data_path, self.ext))
             self.package_file = self.package_class(self.package_file_full_path, 'w', self.password)
         return self.package_file

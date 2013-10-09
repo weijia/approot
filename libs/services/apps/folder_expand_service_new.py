@@ -24,7 +24,7 @@ class FolderExpandThread(ThreadedService):
                 #Only send files
                 for j in i[2]:
                     info(j)
-                    full_path = transform.transformDirToInternal(os.path.join(i[0], j))
+                    full_path = transform.format_folder_path(os.path.join(i[0], j))
                     m = Msg({"folder": self.task_info.get_path()})
                     m.add_path(full_path)
                     self.send_to_output(m)

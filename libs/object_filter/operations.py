@@ -8,7 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 
 import libsys
 from tagging.models import TaggedItem
-from libs.utils.obj_tools import getHostName
+from libs.utils.obj_tools import get_hostname
 from libs.utils.django_utils import retrieve_param
 from objsys.obj_tagging import UfsFilter
 from libs.utils.misc import ensure_dir
@@ -47,7 +47,7 @@ class ExportTagsThread(UfsFilter, threading.Thread):
         ######
         # Quitting, so save last_timestamp
         if 0 != len(final_data):
-            export_json_to_folder({"data": final_data, "host": getHostName()}, "../tag_dump/")
+            export_json_to_folder({"data": final_data, "host": get_hostname()}, "../tag_dump/")
         else:
             print "No more tag applied"
 

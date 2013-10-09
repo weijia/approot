@@ -9,7 +9,6 @@ from libs.diagram.diagram import Diagram, save_all_diagram_from_predefined_folde
 from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 from libs.services.svc_base.msg_service import MsgQ
 from libs.services.svc_base.service_starter import start_diagram
-from libs.utils.obj_tools import get_ufs_obj_from_full_path, get_ufs_obj_from_ufs_url
 import libsys
 from models import Connection, Processor
 
@@ -22,6 +21,9 @@ from django.contrib.auth.decorators import login_required
 from libs.utils.django_utils import retrieve_param
 
 # Create your views here.
+from ui_framework.objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
+
+
 @login_required
 def index(request):
     data = retrieve_param(request)

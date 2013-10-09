@@ -24,7 +24,7 @@ class ScacheStorageServiceApp(ManagedService):
         url = msg["url"]
         print "received url:", url
         cached_path = msg["cached_path"]
-        cached_path = transform.transformDirToInternal(cached_path)
+        cached_path = transform.format_folder_path(cached_path)
         o = UfsObj.objects.filter(ufs_url=url)
         if 0 == o.count():
             s = UfsObj(ufs_url=url, full_path=cached_path)

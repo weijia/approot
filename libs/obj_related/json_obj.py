@@ -2,8 +2,9 @@ import json
 import os
 from libs.folder_update_checker import FolderUpdateChecker
 from libs.folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
-from libs.utils.obj_tools import get_ufs_obj_from_json, getHostName
+from libs.utils.obj_tools import get_hostname
 from ui_framework.objsys.models import UfsObj, ObjRelation
+from ui_framework.objsys.view_utils import get_ufs_obj_from_json
 
 
 class JsonDecoderForUfsObj(object):
@@ -75,7 +76,7 @@ def import_objs_from_full_path(updated_item_full_path):
 def import_from_tastypie_dump_root(g_dump_root_folder, collection_id_for_saved_state):
     file_timestamp_keeper = FileCollectionExistenceInfoKeeper(collection_id_for_saved_state)
     #Get hostname
-    self_host_name = getHostName()
+    self_host_name = get_hostname()
     #Scan other host's data directories.
     for hostname_as_folder in os.listdir(g_dump_root_folder):
         if hostname_as_folder == self_host_name:

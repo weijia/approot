@@ -11,17 +11,16 @@ from libs.thumb.thumbInterface import get_thumb
 from libs.obj_related.local_obj import LocalObj
 from libs.utils.mobile.qrcode_image import get_qr_code
 from libs.utils.django_utils import retrieve_param, return_file_data
-from libs.utils.obj_tools import get_ufs_obj_from_full_path
 import libsys
-from libs.utils.transform import transformDirToInternal
+from libs.utils.transform import format_folder_path
 from models import ThumbCache
 from libs.utils.misc import ensure_dir as ensure_dir
 from libs.logsys.logSys import *
-
+from ui_framework.objsys.view_utils import get_ufs_obj_from_full_path
 
 
 def get_thumb_file(target_file):
-    full_path = transformDirToInternal(target_file)
+    full_path = format_folder_path(target_file)
     if not os.path.exists(full_path):
         the_file = os.path.join(libsys.get_root_dir(), 'static/image/icons/file-broken-icon.png')
     else:
@@ -89,7 +88,7 @@ def thumb(request):
 
     target_file = unquote(data["target"])
     #cl(target_file)
-    full_path = transformDirToInternal(target_file)
+    full_path = format_folder_path(target_file)
     the_file = get_thumb_file(full_path)
     return return_file_data(the_file)
 

@@ -2,15 +2,17 @@ import argparse
 import httplib
 import json
 #import urllib2
+import os
 import urllib
 import urllib2
 from libs.app_framework.folders import get_or_create_app_data_folder
 from libs.compress.enc_7z import EncZipFileOn7Zip
 from libs.datetime_storage.datetime_folders import get_date_based_path_and_filename
 from libs.utils.filetools import get_free_timestamp_filename_in_path
+from libs.utils.obj_tools import get_hostname
 import libsys
 import httplib2
-from libs.obj_related.period_manager import NoPersistentOffsetPeriodManager, Period, get_tasty_client_period_manager
+from libs.obj_related.period_manager import Period, get_tasty_client_period_manager
 
 
 class NoMoreItems(object): pass
@@ -81,8 +83,9 @@ class TastyPieClient(object):
         export_folder = get_or_create_app_data_folder("tasty_pie_exported")
         output_filename = get_free_timestamp_filename_in_path(export_folder, ".txt")
         self.save_from_tasty_pie_data(state_name, output_filename)
-        encrypted_folder = get_or_create_app_data_folder("tasty_pie_encrypted")
-        encrypted_file_path = get_date_based_path_and_filename(encrypted_folder)
+        folder_for_encrypted_files = get_or_create_app_data_folder("tasty_pie_encrypted")
+        local_folder_for_encrypted_files = os.path.join(folder_for_encrypted_files, get_hostname())
+        encrypted_file_path = get_date_based_path_and_filename(local_folder_for_encrypted_files)
         storage = EncZipFileOn7Zip(encrypted_file_path, password=password)
         storage.addfile(output_filename)
         storage.close()

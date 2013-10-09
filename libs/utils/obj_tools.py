@@ -1,12 +1,11 @@
 import socket
 import configurationTools as config
-from libs.obj_related.json_obj import JsonDecoderForUfsObj
 from libs.utils import transform as transform
 from libs.logsys.logSys import *
-from objsys.models import UfsObj
+#from objsys.models import UfsObj
 
 
-gUfsObjUrlPrefix = u'ufs'+config.getFsProtocolSeparator()
+gUfsObjUrlPrefix = u'ufs' + config.getFsProtocolSeparator()
 gUfsObjUrlSeparator = u'/'
 
 
@@ -18,19 +17,19 @@ def is_web_url(url):
 
 
 def get_formatted_full_path(full_path):
-    return transform.transformDirToInternal(full_path)
+    return transform.format_folder_path(full_path)
 
 
 def parseUrl(url):
-    return url.split(config.getFsProtocolSeparator(),2)
-    
+    return url.split(config.getFsProtocolSeparator(), 2)
 
-def getHostName():
+
+def get_hostname():
     return unicode(socket.gethostname())
 
 
 def getUfsUrl(localPath):
-    return gUfsObjUrlPrefix+getHostName()+gUfsObjUrlSeparator+transform.transformDirToInternal(localPath)
+    return gUfsObjUrlPrefix + get_hostname() + gUfsObjUrlSeparator + transform.format_folder_path(localPath)
 
 
 def getUfsUrlForPath(fullPath):
@@ -44,7 +43,7 @@ def getFullPathFromUfsUrl(ufsUrl):
     objPath = parseUrl(ufsUrl)[1]
     hostname, fullPath = objPath.split(gUfsObjUrlSeparator, 1)
     #print hostname, fullPath
-    if unicode(hostname) != getHostName():
+    if unicode(hostname) != get_hostname():
         raise 'not a local file'
     return fullPath
 
@@ -58,7 +57,7 @@ def get_full_path_for_local_os(ufs_url):
 
 
 def isUuid(url):
-    return url.find(u"uuid"+config.getFsProtocolSeparator()) == 0
+    return url.find(u"uuid" + config.getFsProtocolSeparator()) == 0
 
 
 def getUrlContent(url):
@@ -76,7 +75,7 @@ def getUuid(url):
 
 
 def getUrlForUuid(id):
-    return u"uuid"+config.getFsProtocolSeparator()+id
+    return u"uuid" + config.getFsProtocolSeparator() + id
 
 
 def isUfsUrl(url):
@@ -90,7 +89,7 @@ def isUfsUrl(url):
 
 
 def getUfsLocalRootUrl():
-    return gUfsObjUrlPrefix+getHostName()+gUfsObjUrlSeparator
+    return gUfsObjUrlPrefix + get_hostname() + gUfsObjUrlSeparator
 
 
 def isUfsFs(url):
@@ -112,61 +111,8 @@ def is_local(ufs_url):
     """
     ufs_url in format ufs://hostname/D:/tmp/xxx.xxx
     """
-    if get_host(ufs_url) == getHostName():
+    if get_host(ufs_url) == get_hostname():
         return True
     else:
-        print "not local", get_host(ufs_url), getHostName()
+        print "not local", get_host(ufs_url), get_hostname()
         return False
-
-
-def get_ufs_obj_from_ufs_url(ufs_url):
-    obj_list = UfsObj.objects.filter(ufs_url=ufs_url)
-    if 0 == obj_list.count():
-        obj = UfsObj(ufs_url=ufs_url)
-        obj.save()
-    else:
-        obj = obj_list[0]
-    return obj
-
-
-def get_ufs_obj_from_full_path(full_path):
-    full_path = transform.transformDirToInternal(full_path)
-    obj_list = UfsObj.objects.filter(full_path=full_path)
-    if 0 == obj_list.count():
-        ufs_url = getUfsUrlForPath(full_path)
-        obj = UfsObj(ufs_url=ufs_url, full_path=full_path)
-        obj.save()
-    else:
-        obj = obj_list[0]
-    return obj
-
-
-def get_or_create_ufs_obj_from_path_and_url(full_path, ufs_url):
-    """
-    full_path and ufs_url must not be empty (""), will be checked here
-    """
-    if ("" == full_path) or ("" == ufs_url):
-        print "Invalid parameter:", full_path, ufs_url
-        raise "Invalid parameter"
-    if 0 == UfsObj.objects.filter(full_path=full_path, valid=True).count():
-        return UfsObj.objects.get_or_create(ufs_url=ufs_url, valid=True)
-
-    for ufs_obj in UfsObj.objects.filter(full_path, valid=True):
-        if ufs_obj.ufs_url == ufs_url:
-            return ufs_obj, False
-        else:
-            print "UFS Url not match while full path is equal", full_path, ufs_url, ufs_obj.ufs_url
-            raise "UFS Url not match while full path is equal"
-
-
-def get_ufs_obj_from_json(json_dict):
-    decoded_obj = JsonDecoderForUfsObj(json_dict)
-    if decoded_obj.is_full_path_valid() and decoded_obj.is_ufs_url_valid():
-        ufs_obj, created = get_or_create_ufs_obj_from_path_and_url(decoded_obj.get_full_path(),
-                                                                       decoded_obj.get_ufs_url())
-    elif (not decoded_obj.is_ufs_url_valid()) and (not decoded_obj.is_full_path_valid()):
-        print "Invalid json dict:", json_dict
-        raise "Invalid json dict"
-    else:
-        ufs_obj, created = UfsObj.objects.get_or_create(**decoded_obj.get_ufs_obj_attribute_dict(), valid=True)
-    return ufs_obj

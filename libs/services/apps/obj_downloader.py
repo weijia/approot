@@ -18,7 +18,7 @@ from timeslice.TimeSlice import TimeSlice, TimeSet
 from libs.datetime_storage.datetime_folders import DateTimeFolder
 from libs.obj_related.json_obj import import_from_tastypie_dump_root
 from libs.utils.misc import ensure_dir
-from libs.utils.obj_tools import getHostName
+from libs.utils.obj_tools import get_hostname
 
 
 class NewStyleObjectTimeSlice(TimeSlice, object):

@@ -3,7 +3,6 @@ import os
 import sys
 import time
 import traceback
-from libs.utils.obj_tools import get_ufs_obj_from_ufs_url
 import libsys
 from libs.utils import filetools as file_tools
 
@@ -13,6 +12,7 @@ from objsys.models import UfsObj
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
+from ui_framework.objsys.view_utils import get_ufs_obj_from_ufs_url
 
 
 gAutoStartDiagramTagName = "system:autostart"

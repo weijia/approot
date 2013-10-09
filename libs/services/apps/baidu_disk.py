@@ -9,7 +9,6 @@ from urllib2 import HTTPError
 
 import libsys
 import configuration
-from libs.utils.obj_tools import get_ufs_obj_from_full_path
 from configuration import *
 from django.conf import settings
 from social_auth.db.django_models import UserSocialAuth
@@ -24,6 +23,7 @@ from libs.tagging.models import TaggedItem
 #from libs.utils.filetools import getFreeNameFromFullPath
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 import traceback
+from ui_framework.objsys.view_utils import get_ufs_obj_from_full_path
 
 jinshan_root = os.path.join(libsys.get_root_dir(), "libs/jinshankuaipan/")
 sys.path.insert(0, jinshan_root)
