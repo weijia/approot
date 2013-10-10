@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import json
 import os
-from py7zlib import Archive7z
+import rootapp.ufs_django_settings
 from libs.folder_update_checker import FolderUpdateChecker
 from libs.folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
 from libs.utils.misc import ensure_dir
@@ -74,20 +75,6 @@ def import_objects_from_json_full_path(updated_item_full_path):
             referenced_obj.tags = ','.join(item["tags"])
             ObjRelation.get_or_create(from_obj=referencer_obj, to_obj=referenced_obj,
                                       relation="Referencing", valid=True)
-
-
-class FolderStructureSync(object):
-    def __init__(self, src_root_full_path, destination_root_full_path):
-        self.src_root_full_path = format_path(src_root_full_path)
-        self.destination_root_full_path = format_path(destination_root_full_path)
-
-    def get_target_folder(self, src_folder_full_path):
-        relative_path = format_path(src_folder_full_path).replace(self.src_root_full_path, "")
-        if relative_path[0] == "/":
-            relative_path = relative_path[1:]
-        target_full_path = format_path(os.path.join(self.destination_root_full_path, relative_path))
-        ensure_dir(target_full_path)
-        return target_full_path
 
 
 class FolderContaining7z(object):

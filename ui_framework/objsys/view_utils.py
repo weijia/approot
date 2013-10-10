@@ -1,6 +1,7 @@
 from libs.obj_related.json_obj import JsonDecoderForUfsObj
 from libs.utils import transform as transform
 from libs.utils.obj_tools import getUfsUrlForPath
+from ui_framework.objsys.models import UfsObj
 
 __author__ = 'Richard'
 
@@ -24,7 +25,9 @@ def get_ufs_obj_from_json(json_dict):
         print "Invalid json dict:", json_dict
         raise "Invalid json dict"
     else:
-        ufs_obj, created = UfsObj.objects.get_or_create(**decoded_obj.get_ufs_obj_attribute_dict(), valid=True)
+        param_dict = decoded_obj.get_ufs_obj_attribute_dict()
+        param_dict["valid"] = True
+        ufs_obj, created = UfsObj.objects.get_or_create(**param_dict)
     return ufs_obj
 
 
