@@ -56,6 +56,6 @@ def get_date_based_path_and_filename(root_folder, ext=".7z"):
     date_dir = year_str + "/" + month_str + "/" + day_str
     date_dir_full_path = unicode(os.path.abspath(os.path.join(root_folder, date_dir)))
     ensure_dir(date_dir_full_path)
-    file_full_path = transform.format_folder_path(
+    file_full_path = transform.format_path(
         get_free_timestamp_filename_in_path(date_dir_full_path, ext))
     return file_full_path

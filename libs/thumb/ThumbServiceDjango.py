@@ -5,7 +5,7 @@ import appThumb
 import os
 import localLibSys
 from libs.logsys.logSys import *
-from libs.utils.transform import format_folder_path
+from libs.utils.transform import format_path
 from libs.utils.obj_tools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
 import traceback
 
@@ -52,7 +52,7 @@ def internal_get_thumb(path, targetDir, mime_type = None):
                 pass
     if newPath is None:
         return None
-    return format_folder_path(newPath)
+    return format_path(newPath)
 
 
 def get_thumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
@@ -61,5 +61,5 @@ def get_thumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
     else:
         full_path = path
     #cl(path)
-    full_path = format_folder_path(full_path)
+    full_path = format_path(full_path)
     return internal_get_thumb(full_path, targetDir, mime_type)

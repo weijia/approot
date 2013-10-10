@@ -16,7 +16,7 @@ import datetime
 import jsonpickle
 from timeslice.TimeSlice import TimeSlice, TimeSet
 from libs.datetime_storage.datetime_folders import DateTimeFolder
-from libs.obj_related.json_obj import import_from_tastypie_dump_root
+from libs.obj_related.json_obj import import_from_tasty_pie_dump_root
 from libs.utils.misc import ensure_dir
 from libs.utils.obj_tools import get_hostname
 
@@ -77,7 +77,7 @@ def main():
     # Import existing data from file
     ##################################
     obj_downloader_file_existence_info_keeper_uuid = 'fbbcd9af-f453-42f5-b654-c2ca9e85a405'
-    import_from_tastypie_dump_root(g_dump_root_folder, obj_downloader_file_existence_info_keeper_uuid)
+    import_from_tasty_pie_dump_root(g_dump_root_folder, obj_downloader_file_existence_info_keeper_uuid)
 
     ###################################
     # Load current state file from folder

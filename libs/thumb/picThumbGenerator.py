@@ -37,7 +37,7 @@ def genPicThumb(local_path, dest_dir, mime_type = None):
         #It is a jpeg file, currently no other type supported
         if os.path.getsize(local_path) < 10*1024:
             #Use the original file if its siez is small
-            return transform.format_folder_path(local_path)
+            return transform.format_path(local_path)
         from PIL import Image #Using PIL lib
         im = Image.open(local_path)
         # convert to thumbnail image
@@ -53,7 +53,7 @@ def genPicThumb(local_path, dest_dir, mime_type = None):
         if im.mode != "RGB":
             im = im.convert("RGB")
         im.save(thumb_path,  "JPEG")
-        return transform.format_folder_path(thumb_path)
+        return transform.format_path(thumb_path)
     else:
         print 'non jpeg file not supported'
         raise pictureFormatNotSupported

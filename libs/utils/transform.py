@@ -42,7 +42,7 @@ def formatRelativePath(relativePath):
     return unicode(newDir)
 
 
-def format_folder_path(originalDir):
+def format_path(originalDir):
     '''
     Transform dir to internal format.
     In windows, it will be like: D:/helloworld.txt
@@ -77,10 +77,10 @@ def format_folder_path(originalDir):
     return unicode(newDir)
 
 def getRelativePathFromFull(fullPath, rootPath):
-    rootPath = format_folder_path(rootPath)
+    rootPath = format_path(rootPath)
     if rootPath[-1] != u"/":
         rootPath += u"/"
-    return format_folder_path(fullPath).replace(rootPath, "")
+    return format_path(fullPath).replace(rootPath, "")
 
 def autoDecoder(orig):
     '''
@@ -89,4 +89,4 @@ def autoDecoder(orig):
     return orig
 
 if __name__ == "__main__":
-    print format_folder_path('ufsFs://d:/tmp')
+    print format_path('ufsFs://d:/tmp')

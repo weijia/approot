@@ -24,8 +24,8 @@ class changeNotifyForBeanstalkd(changeNotifyThread):
         self.blackList = blackList
         self.targetTube = targetTube
     def callback(self, pathToWatch, relativePath, changeType):
-        fullPath = transform.format_folder_path(os.path.join(pathToWatch, relativePath))
-        itemDict = {"monitoringPath": transform.format_folder_path(pathToWatch),
+        fullPath = transform.format_path(os.path.join(pathToWatch, relativePath))
+        itemDict = {"monitoringPath": transform.format_path(pathToWatch),
                         "fullPath": fullPath, "changeType":changeType,
                         "timestamp": time.time()}
         s = json.dumps(itemDict, sort_keys=True, indent=4)
@@ -43,7 +43,7 @@ class MonitorThread(beanstalkWorkingThread):
         self.notifyThreads = {}
         
     def processItem(self, job, item):
-        fullpath = transform.format_folder_path(item["fullpath"])
+        fullpath = transform.format_path(item["fullpath"])
         if not os.path.exists(fullpath) or self.notifyThreads.has_key(fullpath):
             print 'Path: %s already in monitoring'%fullpath
             job.delete()

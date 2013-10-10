@@ -40,7 +40,7 @@ class DelaySendThread(WorkerBase):
             #Do not put the item to target tube
             return False#Do not need to put the item back to the tube
         '''
-        full_path = transform.format_folder_path(msg.get_path())
+        full_path = transform.format_path(msg.get_path())
 
         #Case 1, the item is first received no delay_send_timestamp
         #Add delay_send_timestamp and send with delay

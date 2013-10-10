@@ -17,7 +17,7 @@ def is_web_url(url):
 
 
 def get_formatted_full_path(full_path):
-    return transform.format_folder_path(full_path)
+    return transform.format_path(full_path)
 
 
 def parseUrl(url):
@@ -29,7 +29,7 @@ def get_hostname():
 
 
 def getUfsUrl(localPath):
-    return gUfsObjUrlPrefix + get_hostname() + gUfsObjUrlSeparator + transform.format_folder_path(localPath)
+    return gUfsObjUrlPrefix + get_hostname() + gUfsObjUrlSeparator + transform.format_path(localPath)
 
 
 def getUfsUrlForPath(fullPath):

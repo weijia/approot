@@ -82,7 +82,7 @@ def filesystem_rest(request):
         if cnt > end_cnt:
             break
         full_path = os.path.join(parent, filename)
-        full_path = transform.format_folder_path(full_path)
+        full_path = transform.format_path(full_path)
         tags = []
         for obj in UfsObj.objects.filter(full_path=full_path):
             for tag in obj.tags:
