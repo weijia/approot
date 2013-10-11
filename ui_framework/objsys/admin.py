@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from objsys.models import UfsObj
 from objsys.models import Description
-from objsys.models import CollectionItem
 from guardian.admin import GuardedModelAdmin
+from ui_framework.collection_management.models import CollectionItem
 
 
 class CollectionItemAdmin(GuardedModelAdmin):

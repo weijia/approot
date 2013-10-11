@@ -8,7 +8,6 @@ from libs.utils.misc import ensure_dir
 from libs.utils.obj_tools import get_hostname
 from libs.utils.transform import format_path
 from ui_framework.objsys.models import UfsObj, ObjRelation
-from ui_framework.objsys.view_utils import get_ufs_obj_from_json
 
 
 class JsonDecoderForUfsObj(object):

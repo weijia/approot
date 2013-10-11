@@ -1,7 +1,6 @@
 import rootapp.ufs_django_settings
 from ui_framework.collection_management.models import CollectionItem
 from ui_framework.objsys.models import UfsObj
-from ui_framework.objsys.view_utils import get_ufs_obj_from_full_path
 
 
 class FileTimestampKeeperInterface(object):

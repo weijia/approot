@@ -1,4 +1,5 @@
 # -*- coding: gbk -*-
+import os
 import threading
 from libs.logsys.logSys import cl
 from msg_service import *
@@ -61,7 +62,9 @@ class Service(object):
         return self.is_stopped
 
     def get_session_id(self):
-        return self.param_dict["session_id"]
+        #return self.param_dict["session_id"]
+        print "mgr session id:", os.environ["UFS_CONSOLE_MGR_SESSION_ID"]
+        return os.environ["UFS_CONSOLE_MGR_SESSION_ID"]
 
     def on_stop(self):
         """
@@ -108,8 +111,8 @@ class MsgProcessor(Service):
         self.send_to_self(msg_dict, delay)
 
     def is_ignoring_legacy_session_msg(self, msg):
-        if msg.get_session_id() != self.param_dict["session_id"]:
-            print "ignore legacy session msg", msg, self.param_dict["session_id"]
+        if msg.get_session_id() != self.get_session_id():
+            print "ignore legacy session msg", msg, self.get_session_id()
             return True
         return False
 

@@ -7,9 +7,9 @@ from django.contrib import admin
 from django.conf import settings
 
 from objsys.models import UfsObj
-from objsys.models import CollectionItem
 from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import assign
+from ui_framework.collection_management.models import CollectionItem
 
 
 gRootUuid = u"4a5e8673-f2a2-4cf2-af6c-461fa9f31a15"

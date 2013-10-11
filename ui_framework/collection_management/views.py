@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.models import User
 from django.conf import settings
 import urllib2
+from ui_framework.collection_management.models import CollectionItem
 
 '''
 [
@@ -20,7 +21,7 @@ import urllib2
 '''
 
 from django.core import serializers
-from objsys.models import UfsObj, CollectionItem
+from objsys.models import UfsObj
 
 
 def collections(request):

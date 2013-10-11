@@ -1,5 +1,8 @@
 import os
+from iconizer.iconizer_main import Iconizer
 import libsys
+from libs.app_framework.folders import get_or_create_app_data_folder
+from libs.utils.filetools import find_callable_in_app_framework
 from libs.platform.executor import execute_app_from_name_and_wait_for_complete
 
 from libs.services.svc_base.postgres_app import PostgreSqlApp
@@ -65,9 +68,14 @@ if __name__ == "__main__":
     PostgreSqlApp()
 
     sync_migrate_db()
+    log_folder = get_or_create_app_data_folder("logs")
+    i = Iconizer(log_folder)
+    i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
+    i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
     #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
     #execute_app_from_name_and_wait_for_complete("syncdb")
     execute_app_from_name_and_wait_for_complete("cherrypy_server")
+    print "-----------------------------exiting cherrypy server"
     
     
     
