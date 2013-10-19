@@ -60,8 +60,8 @@ class UfsObj(models.Model):
                     if self.size is None:
                         self.size = local_obj.get_size()
 
-                    if self.description is None:
-                        self.description = json.dumps({"magic_type": local_obj.get_type()})
+                    if self.description_json is None:
+                        self.description_json = json.dumps({"magic_type": local_obj.get_type()})
                 except IOError:
                     import traceback
 

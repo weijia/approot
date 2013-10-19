@@ -5,6 +5,7 @@ import uuid
 import webbrowser
 from iconizer import Iconizer
 from libs.app_framework.folders import get_or_create_app_data_folder
+from libs.msg import BeanstalkMsgService
 from libs.utils.filetools import find_callable_in_app_framework
 import configuration
 
@@ -31,7 +32,7 @@ def main():
     os.environ["UFS_CONSOLE_MGR_SESSION_ID"] = str(uuid.uuid4())
     try:
         log_folder = get_or_create_app_data_folder("logs")
-        i = Iconizer(log_folder)
+        i = Iconizer(log_folder, BeanstalkMsgService())
         i.add_close_listener(stop_web_servers)
         i.add_final_close_listener(stop_postgresql)
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main

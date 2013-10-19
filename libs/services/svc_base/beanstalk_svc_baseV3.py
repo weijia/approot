@@ -39,6 +39,7 @@ class beanstalkServiceBase(object):
         #print 'port: ', gBeanstalkdServerPort
         self.beanstalk = beanstalkc.Connection(host=gBeanstalkdServerHost, port=gBeanstalkdServerPort)
         self.default_timestamp = time.time()
+
     def get_input_tube_name(self):
         return self.input_tube_name
         
@@ -62,9 +63,7 @@ class beanstalkServiceBase(object):
         
     def put(self, itemDict, priority = beanstalkc.DEFAULT_PRIORITY, delay = 0):
         return self.put_item(itemDict, self.input_tube_name, priority, delay=delay)
-        
 
-        
     def watch_service_and_private_tube(self):
         print 'watch tube: ', self.input_tube_name
         self.beanstalk.ignore('default')

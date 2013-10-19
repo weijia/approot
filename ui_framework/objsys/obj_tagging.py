@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.core.context_processors import csrf
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 import django.utils.timezone as timezone
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -163,7 +164,7 @@ def tagging(request):
 
     c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags}
     c.update(csrf(request))
-    return render_to_response('objsys/tagging.html', c)
+    return render_to_response('objsys/tagging.html', c, context_instance=RequestContext(request))
 
 
 def remove_tag(request):
