@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+from libs.compress.dec_7z import FolderStructureSync
 import rootapp.ufs_django_settings
 from libs.folder_update_checker import FolderUpdateChecker
 from libs.folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
@@ -92,14 +93,12 @@ class FolderContaining7z(object):
         #os.path.join(target_folder, filename)
 
 
-
 def import_objects_from_full_path(file_full_path):
     root, ext = os.path.splitext(file_full_path)
     if ext == '.7z':
         plain_text_file_full_path = extract_7z_file(file_full_path)
     plain_text_file_full_path = file_full_path
     import_objects_from_json_full_path(plain_text_file_full_path)
-
 
 
 def import_from_tasty_pie_dump_root(g_dump_root_folder, collection_id_for_saved_state):

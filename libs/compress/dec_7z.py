@@ -24,7 +24,7 @@ def decode2local(s):
 
 
 #Every app will be start in the root dir of the source code (prodRoot)
-app = "..\\otherBin\\7za920\\7za.exe"
+#app = "..\\otherBin\\7za920\\7za.exe"
 
 
 class DecZipFileOn7Zip(object):

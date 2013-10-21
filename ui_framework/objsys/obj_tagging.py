@@ -141,7 +141,7 @@ def tagging(request):
             for url in query_param_list[1]:
                 if not (url in selected_url):
                     selected_url.append(url)
-                    append_tags_to_url(request.user, tags, url)
+                    append_tags_and_description_to_url(request.user, tags, url, "manually added item")
 
     class UrlTagPair:
         def __init__(self, url, tags):
