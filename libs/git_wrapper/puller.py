@@ -1,6 +1,8 @@
+import os
 from subprocess import PIPE
 import traceback
 import git
+import sys
 
 
 class RemoteRepo(object):
@@ -30,12 +32,12 @@ class RemoteRepo(object):
         #print remote_ref#gitbucket/20130313_diagram_rewrite
         if branch.name in self.get_ref_name(remote_ref):
             print 'remote commit: ', remote_ref.commit
-            print 'latest remote log:', remote_ref.commit.message
             if branch.commit != remote_ref.commit:
                 print 'different to remote'
                 self.pull(self.get_ref_name(remote_ref))
+                print 'latest remote log:', remote_ref.commit.message
                 self.push(branch, remote_ref)
-                print 'latest local log:', branch.log()[-1].message
+                print 'latest local log:', branch.commit.message
 
 
 class Puller(object):
@@ -81,6 +83,11 @@ class Puller(object):
                     RemoteRepo(remote_repo).pull_and_push_changes(branch, remote_ref)
 
 
+def add_git_to_path():
+    os.environ['PATH'] += ";C:\\Program Files (x86)\\Git\\bin"
+    print os.environ['PATH']
+
+
 def main():
     #p = Puller('D:\\userdata\\q19420\\workspace\\SharingPark-Server')
     #p = Puller('D:\\work\mine\\SharingPark-Android\\SharingPark-Android')
@@ -90,4 +97,5 @@ def main():
 
 
 if __name__ == '__main__':
+    add_git_to_path()
     main()
