@@ -85,15 +85,17 @@ class Puller(object):
 
 def add_git_to_path():
     os.environ['PATH'] += ";C:\\Program Files (x86)\\Git\\bin"
-    print os.environ['PATH']
+    #print os.environ['PATH']
 
 
 def main():
-    #p = Puller('D:\\userdata\\q19420\\workspace\\SharingPark-Server')
-    #p = Puller('D:\\work\mine\\SharingPark-Android\\SharingPark-Android')
-    #p = Puller('D:\\work\\mine\\codes\\sharepark_interact')
-    p = Puller('D:\\work\\mine\\codes\\ufs_django\\approot')
-    p.pull_all()
+    try:
+        from repo import proj_list
+    except:
+        repo = []
+    for path in proj_list:
+        p = Puller(path)
+        p.pull_all()
 
 
 if __name__ == '__main__':
