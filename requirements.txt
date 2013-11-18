@@ -1,3 +1,4 @@
+git
 Django==1.4.6
 mimeparse
 python-dateutil
