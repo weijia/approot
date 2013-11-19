@@ -21,7 +21,10 @@ class RemoteRepo(object):
     def pull(self, remote_branch_name):
         print 'pulling changes:', remote_branch_name
         #Added istream to avoid error: WindowsError: [Error 6] The handle is invalid
-        self.remote_repo.pull(remote_branch_name, istream=PIPE)
+        try:
+            self.remote_repo.pull(remote_branch_name, istream=PIPE)
+        except AssertionError:
+            print 'assert error may be caused by inconsistent log format between git and gitpython'
 
     def push(self, branch, remote_ref):
         print 'pushing changes'
