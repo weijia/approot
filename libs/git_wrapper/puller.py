@@ -19,7 +19,7 @@ class RemoteRepo(object):
             self.pull_and_push_changes(branch, remote_ref, self.remote_repo)
 
     def pull(self, remote_branch_name):
-        print 'pulling changes'
+        print 'pulling changes:', remote_branch_name
         #Added istream to avoid error: WindowsError: [Error 6] The handle is invalid
         self.remote_repo.pull(remote_branch_name, istream=PIPE)
 
@@ -31,10 +31,10 @@ class RemoteRepo(object):
     def pull_and_push_changes(self, branch, remote_ref):
         #print remote_ref#gitbucket/20130313_diagram_rewrite
         if branch.name in self.get_ref_name(remote_ref):
-            print 'remote commit: ', remote_ref.commit
+            print 'remote commit: ', remote_ref.commit, remote_ref.commit.message
+            self.pull(self.get_ref_name(remote_ref))
             if branch.commit != remote_ref.commit:
                 print 'different to remote'
-                self.pull(self.get_ref_name(remote_ref))
                 print 'latest remote log:', remote_ref.commit.message
                 self.push(branch, remote_ref)
                 print 'latest local log:', branch.commit.message
@@ -94,6 +94,7 @@ def main():
     except:
         repo = []
     for path in proj_list:
+        print "processing:", path
         p = Puller(path)
         p.pull_all()
 
