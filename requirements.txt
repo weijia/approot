@@ -1,4 +1,4 @@
-git
+gitpython==0.3.2.RC1
 Django==1.4.6
 mimeparse
 python-dateutil
