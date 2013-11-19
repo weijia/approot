@@ -81,18 +81,20 @@ class Puller(object):
                     print "remote branch:", remote_ref
                     #self.pull_and_push_changes(branch, remote_branch, remote_repo)
                     RemoteRepo(remote_repo).pull_and_push_changes(branch, remote_ref)
-
+                    
+try:
+    from repo import proj_list, git_path
+except:
+    repo = []
+    git_path = 'C:\\Program Files (x86)\\Git\\bin'
 
 def add_git_to_path():
-    os.environ['PATH'] += ";C:\\Program Files (x86)\\Git\\bin"
+    os.environ['PATH'] += ";"+git_path
     #print os.environ['PATH']
 
 
 def main():
-    try:
-        from repo import proj_list
-    except:
-        repo = []
+
     for path in proj_list:
         print "processing:", path
         p = Puller(path)
