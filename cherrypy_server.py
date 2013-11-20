@@ -10,7 +10,7 @@ import cherrypy
 from cherrypy.process import wspbus, plugins
 from cherrypy import _cplogging, _cperror
 
-from rootapp.ufs_django_settings import initialize_settings
+from libs.django_settings_overrider.django_for_cherrypy import initialize_settings
 
 from django.core.handlers.wsgi import WSGIHandler
 from django.http import HttpResponseServerError
@@ -95,8 +95,8 @@ class DjangoAppPlugin(plugins.SimplePlugin):
 
     def start(self):
         self.bus.log("Configuring the Django application")
-
-        initialize_settings()
+        settings_class_str = 'rootapp.separated_setting_classes.with_ui_framework.WithUiFramework'
+        initialize_settings(settings_class_str)
 
         self.bus.log("Mounting the Django application")
         cherrypy.tree.graft(HTTPLogger(WSGIHandler()))

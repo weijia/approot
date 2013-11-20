@@ -171,7 +171,7 @@ print os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1]
 settings_module = getattr(settings_package, os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1])
 '''
 #print dir(rootapp.ufs_django_settings.get_settings())
-settings_module = rootapp.ufs_django_settings.get_settings()
+settings_module = rootapp.ufs_django_settings.get_ufs_settings()
 DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
 final_script_list = gen_executables_list(script_list)
