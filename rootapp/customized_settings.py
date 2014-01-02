@@ -58,8 +58,6 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
     # `allauth` specific authentication methods, such as login by e-mail
     #"allauth.account.auth_backends.AuthenticationBackend",
-)
-AUTHENTICATION_BACKENDS += (
     #'social_auth.backends.twitter.TwitterBackend',
     #'social_auth.backends.facebook.FacebookBackend',
     #'social_auth.backends.google.GoogleOAuthBackend',
@@ -125,10 +123,6 @@ LOGIN_ERROR_URL    = '/login-error/'
 #For django-registration
 ACCOUNT_ACTIVATION_DAYS = 3
 
-
-MIDDLEWARE_CLASSES += (
-    'pagination.middleware.PaginationMiddleware',
-)
 
 #Added for app config
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
