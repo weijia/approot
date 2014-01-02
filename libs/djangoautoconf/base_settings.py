@@ -1,0 +1,1 @@
+#Base setting file, content will be imported in DjangoAutoConf
