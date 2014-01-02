@@ -44,7 +44,7 @@ class DjangoAutoConf(object):
 
     def configure(self, features=[]):
         self.check_params()
-        
+
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoautoconf.base_settings")
 
         ordered_import_list = [self.default_settings_import_str, "djangoautoconf.mysql_database"]
