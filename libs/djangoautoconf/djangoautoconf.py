@@ -47,7 +47,10 @@ class DjangoAutoConf(object):
 
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoautoconf.base_settings")
 
-        ordered_import_list = [self.default_settings_import_str, "djangoautoconf.mysql_database"]
+        ordered_import_list = [self.default_settings_import_str,
+                               "djangoautoconf.sqlite_database"
+                               #"djangoautoconf.mysql_database"
+                                ]
 
         ordered_import_list.extend(self.extra_settings)
         for one_setting in ordered_import_list:
