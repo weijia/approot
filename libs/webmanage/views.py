@@ -18,13 +18,15 @@ import django.core.management as core_management
 def cmd(request):
     data = retrieve_param(request)
     import StringIO
-    params = data["params"].split(",")
-    command_line_param = ["manage.py"]
-    command_line_param.extend(params)
-
     old_out = sys.stdout
     log_out = StringIO.StringIO()
     sys.stdout = log_out
+
+    data_params_ = data["params"]
+    params = data_params_.split(",")
+    # manage.py here is not used in execute_from_command_line, it is just used to occupy the position.
+    command_line_param = ["manage.py"]
+    command_line_param.extend(params)
     core_management._commands = django_commands_dict.django_commands_dict
     execute_from_command_line(command_line_param)
 

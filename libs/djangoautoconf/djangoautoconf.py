@@ -4,6 +4,7 @@ import importlib
 import os
 import sys
 import base_settings
+from libs.utils.syspath import include
 from utils import dump_attrs
 
 
@@ -40,12 +41,15 @@ class DjangoAutoConf(object):
         if not os.path.exists(self.root_dir):
             raise RootDirNotExist
         if not os.path.exists(self.key_dir):
+            #logging.getLogger().error("key dir not exist: "+self.key_dir)
+            print "key dir not exist: "+self.key_dir
             raise KeyDirNotExist
 
     def configure(self, features=[]):
         self.check_params()
 
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoautoconf.base_settings")
+        #os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangoautoconf.base_settings")
+        os.environ["DJANGO_SETTINGS_MODULE"] = "djangoautoconf.base_settings"
 
         ordered_import_list = [self.default_settings_import_str,
                                "djangoautoconf.sqlite_database"
@@ -111,6 +115,7 @@ def get_or_create_secret_key(key_folder_path):
     #######################
     # Set secret key
     try:
+        include(key_folder_path)
         from secret_key import SECRET_KEY
     except ImportError:
         try:
