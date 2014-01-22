@@ -42,7 +42,7 @@ if postgresql:
     MYSQL_HOST_S = '127.0.0.1' 
     MYSQL_PORT = '3306' 
     '''
-    logging.warning('using postgresql', postgresql, postgresql_port)
+    logging.warning('using postgresql:'+postgresql+":"+postgresql_port)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
