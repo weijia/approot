@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     sync_migrate_db()
     log_folder = get_or_create_app_data_folder("logs")
-    i = Iconizer(log_folder, sys.executable)
+    #i = Iconizer(log_folder, sys.executable)
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
     #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)

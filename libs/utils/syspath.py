@@ -3,6 +3,8 @@ import sys
 
 
 def include_file_sibling_folder(file_path, sub_folder_name):
+    if (file_path[-1] == "/") or (file_path[-1] == "\\"):
+        file_path = file_path[0:-1]
     folder = os.path.abspath(os.path.dirname(file_path))
     include_in_folder(folder, sub_folder_name)
 

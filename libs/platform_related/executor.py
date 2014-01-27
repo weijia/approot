@@ -10,3 +10,4 @@ def execute_app_from_name_and_wait_for_complete(app_name):
         #print "------------"+sys.executable +" "+app_path
         os.system(sys.executable+" "+app_path)
     os.system(app_path)
+    print "returning from app:"+sys.executable+" "+app_name

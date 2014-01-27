@@ -38,6 +38,7 @@ class Thumb:
 class Stop:
     @cherrypy.expose
     def quit(self):
+        print "----------calling engine.exit() for cherrypy"
         cherrypy.engine.exit()
 
     '''

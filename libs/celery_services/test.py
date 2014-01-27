@@ -1,6 +1,10 @@
-from celery import Celery
+import sys
+from celery_main import Celery
+from extra_settings.init_settings import init_settings
 
-app = Celery('tasks', broker='amqp://guest@localhost//')
+init_settings()
+print sys.path
+app = Celery('tasks', broker='django://')
 
 @app.task
 def add(x, y):
