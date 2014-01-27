@@ -10,13 +10,13 @@ import cherrypy
 from cherrypy.process import wspbus, plugins
 from cherrypy import _cplogging, _cperror
 
-from libs.django_settings_overrider.django_for_cherrypy import initialize_settings
 
 from django.core.handlers.wsgi import WSGIHandler
 from django.http import HttpResponseServerError
 
 import libs.root_lib_sys
 from cherrypy.lib.static import serve_file
+from extra_settings.init_settings import init_settings
 
 g_oauth_fixed_redirect_port = 8188
 
@@ -95,8 +95,9 @@ class DjangoAppPlugin(plugins.SimplePlugin):
 
     def start(self):
         self.bus.log("Configuring the Django application")
-        settings_class_str = 'rootapp.separated_setting_classes.with_ui_framework.WithUiFramework'
-        initialize_settings(settings_class_str)
+        #settings_class_str = 'rootapp.separated_setting_classes.with_ui_framework.WithUiFramework'
+        #initialize_settings(settings_class_str)
+        init_settings()
 
         self.bus.log("Mounting the Django application")
         cherrypy.tree.graft(HTTPLogger(WSGIHandler()))
