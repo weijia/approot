@@ -2,7 +2,6 @@
 import json
 import os
 from libs.compress.dec_7z import FolderStructureSync
-import rootapp.ufs_django_settings
 from libs.folder_update_checker import FolderUpdateChecker
 from libs.folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
 from libs.utils.misc import ensure_dir

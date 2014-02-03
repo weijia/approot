@@ -1,4 +1,3 @@
-import rootapp.ufs_django_settings
 from ui_framework.collection_management.models import CollectionItem
 from ui_framework.objsys.models import UfsObj
 
