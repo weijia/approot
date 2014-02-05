@@ -9,6 +9,6 @@ app.config_from_object('django.conf:settings')
 #app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-@app.task
+@app.task(name='add')
 def add(x, y):
     return x + y
