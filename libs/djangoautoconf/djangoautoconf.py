@@ -69,6 +69,9 @@ class DjangoAutoConf(object):
         setattr(base_settings, "STATIC_ROOT", os.path.abspath(os.path.join(PROJECT_PATH, 'static')))
         #dump_attrs(base_settings)
 
+    def get_settings(self):
+           return base_settings
+
     def import_based_on_base_settings(self, module_import_path):
         #######
         # Inject attributes to builtin and import all other modules

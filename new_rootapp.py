@@ -8,19 +8,39 @@ from libs.app_framework.folders import get_or_create_app_data_folder
 from libs.msg import BeanstalkMsgService
 from libs.utils.filetools import find_callable_in_app_framework
 import configuration
+from services.pyro_service.pyro_utils import shutdown_all
 
 
 def stop_postgresql():
     os.system(find_callable_in_app_framework("postgresql_stop"))
 
 
-def stop_web_servers():
+def ignore_exc(func):
+    def wrap_with_exc():
+        try:
+            func()
+        except:
+            #traceback.print_exc()
+            pass
+    return wrap_with_exc
+
+
+@ignore_exc
+def stop_main_server():
+    urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["ufs_web_server_port"])
+
+
+@ignore_exc
+def stop_thumb_server():
+    urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["thumb_server_port"])
+
+
+def stop_services_and_web_servers():
+    print "stopping services"
+    shutdown_all()
     print "stopping web servers"
-    try:
-        urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["ufs_web_server_port"])
-        urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["thumb_server_port"])
-    except:
-        traceback.print_exc()
+    stop_main_server()
+    stop_thumb_server()
 
 
 def open_main():
@@ -33,7 +53,7 @@ def main():
     try:
         log_folder = get_or_create_app_data_folder("logs")
         i = Iconizer(log_folder, BeanstalkMsgService())
-        i.add_close_listener(stop_web_servers)
+        i.add_close_listener(stop_services_and_web_servers)
         i.add_final_close_listener(stop_postgresql)
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
         import configuration

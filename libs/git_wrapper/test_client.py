@@ -1,8 +1,9 @@
 import Pyro4
-import sys
-sys.path.append("D:\\work\\mine\\codes\\ufs_django\\approot")
+from git_wrapper.repo import proj_list
 
 if __name__ == '__main__':
     uri_string = "PYRONAME:PullService"
     git_puller = Pyro4.Proxy(uri_string)
-    git_puller.pull('D:\\userdata\\q19420\\workspace\\SharingPark-Server\\')
+    #git_puller.pull('D:\\userdata\\q19420\\workspace\\SharingPark-Server\\')
+    for proj in proj_list:
+        git_puller.pull(proj)

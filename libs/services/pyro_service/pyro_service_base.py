@@ -1,8 +1,23 @@
+from threading import Thread
 import Pyro4
+import time
+
+
+class ShutdownThread(Thread):
+    def __init__(self, daemon):
+        super(ShutdownThread, self).__init__()
+        self.daemon = daemon
+
+    def run(self):
+        time.sleep(1)
+        print "Shutdown daemon"
+        self.daemon.shutdown()
+
 
 
 class PyRoServiceBase(object):
     def __init__(self):
+        super(PyRoServiceBase, self).__init__()
         self.daemon = None
 
     def register(self, obj_name=None):
@@ -20,4 +35,5 @@ class PyRoServiceBase(object):
 
     def shutdown(self):
         self.daemon.shutdown()
+        #ShutdownThread(self.daemon).start()
 
