@@ -13,6 +13,7 @@ from libs.services.svc_base.postgres_app import PostgreSqlApp
 
 from extra_settings import init_settings
 import django.core.management as core_management
+from services.svc_base.name_server_starter import NameServerStarter
 
 
 def sync_migrate_db():
@@ -33,6 +34,7 @@ def exec_django_cmd(data_params_):
 if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
+    NameServerStarter()
 
     sync_migrate_db()
     log_folder = get_or_create_app_data_folder("logs")

@@ -1,5 +1,5 @@
 import Pyro4
-from git_wrapper.repo import proj_list
+from repo import proj_list
 
 if __name__ == '__main__':
     uri_string = "PYRONAME:PullService"

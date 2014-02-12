@@ -53,7 +53,7 @@ def main():
     try:
         log_folder = get_or_create_app_data_folder("logs")
         i = Iconizer(log_folder, BeanstalkMsgService())
-        i.start_name_server()
+        #i.start_name_server()
         i.add_close_listener(stop_services_and_web_servers)
         i.add_final_close_listener(stop_postgresql)
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
