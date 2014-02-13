@@ -3,6 +3,8 @@ import traceback
 import urllib2
 import uuid
 import webbrowser
+from libs.utils.syspath import include_file_sibling_folder
+include_file_sibling_folder(__file__, "libs")
 from iconizer import Iconizer
 from libs.app_framework.folders import get_or_create_app_data_folder
 from libs.msg import BeanstalkMsgService
