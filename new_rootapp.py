@@ -52,7 +52,7 @@ def main():
     os.environ["UFS_CONSOLE_MGR_SESSION_ID"] = str(uuid.uuid4())
     try:
         log_folder = get_or_create_app_data_folder("logs")
-        i = Iconizer(log_folder, BeanstalkMsgService())
+        i = Iconizer(log_folder)
         #i.start_name_server()
         i.add_close_listener(stop_services_and_web_servers)
         i.add_final_close_listener(stop_postgresql)

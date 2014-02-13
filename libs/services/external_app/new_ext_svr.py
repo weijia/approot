@@ -34,12 +34,12 @@ def exec_django_cmd(data_params_):
 if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
     PostgreSqlApp()
-    NameServerStarter()
+    #NameServerStarter()
 
     sync_migrate_db()
     log_folder = get_or_create_app_data_folder("logs")
-    i = Iconizer(log_folder, sys.executable)
-    i.execute({"pull_service": [find_callable_in_app_framework("pull_service")]})
+    i = Iconizer(log_dir=log_folder, python_executable=sys.executable)
+    #i.execute({"pull_service": [find_callable_in_app_framework("pull_service")]})
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
     #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
