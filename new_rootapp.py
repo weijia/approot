@@ -20,19 +20,23 @@ def ignore_exc(func):
         try:
             func()
         except:
-            #traceback.print_exc()
+            traceback.print_exc()
             pass
     return wrap_with_exc
 
 
 @ignore_exc
 def stop_main_server():
-    urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["ufs_web_server_port"])
+    proxy_handler = urllib2.ProxyHandler({})
+    opener = urllib2.build_opener(proxy_handler)
+    opener.open('http://localhost:%d/stop/quit' % configuration.g_config_dict["ufs_web_server_port"])
 
 
 @ignore_exc
 def stop_thumb_server():
-    urllib2.urlopen('http://localhost:%d/stop/quit' % configuration.g_config_dict["thumb_server_port"])
+    proxy_handler = urllib2.ProxyHandler({})
+    opener = urllib2.build_opener(proxy_handler)
+    opener.open('http://localhost:%d/stop/quit' % configuration.g_config_dict["thumb_server_port"])
 
 
 def stop_services_and_web_servers():
