@@ -12,7 +12,9 @@ django-tastypie==0.9.12
 qrcode
 libmagic
 django-guardian
+django-socialprofile
 cherrypy
+django-smuggler
 #django-social-auth
 #Use the following instead of the original to support baidu PCS
 git+https://github.com/weijia/django-social-auth.git#egg=django-social-auth
