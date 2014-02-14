@@ -1,7 +1,6 @@
 import os
-from iconizer.iconizer_main import Iconizer
-import sys
 import libsys
+from iconizer.iconizer_main import Iconizer
 import django_commands_dict
 from libs.app_framework.folders import get_or_create_app_data_folder
 from libs.utils.filetools import find_callable_in_app_framework

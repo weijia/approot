@@ -29,7 +29,7 @@ try:
     loaded_config = json.load(f)
 except:
     #traceback.print_exc()
-    logging.error("no config file/ invalid config file, use default")
+    logging.warn("no config file/ invalid config file, use default")
     
 for i in g_config_dict:
     if loaded_config.has_key(i):
