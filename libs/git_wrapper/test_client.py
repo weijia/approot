@@ -6,4 +6,9 @@ if __name__ == '__main__':
     git_puller = Pyro4.Proxy(uri_string)
     #git_puller.pull('D:\\userdata\\q19420\\workspace\\SharingPark-Server\\')
     for proj in proj_list:
-        git_puller.pull(proj)
+        print "processing: ", proj
+        try:
+            git_puller.pull(proj)
+        except Exception as e:
+            print "".join(Pyro4.util.getPyroTraceback())
+

@@ -91,11 +91,12 @@ except:
     repo = []
     git_path = 'C:\\Program Files (x86)\\Git\\bin'
 
+
 def add_git_to_path():
     os.environ['PATH'] += ";"+git_path
     #print os.environ['PATH']
 
-
+add_git_to_path()
 def main():
 
     for path in proj_list:
