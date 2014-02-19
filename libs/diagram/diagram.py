@@ -19,7 +19,6 @@ gAutoStartDiagramTagName = "system:autostart"
 gDiagramRootCollectionUuid = 'b4852a45-af7b-4a38-8025-15cf12212701'
 
 
-
 def save_diagram_to_db(full_path):
     anonymous = User.objects.filter(pk=settings.ANONYMOUS_USER_ID)[0]
     file = open(full_path, 'r')
