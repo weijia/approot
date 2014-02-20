@@ -2,11 +2,6 @@ import os
 from libs.utils.filetools import find_callable_in_app_framework
 from iconizer import Iconizer
 
-__author__ = 'Administrator'
-
-import libsys
-from libs.services.svc_base.gui_service import GuiService
-
 
 class Launcher(object):
     def start_app_with_name_param_list_with_session_no_wait(self, app_name, param_list=[]):
@@ -16,7 +11,6 @@ class Launcher(object):
         :param param_list:
         :return:
         """
-        #GuiService().put({"command": "LaunchApp", "app_name": app_name, "param": param_list})
         app_path = find_callable_in_app_framework(app_name)
         #print app_path
         app_path_and_param = [app_path, ]
@@ -34,8 +28,6 @@ class Launcher(object):
         return "done"
 
     def start_app_with_exact_full_path_and_param_list_no_wait(self, exact_full_path, param_list):
-        #gui_service = GuiService()
-        #gui_service.addItem({"command": "Launch", "path": exact_full_path, "param": param_list})
         Iconizer().execute({exact_full_path, [exact_full_path].extend(param_list)})
 
 

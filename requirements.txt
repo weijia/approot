@@ -39,3 +39,4 @@ psycopg2
 cx_Freeze
 # pyopenssl: https://pypi.python.org/pypi/pyOpenSSL
 pyopenssl
+Pyro4
