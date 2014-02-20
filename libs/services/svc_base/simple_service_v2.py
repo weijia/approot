@@ -150,7 +150,7 @@ class SimpleService(object):
                                                  "so processors can identify legacy data in tubes using this")
         #"diagram_id": "Each process diagram has an ID, it is used to save diagram related parameters",
         #now default in simple processor
-        parser.add_argument("--diagram_id", help="the diagram id used to retreive diagram state " +
+        parser.add_argument("--diagram_id", help="the diagram id used to retrieve diagram state " +
                                                  "(get from the diagram processor's param)")
         #######################
         # add all custom parameters

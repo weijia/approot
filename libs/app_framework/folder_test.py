@@ -1,11 +1,11 @@
 import unittest
-from libs.app_framework.folders import get_app_full_path_by_name
+from folders import get_app_full_path_by_name
 
 
 class FolderTestCase(unittest.TestCase):
-    def test_get_app_full_path_by_name(self):
+    @staticmethod
+    def test_get_app_full_path_by_name():
         print get_app_full_path_by_name("7z")
-
 
 
 if __name__ == "__main__":
