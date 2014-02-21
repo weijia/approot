@@ -1,5 +1,5 @@
 from libs.utils.folder import get_parent_folder
-from libs.utils.syspath import include_file_sibling_folder, include_in_folder
+from libtool import include_file_sibling_folder, include_in_folder
 from djangoautoconf import DjangoAutoConf
 
 include_in_folder(get_parent_folder(__file__), "libs")

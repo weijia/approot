@@ -3,12 +3,12 @@ import traceback
 import urllib2
 import uuid
 import webbrowser
-from libs.utils.syspath import include_file_sibling_folder
+from libtool import include_file_sibling_folder
 include_file_sibling_folder(__file__, "libs")
 from iconizer import Iconizer
 from libs.app_framework.folders import get_or_create_app_data_folder
 from libs.msg import BeanstalkMsgService
-from libs.utils.filetools import find_callable_in_app_framework
+from libtool.filetools import find_callable_in_app_framework
 import configuration
 from services.pyro_service.pyro_utils import shutdown_all
 

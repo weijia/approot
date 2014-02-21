@@ -12,7 +12,7 @@ class NameServer:
         print nsUri, daemon, bcserver
         try:
             daemon.requestLoop()
-        except:
+        except Exception:
             import traceback
             traceback.print_exc()
         finally:

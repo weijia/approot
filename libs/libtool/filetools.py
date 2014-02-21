@@ -6,7 +6,6 @@ import re
 #The following codes are copied from http://stackoverflow.com/questions/606561/how-to-get-filename-of-the-main-module-in-python
 import imp
 import sys
-import libsys
 
 
 def main_is_frozen():
@@ -28,7 +27,7 @@ def get_main_file():
     return os.path.basename(get_main_exec()).split(".")[0]
 
 
-def getFreeName(path, nameWithoutExt, ext):
+def get_free_file_name(path, nameWithoutExt, ext):
     path_without_ext = os.path.join(path, nameWithoutExt)
     while os.path.exists(path_without_ext + ext):
         path_without_ext += '-' + str(random.randint(0, 10))
@@ -36,23 +35,23 @@ def getFreeName(path, nameWithoutExt, ext):
     return path_without_ext + ext
 
 
-def getFreeNameFromFullPath(fullPath):
+def get_free_name_from_full_path(full_path):
     """
     Just give a full path like: d:/good/bad.txt, generate a new path with a number in it and will not conflict with
     the files in that path. such as d:/good/bad-5.txt
-    :param fullPath:
+    :param full_path:
     :return:
     """
-    path = os.path.dirname(fullPath)
-    ext = os.path.splitext(fullPath)[1]
-    basename = os.path.basename(fullPath)
+    path = os.path.dirname(full_path)
+    ext = os.path.splitext(full_path)[1]
+    basename = os.path.basename(full_path)
     #print basename
-    nameWithoutExt = basename[0:-(len(ext))]
-    #print nameWithoutExt
-    if nameWithoutExt == '':
-        nameWithoutExt = basename
+    name_without_ext = basename[0:-(len(ext))]
+    #print name_without_ext
+    if name_without_ext == '':
+        name_without_ext = basename
         ext = ''
-    res = getFreeName(path, nameWithoutExt, ext)
+    res = get_free_file_name(path, name_without_ext, ext)
     #print res
     return res
 
@@ -67,10 +66,10 @@ def get_free_timestamp_filename_in_path(path, ext, prefix=''):
     """
     #print path, ext, prefix
     filename = unicode(prefix + str(time.time()))
-    return getFreeName(path, filename, ext)
+    return get_free_file_name(path, filename, ext)
 
 
-def findFileInProduct(filename):
+def find_file_in_product(filename):
     p = os.getcwd()
     for dirpath, dirnames, filenames in os.walk(p):
         if filename in filenames:

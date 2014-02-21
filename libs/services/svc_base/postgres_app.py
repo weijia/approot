@@ -2,16 +2,16 @@ import psycopg2
 import libsys
 from libs.services.svc_base.ext_app_if import ExtAppMgrIntf
 import configuration
-from libs.services.svc_base.launcher_interface import Launcher
+from services.svc_base.launcher_interface import Launcher
 __author__ = 'Richard'
 
 
-class PostgreSqlApp(ExtAppMgrIntf):
+class PostgresApp(ExtAppMgrIntf):
     def __init__(self):
         ###########################
         # Start postgresql
         ###########################
-        Launcher().start_app_with_name_param_list_with_session_no_wait('postgresql')
+        Launcher.start_app_with_name_param_list_no_wait('postgresql')
 
         #Define our connection string
         conn_string = "host='localhost' dbname='postgres' user='postgres' password=''"
