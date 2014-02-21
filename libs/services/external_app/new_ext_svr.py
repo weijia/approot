@@ -7,7 +7,7 @@ from app_framework.folders import get_or_create_app_data_folder
 from libtool.filetools import find_callable_in_app_framework
 from platform_related.executor import execute_app_from_name_and_wait_for_complete
 
-from services.svc_base.postgres_app import PostgresApp
+from services.svc_base.postgres_app_starter import PostgresApp
 #The following will set environment string for start web server.
 #import configuration
 

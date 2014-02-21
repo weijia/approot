@@ -1,6 +1,6 @@
 import libsys
 from libs.services.svc_base.gui_client import GuiClient
-from libs.services.svc_base.msg_service import AutoRouteMsgService
+from msg_service.auto_route_msg_service import AutoRouteMsgService
 from libs.logsys.logSys import cl
 from libs.services.svc_base.simple_service_v2 import SimpleService
 from libs.services.svc_base.managed_service import ManagedService
