@@ -12,11 +12,13 @@ window.close();
 {% csrf_token %}
 <ul>
 {% for url_with_tags in urls_with_tags %}
-    <li><input name="selected_url" type="checkbox" value="{{ url_with_tags.url }}" checked="checked">{{ url_with_tags.url }}</input>
-    tags:
-    {% for tag in url_with_tags.tags %}
-        {{tag.name}}
-    {% endfor %}
+    <li>
+        <input name="selected_url" type="checkbox" value="{{ url_with_tags.url }}" checked="checked">
+        </input><span stype="padding:5px">{{ url_with_tags.url }}</span>
+        tags:
+        {% for tag in url_with_tags.tags %}
+            {{tag.name}}
+        {% endfor %}
     </li>
 {% endfor %}
 </ul>

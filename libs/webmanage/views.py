@@ -67,5 +67,9 @@ def create_admin(request):
     #from django.contrib.auth.create_superuser import createsuperuser
     #createsuperuser()
     from django.contrib.auth import models as auth_models
-    auth_models.User.objects.create_superuser('richard', 'r@j.cn', 'johnpassword')
+    try:
+        from keys.admin_pass import default_admin_password, default_admin_user
+    except:
+         from keys_template.admin_pass import default_admin_password, default_admin_user
+    auth_models.User.objects.create_superuser(default_admin_user, 'r@j.cn', default_admin_password)
     return HttpResponse('Done<script>window.href="/"</script>')

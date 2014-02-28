@@ -41,6 +41,7 @@ if __name__ == "__main__":
     i = Iconizer(log_dir=log_folder, python_executable=sys.executable)
     i.register()
     i.execute({"pull_service": [find_callable_in_app_framework("pull_service")]})
+    i.execute({"simple_tagging": [find_callable_in_app_framework("simple_tagging")]})
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
     #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)

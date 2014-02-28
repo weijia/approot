@@ -128,13 +128,6 @@ def listing_with_description(request):
                                "email": "richardwangwang@gmail.com", "author": "Richard"},
                               context_instance=RequestContext(request))
 
-
-def create_admin_user(request):
-    from django.contrib.auth import models as auth_models
-
-    auth_models.User.objects.create_superuser('admin', 'r@j.cn', 'admin')
-    return HttpResponse("Done")
-
     
 class ObjOperator(object):
     def __init__(self, pk):
