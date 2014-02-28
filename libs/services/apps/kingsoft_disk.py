@@ -13,7 +13,7 @@ from django.conf import settings
 #from libs.services.svc_base.managed_service import WorkerBase
 from libs.tagging.models import TaggedItem
 #from libs.utils.misc import ensureDir
-#from libs.utils.filetools import getFreeNameFromFullPath
+#from libs.utils.filetools import get_free_name_from_full_path
 from libs.services.svc_base.simple_service_v2 import SimpleService, SimpleServiceWorker
 import traceback
 

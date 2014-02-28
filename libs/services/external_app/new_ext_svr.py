@@ -1,12 +1,13 @@
 import os
+import sys
 import libsys
 from iconizer.iconizer_main import Iconizer
 import django_commands_dict
-from libs.app_framework.folders import get_or_create_app_data_folder
-from libs.utils.filetools import find_callable_in_app_framework
-from libs.platform_related.executor import execute_app_from_name_and_wait_for_complete
+from app_framework.folders import get_or_create_app_data_folder
+from libtool.filetools import find_callable_in_app_framework
+from platform_related.executor import execute_app_from_name_and_wait_for_complete
 
-from libs.services.svc_base.postgres_app import PostgreSqlApp
+from services.svc_base.postgres_app_starter import PostgresApp
 #The following will set environment string for start web server.
 #import configuration
 
@@ -32,7 +33,7 @@ def exec_django_cmd(data_params_):
 
 if __name__ == "__main__":
     os.chdir(libsys.get_root_dir())
-    PostgreSqlApp()
+    PostgresApp()
     NameServerStarter()
 
     sync_migrate_db()

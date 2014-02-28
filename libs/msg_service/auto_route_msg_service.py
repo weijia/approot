@@ -1,4 +1,5 @@
 from msg_service.msg_service_interface import MsgServiceInterface, UnknownReceiver
+from msg_service.predefined_receivers import TAGGING_RECEIVER
 from msg_service.pyro_msg_service import PyroMsgService
 
 
@@ -12,3 +13,6 @@ class AutoRouteMsgService(MsgServiceInterface):
             self.pyro_msg_service.send_to(receiver, msg)
         except UnknownReceiver:
             pass
+
+    def send_tagging_msg(self, msg):
+        self.pyro_msg_service.send_to(TAGGING_RECEIVER, msg)

@@ -14,7 +14,6 @@ class ShutdownThread(Thread):
         self.daemon.shutdown()
 
 
-
 class PyRoServiceBase(object):
     def __init__(self):
         super(PyRoServiceBase, self).__init__()
@@ -37,3 +36,5 @@ class PyRoServiceBase(object):
         self.daemon.shutdown()
         #ShutdownThread(self.daemon).start()
 
+    def put_msg(self, msg):
+        pass
