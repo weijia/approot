@@ -14,7 +14,7 @@ class PyroMsgService(MsgServiceInterface):
         service_dict = ns.list()
         #Send to receiver by calling handle function of the service
         if receiver in service_dict:
-            Pyro4.Proxy(receiver).put_msg(msg)
+            Pyro4.Proxy(service_dict[receiver]).put_msg(msg)
         else:
             print "unknown receiver:", receiver
             raise UnknownReceiver

@@ -1,5 +1,3 @@
-import threading
-from iconizer import Iconizer
 from iconizer.iconizer_consts import ICONIZER_SERVICE_NAME
 from msg_service.auto_route_msg_service import AutoRouteMsgService
 

@@ -39,6 +39,7 @@ if __name__ == "__main__":
     sync_migrate_db()
     log_folder = get_or_create_app_data_folder("logs")
     i = Iconizer(log_dir=log_folder, python_executable=sys.executable)
+    i.register()
     i.execute({"pull_service": [find_callable_in_app_framework("pull_service")]})
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
@@ -46,7 +47,3 @@ if __name__ == "__main__":
     #execute_app_from_name_and_wait_for_complete("syncdb")
     execute_app_from_name_and_wait_for_complete("cherrypy_server")
     print "-----------------------------exiting cherrypy server"
-    
-    
-    
-    
