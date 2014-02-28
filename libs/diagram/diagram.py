@@ -4,10 +4,10 @@ import sys
 import time
 import traceback
 import libsys
-from libs.utils import filetools as file_tools
 
 from ui_framework.connection.models import Processor, Connection
 #from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_ufs_url
+from libtool.filetools import collect_files_in_dir
 from objsys.models import UfsObj
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -50,7 +50,7 @@ def save_all_diagram_from_predefined_folders():
     diagram_list = []
     diagram_file_list = []
     for sub_dir, ext in [("/libs/services/apps/diagrams/", ".json"), ("/diagrams/", ".json")]:
-        diagram_file_list.extend(file_tools.collect_files_in_dir(sub_dir, ext))
+        diagram_file_list.extend(collect_files_in_dir(sub_dir, ext))
     print diagram_file_list
     for full_path in diagram_file_list:
         save_diagram_to_db(full_path)
