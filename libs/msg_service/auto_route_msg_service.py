@@ -15,4 +15,7 @@ class AutoRouteMsgService(MsgServiceInterface):
             pass
 
     def send_tagging_msg(self, msg):
-        self.pyro_msg_service.send_to(TAGGING_RECEIVER, msg)
+        try:
+            self.pyro_msg_service.send_to(TAGGING_RECEIVER, msg)
+        except UnknownReceiver:
+            pass
