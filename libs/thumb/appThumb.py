@@ -5,14 +5,13 @@ import win32api
 import cStringIO
 from PIL import Image
 import os
-import libs.utils.filetools as fileTools
-
+from libtool.filetools import get_free_file_name
 
 
 def genAppThumb(local_path, dest_dir):
   basename = os.path.basename(local_path)
   nameWithoutExt = basename.rsplit(".", 2)[0]
-  thumb_path = fileTools.getFreeName(dest_dir, nameWithoutExt, ".bmp")
+  thumb_path = get_free_file_name(dest_dir, nameWithoutExt, ".bmp")
   getIcon(local_path, thumb_path)
   if os.path.exists(thumb_path):
     return thumb_path

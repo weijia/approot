@@ -45,3 +45,14 @@ try:
     print "created dir:", log_root
 except:
     pass
+
+
+def get_default_charset():
+    from extra_settings.init_settings import init_settings
+
+    django_auto_conf = init_settings()
+    settings = django_auto_conf.get_settings()
+    try:
+        return settings.DEFAULT_CHARSET
+    except:
+        return "utf8"

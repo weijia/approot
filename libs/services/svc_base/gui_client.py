@@ -17,3 +17,6 @@ class GuiClient(object):
         self.msg_service.send_to(ICONIZER_SERVICE_NAME,
                                  {"command": "DestroyDropWndV2",
                                   "target": target})
+
+    def open_browser(self, msg):
+        self.msg_service.send_to(ICONIZER_SERVICE_NAME, msg)

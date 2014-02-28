@@ -5,10 +5,11 @@ import json
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
 from django.utils import timezone
+from filetools import find_callable_in_app_framework, collect_files_in_dir
 from libs.diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
-from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
-from libs.services.svc_base.msg_service import MsgQ
-from libs.services.svc_base.service_starter import start_diagram
+#from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
+#from libs.services.svc_base.msg_service import MsgQ
+#from libs.services.svc_base.service_starter import start_diagram
 import libsys
 from models import Connection, Processor
 
@@ -150,9 +151,6 @@ def item_properties(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-import libs.utils.filetools as file_tools
-
-
 class App(object):
     """
     Can not be called directly
@@ -172,7 +170,7 @@ class FullPathApp(App):
 class NamedApp(App):
     def __init__(self, app_name):
         self.app_name = app_name
-        self.app_full_path = app_path = file_tools.find_callable_in_app_framework(self.app_name)
+        self.app_full_path = app_path = find_callable_in_app_framework(self.app_name)
         if app_path is None:
             raise "Obj not exists"
 
@@ -220,7 +218,7 @@ def get_service_apps(request):
     for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py"),
                          ("libs/services/external_app/", ".bat"),
                          ("/external/", ".bat")]:
-        app_path_list.extend(file_tools.collect_files_in_dir(sub_dir, ext, gIgnoreAppList))
+        app_path_list.extend(collect_files_in_dir(sub_dir, ext, gIgnoreAppList))
     app_list = []
     for full_path in app_path_list:
         app_list.append(FullPathApp(full_path))
@@ -243,7 +241,7 @@ def handle_start_diagram_req(request):
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
-
+'''
 def handle_stop_diagram_req(request):
     data = retrieve_param(request)
     diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
@@ -256,3 +254,4 @@ def handle_stop_diagram_req(request):
     res = {"result": data["ufs_url"] + ":" + diagram_obj.uuid + " stop diagram message sent"}
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
+'''

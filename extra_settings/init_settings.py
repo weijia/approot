@@ -15,3 +15,4 @@ def init_settings():
                           #"local_postgresql_settings",
                           "extra_settings.build_settings"])
     c.configure(['guardian', 'pagination', 'django_social_auth', 'django_registration'])
+    return c
