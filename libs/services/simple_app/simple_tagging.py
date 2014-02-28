@@ -1,4 +1,8 @@
-from libtool import
+from libtool import include_root_path
+include_root_path(__file__, "approot")
+import sys
+print sys.path
+import lib_list
 from services.pyro_service.pyro_service_base import PyRoServiceBase
 from services.svc_base.gui_client import GuiClient
 
