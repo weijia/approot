@@ -26,6 +26,7 @@ git+https://github.com/weijia/djangoautoconf.git#egg=djangoautoconf
 requests
 git+https://github.com/weijia/baidu-pcs.git#egg=baidu-pcs
 git+https://github.com/weijia/iconizer.git#egg=iconizer
+git+https://github.com/weijia/libtool.git#egg=libtool
 #oauth2 will use pyutil or distutil. But distutil does not work with cx freeze. So use pyutil
 pyutil
 django-classbasedsettings

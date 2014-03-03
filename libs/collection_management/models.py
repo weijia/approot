@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
-from ui_framework.objsys.models import UfsObj, get_new_uuid
+from objsys.models import UfsObj, get_new_uuid
 
 
 class CollectionItem(models.Model):

@@ -33,7 +33,7 @@ def index(request):
     c.update(csrf(request))
     return render_to_response('connection/connection_pane.html', c)
 
-
+'''
 def create_diagram_obj(request):
     """
     * Create diagram one connection after another. There will be a diagram uuid for all connections for this diagram.
@@ -79,7 +79,7 @@ def create_diagram_obj(request):
     con.save()
     return HttpResponse('{"source":%s, "target":%s}' % (source_processor.pk, target_processor.pk),
                         mimetype="application/json")
-
+'''
 
 #from libs.console.ConsoleOutputCollector import execute_app
 

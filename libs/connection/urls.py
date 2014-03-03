@@ -4,7 +4,7 @@ from django.conf import settings
 import os
 
 urlpatterns = patterns('',
-    url(r'^connection/$', 'ui_framework.connection.views.create_diagram_obj'),
+    #url(r'^connection/$', 'ui_framework.connection.views.create_diagram_obj'),
     url(r'^diagram_list/$', 'ui_framework.connection.views.get_diagrams'),
     url(r'^save_diagram/$', 'ui_framework.connection.save_diagram_view.handle_save_diagram'),
     url(r'^start_diagram/$', 'ui_framework.connection.views.handle_start_diagram_req'),
