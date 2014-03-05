@@ -14,7 +14,7 @@ class NameServerStarter(object):
         while cnt < 40:
             try:
                 ns = Pyro4.locateNS()
-                print "Server started"
+                print "Name Server started OK"
                 break
             except Exception:
                 import traceback
