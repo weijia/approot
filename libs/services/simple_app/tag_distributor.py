@@ -1,10 +1,10 @@
 import logging
-from services.pyro_service.pyro_service_base import PyRoServiceBase
+from iconizer.pyro_service_base import PyroServiceBase
 
 log = logging.getLogger(__name__)
 
 
-class TagDistributor(PyRoServiceBase):
+class TagDistributor(PyroServiceBase):
     #########################
     # Called through pyro only
     #########################
@@ -15,4 +15,4 @@ class TagDistributor(PyRoServiceBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = TagDistributor()
-    s.register()
+    s.start_daemon_register_and_launch_loop()

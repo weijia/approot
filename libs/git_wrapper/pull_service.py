@@ -1,9 +1,9 @@
+from iconizer.pyro_service_base import PyroServiceBase
 import libsys
 from git_wrapper.puller import Puller
-from services.pyro_service.pyro_service_base import PyRoServiceBase
 
 
-class PullService(PyRoServiceBase):
+class PullService(PyroServiceBase):
     def pull(self, path):
         puller = Puller(path)
         puller.pull_all()
@@ -11,4 +11,4 @@ class PullService(PyRoServiceBase):
 
 if __name__ == '__main__':
     pull_service = PullService()
-    pull_service.register()
+    pull_service.start_daemon_register_and_launch_loop()

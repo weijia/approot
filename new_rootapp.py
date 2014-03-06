@@ -1,3 +1,4 @@
+import logging
 import os
 import traceback
 import urllib2
@@ -64,6 +65,7 @@ def main():
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
         import configuration
         i.execute({"new_ext_svr": [find_callable_in_app_framework("new_ext_svr")]})
+        #i.execute({"dir":["dir"]})
 
     except (KeyboardInterrupt, SystemExit):
         raise
@@ -71,5 +73,6 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     main()
     #os.system(findAppInProduct("postgresql_stop"))

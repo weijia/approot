@@ -1,8 +1,8 @@
 import logging
+from iconizer.pyro_service_base import PyroServiceBase
 from libtool import include_root_path
 include_root_path(__file__, "approot")
 import lib_list
-from services.pyro_service.pyro_service_base import PyRoServiceBase
 from services.svc_base.gui_client import GuiClient
 from libs.logsys.logSys import cl
 from utils.string_tools import SpecialEncoder
@@ -11,22 +11,21 @@ from configuration import g_config_dict, get_default_charset
 log = logging.getLogger(__name__)
 
 
-class SimpleTagging(PyRoServiceBase):
+class SimpleTagging(PyroServiceBase):
+    SERVICE_NAME = "simple_tagging"
     def __init__(self):
         super(SimpleTagging, self).__init__()
         self.gui_client = GuiClient()
-        #Register to drop service. Service will create drop window and send the dropped items to tube
-        self.receive_channel_name = self.get_filename()
-        log.debug(self.receive_channel_name)
 
     def open_drop_wnd(self):
-        self.gui_client.register_drop_msg_receiver(self.receive_channel_name, "simple_tagging")
+        self.gui_client.register_drop_msg_receiver(self.SERVICE_NAME, self.SERVICE_NAME)
 
     def close_drop_wnd(self):
-        self.gui_client.un_register_drop_msg_receiver(self.receive_channel_name)
+        self.gui_client.un_register_drop_msg_receiver(self.SERVICE_NAME)
 
     def start_service(self):
-        self.register(self.receive_channel_name)
+        self.init_service_name(self.SERVICE_NAME)
+        self.start_daemon_register_and_launch_loop()
 
     #########################
     # Called through pyro only
