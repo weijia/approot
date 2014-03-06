@@ -1,3 +1,4 @@
+import logging
 from iconizer.pyro_service_base import PyroServiceBase
 import libsys
 from git_wrapper.puller import Puller
@@ -10,5 +11,6 @@ class PullService(PyroServiceBase):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     pull_service = PullService()
     pull_service.start_daemon_register_and_launch_loop()

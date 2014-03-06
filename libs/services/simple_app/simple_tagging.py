@@ -13,6 +13,7 @@ log = logging.getLogger(__name__)
 
 class SimpleTagging(PyroServiceBase):
     SERVICE_NAME = "simple_tagging"
+
     def __init__(self):
         super(SimpleTagging, self).__init__()
         self.gui_client = GuiClient()
@@ -24,7 +25,7 @@ class SimpleTagging(PyroServiceBase):
         self.gui_client.un_register_drop_msg_receiver(self.SERVICE_NAME)
 
     def start_service(self):
-        self.init_service_name(self.SERVICE_NAME)
+        self.set_service_name(self.SERVICE_NAME)
         self.start_daemon_register_and_launch_loop()
 
     #########################

@@ -28,6 +28,6 @@ def shutdown_all():
             service = Pyro4.Proxy(uri_string)
             # Must use a try catch block to prevent the following function call to generate exception.
             try:
-                service.shutdown()
+                service.pyro_shutdown()
             except:
                 traceback.print_exc()
