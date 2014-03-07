@@ -16,7 +16,7 @@ from libs.utils.string_tools import SpecialEncoder
 import libs.utils.obj_tools as obj_tools
 from objsys.models import UfsObj
 from objsys.models import Description
-from ui_framework.objsys.view_utils import get_ufs_obj_from_ufs_url
+from objsys.view_utils import get_ufs_obj_from_ufs_url
 
 
 def append_tags_and_description_to_url(user, url, tags, description):

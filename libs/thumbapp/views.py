@@ -16,7 +16,7 @@ from libs.utils.transform import format_path
 from models import ThumbCache
 from libs.utils.misc import ensure_dir as ensure_dir
 from libs.logsys.logSys import *
-from ui_framework.objsys.view_utils import get_ufs_obj_from_full_path
+from objsys.view_utils import get_ufs_obj_from_full_path
 
 
 def get_thumb_file(target_file):

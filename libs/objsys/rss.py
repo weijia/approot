@@ -1,6 +1,6 @@
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
-from ui_framework.objsys.models import UfsObj
+from objsys.models import UfsObj
 
 
 class LatestEntriesFeed(Feed):

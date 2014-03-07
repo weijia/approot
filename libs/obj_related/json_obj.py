@@ -7,7 +7,7 @@ from libs.folder_update_checker.file_timestamp_keeper import FileCollectionExist
 from libs.utils.misc import ensure_dir
 from libs.utils.obj_tools import get_hostname
 from libs.utils.transform import format_path
-from ui_framework.objsys.models import UfsObj, ObjRelation
+from objsys.models import UfsObj, ObjRelation
 
 
 class JsonDecoderForUfsObj(object):

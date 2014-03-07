@@ -76,10 +76,10 @@ DEFAULT_DJANGO_MODULES = [
     "guardian",
     "win_smb",
     "ui_framework",
-    "ui_framework.collection_management",
-    "ui_framework.normal_admin",
+    "collection_management",
+    "normal_admin",
     "tags",
-    "ui_framework.connection",
+    "connection",
     "desktop.filemanager",
     #"thumbapp.views"
     "south.db.postgresql_psycopg2"

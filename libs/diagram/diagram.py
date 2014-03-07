@@ -5,14 +5,14 @@ import time
 import traceback
 import libsys
 
-from ui_framework.connection.models import Processor, Connection
-#from ui_framework.objsys.local_obj_tools import get_ufs_obj_from_ufs_url
+from connection.models import Processor, Connection
+#from objsys.local_obj_tools import get_ufs_obj_from_ufs_url
 from libtool.filetools import collect_files_in_dir
 from objsys.models import UfsObj
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
-from ui_framework.objsys.view_utils import get_ufs_obj_from_ufs_url
+from objsys.view_utils import get_ufs_obj_from_ufs_url
 
 
 gAutoStartDiagramTagName = "system:autostart"

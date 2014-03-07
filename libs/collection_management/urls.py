@@ -4,6 +4,6 @@ from django.conf import settings
 import os
 
 urlpatterns = patterns('',
-    url(r'^jstree/', 'ui_framework.collection_management.views.collections_jstree'),
-    url(r'^$', 'ui_framework.collection_management.views.collections')
+    url(r'^jstree/', 'collection_management.views.collections_jstree'),
+    url(r'^$', 'collection_management.views.collections')
 )

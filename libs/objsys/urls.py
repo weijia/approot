@@ -4,7 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import ListView
 from tagging.models import Tag
 from api import UfsObjResource
-from ui_framework.objsys.rss import LatestEntriesFeed
+from objsys.rss import LatestEntriesFeed
 
 
 ufsobj_resource = UfsObjResource()

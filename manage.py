@@ -3,7 +3,6 @@ import sys
 from extra_settings.init_settings import init_settings
 from libtool import include_file_sibling_folder
 include_file_sibling_folder(__file__, "libs")
-include_file_sibling_folder(__file__, "ui_framework")
 
 from libs.utils.console import unbuffer_console
 

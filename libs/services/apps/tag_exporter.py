@@ -6,7 +6,7 @@ from objsys.models import UfsObj
 from tagging.models import Tag, TaggedItem
 import threading
 import traceback
-from ui_framework.connection.models import Processor
+from connection.models import Processor
 import json
 import time
 import datetime

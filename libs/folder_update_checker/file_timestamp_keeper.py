@@ -1,5 +1,5 @@
-from ui_framework.collection_management.models import CollectionItem
-from ui_framework.objsys.models import UfsObj
+from collection_management.models import CollectionItem
+from objsys.models import UfsObj
 
 
 class FileTimestampKeeperInterface(object):

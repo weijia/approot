@@ -24,8 +24,8 @@ libs/services/initial_launcher.py
 
 .. automodule:: libs.services.initial_launcher
     :members:
-    
-ui_framework/connection/views.py
 
-.. automodule:: ui_framework.connection.views
+libs/connection/views.py
+
+.. automodule:: connection.views
     :members:

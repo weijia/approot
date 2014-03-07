@@ -22,7 +22,7 @@ from django.contrib.auth.decorators import login_required
 from libs.utils.django_utils import retrieve_param
 
 # Create your views here.
-from ui_framework.objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
+from objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
 
 
 @login_required

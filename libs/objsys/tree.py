@@ -9,7 +9,7 @@ from django.conf import settings
 from objsys.models import UfsObj
 from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import assign
-from ui_framework.collection_management.models import CollectionItem
+from collection_management.models import CollectionItem
 
 
 gRootUuid = u"4a5e8673-f2a2-4cf2-af6c-461fa9f31a15"
@@ -109,7 +109,7 @@ def register_to_sys(class_inst, admin_class = None):
     except:
         pass
     try:
-        from ui_framework.normal_admin.admin import user_admin_site
+        from normal_admin.admin import user_admin_site
         user_admin_site.register(class_inst, admin_class)
     except:
         pass

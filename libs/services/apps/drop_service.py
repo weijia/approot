@@ -13,7 +13,7 @@ from django.conf import settings
 from configuration import g_config_dict
 #import time
 from libs.utils.string_tools import SpecialEncoder
-from ui_framework.objsys.view_utils import get_ufs_obj_from_full_path
+from objsys.view_utils import get_ufs_obj_from_full_path
 
 '''
 class NoInputWorker(WorkerBase):

@@ -20,4 +20,4 @@ def insert_lib_dirs(lib_list):
         insert_lib_dir(i)
 
 
-insert_lib_dirs(["libs", "ui_framework"])
+insert_lib_dirs(["libs"])

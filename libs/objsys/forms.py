@@ -1,5 +1,5 @@
 from models import UfsObj
-from ui_framework.collection_management.models import CollectionItem
+from collection_management.models import CollectionItem
 
 '''
 class UfsObjForm(ModelForm):
