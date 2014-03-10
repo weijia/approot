@@ -216,7 +216,7 @@ def get_service_apps(request):
     #    app_list.append(NamedApp(app_name))
     #Add root folder .exe, (used for built apps)
     root_dir = find_root_path(__file__, "approot")
-    for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py"),
+    for sub_dir, ext in [("/", ".exe"), ("libs/services/simple_app/", ".py"),
                          ("libs/services/external_app/", ".bat"),
                          ("/external/", ".bat")]:
         sub_dir_full_path = os.path.join(root_dir, sub_dir)
