@@ -10,6 +10,7 @@ from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
 #from libs.services.svc_base.msg_service import MsgQ
 #from libs.services.svc_base.service_starter import start_diagram
 import libsys
+from libtool import find_root_path
 from libtool.filetools import find_callable_in_app_framework, collect_files_in_dir
 from models import Connection, Processor
 
@@ -214,11 +215,12 @@ def get_service_apps(request):
     #for app_name in gDefaultServices:
     #    app_list.append(NamedApp(app_name))
     #Add root folder .exe, (used for built apps)
-    root_dir = libsys.get_root_dir()
+    root_dir = find_root_path(__file__, "approot")
     for sub_dir, ext in [("/", ".exe"), ("libs/services/apps/", ".py"),
                          ("libs/services/external_app/", ".bat"),
                          ("/external/", ".bat")]:
-        app_path_list.extend(collect_files_in_dir(sub_dir, ext, gIgnoreAppList))
+        sub_dir_full_path = os.path.join(root_dir, sub_dir)
+        app_path_list.extend(collect_files_in_dir(sub_dir_full_path, ext, gIgnoreAppList))
     app_list = []
     for full_path in app_path_list:
         app_list.append(FullPathApp(full_path))

@@ -98,22 +98,18 @@ def find_callable_in_app_framework(filename):
     return find_filename_in_app_framework_with_pattern('^' + filename + "((\.bat$)|(\.py$)|(\.exe$)|(\.com$))")
 
 
-def collect_files_in_dir(file_root_path, ext=None, ignoreFileList=[]):
+def collect_files_in_dir(file_root_full_path, ext=None, ignore_file_list=[]):
     res = []
-    if file_root_path[0] == "/":
-        file_root_path = file_root_path[1:]
-    file_root_path = os.path.join(libsys.get_root_dir(), file_root_path)
-    print file_root_path
-    if os.path.exists(file_root_path) and os.path.isdir(file_root_path):
-        for filename in os.listdir(file_root_path):
-            if filename in ignoreFileList:
+    if os.path.exists(file_root_full_path) and os.path.isdir(file_root_full_path):
+        for filename in os.listdir(file_root_full_path):
+            if filename in ignore_file_list:
                 print "ignoring: ", filename
                 continue
             if (ext is None) or (ext in filename):
                 #To ensure .pyc is not included
                 if len(filename.split(ext)[1]) != 0:
                     continue
-                full_path = os.path.join(file_root_path, filename)
+                full_path = os.path.join(file_root_full_path, filename)
                 print full_path
                 res.append(full_path)
     return res
