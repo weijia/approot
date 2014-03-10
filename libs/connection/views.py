@@ -5,12 +5,12 @@ import json
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
 from django.utils import timezone
-from filetools import find_callable_in_app_framework, collect_files_in_dir
-from libs.diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
+from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
 #from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 #from libs.services.svc_base.msg_service import MsgQ
 #from libs.services.svc_base.service_starter import start_diagram
 import libsys
+from libtool.filetools import find_callable_in_app_framework, collect_files_in_dir
 from models import Connection, Processor
 
 from objsys.models import UfsObj
@@ -19,7 +19,7 @@ from django.core import serializers
 
 #import libs.utils.simplejson as json
 from django.contrib.auth.decorators import login_required
-from libs.utils.django_utils import retrieve_param
+from utils.django_utils import retrieve_param
 
 # Create your views here.
 from objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
