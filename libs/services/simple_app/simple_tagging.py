@@ -1,17 +1,17 @@
 import logging
-from iconizer.pyro_service_base import PyroServiceBase
 from libtool import include_root_path
+from services.simple_app.pyro_simple_app_base import PyroSimpleAppBase
+
 include_root_path(__file__, "approot")
 import lib_list
 from services.svc_base.gui_client import GuiClient
-from libs.logsys.logSys import cl
 from utils.string_tools import SpecialEncoder
 from configuration import g_config_dict, get_default_charset
 
 log = logging.getLogger(__name__)
 
 
-class SimpleTagging(PyroServiceBase):
+class SimpleTagging(PyroSimpleAppBase):
     SERVICE_NAME = "simple_tagging"
 
     def __init__(self):
@@ -48,6 +48,7 @@ class SimpleTagging(PyroServiceBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = SimpleTagging()
+    s.init_cmd_line()
     s.open_drop_wnd()
     s.start_service()
     s.close_drop_wnd()
