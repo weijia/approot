@@ -1,4 +1,5 @@
 import subprocess
+from win32process import CREATE_NO_WINDOW
 from libtool import find_root_path
 from libtool.filetools import find_callable_in_app_framework
 import sys
