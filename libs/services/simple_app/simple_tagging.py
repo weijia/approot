@@ -1,12 +1,11 @@
 import logging
 from libtool import include_root_path
+include_root_path(__file__, "approot")
+from config import get_ufs_web_server_port, get_default_charset
 from services.simple_app.pyro_simple_app_base import PyroSimpleAppBase
 
-include_root_path(__file__, "approot")
-import lib_list
 from services.svc_base.gui_client import GuiClient
 from utils.string_tools import SpecialEncoder
-from configuration import g_config_dict, get_default_charset
 
 log = logging.getLogger(__name__)
 
@@ -34,15 +33,15 @@ class SimpleTagging(PyroSimpleAppBase):
     def put_msg(self, msg):
         links = ""
         e = SpecialEncoder()
-        cl(msg)
+        log.debug(msg)
         for i in msg["urls"]:
             links += "url=" + e.encode(unicode(i)).encode(get_default_charset()) + "&"
         self.gui_client.open_browser({"command": "Browser",
-                              "url": "http://127.0.0.1:" +
-                                    str(g_config_dict["ufs_web_server_port"]) +
-                                    "/objsys/tagging/?" +
-                                    links + "encoding=" + get_default_charset(),
-                              "handle": "tagging"})
+                                      "url": "http://127.0.0.1:" +
+                                             str(get_ufs_web_server_port) +
+                                             "/objsys/tagging/?" +
+                                             links + "encoding=" + get_default_charset(),
+                                      "handle": "tagging"})
 
 
 if __name__ == "__main__":

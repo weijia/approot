@@ -4,7 +4,7 @@ from iconizer.pyro_service_base import PyroServiceBase
 log = logging.getLogger(__name__)
 
 
-class TagDistributor(PyroServiceBase):
+class TagDistributor(PyroSimpleAppBase):
     #########################
     # Called through pyro only
     #########################
@@ -15,4 +15,5 @@ class TagDistributor(PyroServiceBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = TagDistributor()
+    s.init_cmd_line()
     s.start_daemon_register_and_launch_loop()
