@@ -245,17 +245,22 @@ def handle_start_diagram_req(request):
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
 
-'''
+
+from services.sap.service_manager_sap import ServiceManager
+
+
 def handle_stop_diagram_req(request):
     data = retrieve_param(request)
     diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
+    """
     MsgQ(gMsgBasedServiceManagerMsgQName).send_cmd({"cmd": "broadcast_cmd",
                                                     "session_id": os.environ["ufs_console_mgr_session_id"],
                                                     "msg": {"cmd": "stop_diagram",
                                                             "diagram_id": diagram_obj.uuid,
                                                             "session_id": os.environ["ufs_console_mgr_session_id"]}
     })
+    """
+
     res = {"result": data["ufs_url"] + ":" + diagram_obj.uuid + " stop diagram message sent"}
     response = json.dumps(res, sort_keys=True, indent=4)
     return HttpResponse(response, mimetype="application/json")
-'''

@@ -1,11 +1,11 @@
 __author__ = 'Richard'
 
 
-class ExtAppMgrIntf(object):
+class ExtAppMgrInterface(object):
     def __init__(self):
         pass
 
-    def check_complet(self):
+    def check_complete(self):
         pass
 
     def shutdown(self):

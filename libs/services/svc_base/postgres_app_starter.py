@@ -1,12 +1,12 @@
 import psycopg2
+from config import get_postsql_server_port
 import libsys
-from libs.services.svc_base.ext_app_if import ExtAppMgrIntf
-import configuration
+from services.svc_base.ext_app_if import ExtAppMgrInterface
 from services.svc_base.launcher_interface import Launcher
 __author__ = 'Richard'
 
 
-class PostgresApp(ExtAppMgrIntf):
+class PostgresApp(ExtAppMgrInterface):
     def __init__(self):
         ###########################
         # Start postgresql
@@ -15,7 +15,7 @@ class PostgresApp(ExtAppMgrIntf):
 
         #Define our connection string
         conn_string = "host='localhost' dbname='postgres' user='postgres' password=''"
-        conn_string += " port='%d'" % configuration.g_config_dict['POSTGRESQL_PORT']
+        conn_string += " port='%d'" % get_postsql_server_port()
 
         # print the connection string we will use to connect
         print "Connecting to database\n	->%s" % (conn_string)
