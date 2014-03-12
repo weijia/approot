@@ -5,10 +5,10 @@ import sys
 class SimpleAppBase(object):
     DEFAULT_PARAM = {"input": "default processor param",
                      "output": "default processor param",
-                     #"session_id": "the session id for all processors in one diagram is unique," +
-                     #              "so processors can identify legacy data in tubes using this",
-                     #"diagram_id": "the diagram id used to retrieve diagram state " +
-                     #              "(get from the diagram processor's param)",
+                     "session_id": "the session id for all processors in one diagram is unique," +
+                                   "so processors can identify legacy data in tubes using this",
+                     "diagram_id": "the diagram id used to retrieve diagram state " +
+                                   "(get from the diagram processor's param)",
     }
 
     def __init__(self):

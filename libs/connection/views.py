@@ -21,6 +21,7 @@ from django.core import serializers
 #import libs.utils.simplejson as json
 from django.contrib.auth.decorators import login_required
 from platform_related.executor import execute_app
+from services.svc_base.service_starter import start_diagram
 from utils.django_utils import retrieve_param
 
 # Create your views here.
@@ -117,9 +118,9 @@ def parse_help(help_str):
             param_start = True
             #Remove default arguments
     del res["-h"]
-    #del res["startserver"]
-    #del res["session_id"]
-    #del res["diagram_id"]
+    del res["startserver"]
+    del res["session_id"]
+    del res["diagram_id"]
 
     #Remove standard output
     for i in ["outputtube", "inputtube", "input_msg_queue", "output_msg_queue"]:

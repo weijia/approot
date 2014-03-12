@@ -2,7 +2,7 @@ import logging
 from libtool import include_root_path
 include_root_path(__file__, "approot")
 from config import get_ufs_web_server_port, get_default_charset
-from services.simple_app.pyro_simple_app_base import PyroSimpleAppBase
+from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 from services.svc_base.gui_client import GuiClient
 from utils.string_tools import SpecialEncoder
