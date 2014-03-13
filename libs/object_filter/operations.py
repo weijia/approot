@@ -8,10 +8,10 @@ from django.contrib.contenttypes.models import ContentType
 
 import libsys
 from tagging.models import TaggedItem
-from libs.utils.obj_tools import get_hostname
-from libs.utils.django_utils import retrieve_param
+from utils.obj_tools import get_hostname
+from utils.django_utils import retrieve_param
 from objsys.obj_tagging import UfsFilter
-from libs.utils.misc import ensure_dir
+from utils.misc import ensure_dir
 
 
 __author__ = 'Administrator'

@@ -8,8 +8,8 @@ from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
 #from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 #from libs.services.svc_base.msg_service import MsgQ
 #from libs.services.svc_base.service_starter import start_diagram
-from libtool import find_root_path
-from libtool.filetools import find_callable_in_app_framework, collect_files_in_dir
+from diagram.service import get_service_app_list
+from libtool.filetools import find_callable_in_app_framework
 
 from objsys.models import UfsObj
 from django.http import HttpResponse
@@ -18,7 +18,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from platform_related.executor import execute_app
 from services.svc_base.service_starter import start_diagram
-from utils.django_utils import retrieve_param, get_content_item_list_in_json_rest, get_list_in_json, get_json_resp
+from utils.django_utils import retrieve_param, get_content_item_list_in_tastypie_format, get_list_in_json, get_json_resp
 
 # Create your views here.
 from objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
@@ -100,61 +100,8 @@ def item_properties(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-class App(object):
-    """
-    Can not be called directly
-    """
-    def get_info(self):
-        ufs_obj = get_ufs_obj_from_full_path(self.app_full_path)
-        return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url}
-
-
-class FullPathApp(App):
-    def __init__(self, app_full_path):
-        self.app_full_path = app_full_path
-        self.app_name = os.path.basename(self.app_full_path).split(".")[0]
-
-
-class NamedApp(App):
-    def __init__(self, app_name):
-        self.app_name = app_name
-        self.app_full_path = app_path = find_callable_in_app_framework(self.app_name)
-        if app_path is None:
-            raise "Obj not exists"
-
-
-gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
-                  "postgresql.bat",
-                  "postgresql_stop.bat",
-                  "start_ext.bat",
-                  "start_ext_app.bat",
-                  "startBeanstalkd.bat",
-                  #"mongodb.bat"
-                  #"syncdb.bat",
-                  #"tornado.bat",
-                  #"tornado_app.bat",
-                  #"runserver.bat",
-                  #"makedoc.bat"
-                  #"activate.bat"
-                  #"activate_app.bat",
-                  #"cmd_prompt.bat"
-]
-
-
 def get_service_apps(request):
-    app_path_list = []
-    #for app_name in gDefaultServices:
-    #    app_list.append(NamedApp(app_name))
-    #Add root folder .exe, (used for built apps)
-    root_dir = find_root_path(__file__, "approot")
-    for sub_dir, ext in [("/", ".exe"), ("libs/services/simple_app/", ".py"),
-                         ("libs/services/external_app/", ".bat"),
-                         ("/external/", ".bat")]:
-        sub_dir_full_path = os.path.join(root_dir, sub_dir)
-        app_path_list.extend(collect_files_in_dir(sub_dir_full_path, ext, gIgnoreAppList))
-    app_list = []
-    for full_path in app_path_list:
-        app_list.append(FullPathApp(full_path))
+    app_list = get_service_app_list()
     return get_list_in_json(app_list)
 
 
@@ -163,7 +110,7 @@ def get_diagrams(request):
 
     for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
         diagram_list.append(Diagram(diagram_obj))
-    return get_content_item_list_in_json_rest(diagram_list)
+    return get_content_item_list_in_tastypie_format(diagram_list)
 
 
 def handle_start_diagram_req(request):

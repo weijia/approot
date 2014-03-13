@@ -63,7 +63,7 @@ def start(request):
 def remove_thumb_for_paths(request):
     data = retrieve_param(request)
     cnt = 0
-    if data.has_key("path"):
+    if "path" in data:
         path = data["path"]
         res = []
         from thumbapp.models import ThumbCache

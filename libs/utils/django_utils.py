@@ -23,7 +23,7 @@ def return_file_data(the_file):
     return response
 
 
-def get_content_item_list_in_json_rest(item_list):
+def get_content_item_list_in_tastypie_format(item_list):
     res = []
     for item in item_list:
         res.append(item.get_info())

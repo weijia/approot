@@ -27,7 +27,14 @@ def object_filter(request):
     return render_to_response('object_filter/index.html', c)
 
 
-def object_table(request):
-    c = {"user": request.user, "item_list_url": "/connection/diagram_list/"}
+def get_object_table(request, item_dict_url):
+    c = {"user": request.user, "item_list_url": item_dict_url}
     c.update(csrf(request))
     return render_to_response('object_filter/table.html', c)
+
+
+def object_table(request):
+    data = retrieve_param(request)
+    item_dict_url = data.get("items_url", "/connection/diagram_list/")
+    return get_object_table(request, item_dict_url)
+
