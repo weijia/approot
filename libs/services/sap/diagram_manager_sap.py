@@ -1,1 +1,1 @@
-__author__ = 'q19420'
+from services.pyro_service.pyro_diagram_manager import PyroDiagramManager as DiagramManager

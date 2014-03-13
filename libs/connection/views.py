@@ -2,27 +2,23 @@ import os
 import uuid
 import json
 
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
-from django.utils import timezone
 from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
 #from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 #from libs.services.svc_base.msg_service import MsgQ
 #from libs.services.svc_base.service_starter import start_diagram
-import libsys
 from libtool import find_root_path
 from libtool.filetools import find_callable_in_app_framework, collect_files_in_dir
-from models import Connection, Processor
 
 from objsys.models import UfsObj
 from django.http import HttpResponse
-from django.core import serializers
 
 #import libs.utils.simplejson as json
 from django.contrib.auth.decorators import login_required
 from platform_related.executor import execute_app
 from services.svc_base.service_starter import start_diagram
-from utils.django_utils import retrieve_param
+from utils.django_utils import retrieve_param, get_content_item_list_in_json_rest, get_list_in_json, get_json_resp
 
 # Create your views here.
 from objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
@@ -36,61 +32,11 @@ def index(request):
     c.update(csrf(request))
     return render_to_response('connection/connection_pane.html', c)
 
-'''
-def create_diagram_obj(request):
-    """
-    * Create diagram one connection after another. There will be a diagram uuid for all connections for this diagram.
-    * UfsObj(ufs_url="diagram://uuid")
-    """
-    data = retrieve_param(request)
-
-    diag_uuid = data.get("diag_uuid", None)
-    source = data.get("source", None)
-    target = data.get("target", None)
-    source_param = data.get("source_param", None)
-    target_param = data.get("target_param", None)
-    if (source is None) or (target is None) or (diag_uuid is None):
-        raise "Invalid params"
-        #Create diagram object
-    #Find if the diagram object already exist
-    if 0 == UfsObj.objects.filter(ufs_url=u"diagram://" + diag_uuid).count():
-        obj = UfsObj(ufs_url=u"diagram://" + diag_uuid, uuid=unicode(diag_uuid), timestamp=timezone.now(),
-                     user=request.user)
-        obj.save()
-    else:
-        obj = UfsObj.objects.get(ufs_url=u"diagram://" + diag_uuid)
-    if source.isdigit():
-        #source is digital so this processor has already been posted
-        source_processor = Processor.objects.filter(pk=int(source))[0]
-        #source_obj = 
-    else:
-        source_obj = UfsObj.objects.get(ufs_url=source)
-        #Create processor
-        source_processor = Processor(ufsobj=source_obj, param_descriptor=source_param)
-        source_processor.save()
-
-    if target.isdigit():
-        #target is digital so this processor has already been posted
-        target_processor = Processor.objects.filter(pk=int(target))[0]
-    else:
-        target_obj = UfsObj.objects.get(ufs_url=target)
-        #Create processor
-        target_processor = Processor(ufsobj=target_obj, param_descriptor=target_param)
-        target_processor.save()
-        #Add connections
-    con = Connection(source=source_processor, target=target_processor, diagram=obj)
-    con.save()
-    return HttpResponse('{"source":%s, "target":%s}' % (source_processor.pk, target_processor.pk),
-                        mimetype="application/json")
-'''
-
-#from libs.console.ConsoleOutputCollector import execute_app
-
 
 def parse_help(help_str):
-    '''
+    """
     Internal function called by item_properties to parse app help
-    '''
+    """
     param_start = False
     res = {}
     param_name = None
@@ -124,7 +70,7 @@ def parse_help(help_str):
 
     #Remove standard output
     for i in ["outputtube", "inputtube", "input_msg_queue", "output_msg_queue"]:
-        if res.has_key(i):
+        if i in res:
             del res[i]
     return res
 
@@ -158,7 +104,6 @@ class App(object):
     """
     Can not be called directly
     """
-
     def get_info(self):
         ufs_obj = get_ufs_obj_from_full_path(self.app_full_path)
         return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url}
@@ -176,22 +121,6 @@ class NamedApp(App):
         self.app_full_path = app_path = find_callable_in_app_framework(self.app_name)
         if app_path is None:
             raise "Obj not exists"
-
-
-def get_content_item_list_in_json_rest(item_list):
-    res = []
-    for item in item_list:
-        res.append(item.get_info())
-    response = json.dumps({"objects": res, "meta": {"next": None}}, sort_keys=True, indent=4)
-    return HttpResponse(response, mimetype="application/json")
-
-
-def get_list_in_json(item_list):
-    res = []
-    for item in item_list:
-        res.append(item.get_info())
-    response = json.dumps(res, sort_keys=True, indent=4)
-    return HttpResponse(response, mimetype="application/json")
 
 
 gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
@@ -242,11 +171,7 @@ def handle_start_diagram_req(request):
     diagram_obj = get_ufs_obj_from_ufs_url(data["ufs_url"])
     log_str = start_diagram(diagram_obj)
     res = {"log": log_str}
-    response = json.dumps(res, sort_keys=True, indent=4)
-    return HttpResponse(response, mimetype="application/json")
-
-
-from services.sap.service_manager_sap import ServiceManager
+    return get_json_resp(res)
 
 
 def handle_stop_diagram_req(request):

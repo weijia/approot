@@ -14,7 +14,7 @@ from services.svc_base.postgres_app_starter import PostgresApp
 
 from extra_settings import init_settings
 import django.core.management as core_management
-from services.svc_base.name_server_starter import NameServerStarter
+from services.pyro_service.name_server_starter import NameServerStarter
 
 
 def sync_migrate_db():

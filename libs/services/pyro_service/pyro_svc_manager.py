@@ -4,7 +4,11 @@ from services.svc_base.svc_manager_base import ServiceManagerBase
 
 
 class PyroServiceManager(ServiceManagerBase):
+    def start_service(self, service_name):
+        super(PyroServiceManager, self).start_service(service_name)
+
     def stop_service(self, service_name):
+        super(PyroServiceManager, self).stop_service(service_name)
         print "stopping: ", service_name
         uri_string = "PYRONAME:" + service_name
         service = Pyro4.Proxy(uri_string)

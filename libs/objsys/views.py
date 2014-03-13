@@ -22,7 +22,6 @@ def manager(request):
 
 
 def query(request):
-    data = retrieve_param(request)
     c = {"user": request.user}
     c.update(csrf(request))
     return render_to_response('objsys/query.html', c)
@@ -46,7 +45,7 @@ def start(request):
         ext = ''
     if True:  #try:
         if False:  #(ext in ['.bat', '.py']):
-            from libs.services.svc_base.launcher_interface import Launcher
+            from services.sap.launcher_sap import Launcher
 
             Launcher().start_app_with_exact_full_path_and_param_list_no_wait(full_path, ['--startserver'])
             #raise "stop here"
@@ -67,7 +66,7 @@ def remove_thumb_for_paths(request):
     if data.has_key("path"):
         path = data["path"]
         res = []
-        from libs.thumbapp.models import ThumbCache
+        from thumbapp.models import ThumbCache
 
         for i in ThumbCache.objects.filter(obj__full_path__contains=path):
             if cnt < 100:

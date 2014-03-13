@@ -2,7 +2,7 @@ import psycopg2
 from config import get_postsql_server_port
 import libsys
 from services.svc_base.ext_app_if import ExtAppMgrInterface
-from services.svc_base.launcher_interface import Launcher
+from services.sap.launcher_sap import Launcher
 __author__ = 'Richard'
 
 

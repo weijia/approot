@@ -1,26 +1,24 @@
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
-import libs.utils.string_tools as string_tools
+from config import get_thumb_server_port
 from operations import *
+from utils.django_utils import retrieve_param
+from utils.string_tools import unquote_unicode
 
 
 # Create your views here.
 def object_filter(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
+    data = retrieve_param()
     c = {"user": request.user}
     if "tag" in data:
         c["tag"] = data["tag"]
         c["filter_tag"] = True
 
     if "query_base" in data:
-        c["query_base"] = string_tools.unquote_unicode(data["query_base"])
+        c["query_base"] = unquote_unicode(data["query_base"])
         c["query_base_exists"] = True
     try:
-        import configuration
-        thumb_server_port = configuration.g_config_dict.get("thumb_server_port", 8114)
+        thumb_server_port = get_thumb_server_port()
         c["thumb_server_base"] = "http://%s:%d/thumb/cherry/" % (request.META['HTTP_HOST'].split(":")[0], thumb_server_port)
     except:
         c["thumb_server_base"] = "/static/img/icons/16px/html.png"
@@ -30,20 +28,6 @@ def object_filter(request):
 
 
 def object_table(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
-
-    c = {"user": request.user}
-    '''
-    if "tag" in data:
-        c["tag"] = data["tag"]
-        c["filter_tag"] = True
-
-    if "query_base" in data:
-        c["query_base"] = string_tools.unquote_unicode(data["query_base"])
-        c["query_base_exists"] = True
-    '''
+    c = {"user": request.user, "item_list_url": "/connection/diagram_list/"}
     c.update(csrf(request))
     return render_to_response('object_filter/table.html', c)

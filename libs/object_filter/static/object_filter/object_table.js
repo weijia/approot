@@ -26,7 +26,7 @@ $(document).ready(function() {
     });
     $('#object-table').on("click", "button.auto-start", function(e){});
     $('#object-table').dataTable({bJQueryUI:true,
-        "sAjaxSource": "/connection/diagram_list/",
+        "sAjaxSource": $('#table_data_src_url').text(),
         "sAjaxDataProp": "objects",
         "fnServerData": function ( sSource, aoData, fnCallback ) {
             //aoData.push({"name": "format", "value": "json"});

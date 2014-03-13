@@ -1,6 +1,6 @@
 __author__ = 'Richard'
 import Pyro4
-from launcher_interface import Launcher
+from services.sap.launcher_sap import Launcher
 
 
 class NameServerStarter(object):

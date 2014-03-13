@@ -17,3 +17,7 @@ def get_ufs_web_server_port():
 
 def get_postsql_server_port():
     return g_config_dict['POSTGRESQL_PORT']
+
+
+def get_thumb_server_port():
+    return g_config_dict.get("thumb_server_port", 8114)
