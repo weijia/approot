@@ -9,7 +9,6 @@ class App(object):
     """
     Can not be called directly
     """
-
     def get_info(self):
         ufs_obj = get_ufs_obj_from_full_path(self.app_full_path)
         return {"data": self.app_name, "full_path": ufs_obj.full_path, "ufs_url": ufs_obj.ufs_url,
