@@ -63,10 +63,9 @@ def parse_help(help_str):
         if -1 != i.find("optional arguments:"):
             param_start = True
             #Remove default arguments
-    del res["-h"]
-    del res["startserver"]
-    del res["session_id"]
-    del res["diagram_id"]
+    for item in ["-h", "startserver", "session_id", "diagram_id"]:
+        if item in res:
+            del res[item]
 
     #Remove standard output
     for i in ["outputtube", "inputtube", "input_msg_queue", "output_msg_queue"]:

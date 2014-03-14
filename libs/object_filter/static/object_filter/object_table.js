@@ -54,5 +54,4 @@ $(document).ready(function() {
                         { "mDataProp": "operations" }
                     ]
     });
-    
 });

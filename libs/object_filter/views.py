@@ -8,7 +8,7 @@ from utils.string_tools import unquote_unicode
 
 # Create your views here.
 def object_filter(request):
-    data = retrieve_param()
+    data = retrieve_param(request)
     c = {"user": request.user}
     if "tag" in data:
         c["tag"] = data["tag"]
