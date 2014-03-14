@@ -27,8 +27,15 @@ def object_filter(request):
     return render_to_response('object_filter/index.html', c)
 
 
+action_html_str = '''
+<button class="action_button" action="/connection/start_diagram/?ufs_url=">Start</button>
+<button class="action_button" action="/connection/stop_diagram/?ufs_url=">Stop</button>
+<button class="action_button" action="/connection/auto_start/?ufs_url=">Auto start</button>
+'''
+
+
 def get_object_table(request, item_dict_url):
-    c = {"user": request.user, "item_list_url": item_dict_url}
+    c = {"user": request.user, "item_list_url": item_dict_url, "item_actions": action_html_str}
     c.update(csrf(request))
     return render_to_response('object_filter/table.html', c)
 

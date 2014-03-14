@@ -18,11 +18,8 @@ $(document).ready(function() {
          */
          $.getJSON(target_url + encodeURI(aData.ufs_url));
     }
-    $('#object-table').on("click", "button.start", function(e){
-        request_op(e, "/connection/start_diagram/?ufs_url=");
-    });
-    $('#object-table').on("click", "button.stop", function(e){
-        request_op(e, "/connection/stop_diagram/?ufs_url=");
+    $('#object-table').on("click", "button.action_button", function(e){
+        request_op(e, $(event.target).attr("action"));
     });
     $('#object-table').on("click", "button.auto-start", function(e){});
     $('#object-table').dataTable({bJQueryUI:true,
@@ -39,9 +36,8 @@ $(document).ready(function() {
                 "data": aoData,
                 "success": function(data, result, req){
                     for(var i=0; i<data.objects.length; i++){
-                        data.objects[i].operations = '<button class="start">Start</button>' +
-                             '<button class="stop">Stop</button>' +
-                            '<button class="auto-start">Auto start</button>';
+                        var inner_html = $("#table_actions").html();
+                        data.objects[i].operations = inner_html;
                     }
                     fnCallback(data);
                 }
