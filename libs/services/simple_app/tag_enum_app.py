@@ -1,4 +1,5 @@
 # -*- coding: gbk -*-
+import json
 import logging
 import thread
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
@@ -12,28 +13,6 @@ class TagEnumApp(PyroSimpleAppBase):
         super(TagEnumApp, self).__init__()
         #Only one service request should be processed for one diagram (as tag enumerator is a generator)
         self.diagram_to_task = {}
-
-    #########################
-    # Called through pyro only
-    #########################
-    def put_msg(self, msg):
-        """
-        {
-            "diagram":{"diagram_id": "xxx-xxxxx-xxxxx",
-                "processor_id": "xxx-xxxxx-xxxxx",
-            },
-            "is_all_tag": False,
-            "tag": "git_repo"
-        }
-        """
-        log.debug(msg)
-        #noinspection PyBroadException
-        try:
-            self.handle_req(msg)
-        except Exception:
-            import traceback
-
-            traceback.print_exc()
 
     def handle_req(self, msg):
         diagram_id = msg["diagram"]["diagram_id"]

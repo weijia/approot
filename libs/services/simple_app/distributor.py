@@ -1,4 +1,5 @@
 # -*- coding: gbk -*-
+import json
 import logging
 import thread
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
@@ -8,20 +9,6 @@ log = logging.getLogger(__name__)
 
 
 class Distributor(PyroSimpleAppBase):
-    #########################
-    # Called through pyro only
-    #########################
-    def put_msg(self, msg):
-        log.debug(msg)
-        print msg
-        #noinspection PyBroadException
-        try:
-            self.handle_req(msg)
-        except Exception:
-            import traceback
-
-            traceback.print_exc()
-
     def handle_req(self, msg):
         pass
 
