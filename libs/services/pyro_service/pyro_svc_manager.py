@@ -1,11 +1,13 @@
 import traceback
 import Pyro4
+from iconizer.pyro_launcher import Launcher
 from services.svc_base.svc_manager_base import ServiceManagerBase
 
 
 class PyroServiceManager(ServiceManagerBase):
     def start_service(self, service_name):
-        super(PyroServiceManager, self).start_service(service_name)
+        #super(PyroServiceManager, self).start_service(service_name)
+        Launcher.start_app_with_same_filename_with_param_dict_no_wait(service_name, [])
 
     def stop_service(self, service_name):
         super(PyroServiceManager, self).stop_service(service_name)

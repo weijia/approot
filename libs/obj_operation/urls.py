@@ -4,5 +4,6 @@ from django.conf import settings
 import os
 
 urlpatterns = patterns('',
-    url(r'^$', 'object_operation.views.do_op'),
+    url(r'service/start/$', 'obj_operation.service_op.start'),
+    url(r'service/stop/$', 'obj_operation.service_op.stop'),
 )

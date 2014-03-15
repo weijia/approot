@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     #url(r'^filemanager/', include('desktop.filemanager.urls')),
     url(r'^ui_framework/', include('ui_framework.urls')),                       
     url(r'^webmanage/', include('webmanage.urls')),
+    url(r'^obj_operation/', include('obj_operation.urls')),
     url(r'^$', RedirectView.as_view(url='/objsys/homepage/'), name='index'),
 )
 

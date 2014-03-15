@@ -26,6 +26,7 @@ INSTALLED_APPS += (
     'south',
     'webmanage',
     'kombu.transport.django',
+    'obj_operation',
 )
 
 import logging
