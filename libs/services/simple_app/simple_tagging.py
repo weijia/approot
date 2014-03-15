@@ -1,7 +1,8 @@
 import logging
 from libtool import include_root_path
 include_root_path(__file__, "approot")
-from config import get_ufs_web_server_port, get_default_charset
+from config import get_ufs_web_server_port
+from configuration import get_default_charset
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 from services.svc_base.gui_client import GuiClient
@@ -38,7 +39,7 @@ class SimpleTagging(PyroSimpleAppBase):
             links += "url=" + e.encode(unicode(i)).encode(get_default_charset()) + "&"
         self.gui_client.open_browser({"command": "Browser",
                                       "url": "http://127.0.0.1:" +
-                                             str(get_ufs_web_server_port) +
+                                             str(get_ufs_web_server_port()) +
                                              "/objsys/tagging/?" +
                                              links + "encoding=" + get_default_charset(),
                                       "handle": "tagging"})

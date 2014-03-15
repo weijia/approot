@@ -1,7 +1,7 @@
 import logging
 import time
 from services.svc_base.stated_worker import StatedWorker
-from tags.utils import get_tagged_items_greater_than_timestamp
+from tags.tag_utils import get_tagged_items_greater_than_timestamp
 
 log = logging.getLogger(__name__)
 

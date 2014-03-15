@@ -48,7 +48,7 @@ class TagEnumApp(PyroSimpleAppBase):
 def test():
     import time
 
-    time.sleep(10)
+    time.sleep(15)
     from services.sap.msg_service_sap import AutoRouteMsgService
 
     AutoRouteMsgService().send_to("tag_enum_app", {
@@ -64,5 +64,5 @@ def test():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = TagEnumApp()
-    thread.start_new_thread(test)
+    thread.start_new_thread(test, ())
     s.start_daemon_register_and_launch_loop()

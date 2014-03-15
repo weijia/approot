@@ -12,5 +12,8 @@ def start(request):
 
 
 def stop(request):
-    res = {"log": "not implemented"}
+    data = retrieve_param(request)
+    app_name = get_app_name_from_full_path(data["ufs_url"])
+    ServiceManager().stop_service(app_name)
+    res = {"log": "done"}
     return get_json_resp(res)

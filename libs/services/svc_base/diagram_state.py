@@ -9,4 +9,5 @@ class DiagramState(object):
         return StateManager.get_state(self.diagram_id, default_dict)
         
     def get_state_value(self, state_key, default_value):
-        return self.get_state_dict({state_key: default_value})[state_key]
+        state_dict = self.get_state_dict({state_key: default_value})
+        return state_dict.get(state_key, default_value)

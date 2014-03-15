@@ -1,6 +1,9 @@
-class Stoppable(object):
+import threading
+
+
+class StoppableThread(threading.Thread):
     def __init__(self):
-        super(Stoppable, self).__init__()
+        super(StoppableThread, self).__init__()
         self.is_quitting_flag = False
 
     def set_stop(self, is_stop=True):

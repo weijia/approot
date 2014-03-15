@@ -35,10 +35,15 @@ def include_folders(lib__full_path_list):
         include(i)
 
 
+def get_file_folder(file_path):
+    folder = os.path.abspath(os.path.dirname(file_path))
+    return folder
+
+
 def include_file_sibling_folder(file_path, sub_folder_name):
     if (file_path[-1] == "/") or (file_path[-1] == "\\"):
         file_path = file_path[0:-1]
-    folder = os.path.abspath(os.path.dirname(file_path))
+    folder = get_file_folder(file_path)
     include_in_folder(folder, sub_folder_name)
 
 

@@ -13,6 +13,7 @@ class Distributor(PyroSimpleAppBase):
     #########################
     def put_msg(self, msg):
         log.debug(msg)
+        print msg
         #noinspection PyBroadException
         try:
             self.handle_req(msg)

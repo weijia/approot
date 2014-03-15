@@ -24,8 +24,11 @@ g_config_dict = {
 import traceback
 loaded_config = {}
 
+import libtool
+
+
 try:
-    f = open('config.json', 'r')
+    f = open(os.path.join(libtool.get_file_folder(__file__), 'config.json'), 'r')
     loaded_config = json.load(f)
 except:
     #traceback.print_exc()

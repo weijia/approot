@@ -2,7 +2,7 @@ import logging
 import time
 from msg_service.predefined_receivers import DISTRIBUTOR
 from services.svc_base.stated_worker import StatedWorker
-from tags.utils import get_tagged_items_greater_than_timestamp
+from tags.tag_utils import get_tagged_items_greater_than_timestamp
 from services.sap.msg_service_sap import AutoRouteMsgService
 
 
@@ -12,8 +12,8 @@ log = logging.getLogger(__name__)
 class CertainTaggedItemEnumWorker(StatedWorker):
     def run(self):
         #Retrieve saved last timestamp, will start to enumerate items with greater (not equal) timestamp
-        first_tag_timestamp = self.state.get_state_value("all_tag_enum_start_timestamp", 0)
-        log.debug("first tag timestamp:" + first_tag_timestamp)
+        first_tag_timestamp = self.state.get_state_value("certain_tag_enum_start_timestamp", 0)
+        log.debug("first tag timestamp:" + str(first_tag_timestamp))
 
         tagged_item_list = get_tagged_items_greater_than_timestamp(first_tag_timestamp)
 

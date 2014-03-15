@@ -25,3 +25,7 @@ def shutdown_all():
             if service_name in basic_services:
                 continue
             PyroServiceManager().stop_service(service_name)
+
+
+def list_services():
+    pass
