@@ -12,5 +12,5 @@ class PullService(PyroSimpleAppBase):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     pull_service = PullService()
-    pull_service.init_cmd_line()
+    #pull_service.init_cmd_line()
     pull_service.run()

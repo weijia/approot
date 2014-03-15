@@ -14,6 +14,7 @@ class SimpleAppBase(object):
     def __init__(self):
         super(SimpleAppBase, self).__init__()
         self.parser = None
+        self.init_cmd_line()
 
     def add_param_from_dict(self, param_dict):
         for i in param_dict:

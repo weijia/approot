@@ -42,6 +42,7 @@ if __name__ == "__main__":
     log_folder = get_or_create_app_data_folder("logs")
     i = Iconizer(log_dir=log_folder, python_executable=sys.executable)
     i.register()
+    i.execute({"distributor": [find_callable_in_app_framework("distributor")]})
     #i.execute({"pull_service": [find_callable_in_app_framework("pull_service")]})
     #i.execute({"simple_tagging": [find_callable_in_app_framework("simple_tagging")]})
     #i.execute({"tag_distributor": [find_callable_in_app_framework("tag_distributor")]})

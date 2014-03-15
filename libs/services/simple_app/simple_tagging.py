@@ -47,7 +47,7 @@ class SimpleTagging(PyroSimpleAppBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = SimpleTagging()
-    s.init_cmd_line()
+    #s.init_cmd_line()
     s.open_drop_wnd()
     s.start_service()
     s.close_drop_wnd()
