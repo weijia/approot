@@ -32,7 +32,6 @@ class SimpleTagging(PyroSimpleAppBase):
         self.open_drop_wnd()
         self.set_service_name(self.SERVICE_NAME)
         self.start_daemon_register_and_launch_loop()
-        s.start_service()
         self.close_drop_wnd()
 
     #########################
