@@ -113,3 +113,9 @@ def collect_files_in_dir(file_root_full_path, ext=None, ignore_file_list=[]):
                 print full_path
                 res.append(full_path)
     return res
+
+
+def get_app_name_from_full_path(app_path):
+    app_filename = os.path.basename(app_path)
+    app_name = app_filename.split(".")[0]
+    return app_name

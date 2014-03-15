@@ -9,3 +9,8 @@ def start(request):
     ServiceManager().start_service(app_name)
     res = {"log": "done"}
     return get_json_resp(res)
+
+
+def stop(request):
+    res = {"log": "not implemented"}
+    return get_json_resp(res)
