@@ -15,5 +15,4 @@ class TagDistributor(PyroSimpleAppBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = TagDistributor()
-    #s.init_cmd_line()
-    s.start_daemon_register_and_launch_loop()
+    s.start_service()

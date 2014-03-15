@@ -15,5 +15,4 @@ class Distributor(PyroSimpleAppBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = Distributor()
-    if not s.is_checking_properties():
-        s.start_daemon_register_and_launch_loop()
+    s.start_service()

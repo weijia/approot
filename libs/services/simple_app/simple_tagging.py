@@ -24,9 +24,16 @@ class SimpleTagging(PyroSimpleAppBase):
     def close_drop_wnd(self):
         self.gui_client.un_register_drop_msg_receiver(self.SERVICE_NAME)
 
+    #####################
+    # Override start service
     def start_service(self):
+        if self.is_checking_properties():
+            return
+        self.open_drop_wnd()
         self.set_service_name(self.SERVICE_NAME)
         self.start_daemon_register_and_launch_loop()
+        s.start_service()
+        self.close_drop_wnd()
 
     #########################
     # Called through pyro only
@@ -48,7 +55,4 @@ class SimpleTagging(PyroSimpleAppBase):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = SimpleTagging()
-    #s.init_cmd_line()
-    s.open_drop_wnd()
     s.start_service()
-    s.close_drop_wnd()

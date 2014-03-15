@@ -5,10 +5,15 @@ import os
 
 
 def find_root_path(file_path, root_folder_name):
+    in_file_path = file_path
     folder_name = None
     while folder_name != root_folder_name:
         folder_name = os.path.basename(file_path)
+        last_file_path = file_path
         file_path = os.path.dirname(file_path)
+        if last_file_path == file_path:
+            print last_file_path, file_path, folder_name, root_folder_name,
+            raise "No root path found"
     return os.path.abspath(os.path.join(file_path, root_folder_name))
 
 
@@ -16,7 +21,7 @@ def include_root_path(file_path, root_folder_name):
     include(find_root_path(file_path, root_folder_name))
 
 
-def include_sub_folder(file_path, root_folder_name, folder_name):
+def include_sub_folder_in_root_path(file_path, root_folder_name, folder_name):
     root_folder_path = find_root_path(file_path, root_folder_name)
     include_in_folder(root_folder_path, folder_name)
 

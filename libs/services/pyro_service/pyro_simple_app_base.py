@@ -26,3 +26,7 @@ class PyroSimpleAppBase(PyroServiceBase, SimpleAppBase):
         except Exception:
             import traceback
             traceback.print_exc()
+
+    def start_service(self):
+        if not self.is_checking_properties():
+            self.start_daemon_register_and_launch_loop()
