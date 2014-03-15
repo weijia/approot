@@ -43,5 +43,5 @@ def test():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = TagEnumApp()
-    thread.start_new_thread(test, ())
+    #thread.start_new_thread(test, ())
     s.start_daemon_register_and_launch_loop()

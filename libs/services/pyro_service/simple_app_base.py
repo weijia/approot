@@ -14,7 +14,6 @@ class SimpleAppBase(object):
     def __init__(self):
         super(SimpleAppBase, self).__init__()
         self.parser = None
-        self.init_cmd_line()
 
     def add_param_from_dict(self, param_dict):
         for i in param_dict:
@@ -36,3 +35,9 @@ class SimpleAppBase(object):
     def init_cmd_line(self):
         #print "inside service.__call__()"
         args = self.parse_service_args()
+
+    def is_checking_properties(self):
+        args = self.init_cmd_line()
+        if not (args is None) and args.help:
+            return True
+        return False
