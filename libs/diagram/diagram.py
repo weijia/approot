@@ -7,12 +7,14 @@ import libsys
 
 from connection.models import Processor, Connection
 #from objsys.local_obj_tools import get_ufs_obj_from_ufs_url
+from libtool import filetools
 from libtool.filetools import collect_files_in_dir
 from objsys.models import UfsObj
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils import timezone
 from objsys.view_utils import get_ufs_obj_from_ufs_url
+from services.sap.msg_service_sap import AutoRouteMsgService
 
 
 gAutoStartDiagramTagName = "system:autostart"
@@ -176,3 +178,11 @@ def get_all_processors_for_diagram(diagram_id):
     processors = Processor.objects.filter(diagram_obj__id=diagram_obj.pk).exclude(
         ufsobj__ufs_url=diagram_obj.ufs_url)
     return processors
+
+
+def dispatch_to_processor(diagram_uuid, processor, base_msg):
+    base_msg.update({"diagram": {"diagram_id": diagram_uuid, "processor_id": processor.ufsobj.uuid, }})
+    param_dict = json.loads(processor.param_descriptor)
+    base_msg.update(param_dict)
+    target = filetools.get_app_name_from_full_path(processor.ufsobj.ufs_url)
+    AutoRouteMsgService().send_to(target, base_msg)

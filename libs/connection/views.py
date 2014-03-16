@@ -4,14 +4,8 @@ import json
 
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
-from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders, update_diagram_list_from_database, get_all_diagrams
-#from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
-#from libs.services.svc_base.msg_service import MsgQ
-#from libs.services.svc_base.service_starter import start_diagram
+from diagram.diagram import get_all_diagrams
 from diagram.service import get_service_app_list
-from libtool.filetools import find_callable_in_app_framework
-
-from objsys.models import UfsObj
 from django.http import HttpResponse
 
 #import libs.utils.simplejson as json
@@ -21,7 +15,7 @@ from services.svc_base.service_starter import start_diagram
 from utils.django_utils import retrieve_param, get_content_item_list_in_tastypie_format, get_list_in_json, get_json_resp
 
 # Create your views here.
-from objsys.view_utils import get_ufs_obj_from_ufs_url, get_ufs_obj_from_full_path
+from objsys.view_utils import get_ufs_obj_from_ufs_url
 
 
 @login_required
