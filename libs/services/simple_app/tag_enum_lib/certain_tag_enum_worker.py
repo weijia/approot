@@ -10,6 +10,12 @@ log = logging.getLogger(__name__)
 
 
 class CertainTaggedItemEnumWorker(StatedWorker):
+    def __init__(self, diagram_info, parent, group=None, target=None, name=None, args=(), kwargs=None, verbose=None):
+        diagram_id = diagram_info["diagram_id"]
+        super(CertainTaggedItemEnumWorker, self).__init__(diagram_id, parent, group, target, name, args, kwargs,
+                                                          verbose)
+        self.diagram_info = diagram_info
+
     def run(self):
         #Retrieve saved last timestamp, will start to enumerate items with greater (not equal) timestamp
         first_tag_timestamp = self.state.get_state_value("certain_tag_enum_start_timestamp", 0)
@@ -27,6 +33,7 @@ class CertainTaggedItemEnumWorker(StatedWorker):
             log.debug("got tag", obj, tagged_item.timestamp, first_tag_timestamp, time.mktime(
                 tagged_item.timestamp.timetuple()) + (tagged_item.timestamp.microsecond / 1000000.0))
             AutoRouteMsgService().send_to(DISTRIBUTOR, {
+                "diagram": self.diagram_info,
                 "ufs_url": obj.ufs_url,
                 "uuid": obj.uuid, "full_path": obj.full_path, "tag": obj_tag,
                 "tag_app": tag_app,

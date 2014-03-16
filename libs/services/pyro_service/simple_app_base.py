@@ -27,17 +27,17 @@ class SimpleAppBase(object):
         # add all custom parameters
         self.add_param_from_dict(self.DEFAULT_PARAM)
         #parser.add_argument("other", help="other options", nargs='*')
-        print sys.argv
+        #print sys.argv
         #print parser
         args = vars(self.parser.parse_args())
         return args
 
     def init_cmd_line(self):
         #print "inside service.__call__()"
-        args = self.parse_service_args()
+        return self.parse_service_args()
 
     def is_checking_properties(self):
         args = self.init_cmd_line()
-        if not (args is None) and args.help:
+        if not (args is None) and ("help" in args):
             return True
         return False

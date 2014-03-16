@@ -1,7 +1,5 @@
 # -*- coding: gbk -*-
-import json
 import logging
-import thread
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from services.simple_app.tag_enum_lib.certain_tag_enum_worker import CertainTaggedItemEnumWorker
 
@@ -17,9 +15,9 @@ class TagEnumApp(PyroSimpleAppBase):
     def handle_req(self, msg):
         diagram_id = msg["diagram"]["diagram_id"]
         processor_id = msg["diagram"]["processor_id"]
-        if diagram_id in self.diagram_to_task:
-            raise "Duplicated request"
-        task = CertainTaggedItemEnumWorker(processor_id, self)
+        #if diagram_id in self.diagram_to_task:
+        #    raise "Duplicated request"
+        task = CertainTaggedItemEnumWorker(msg["diagram"], self)
         self.diagram_to_task[diagram_id] = task
         task.start()
 

@@ -43,7 +43,8 @@ class Diagram(object):
             processor_list.append(processor.ufsobj.ufs_url)
 
         return {"data": self.diagram_obj.ufs_url, "full_path": self.diagram_obj.ufs_url,
-                "ufs_url": self.diagram_obj.ufs_url, "tags": tag_list, "description": "<br/>".join(processor_list)}
+                "ufs_url": self.diagram_obj.ufs_url, "diagram_uuid": self.diagram_obj.uuid,
+                "tags": tag_list, "description": "<br/>".join(processor_list)}
 
 
 def save_all_diagram_from_predefined_folders():
@@ -155,3 +156,23 @@ def create_processor(diagram_obj, obj, param_str):
     processor = Processor(ufsobj=obj, diagram_obj=diagram_obj, param_descriptor=param_str)
     processor.save()
     return processor
+
+
+def update_diagram_list_from_database(diagram_list):
+    for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
+        diagram_list.append(Diagram(diagram_obj))
+
+
+def get_all_diagrams():
+    diagram_list = save_all_diagram_from_predefined_folders()
+    update_diagram_list_from_database(diagram_list)
+    return diagram_list
+
+
+def get_all_processors_for_diagram(diagram_id):
+    diagram_obj = UfsObj.objects.get(uuid__exact=diagram_id)
+
+    #The exclude filter removes state objects in Processor
+    processors = Processor.objects.filter(diagram_obj__id=diagram_obj.pk).exclude(
+        ufsobj__ufs_url=diagram_obj.ufs_url)
+    return processors

@@ -1,10 +1,6 @@
 import json
-from libtool import include_root_path
 
-include_root_path(__file__, "approot")
-from extra_settings.init_settings import init_settings
-
-init_settings()
+from libsys import *
 
 from objsys.models import UfsObj
 from connection.models import Processor

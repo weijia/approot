@@ -4,7 +4,7 @@ import json
 
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
-from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders
+from diagram.diagram import Diagram, save_all_diagram_from_predefined_folders, update_diagram_list_from_database, get_all_diagrams
 #from libs.services.svc_base.msg_based_service_mgr import gMsgBasedServiceManagerMsgQName
 #from libs.services.svc_base.msg_service import MsgQ
 #from libs.services.svc_base.service_starter import start_diagram
@@ -105,10 +105,7 @@ def get_service_apps(request):
 
 
 def get_diagrams(request):
-    diagram_list = save_all_diagram_from_predefined_folders()
-
-    for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
-        diagram_list.append(Diagram(diagram_obj))
+    diagram_list = get_all_diagrams()
     return get_content_item_list_in_tastypie_format(diagram_list)
 
 

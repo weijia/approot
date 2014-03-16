@@ -15,12 +15,13 @@ function genHtml(data)
             objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
         }
         var desc_content
-        if (value.descriptions.length>0)
+        if ((null!=value.descriptions)&&(value.descriptions.length>0))
             desc_content = value.descriptions[0].content.replace(/"/g,'');
         else
             desc_content = "";
         resHtml += String.format('<div class="element-root" style="position:relative" ufs_url="{0}" full_path="{1}">'+
-                    '<img class="element-thumb" src="{6}?target={5}" title="{0} {1} {4}"/><ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
+                    '<img class="element-thumb" src="{6}?target={5}" title="{0} {1} {4}"/>' +
+                    '<ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',
                     value.ufs_url, value.full_path, '<li>'+value.tags.join('</li><li>')+'</li>',
                     objName, desc_content,
                     encodeURI(value.full_path),

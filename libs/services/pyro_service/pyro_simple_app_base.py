@@ -30,3 +30,4 @@ class PyroSimpleAppBase(PyroServiceBase, SimpleAppBase):
     def start_service(self):
         if not self.is_checking_properties():
             self.start_daemon_register_and_launch_loop()
+        print "quitting start service"
