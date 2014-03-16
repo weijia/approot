@@ -1,6 +1,5 @@
 import logging
-from libtool import include_root_path
-include_root_path(__file__, "approot")
+from libsys import *
 from config import get_ufs_web_server_port
 from configuration import get_default_charset
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase

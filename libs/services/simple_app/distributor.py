@@ -1,15 +1,9 @@
 # -*- coding: gbk -*-
 import json
 import logging
-import thread
-import time
 from libsys import *
 from connection.models import Processor
-from diagram.diagram import get_all_diagrams, get_all_processors_for_diagram, dispatch_to_processor
-import libtool
-
-
-libtool.include_sub_folder_in_root_path(__file__, "approot", "libs")
+from diagram.diagram import get_all_processors_for_diagram, dispatch_to_processor
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 log = logging.getLogger(__name__)
