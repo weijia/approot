@@ -27,6 +27,9 @@ class PyroSimpleAppBase(PyroServiceBase, SimpleAppBase):
             import traceback
             traceback.print_exc()
 
+    def handle_req(self, msg):
+        pass
+
     def start_service(self):
         if not self.is_checking_properties():
             self.start_daemon_register_and_launch_loop()

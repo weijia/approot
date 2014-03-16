@@ -4,6 +4,10 @@ from git_wrapper.puller import Puller
 
 
 class PullService(PyroSimpleAppBase):
+
+    def handle_req(self, msg):
+        self.pull(msg["full_path"])
+
     def pull(self, path):
         puller = Puller(path)
         puller.pull_all()

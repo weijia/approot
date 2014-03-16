@@ -32,17 +32,20 @@ class Distributor(PyroSimpleAppBase):
         processors = get_all_processors_for_diagram(diagram_id)
         for processor in processors:
             if processor.ufsobj.uuid == msg["diagram"]["processor_id"]:
-                connection = processor.outputs.all()[0]
+                try:
+                    connection = processor.outputs.all()[0]
+                except IndexError:
+                    print processor, connection
                 target_processor = Processor.objects.filter(inputs=connection)[0]
-                dispatch_to_processor(diagram_id, target_processor)
+                dispatch_to_processor(diagram_id, target_processor, msg)
 
 
-def dispatch_to_processor(diagram_uuid, processor):
-    msg = {"diagram": {"diagram_id": diagram_uuid, "processor_id": processor.ufsobj.uuid, }}
+def dispatch_to_processor(diagram_uuid, processor, base_msg):
+    base_msg.update({"diagram": {"diagram_id": diagram_uuid, "processor_id": processor.ufsobj.uuid, }})
     param_dict = json.loads(processor.param_descriptor)
-    msg.update(param_dict)
+    base_msg.update(param_dict)
     target = filetools.get_app_name_from_full_path(processor.ufsobj.ufs_url)
-    AutoRouteMsgService().send_to(target, msg)
+    AutoRouteMsgService().send_to(target, base_msg)
 
 
 def start_diagrams():
@@ -53,7 +56,7 @@ def start_diagrams():
         for processor in processors_for_diagram:
             input_count = processor.inputs.count()
             if 0 == input_count:
-                dispatch_to_processor(diagram_uuid, processor)
+                dispatch_to_processor(diagram_uuid, processor, {})
 
 
 if __name__ == "__main__":
