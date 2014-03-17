@@ -58,6 +58,8 @@ includes = [
     "cherrypy",
     "iconizer",
     "libtool",
+    "keys",
+    "keys_template",
     "djangoautoconf",
     #For social auth
     "social_auth.db.django_models",
@@ -76,7 +78,7 @@ includes = [
 app_list = ['new_rootapp',
                #'tornado_main',
                'tagging',
-               #'new_ext_svr',
+               'new_ext_svr',
                #'sftpserver',
                #'BeanstalkdLauncherService',
                #'manage',
@@ -96,11 +98,17 @@ app_list.extend(gDefaultServices)
 print app_list, '-------------------'
 from iconizer.qtconsole.fileTools import find_resource_in_pkg
 
-includefiles = [
-    #(find_resource_in_pkg("gf-16x16.png"), "gf-16x16.png"),
-    #(find_resource_in_pkg("app_list.ui"), "app_list.ui"),
-    #(find_resource_in_pkg("droppable.ui"), "droppable.ui"),
-    #(find_resource_in_pkg("notification.ui"), "notification.ui"),
+include_files = []
+
+
+def get_iconizer_resources():
+    result = []
+    for i in  ["gf-16x16.png", "list_window.ui", "droppable.ui", "notification.ui"]:
+        result.append((find_resource_in_pkg(i), i))
+    return result
+
+include_files.extend(get_iconizer_resources())
+include_files.extend([
     #("libs/services/external_app/startBeanstalkd.bat", "startBeanstalkd.bat"),
     #("libs/services/external_app/scache.bat", "external_app/scache.bat"),
     #("libs/services/external_app/sftpserver.bat", "external_app/sftpserver.bat"),
@@ -116,15 +124,18 @@ includefiles = [
     #("activate_app.bat", "activate.bat"),
     #("syncdb.bat", "syncdb.bat"),
     ("share", "share"),
+    ("keys", "keys"),
+    ("keys_template", "keys_template"),
     #("../others", "../others"),
-]
+])
+
 excludefiles = []
 zip_includes = []
 build_exe_dir = "../build/approot"
 
 build_exe_params = {
     "includes": includes,
-    'include_files': includefiles,
+    'include_files': include_files,
     "bin_excludes": excludefiles,
     "build_exe": build_exe_dir,
     "zip_includes": zip_includes,
