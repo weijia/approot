@@ -5,8 +5,10 @@ from cx_Freeze import setup, Executable
 
 #from rootapp import settings
 from libs.django_build.django_setup import DjangoCxFreezeBuildSpecGenerator
-import libs.utils.filetools as filetools
-import rootapp.ufs_django_settings
+from extra_settings.init_settings import init_settings
+from libtool import filetools
+
+init_settings()
 
 ####################
 # Dependancy
@@ -32,14 +34,14 @@ def gen_executables_list(script_list):
 def get_executable(app_param):
     if type(app_param) != tuple:
         app_full_name = app_param + ".py"
-        app_path = filetools.findFileInProduct(app_full_name)
+        app_path = filetools.find_filename_in_app_framework_with_pattern(app_full_name)
         if app_path is None:
             return None
             #print "app:", app_path
         return Executable(script=app_path)
     else:
         app_full_name = app_param[0] + ".py"
-        app_path = filetools.findFileInProduct(app_full_name)
+        app_path = filetools.find_filename_in_app_framework_with_pattern(app_full_name)
         #print "app with target:", app_path
         return Executable(script=app_path, targetName=app_param[1])
 
@@ -54,7 +56,7 @@ includes = [
     "yaml",
     "rootapp.urls",
     "connection.save_diagram_view",
-    "manifest",
+    #"manifest",
     "ui_framework",
     'django',
     'magic',
@@ -66,13 +68,16 @@ includes = [
     "email",
     "email.message",
     "cherrypy",
+    "iconizer",
+    "libtool",
+    "djangoautoconf",
     #For social auth
     "social_auth.db.django_models",
     #For registration
     'registration.backends.default.urls',
     'registration.auth_urls',
-    'rootapp.separated_settings.build_settings',
-    'rootapp.separated_settings.local_postgresql_settings',
+    #'rootapp.separated_settings.build_settings',
+    #'rootapp.separated_settings.local_postgresql_settings',
     "django.core.management",
     "django.core.management.commands.syncdb",
     "django.core.management.commands.loaddata",
@@ -101,23 +106,23 @@ print script_list, '-------------------'
 from iconizer.qtconsole.fileTools import find_resource_in_pkg
 
 includefiles = [
-    (find_resource_in_pkg("gf-16x16.png"), "gf-16x16.png"),
-    (find_resource_in_pkg("app_list.ui"), "app_list.ui"),
-    (find_resource_in_pkg("droppable.ui"), "droppable.ui"),
-    (find_resource_in_pkg("notification.ui"), "notification.ui"),
-    ("libs/services/external_app/startBeanstalkd.bat", "startBeanstalkd.bat"),
-    ("libs/services/external_app/scache.bat", "external_app/scache.bat"),
-    ("libs/services/external_app/sftpserver.bat", "external_app/sftpserver.bat"),
+    #(find_resource_in_pkg("gf-16x16.png"), "gf-16x16.png"),
+    #(find_resource_in_pkg("app_list.ui"), "app_list.ui"),
+    #(find_resource_in_pkg("droppable.ui"), "droppable.ui"),
+    #(find_resource_in_pkg("notification.ui"), "notification.ui"),
+    #("libs/services/external_app/startBeanstalkd.bat", "startBeanstalkd.bat"),
+    #("libs/services/external_app/scache.bat", "external_app/scache.bat"),
+    #("libs/services/external_app/sftpserver.bat", "external_app/sftpserver.bat"),
     ("libs/services/external_app/postgresql.bat", "postgresql.bat"),
     ("libs/services/external_app/postgresql_stop.bat", "postgresql_stop.bat"),
-    ("libs/services/external_app/start_ext_app.bat", "start_ext.bat"),
+    #("libs/services/external_app/start_ext_app.bat", "start_ext.bat"),
     ("libs/services/apps/diagrams/", "diagrams"),
     #("libs/allauth/fixtures/initial_data.json", "initial_data.json"),
     ("libs/zlib1.dll", "libs/zlib1.dll"),
     ("libs/regex2.dll", "libs/regex2.dll"),
     ("libs/magic1.dll", "libs/magic1.dll"),
     #("tornado_app.bat", "tornado.bat"),
-    ("activate_app.bat", "activate.bat"),
+    #("activate_app.bat", "activate.bat"),
     #("syncdb.bat", "syncdb.bat"),
     ("share", "share"),
     #("../others", "../others"),
@@ -171,7 +176,7 @@ print os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1]
 settings_module = getattr(settings_package, os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1])
 '''
 #print dir(rootapp.ufs_django_settings.get_settings())
-settings_module = rootapp.ufs_django_settings.get_ufs_settings()
+settings_module = init_settings().get_settings()
 DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
 final_script_list = gen_executables_list(script_list)
