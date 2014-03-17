@@ -1,24 +1,12 @@
 #from setuptools import find_packages
 import os
-
+import sys
 from cx_Freeze import setup, Executable
 
-#from rootapp import settings
+
 from libs.django_build.django_setup import DjangoCxFreezeBuildSpecGenerator
 from extra_settings.init_settings import init_settings
 from libtool import filetools
-
-init_settings()
-
-####################
-# Dependancy
-####################
-# pspcopg: http://www.stickpeople.com/projects/python/win-psycopg/2.5.0/psycopg2-2.5.win32-py2.7-pg9.2.4-release.exe
-# pyyaml: pip install pyyaml
-# pyopenssl: https://pypi.python.org/pypi/pyOpenSSL
-# pip install django-tastypie
-# pip install pyyaml
-#
 
 
 def gen_executables_list(script_list):
@@ -143,8 +131,8 @@ build_exe_params = {
 
 #Create data.db for SQLITE so build process can run with SQLITE
 os.environ["POSTGRESQL_ROOT"] = ""
+settings_module = init_settings().get_settings()
 os.system("syncdb.bat")
-import sys
 os.system(sys.executable + " ./manage.py migrate")
 os.system("collectstatic.bat")
 
@@ -169,14 +157,9 @@ os.environ["TCL_LIBRARY"] = os.path.join(python_dir, tcl_lib_path_name)
 os.environ["TK_LIBRARY"] = os.path.join(python_dir, tk_lib_path_name)
 
 print os.environ["DJANGO_SETTINGS_MODULE"], '---------------------------'
-'''
-settings_package = __import__(os.environ["DJANGO_SETTINGS_MODULE"])
-print dir(settings_package)
-print os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1]
-settings_module = getattr(settings_package, os.environ["DJANGO_SETTINGS_MODULE"].rsplit('.', 1)[1])
-'''
+
 #print dir(rootapp.ufs_django_settings.get_settings())
-settings_module = init_settings().get_settings()
+
 DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
 final_script_list = gen_executables_list(script_list)

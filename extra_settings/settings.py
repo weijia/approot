@@ -33,7 +33,7 @@ import logging
 from os import environ
 postgresql = environ.get("POSTGRESQL_ROOT", "")
 postgresql_port = environ.get("POSTGRESQL_PORT", "")
-if postgresql:
+if "" != postgresql:
     #Local database
     '''
     MYSQL_DB = 'mysite' 

@@ -4,8 +4,7 @@ import traceback
 import urllib2
 import uuid
 import webbrowser
-from libtool import include_file_sibling_folder
-include_file_sibling_folder(__file__, "libs")
+from lib_list import *
 from iconizer import Iconizer
 from libs.app_framework.folders import get_or_create_app_data_folder
 from libtool.filetools import find_callable_in_app_framework

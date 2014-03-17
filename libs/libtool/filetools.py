@@ -80,7 +80,7 @@ def find_file_in_product(filename):
 
 def find_filename_in_app_framework_with_pattern(pattern):
     p = os.getcwd()
-    #print 'current path:', p
+    print 'current path:', p, 'pattern', pattern
     for dirpath, dirnames, filenames in os.walk(p):
         for i in filenames:
             res = re.search(pattern, i)
