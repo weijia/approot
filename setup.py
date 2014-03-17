@@ -9,17 +9,17 @@ from extra_settings.init_settings import init_settings
 from libtool import filetools
 
 
-def gen_executables_list(script_list):
+def gen_executable_list(script_list):
     executable_list = []
     for i in script_list:
-        app = get_executable(i)
+        app = create_executable_from_app_name(i)
         if app is None:
             continue
         executable_list.append(app)
     return executable_list
 
 
-def get_executable(app_param):
+def create_executable_from_app_name(app_param):
     if type(app_param) != tuple:
         app_full_name = app_param + ".py"
         app_path = filetools.find_filename_in_app_framework_with_pattern(app_full_name)
@@ -73,15 +73,18 @@ includes = [
     'south.management.commands.migrate',
 ]
 
-script_list = ['new_rootapp',
+app_list = ['new_rootapp',
                #'tornado_main',
-               'tagging', 'new_ext_svr', 'sftpserver',
+               'tagging',
+               #'new_ext_svr',
+               #'sftpserver',
                #'BeanstalkdLauncherService',
                #'manage',
                #'syncdb'
                #'initial_launcher',
                'cherrypy_server',
-               'service_starter', 'msg_based_service_mgr',
+               #'service_starter',
+               #'msg_based_service_mgr',
                # ('monitor.py', 'libs/services/apps/monitor.exe'),
                # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
                # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
@@ -89,8 +92,8 @@ script_list = ['new_rootapp',
 ]
 from libs.services.svc_base.default_apps import gDefaultServices
 
-script_list.extend(gDefaultServices)
-print script_list, '-------------------'
+app_list.extend(gDefaultServices)
+print app_list, '-------------------'
 from iconizer.qtconsole.fileTools import find_resource_in_pkg
 
 includefiles = [
@@ -142,27 +145,18 @@ os.system("collectstatic.bat")
 #Workarround for cx_freeze packaging cherrypy
 import _tkinter
 from os.path import dirname
-
 python_dir = dirname(dirname(_tkinter.__file__))
-
-#print os.environ["TCL_LIBRARY"]
-#print os.environ["TK_LIBRARY"]
-#os.environ["TCL_LIBRARY"] = os.path.join(python_dir, "tcl/tcl8.5")
-#os.environ["TK_LIBRARY"] = os.path.join(python_dir, "tcl/tk8.5")
-
 tcl_lib_path_name = "tcl/tcl" + _tkinter.TCL_VERSION
 tk_lib_path_name = "tcl/tk" + _tkinter.TCL_VERSION
-
 os.environ["TCL_LIBRARY"] = os.path.join(python_dir, tcl_lib_path_name)
 os.environ["TK_LIBRARY"] = os.path.join(python_dir, tk_lib_path_name)
 
 print os.environ["DJANGO_SETTINGS_MODULE"], '---------------------------'
-
 #print dir(rootapp.ufs_django_settings.get_settings())
 
 DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
-final_script_list = gen_executables_list(script_list)
+final_script_list = gen_executable_list(app_list)
 print build_exe_params
 setup(
     version="0.1", #This is required or build process will have exception.

@@ -1,5 +1,4 @@
 # -*- coding: gbk -*-
-import json
 import logging
 from libsys import *
 from connection.models import Processor

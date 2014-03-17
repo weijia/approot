@@ -10,8 +10,7 @@ from platform_related.executor import execute_app_from_name_and_wait_for_complet
 
 from services.svc_base.postgres_app_starter import PostgresApp
 #The following will set environment string for start web server.
-#import configuration
-
+import configuration
 from extra_settings import init_settings
 import django.core.management as core_management
 from services.pyro_service.name_server_starter import NameServerStarter

@@ -4,7 +4,7 @@ include_in_folder(get_parent_folder(__file__), "libs")
 from djangoautoconf import DjangoAutoConf
 # configuration should not be imported here as setup.py will use this file,
 # but will need some different database settings
-import configuration
+#import configuration
 
 
 def init_settings():
