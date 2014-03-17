@@ -1,12 +1,2 @@
-import sys
-import os
-
-
-def get_root_dir():
-    c = os.getcwd()
-    while c.find('approot') != -1:
-        c = os.path.dirname(c)
-    return os.path.join(c, 'approot')
-
-sys.path.insert(0, get_root_dir())
-sys.path.insert(0, os.path.join(get_root_dir(),"libs"))
+import libtool
+libtool.include_file_sibling_folder(__file__, "libs")

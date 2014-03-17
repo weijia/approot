@@ -5,9 +5,8 @@ import time
 
 from django.http import HttpResponse
 from django.contrib.contenttypes.models import ContentType
-
-import libsys
 from tagging.models import TaggedItem
+from libtool import find_root_path
 from utils.obj_tools import get_hostname
 from utils.django_utils import retrieve_param
 from objsys.obj_tagging import UfsFilter
@@ -28,7 +27,7 @@ def get_tag_info_for_obj(obj):
 
 
 def export_json_to_folder(final_data, relative_path):
-    root_dir = libsys.get_root_dir()
+    root_dir = find_root_path(__file__, "approot")
     dump_root = os.path.join(root_dir, relative_path)
     ensure_dir(dump_root)
     dump_filename = os.path.join(root_dir, relative_path + str(time.time()) + ".json")

@@ -33,7 +33,6 @@ def exec_django_cmd(data_params_):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    os.chdir(libsys.get_root_dir())
     PostgresApp()
     NameServerStarter()
 

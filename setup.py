@@ -1,5 +1,6 @@
 #from setuptools import find_packages
 import os
+import pprint
 import sys
 from cx_Freeze import setup, Executable
 
@@ -45,8 +46,16 @@ includes = [
     "rootapp.urls",
     "rootapp.settings",
     "extra_settings.settings",
+    "extra_settings.build_settings",
+    "djangoautoconf",
     "djangoautoconf.sqlite_database",
+    "djangoautoconf.features.guardian",
+    "djangoautoconf.features.pagination",
+    "djangoautoconf.features.django_social_auth",
+    "djangoautoconf.features.django_registration",
     "connection.save_diagram_view",
+    #"tags.tag_utils",
+    #"objsys.tree",
     #"manifest",
     "ui_framework",
     'django',
@@ -63,7 +72,6 @@ includes = [
     "libtool",
     "keys",
     "keys_template",
-    "djangoautoconf",
     #For social auth
     "social_auth.db.django_models",
     #For registration
@@ -82,6 +90,7 @@ app_list = ['new_rootapp',
                #'tornado_main',
                'tagging',
                'new_ext_svr',
+               "name_server_app",
                #'sftpserver',
                #'BeanstalkdLauncherService',
                #'manage',
@@ -171,7 +180,7 @@ print os.environ["DJANGO_SETTINGS_MODULE"], '---------------------------'
 DjangoCxFreezeBuildSpecGenerator().gen_spec(settings_module, build_exe_params)
 
 final_script_list = gen_executable_list(app_list)
-print build_exe_params
+pprint.pprint(build_exe_params)
 setup(
     version="0.1", #This is required or build process will have exception.
     description="application starter",
