@@ -78,7 +78,11 @@ class DjangoAutoConf(object):
         # Ref: http://stackoverflow.com/questions/11813287/insert-variable-into-global-namespace-from-within-a-function
         self.init_builtin()
         self.inject_attr()
-        new_base_settings = importlib.import_module(module_import_path)
+        try:
+            new_base_settings = importlib.import_module(module_import_path)
+        except:
+            print "Import module error:", module_import_path
+            raise
         self.remove_attr()
         update_base_settings(new_base_settings)
 
