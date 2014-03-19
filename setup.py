@@ -86,22 +86,22 @@ includes = [
 ]
 
 app_list = ['new_rootapp',
-               #'tornado_main',
-               'tagging',
-               'new_ext_svr',
-               "name_server_app",
-               #'sftpserver',
-               #'BeanstalkdLauncherService',
-               #'manage',
-               #'syncdb'
-               #'initial_launcher',
-               'cherrypy_server',
-               #'service_starter',
-               #'msg_based_service_mgr',
-               # ('monitor.py', 'libs/services/apps/monitor.exe'),
-               # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
-               # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
-               # ('tube_logging.py', 'libs/services/apps/tube_logging.exe'),
+            #'tornado_main',
+            'tagging',
+            'new_ext_svr',
+            "name_server_app",
+            #'sftpserver',
+            #'BeanstalkdLauncherService',
+            #'manage',
+            #'syncdb'
+            #'initial_launcher',
+            'cherrypy_server',
+            #'service_starter',
+            #'msg_based_service_mgr',
+            # ('monitor.py', 'libs/services/apps/monitor.exe'),
+            # ('scache_storage.py', 'libs/services/apps/scache_storage.exe'),
+            # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
+            # ('tube_logging.py', 'libs/services/apps/tube_logging.exe'),
 ]
 from services.svc_base.default_apps import gDefaultServices
 
@@ -114,9 +114,10 @@ include_files = []
 
 def get_iconizer_resources():
     result = []
-    for i in  ["gf-16x16.png", "list_window.ui", "droppable.ui", "notification.ui"]:
+    for i in ["gf-16x16.png", "list_window.ui", "droppable.ui", "notification.ui"]:
         result.append((find_resource_in_pkg(i), i))
     return result
+
 
 include_files.extend(get_iconizer_resources())
 include_files.extend([
@@ -141,7 +142,23 @@ include_files.extend([
 ])
 
 excludefiles = []
-zip_includes = []
+
+
+def get_pytz_files():
+    path_base = "D:\\work\\mine\\venv\\Lib\\site-packages\\pytz\\zoneinfo\\"
+    skip_count = len(path_base)
+    zip_includes = [(path_base, "pytz/zoneinfo/")]
+    for root, sub_folders, files in os.walk(path_base):
+        for file_in_root in files:
+            zip_includes.append(
+                ("{}".format(os.path.join(root, file_in_root)),
+                 "{}".format(os.path.join("pytz/zoneinfo", root[skip_count:], file_in_root))
+                )
+            )
+    return zip_includes
+
+
+zip_includes = get_pytz_files()
 build_exe_dir = "../build/approot"
 
 build_exe_params = {
@@ -167,6 +184,7 @@ os.system("collectstatic.bat")
 #Workarround for cx_freeze packaging cherrypy
 import _tkinter
 from os.path import dirname
+
 python_dir = dirname(dirname(_tkinter.__file__))
 tcl_lib_path_name = "tcl/tcl" + _tkinter.TCL_VERSION
 tk_lib_path_name = "tcl/tk" + _tkinter.TCL_VERSION

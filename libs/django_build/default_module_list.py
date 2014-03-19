@@ -20,7 +20,7 @@ DEFAULT_DJANGO_MODULES = [
     'django.contrib.admin.sites',
     'django.contrib.admin.forms',
     "django.contrib.sessions",
-
+    "django.contrib.messages.context_processors",
 
     'django.db.models',
     'django.db.backends.sqlite3',
