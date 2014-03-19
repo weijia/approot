@@ -1,7 +1,7 @@
 import os
-from libs.utils.folder import get_parent_folder
-from libtool import include_file_sibling_folder, include_in_folder, find_root_path
+from libtool import include_file_sibling_folder, include_in_folder, find_root_path, get_parent_folder
 include_in_folder(get_parent_folder(__file__), "libs")
+
 from djangoautoconf import DjangoAutoConf
 # configuration should not be imported here as setup.py will use this file,
 # but will need some different database settings

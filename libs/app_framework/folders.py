@@ -1,5 +1,5 @@
 import libtool
-from libs.utils.misc import ensure_dir
+from utils.misc import ensure_dir
 import os
 
 

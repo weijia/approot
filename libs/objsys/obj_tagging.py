@@ -11,9 +11,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from tagging.models import Tag, TaggedItem
 from tagging.utils import parse_tag_input
-from libs.utils.django_utils import retrieve_param
-from libs.utils.string_tools import SpecialEncoder
-import libs.utils.obj_tools as obj_tools
+from utils.django_utils import retrieve_param
+from utils.string_tools import SpecialEncoder
+import utils.obj_tools as obj_tools
 from objsys.models import UfsObj
 from objsys.models import Description
 from objsys.view_utils import get_ufs_obj_from_ufs_url

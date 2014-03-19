@@ -3,13 +3,9 @@ from diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStart
     gDiagramRootCollectionUuid, get_all_processors_for_diagram
 from iconizer.pyro_launcher import Launcher
 from tagging.models import TaggedItem
-#from libs.services.svc_base.beanstalkd_interface import beanstalkWorkingThread
+
 from django.conf import settings
-#from tagging.models import Tag, TaggedItem, DoesNotExist
-#import libs.utils.simplejson as json
 from collection_management.models import CollectionItem
-from connection.models import Processor
-import json
 from objsys.models import UfsObj
 from services.simple_app.distributor import dispatch_to_processor
 

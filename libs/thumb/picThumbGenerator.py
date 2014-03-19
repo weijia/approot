@@ -1,8 +1,8 @@
 import os
-from libs.tags.views import add_tag_for_full_path
-import libs.utils.transform as transform
+from tags.views import add_tag_for_full_path
+import utils.transform as transform
 
-from libs.obj_related.local_obj import LocalObj
+from obj_related.local_obj import LocalObj
 
 g_default_thumb_size = 256
 

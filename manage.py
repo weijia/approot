@@ -4,7 +4,7 @@ from extra_settings.init_settings import init_settings
 from libtool import include_file_sibling_folder
 include_file_sibling_folder(__file__, "libs")
 
-from libs.utils.console import unbuffer_console
+from utils.console import unbuffer_console
 
 unbuffer_console()
 

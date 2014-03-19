@@ -1,7 +1,7 @@
 import logging
 import os
-import sys
-import libs.root_lib_sys as root_lib
+from libsys import *
+import root_lib_sys as root_lib
 
 ##################################
 # Configurations

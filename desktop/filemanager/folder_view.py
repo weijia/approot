@@ -4,11 +4,11 @@ from django.shortcuts import render_to_response, redirect
 import os
 from tagging.models import Tag, TaggedItem
 #from django.core import serializers
-from objsys.models import UfsObj, CollectionItem
+from objsys.models import UfsObj
 import json
-from libs.windows.windowsDriver import getDriverList
+from windows.windowsDriver import getDriverList
 import urllib2
-import libs.utils.string_tools as string_tools
+import utils.string_tools as string_tools
 
 
 def root(request):
@@ -54,8 +54,8 @@ def root_rest(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-import libs.utils.transform as transform
-import libs.utils.obj_tools as obj_tools
+import utils.transform as transform
+import utils.obj_tools as obj_tools
 
 gDefaultFileListCnt = 20
 

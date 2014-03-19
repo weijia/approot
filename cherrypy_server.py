@@ -24,7 +24,7 @@ g_oauth_fixed_redirect_port = 8188
 class Thumb:
     @cherrypy.expose
     def cherry(self, target):
-        from libs.thumbapp.views import get_thumb_file
+        from thumbapp.views import get_thumb_file
 
         the_file = get_thumb_file(target)
         #print the_file

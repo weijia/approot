@@ -1,6 +1,6 @@
 import libsys
-import libs.utils.filetools as fileTools
-import libs.utils.misc as misc
+import utils.filetools as fileTools
+import utils.misc as misc
 import os
 import configuration
 

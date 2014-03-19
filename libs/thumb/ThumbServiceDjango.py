@@ -5,8 +5,8 @@ import appThumb
 import os
 import localLibSys
 from libs.logsys.logSys import *
-from libs.utils.transform import format_path
-from libs.utils.obj_tools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
+from utils.transform import format_path
+from utils.obj_tools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
 import traceback
 
 

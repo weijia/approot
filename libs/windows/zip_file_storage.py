@@ -1,10 +1,10 @@
 #import ufsTreeItem
 '''
-import libs.collection.collectionManager as collectionManager
-import libs.ufsDb.dbSys as dbSys
-import libs.services.nameServiceV2 as nameService
-import libs.utils.configurationTools as configurationTools
-import libs.utils.objTools as objTools
+import collection.collectionManager as collectionManager
+import ufsDb.dbSys as dbSys
+import services.nameServiceV2 as nameService
+import utils.configurationTools as configurationTools
+import utils.objTools as objTools
 
 try:
     import localLibSys
@@ -13,11 +13,11 @@ except ImportError:
     pass
 '''
 #import wwjufsdatabase.libs.tag.tagSystemInterface as tagSys
-import wwjufsdatabase.libs.utils.odict as odict
-from wwjufsdatabase.libs.ufs.modules.UfsModuleBase import UfsModuleBase
+import utils.odict as odict
 import localLibSys
-from localLibs.logSys.logSys import *
+from logSys.logSys import *
 #from localLibs.services.beanstalkdServices.FileArchiveServiceV2 import g_file_archive_storage_collection_id
+
 
 class StorageCollectionItem(UfsModuleBase):
     def __init__(self, item_id, req):

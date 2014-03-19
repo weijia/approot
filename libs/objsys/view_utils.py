@@ -1,6 +1,6 @@
-from libs.obj_related.json_obj import JsonDecoderForUfsObj
-from libs.utils import transform as transform
-from libs.utils.obj_tools import getUfsUrlForPath
+from obj_related.json_obj import JsonDecoderForUfsObj
+from utils import transform as transform
+from utils.obj_tools import getUfsUrlForPath
 from objsys.models import UfsObj
 
 __author__ = 'Richard'

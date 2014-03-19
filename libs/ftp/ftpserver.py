@@ -2,12 +2,11 @@ import argparse
 import json
 import os
 import uuid
-
+import libsys
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-import libsys
-from libs.utils.mobile.qrcode_image import get_qr_code
+from utils.mobile.qrcode_image import get_qr_code
 
 
 def main(port, root_dir, username, password):

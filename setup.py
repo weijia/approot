@@ -3,9 +3,8 @@ import os
 import pprint
 import sys
 from cx_Freeze import setup, Executable
-
-
-from libs.django_build.django_setup import DjangoCxFreezeBuildSpecGenerator
+from libsys import *
+from django_build.django_setup import DjangoCxFreezeBuildSpecGenerator
 from extra_settings.init_settings import init_settings
 from libtool import filetools
 
@@ -62,7 +61,7 @@ includes = [
     'magic',
     'desktop.filemanager.folder_view',
     #'libs.custom_collections',
-    'libs.custom_collections.modules.local_filesystem',
+    'custom_collections.modules.local_filesystem',
     #For Cherrypy
     #"django.contrib.messages",
     "email",
@@ -104,7 +103,7 @@ app_list = ['new_rootapp',
                # ('tagged_enumerator.py', 'libs/services/apps/tagged_enumerator.exe'),
                # ('tube_logging.py', 'libs/services/apps/tube_logging.exe'),
 ]
-from libs.services.svc_base.default_apps import gDefaultServices
+from services.svc_base.default_apps import gDefaultServices
 
 app_list.extend(gDefaultServices)
 print app_list, '-------------------'
@@ -127,7 +126,7 @@ include_files.extend([
     ("libs/services/external_app/postgresql.bat", "postgresql.bat"),
     ("libs/services/external_app/postgresql_stop.bat", "postgresql_stop.bat"),
     #("libs/services/external_app/start_ext_app.bat", "start_ext.bat"),
-    ("libs/services/apps/diagrams/", "diagrams"),
+    #("libs/services/apps/diagrams/", "diagrams"),
     #("libs/allauth/fixtures/initial_data.json", "initial_data.json"),
     ("libs/zlib1.dll", "libs/zlib1.dll"),
     ("libs/regex2.dll", "libs/regex2.dll"),

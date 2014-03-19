@@ -1,21 +1,17 @@
 import argparse
-import httplib
 import json
-#import urllib2
 import os
-import urllib
 import urllib2
-from libs.app_framework.folders import get_or_create_app_data_folder
-from libs.compress.enc_7z import EncZipFileOn7Zip
-from libs.datetime_storage.datetime_folders import get_date_based_path_and_filename
-from libs.utils.filetools import get_free_timestamp_filename_in_path
-from libs.utils.obj_tools import get_hostname
-import libsys
-import httplib2
+from app_framework.folders import get_or_create_app_data_folder
+from compress.enc_7z import EncZipFileOn7Zip
+from datetime_storage.datetime_folders import get_date_based_path_and_filename
+from libtool.filetools import get_free_timestamp_filename_in_path
+from utils.obj_tools import get_hostname
 from libs.obj_related.period_manager import Period, get_tasty_client_period_manager
 
 
-class NoMoreItems(object): pass
+class NoMoreItems(object):
+    pass
 
 
 class ServerInfo(object):

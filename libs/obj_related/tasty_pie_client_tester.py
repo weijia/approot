@@ -1,10 +1,6 @@
-import json
+
 import unittest
-from libs.app_framework.folders import get_or_create_app_data_folder
-from libs.utils.filetools import get_free_timestamp_filename_in_path
-import libsys
-from libs.obj_related.period_manager import NoPersistentOffsetPeriodManager, get_tasty_client_period_manager
-from libs.obj_related.tasty_pie_client import ServerInfo, TastyPieClient
+from obj_related.tasty_pie_client import ServerInfo, TastyPieClient
 from test_keys import hostname, username, password
 
 

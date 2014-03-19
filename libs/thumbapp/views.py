@@ -1,21 +1,17 @@
 import os
-import mimetypes
 from urllib import unquote
-
-from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.utils.http import urlquote
 from django.template import RequestContext
 
-from libs.thumb.thumbInterface import get_thumb
-from libs.obj_related.local_obj import LocalObj
-from libs.utils.mobile.qrcode_image import get_qr_code
-from libs.utils.django_utils import retrieve_param, return_file_data
+from thumb.thumbInterface import get_thumb
+from obj_related.local_obj import LocalObj
+from utils.mobile.qrcode_image import get_qr_code
+from utils.django_utils import retrieve_param, return_file_data
 import libsys
-from libs.utils.transform import format_path
+from utils.transform import format_path
 from models import ThumbCache
-from libs.utils.misc import ensure_dir as ensure_dir
-from libs.logsys.logSys import *
+from utils.misc import ensure_dir as ensure_dir
+from logsys.logSys import *
 from objsys.view_utils import get_ufs_obj_from_full_path
 
 

@@ -8,7 +8,6 @@ from diagram.diagram import get_all_diagrams
 from diagram.service import get_service_app_list
 from django.http import HttpResponse
 
-#import libs.utils.simplejson as json
 from django.contrib.auth.decorators import login_required
 from platform_related.executor import execute_app
 from services.svc_base.service_starter import start_diagram

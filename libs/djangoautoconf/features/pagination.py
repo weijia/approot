@@ -3,6 +3,6 @@ INSTALLED_APPS += (
 )
 
 MIDDLEWARE_CLASSES += (
-    #'libs.objsys.middleware.XsSharingMiddleware',
+    #'objsys.middleware.XsSharingMiddleware',
     'pagination.middleware.PaginationMiddleware',
 )

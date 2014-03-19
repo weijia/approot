@@ -3,10 +3,6 @@ import picThumbGenerator
 import ffmpegThumb
 import appThumb
 import os
-import localLibSys
-from localLibs.logSys.logSys import *
-from wwjufsdatabase.libs.utils.transform import transformDirToInternal
-from wwjufsdatabase.libs.utils.objTools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
 import traceback
 
 

@@ -1,10 +1,9 @@
+import json
 import encodingTools
 import os
 #commaEncoding = "gbk"
 import libsys
 import sys
-#print sys.path
-#import libs.utils.simplejson as json
 '''
 def getTagSeparator():
     #"\xa3\xac" is a "," in GBK

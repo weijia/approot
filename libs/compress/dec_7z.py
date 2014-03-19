@@ -2,10 +2,10 @@ import os.path
 import os
 
 import subprocess
-from libs.app_framework.folders import get_app_full_path_by_name, get_or_create_app_data_folder
-from libs.obj_related import test_keys
-from libs.utils.misc import ensure_dir
-from libs.utils.transform import format_path
+from app_framework.folders import get_app_full_path_by_name, get_or_create_app_data_folder
+from obj_related import test_keys
+from utils.misc import ensure_dir
+from utils.transform import format_path
 
 CREATE_NO_WINDOW = 0x8000000
 

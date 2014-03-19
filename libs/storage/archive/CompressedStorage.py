@@ -1,8 +1,8 @@
-from libs.utils.filetools import get_free_timestamp_filename_in_path
 import libsys
 from libs.utils.misc import ensure_dir
-import libs.utils.transform as transform
-from libs.compress.enc_7z import EncZipFileOn7Zip
+from libtool.filetools import get_free_timestamp_filename_in_path
+import utils.transform as transform
+from compress.enc_7z import EncZipFileOn7Zip
 
 from libs.logSys.logSys import *
 
