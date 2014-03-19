@@ -2,11 +2,8 @@ import picThumbGenerator
 #import movieThumb
 import ffmpegThumb
 import appThumb
-import os
-import localLibSys
-from libs.logsys.logSys import *
 from utils.transform import format_path
-from utils.obj_tools import getFullPathFromUfsUrl, isUfsFs, getPathForUfsUrl
+from utils.obj_tools import isUfsFs, getPathForUfsUrl
 import traceback
 
 

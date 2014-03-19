@@ -6,7 +6,7 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 
-from libs.utils.django_utils import retrieve_param
+from utils.django_utils import retrieve_param
 from objsys.models import UfsObj
 from tagging.models import Tag, TaggedItem
 from obj_tagging import *

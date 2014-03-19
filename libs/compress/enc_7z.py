@@ -2,7 +2,7 @@ import os.path
 import os
 
 import subprocess
-from libs.app_framework.folders import get_app_full_path_by_name
+from app_framework.folders import get_app_full_path_by_name
 
 CREATE_NO_WINDOW = 0x8000000
 

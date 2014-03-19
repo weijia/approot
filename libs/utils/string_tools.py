@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import os
 import urllib2
-from libs.logsys.logSys import *
+from logsys.logSys import *
 
 
 class SpecialEncoder(object):

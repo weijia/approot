@@ -4,6 +4,9 @@ import ffmpegThumb
 import appThumb
 import os
 import traceback
+from utils.obj_tools import isUfsFs, getPathForUfsUrl
+from utils.transform import format_path
+from logsys.logSys import *
 
 
 g_non_video_file_ext_list = ["7z", "apk","asp", "aspx", "cab", "chm", "c", "class", "cpp", "crx", 
@@ -47,7 +50,7 @@ def internal_get_thumb(path, targetDir, mime_type = None):
                 pass
     if newPath is None:
         return None
-    return transformDirToInternal(newPath)
+    return format_path(newPath)
 
 class ThumbServiceBase(object):
     def __init__(self, db_sys):
@@ -85,7 +88,7 @@ class ThumbServiceBase(object):
 
 def getThumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
     if req is None:
-        import wwjufsdatabase.libs.services.servicesV2 as service
+        import libs.services.servicesV2 as service
         req = service.req()
     #We can have a database from the req. So save the thumb info.
     t = ThumbServiceBase(req.getDbSys())
@@ -94,6 +97,5 @@ def getThumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
     else:
         full_path = path
     #cl(path)
-    full_path = transformDirToInternal(full_path)
+    full_path = format_path(full_path)
     return t.get_thumb(full_path, targetDir, mime_type)
-        

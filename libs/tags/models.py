@@ -3,7 +3,6 @@ from django.dispatch import receiver
 from tagging.models import Tag, TaggedItem
 from msg_service.auto_route_msg_service import AutoRouteMsgService
 import time
-from libs.obj_related.local_obj import LocalObj
 
 
 def send_tagging_msg(instance):

@@ -1,10 +1,9 @@
 import libsys
-from libs.utils.misc import ensure_dir
+from utils.misc import ensure_dir
 from libtool.filetools import get_free_timestamp_filename_in_path
 import utils.transform as transform
 from compress.enc_7z import EncZipFileOn7Zip
 
-from libs.logSys.logSys import *
 
 gWorkingDir = "d:/tmp/working/zipfilestorage"
 

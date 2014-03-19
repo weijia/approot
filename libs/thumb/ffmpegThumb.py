@@ -1,7 +1,7 @@
 import subprocess
 #from subprocess import *
 import os
-from libs.tags.views import add_tag_for_full_path
+from tags.views import add_tag_for_full_path
 
 
 app = "..\\others\\ffmpeg\\bin\\ffmpeg.exe"

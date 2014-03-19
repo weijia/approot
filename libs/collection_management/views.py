@@ -1,11 +1,10 @@
 # Create your views here.
-
+import json
 from django.http import HttpResponse
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.models import User
 from django.conf import settings
-import urllib2
 from collection_management.models import CollectionItem
 
 '''
@@ -43,13 +42,12 @@ import utils.string_tools as string_tools
 def get_collection_by_protocol(collection_id):
     if obj_tools.isUfsUrl(collection_id):
         module_name, item_url = obj_tools.parseUrl(collection_id)
-        collection_module = __import__("libs.custom_collections.modules." + module_name, globals(), locals(),
+        collection_module = __import__("custom_collections.modules." + module_name, globals(), locals(),
                                        ["get_collection"], -1)
         return collection_module.get_collection(item_url)
 
 
-import json
-from libs.logsys.logSys import *
+
 
 
 def collections_jstree(request):

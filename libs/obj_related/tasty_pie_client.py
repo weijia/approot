@@ -7,7 +7,7 @@ from compress.enc_7z import EncZipFileOn7Zip
 from datetime_storage.datetime_folders import get_date_based_path_and_filename
 from libtool.filetools import get_free_timestamp_filename_in_path
 from utils.obj_tools import get_hostname
-from libs.obj_related.period_manager import Period, get_tasty_client_period_manager
+from obj_related.period_manager import Period, get_tasty_client_period_manager
 
 
 class NoMoreItems(object):

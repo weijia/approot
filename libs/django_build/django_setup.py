@@ -1,6 +1,4 @@
 import pprint
-import libs.root_lib_sys
-#import libs.qtconsole.fileTools as file_tools
 import os
 from default_module_list import DEFAULT_DJANGO_MODULES
 

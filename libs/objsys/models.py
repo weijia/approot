@@ -54,7 +54,7 @@ class UfsObj(models.Model):
                 try:
                     import libsys
                     import json
-                    from libs.obj_related.local_obj import LocalObj
+                    from obj_related.local_obj import LocalObj
 
                     local_obj = LocalObj(self.full_path)
 
@@ -81,7 +81,7 @@ class UfsObj(models.Model):
             if os.path.exists(self.full_path):
 
                 try:
-                    from libs.obj_related.local_obj import LocalObj
+                    from obj_related.local_obj import LocalObj
                     import json
 
                     if self.description is None:
