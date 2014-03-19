@@ -1,6 +1,6 @@
 # -*- coding: gbk -*-
 import logging
-from libsys import *
+from services.simple_app.libsys import *
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from services.simple_app.tag_enum_lib.certain_tag_enum_worker import CertainTaggedItemEnumWorker
 
