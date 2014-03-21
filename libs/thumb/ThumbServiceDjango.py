@@ -1,7 +1,10 @@
 import picThumbGenerator
 #import movieThumb
 import ffmpegThumb
-import appThumb
+try:
+    import appThumb
+except ImportError:
+    appThumb = None
 from utils.transform import format_path
 from utils.obj_tools import isUfsFs, getPathForUfsUrl
 import traceback

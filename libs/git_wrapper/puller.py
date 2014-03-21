@@ -4,6 +4,8 @@ import traceback
 import git
 import sys
 
+log = logging.getLogger(__name__)
+
 
 class RemoteRepo(object):
     def __init__(self, remote_repo):
@@ -15,7 +17,7 @@ class RemoteRepo(object):
 
     def pull_branch(self, branch):
         for remote_ref in self.remote_repo.refs:
-            print "remote ref:", remote_ref  #origin/master
+            log.warning("remote ref:", remote_ref)  #origin/master
             self.pull_and_push_changes(branch, remote_ref, self.remote_repo)
 
     def pull(self, remote_branch_name):
@@ -81,7 +83,7 @@ class Puller(object):
         if not self.is_ignored(remote_repo.url):
             if self.is_repo_ref_valid(remote_repo):
                 for remote_ref in remote_repo.refs:
-                    print "remote branch:", remote_ref
+                    log.warning("remote branch:", remote_ref)
                     #self.pull_and_push_changes(branch, remote_branch, remote_repo)
                     RemoteRepo(remote_repo).pull_and_push_changes(branch, remote_ref)
                     
