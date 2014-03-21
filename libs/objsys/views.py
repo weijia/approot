@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
 
+@login_required
 def manager(request):
     data = retrieve_param(request)
     c = {"user": request.user, "tree": {"name": "left_tree", "url": "/collection_management/jstree/?node="}}
