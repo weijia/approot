@@ -41,6 +41,7 @@ def create_executable_from_app_name(app_param):
 includes = [
     #os.environ["DJANGO_SETTINGS_MODULE"], #rootapp
     "PyQt4.QtCore",
+    "pkg_resources",#Used by pytz to load time zone info in zoneinfo folder
     "yaml",
     "rootapp.urls",
     "rootapp.settings",
@@ -62,6 +63,8 @@ includes = [
     'desktop.filemanager.folder_view',
     #'libs.custom_collections',
     'custom_collections.modules.local_filesystem',
+    'obj_operation.service_op',
+    'ui_framework.manifest',
     #For Cherrypy
     #"django.contrib.messages",
     "email",
