@@ -5,6 +5,13 @@ import logging
 import os
 import os.path
 
+##########################################################
+#The following is a work arround for pytz's resource_stream is not imported correctly
+from pkg_resources import resource_stream
+import pytz
+pytz.resource_stream = resource_stream
+##########################################################
+
 # Third-party imports
 import cherrypy
 from cherrypy.process import wspbus, plugins
