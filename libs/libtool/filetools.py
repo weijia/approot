@@ -119,3 +119,12 @@ def get_app_name_from_full_path(app_path):
     app_filename = os.path.basename(app_path)
     app_name = app_filename.split(".")[0]
     return app_name
+
+
+def get_folder(file_path):
+    return os.path.abspath(os.path.dirname(file_path))
+
+
+def get_parent_folder(file_path):
+    #print "parent:"+os.path.abspath(os.path.join(os.path.dirname(file_path),".."))
+    return os.path.abspath(os.path.join(os.path.dirname(file_path),".."))

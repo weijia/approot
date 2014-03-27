@@ -1,4 +1,8 @@
 import importlib
+import logging
+
+
+log = logging.getLogger(__name__)
 
 
 def inject_attributes(target_class, src_module, exclude=[]):
@@ -17,7 +21,7 @@ def dump_attrs(obj_instance):
     for attr in dir(obj_instance):
         if attr != attr.upper():
             continue
-        print attr, ":", getattr(obj_instance, attr)
+        log.debug(attr+" : "+str(getattr(obj_instance, attr)))
 
 
 def get_class(django_cb_class_full_name):
