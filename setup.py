@@ -149,6 +149,10 @@ excludefiles = []
 
 def get_pytz_files():
     path_base = "D:\\work\\mine\\venv\\Lib\\site-packages\\pytz\\zoneinfo\\"
+    exe_path = os.path.dirname(sys.executable)
+    if "Scripts" in exe_path:
+        exe_path = os.path.dirname(exe_path)
+    path_base = os.path.join(exe_path, "Lib\\site-packages\\pytz\\zoneinfo\\")
     skip_count = len(path_base)
     zip_includes = [(path_base, "pytz/zoneinfo/")]
     for root, sub_folders, files in os.walk(path_base):
