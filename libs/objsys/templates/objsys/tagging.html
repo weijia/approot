@@ -5,31 +5,39 @@
 <script>
 window.close();
 </script>
-<link href="/static/tagging.css" type="text/css" rel="stylesheet" />
-
+<h2>Bookmark added</h2>
 {% else %}
+<link href="/static/tagging.css" type="text/css" rel="stylesheet" />
 <form action="." method="POST">
 {% csrf_token %}
 <ul>
 {% for url_with_tags in urls_with_tags %}
-    <li>
-        <input name="selected_url" type="checkbox" value="{{ url_with_tags.url }}" checked="checked">
-        </input><span stype="padding:5px">{{ url_with_tags.url }}</span>
-        tags:
-        {% for tag in url_with_tags.tags %}
-            {{tag.name}}
-        {% endfor %}
+    <li><input name="selected_url" type="checkbox" value="{{ url_with_tags.url }}" checked="checked">{{ url_with_tags.url }}</input>
+    tags:
+    {% for tag in url_with_tags.tags %}
+        {{tag.name}}
+    {% endfor %}
     </li>
 {% endfor %}
 </ul>
-<div>
-{% tag_cloud_for_model objsys.UfsObj as objsys_tags with steps=9 min_count=0 distribution=log %}
-{%for tag in objsys_tags%}
-<span class="tag-span" style="font-size:1.{{tag.font_size}}em;" tag="{{tag.name}}">{{tag.name}}({{tag.count}})</span>
-{% endfor %}
+{% if new_url_input %}
+    <label for="input-url">Please input URL:</label> <input id="input-url" type="text" name="selected_url"></input>
+{% endif %}
+<div id="tag-cloud-div">
+<label for="tag-input">Tags:</label>
+    <div>
+    {% tag_cloud_for_model objsys.UfsObj as objsys_tags with steps=9 min_count=0 distribution=log %}
+    {%for tag in objsys_tags%}
+    <span class="tag-span" style="font-size:1.{{tag.font_size}}em;" tag="{{tag.name}}">{{tag.name}}({{tag.count}})</span>
+    {% endfor %}
+    </div>
+    <div class="both-clear-div"></div>
 </div>
+<br/>
+<div>
 <input type="text" name="tags" id="tag-input">
-<input type="submit" value="submit"/>
+<input class="btn" type="submit" value="submit"/>
+</div>
 <link href="/static/jquery-ui-1.10.2/themes/base/minified/jquery-ui.min.css" type="text/css" rel="stylesheet" />
 <SCRIPT type="text/javascript" src="/static/jquery-1.9.1.min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="/static/jquery-migrate-1.1.1.min.js"></SCRIPT>

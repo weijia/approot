@@ -2,9 +2,13 @@
 {% load pagination_tags %}
 
 {% block container %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}objsys/css/styles.css" type="text/css">
+<link rel="stylesheet" href="{{ STATIC_URL }}objsys/css/styles.css" type="text/css">
+<link rel="stylesheet" href="{{ STATIC_URL }}tagging.css" type="text/css">
+<div><div class="add-new-url-div"><a class="btn" href="/objsys/tagging/">Add New URL</a></div>
+    <div class="both-clear-div"></div>
+</div>
 
-{% autopaginate objects 10 %}
+{% autopaginate objects 5 %}
 <ul id="bookmark_list">
     {% for bookmark in objects %}
     <li class="bookmark">

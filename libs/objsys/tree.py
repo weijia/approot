@@ -9,7 +9,10 @@ from django.conf import settings
 from objsys.models import UfsObj
 from guardian.admin import GuardedModelAdmin
 from guardian.shortcuts import assign
-from collection_management.models import CollectionItem
+try:
+    from collection_management.models import CollectionItem
+except:
+    pass
 
 
 gRootUuid = u"4a5e8673-f2a2-4cf2-af6c-461fa9f31a15"

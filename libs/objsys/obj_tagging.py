@@ -33,7 +33,7 @@ def append_tags_and_description_to_url(user, url, tags, description):
     '''
     if obj_tools.is_web_url(url):
         full_path = None
-        obj_qs = UfsObj.objects.filter(ufs_url=url, user=user)
+        obj_qs = UfsObj.objects.filter(ufs_url=url, user=user, valid=True)
         ufs_url = url
     else:
         full_path = obj_tools.get_full_path_for_local_os(url)
@@ -162,7 +162,10 @@ def tagging(request):
                 tags.extend(obj.tags)
         urls_with_tags.append(UrlTagPair(url, tags))
 
-    c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags}
+    c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags,
+         "new_url_input": False}
+    if 0 == len(urls_with_tags):
+        c["new_url_input"] = True
     c.update(csrf(request))
     return render_to_response('objsys/tagging.html', c, context_instance=RequestContext(request))
 
