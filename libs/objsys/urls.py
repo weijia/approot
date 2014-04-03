@@ -4,6 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import ListView
 from tagging.models import Tag
 from api import UfsObjResource
+from objsys.obj_tagging import AddTagTemplateView
 from objsys.rss import LatestEntriesFeed
 
 
@@ -11,7 +12,7 @@ ufsobj_resource = UfsObjResource()
 #tag_resource = TagResource()
 
 urlpatterns = patterns('',
-    url(r'^tagging/$', 'objsys.obj_tagging.tagging'),
+    url(r'^tagging/$', AddTagTemplateView.as_view()),
     url(r'^manager/$', 'objsys.views.manager'),
     url(r'^listing/$', 'objsys.views.listing'),
     url(r'^homepage/$', 'objsys.views.listing_with_description'),
