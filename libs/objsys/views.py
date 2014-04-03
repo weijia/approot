@@ -108,7 +108,7 @@ def rm_obj_from_db(request):
             obj.description_json = json.dumps(json_description)
             obj.tags = ""
             #obj.delete()
-            obj.valid=False
+            obj.valid = False
         return HttpResponse('{"result": "removed: %s"}' % (data["ufs_url"]), mimetype="application/json")
     return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
 
@@ -121,22 +121,22 @@ def listing(request):
 
 @login_required
 def listing_with_description(request):
-    objects = UfsObj.objects.filter(user=request.user,valid=True).order_by('-timestamp')
+    objects = UfsObj.objects.filter(user=request.user, valid=True).order_by('-timestamp')
     return render_to_response('objsys/listing_with_description_in_bootstrap.html',
                               {"objects": objects, "request": request, "title": "My bookmarks",
                                "email": "richardwangwang@gmail.com", "author": "Richard"},
                               context_instance=RequestContext(request))
 
-    
+
 class ObjOperator(object):
     def __init__(self, pk):
         self.pk = pk
-    
+
     def rm(self):
         for obj in UfsObj.objects.filter(pk=self.pk):
             obj.valid = False
             obj.save()
-    
+
 
 def do_operations(request):
     data = retrieve_param(request)
@@ -144,7 +144,8 @@ def do_operations(request):
         operator = ObjOperator(int(data["pk"]))
         getattr(operator, data["cmd"])()
     return HttpResponseRedirect("/objsys/homepage/")
-    
+
+
 '''
 def homepage(request):
     context = {}

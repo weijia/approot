@@ -1,18 +1,16 @@
+from collection_management.tree import register_menu
 from models import Connection, Processor
-
 from django.contrib import admin
-
 from guardian.admin import GuardedModelAdmin
-from objsys.tree import register_menu
+from utils.string_tools import quote_unicode
 
 
 class ConnectionAdmin(GuardedModelAdmin):
     pass
 
-import utils.string_tools as string_tools
 
 register_menu(u'connection/', u'processor creator')
-register_menu(u'object_filter/?query_base='+string_tools.quote_unicode(u'/connection/diagram_list/'), u'diagram management')
+register_menu(u'object_filter/?query_base='+quote_unicode(u'/connection/diagram_list/'), u'diagram management')
 register_menu(u'/object_filter/table/?descriptor=service', u'service management')
 
 
