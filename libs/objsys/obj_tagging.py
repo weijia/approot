@@ -165,6 +165,9 @@ class AddTagTemplateView(TemplateView):
     template_name = 'objsys/tagging.html'
     http_method_names = ["post", "get"]
 
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(AddTagTemplateView, self).get_context_data(**kwargs)
         data = retrieve_param(self.request)
