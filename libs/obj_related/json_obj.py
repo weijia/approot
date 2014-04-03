@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import os
-from compress.dec_7z import FolderStructureSync
 from folder_update_checker import FolderUpdateChecker
 from folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
 from utils.obj_tools import get_hostname
@@ -81,6 +80,7 @@ class FolderContaining7z(object):
         """
         self.root_for_extracted = root_for_extracted
         self.folder_containing_7z_root = folder_containing_7z_root
+        from compress.dec_7z import FolderStructureSync
         self.structure_sync = FolderStructureSync(self.folder_containing_7z_root, self.root_for_extracted)
 
     def extract(self, full_path_for_7z):

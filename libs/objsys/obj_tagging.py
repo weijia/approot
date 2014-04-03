@@ -162,7 +162,10 @@ def tagging(request):
                 tags.extend(obj.tags)
         urls_with_tags.append(UrlTagPair(url, tags))
 
-    c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags}
+    c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags,
+         "new_url_input": False}
+    if 0 == len(urls_with_tags):
+        c["new_url_input"] = True
     c.update(csrf(request))
     return render_to_response('objsys/tagging.html', c, context_instance=RequestContext(request))
 

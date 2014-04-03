@@ -21,6 +21,11 @@ window.close();
         {% endfor %}
     </li>
 {% endfor %}
+{% if new_url_input %}
+    <li>
+        <input name="selected_url"></input>
+    </li>
+{%endif%}
 </ul>
 <div>
 {% tag_cloud_for_model objsys.UfsObj as objsys_tags with steps=9 min_count=0 distribution=log %}
