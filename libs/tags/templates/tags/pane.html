@@ -21,7 +21,7 @@ $(document).ready(function() {
         for(i = 0; i < data.length; i++)
         {
             //$(curContainerBlocksElem).container_blocks("genEvent", data[i].classroomId.pk, data[i].start, data[i].end, "New test class", data[i].id, data[i].teacherList);
-            $( '#wrap' ).append($(String.format('<div class="element-root" fullpath="{1}"><img src="/thumb/?target={1}"/>{0}</div>', data[i].data, data[i].full_path)));
+            $( '#wrap' ).append($(String.format('<div class="element-root" fullpath="{1}"><img src="/thumb/cherry/?target={1}"/>{0}</div>', data[i].data, data[i].full_path)));
         }
     });
 });

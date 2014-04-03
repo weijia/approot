@@ -1,7 +1,8 @@
-from objsys.tree import register_menu
+from collection_management.tree import register_menu
 from models import NetDriver
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
+
 
 class NetDriverAdmin(GuardedModelAdmin):
     pass

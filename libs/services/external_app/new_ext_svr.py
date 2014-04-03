@@ -48,7 +48,8 @@ if __name__ == "__main__":
     #i.execute({"tag_distributor": [find_callable_in_app_framework("tag_distributor")]})
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
-    #thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
+    thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
+    i.execute({"thumb_server": [find_callable_in_app_framework("cherrypy_server"), str(thumb_port)]})
     #execute_app_from_name_and_wait_for_complete("syncdb")
     execute_app_from_name_and_wait_for_complete("cherrypy_server")
     print "-----------------------------exiting cherrypy server"

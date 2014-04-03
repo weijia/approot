@@ -1,4 +1,4 @@
-from obj_related.json_obj import JsonDecoderForUfsObj
+from obj_related.json_decoder_for_ufs_obj import JsonDecoderForUfsObj
 from utils import transform as transform
 from utils.obj_tools import getUfsUrlForPath
 from objsys.models import UfsObj

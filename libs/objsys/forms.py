@@ -1,5 +1,4 @@
-from models import UfsObj
-from collection_management.models import CollectionItem
+from models import UfsObj, CollectionItem
 
 '''
 class UfsObjForm(ModelForm):

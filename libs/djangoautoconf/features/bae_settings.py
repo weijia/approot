@@ -40,4 +40,3 @@ try:
     EMAIL_BACKEND = 'objsys.baidu_mail.EmailBackend'
 except:
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
