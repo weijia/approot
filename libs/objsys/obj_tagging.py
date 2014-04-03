@@ -9,8 +9,7 @@ from django.template import RequestContext
 import django.utils.timezone as timezone
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from tagging.models import Tag, TaggedItem
-from tagging.utils import parse_tag_input
+from tagging.models import Tag
 from utils.django_utils import retrieve_param
 from utils.string_tools import SpecialEncoder
 import utils.obj_tools as obj_tools
@@ -21,16 +20,6 @@ from objsys.view_utils import get_ufs_obj_from_ufs_url
 
 def append_tags_and_description_to_url(user, url, tags, description):
     #Tag object
-    '''
-    try:
-        objs = UfsObj.objects.filter(ufs_url = url)
-        if 0 != len(objs):
-            for obj in objs:
-                obj.tags = tags
-            continue
-    except UfsObj.DoesNotExist:
-        pass
-    '''
     if obj_tools.is_web_url(url):
         full_path = None
         obj_qs = UfsObj.objects.filter(ufs_url=url, user=user, valid=True)
@@ -60,7 +49,7 @@ class RequestWithAuth(object):
         self.error_json = ''
 
     def is_authenticated(self):
-        if ('username'in self.data) and ('password' in self.data):
+        if ('username' in self.data) and ('password' in self.data):
             username = self.data['username']
             password = self.data['password']
             user = authenticate(username=username, password=password)
@@ -76,7 +65,8 @@ class RequestWithAuth(object):
             else:
                 # Return an 'invalid login' error message.
                 print 'invalid login'
-                self.error_json = '{"error": "invalid login", "username": "%s", "password": "%s"}' % (username, password)
+                self.error_json = '{"error": "invalid login", "username": "%s", "password": "%s"}' % (
+                    username, password)
                 return False
         self.error_json = '{"error": "no username and password"}'
         return False
@@ -172,7 +162,7 @@ def tagging(request):
 
 def remove_tag(request):
     data = retrieve_param(request)
-    if data.has_key('ufs_url') and data.has_key('tag'):
+    if ('ufs_url' in data) and ('tag' in data):
         #print data['ufs_url']
         obj_list = UfsObj.objects.filter(ufs_url=data['ufs_url'])
         if 0 != obj_list.count():
@@ -205,76 +195,4 @@ def add_tag(request):
     return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
 
 
-class UfsFilter(object):
-    def set_data(self, data):
-        self.data = data
-
-    def set_tag_app(self, tag_app):
-        self.tag_app = tag_app
-
-    def get_obj_filters(self):
-        #print "Filtering"
-        q = UfsObj.objects.all()
-        if "existing_tags" in self.data:
-            existing_tags = self.data["existing_tags"]
-            if existing_tags:
-                #cl(existing_tags)
-                tags = existing_tags.split(",")
-                q = TaggedItem.objects.get_by_model(UfsObj, Tag.objects.filter(name__in=tags))
-        if "url_contains" in self.data:
-            url_contains = self.data["url_contains"]
-            if url_contains:
-                #cl(url_prefix)
-                q = q.filter(ufs_url__contains=url_contains)
-        if "full_path_contains" in self.data:
-            full_path_contains = self.data["full_path_contains"]
-            if full_path_contains:
-                #cl(full_path_prefix)
-                q = q.filter(full_path__contains=full_path_contains)
-        return q
-
-
-class ApplyTagsThread(UfsFilter, threading.Thread):
-    def run(self):
-        if not ("tags" in self.data):
-            return
-
-        for obj in self.get_obj_filters():
-            #print obj
-            #obj.tags = self.data["tags"]
-            Tag.objects.add_tag(obj, self.data["tags"], tag_app=self.tag_app)
-
-
-class RemoveTagsThread(UfsFilter, threading.Thread):
-    def run(self):
-        if not ("tags" in self.data):
-            return
-
-        for obj in self.get_obj_filters():
-            #print obj
-            #obj.tags = self.data["tags"]
-            removing_tag_list = parse_tag_input(self.data["tags"])
-            final_tags = []
-            for tag in obj.tags:
-                if not (tag.name in removing_tag_list):
-                    final_tags.append(tag.name)
-            obj.tags = ",".join(final_tags)
-
-
-def apply_tags_to(request):
-    data = retrieve_param(request)
-    t = ApplyTagsThread()
-    t.set_data(data)
-    t.set_tag_app('user:' + request.user.username)
-    t.start()
-    return HttpResponse('{"result": "Apply tags processing"}', mimetype="application/json")
-
-
-def remove_tags_from(request):
-    data = retrieve_param(request)
-    t = RemoveTagsThread()
-    t.set_data(data)
-    t.set_tag_app('user:' + request.user.username)
-    t.start()
-    return HttpResponse('{"result": "Remove tags processing"}', mimetype="application/json")
 
