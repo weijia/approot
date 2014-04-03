@@ -10,6 +10,7 @@ from utils import transform as transform, obj_tools
 from collection_management.models import CollectionItem
 from objsys.models import UfsObj
 import json
+from utils.django_utils import retrieve_param
 
 
 def tag_list(request):
@@ -19,12 +20,7 @@ def tag_list(request):
     :return: the returned data is in JSON:
     [{"data": "private(10)", "attr": {"url": "/object_filter/?tag=private"}}]
     """
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
-
-
+    data = retrieve_param(request)
     #json_serializer = serializers.get_serializer("json")()
 
     tags = Tag.objects.usage_for_model(UfsObj, counts=True)
@@ -39,15 +35,9 @@ def tag_list(request):
 
 
 def list_tagged(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
-
-    if data.has_key("tag"):
+    data = retrieve_param(request)
+    if "tag" in data:
         tag = data["tag"]
-
-    from tagging.models import Tag
 
     obj_tag = Tag.objects.get(name=tag)
     objs = TaggedItem.objects.get_by_model(UfsObj, obj_tag)
@@ -62,11 +52,8 @@ def list_tagged(request):
 
 
 def pane(request):
-    if request.method == "GET":
-        data = request.GET
-    else:
-        data = request.POST
-    if data.has_key("tag"):
+    data = retrieve_param(request)
+    if "tag" in data:
         tag = data["tag"]
         data_url = "/tags/tagged/?tag=" + tag
     else:
