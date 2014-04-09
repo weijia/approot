@@ -14,6 +14,7 @@ ufsobj_resource = UfsObjResource()
 
 urlpatterns = patterns('',
     url(r'^tagging/$', login_required(AddTagTemplateView.as_view())),
+    url(r'^tagging/(?P<news_item_pk>\d+)/$', login_required(AddTagTemplateView.as_view()), name="news-item"),
     url(r'^manager/$', 'objsys.views.manager'),
     url(r'^listing/$', 'objsys.views.listing'),
     url(r'^homepage/$', 'objsys.views.listing_with_description'),

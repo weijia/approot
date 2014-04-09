@@ -1,4 +1,5 @@
 import json
+import logging
 import threading
 import uuid
 from django.contrib.auth import authenticate, login
@@ -93,77 +94,17 @@ def handle_append_tags_request(request):
     return HttpResponse('{"result": "OK", "added": %d}' % addedCnt, mimetype="application/json")
 
 
-@login_required
-def tagging(request):
-    data = retrieve_param(request)
-
-    #Load saved url
-    if "saved_urls" in request.session:
-        stored_urls = request.session["saved_urls"]
-    else:
-        stored_urls = []
-    selected_url = []
-    urls = []
-    close_flag = False
-    if "encoding" in data:
-        encoding = data["encoding"]
-    else:
-        encoding = "utf8"
-
-    if "tags" in data:
-        tags = data["tags"]
-    else:
-        tags = []
-        #print tags
-    decoder = SpecialEncoder()
-
-    for query_param_list in data.lists():
-        if query_param_list[0] == "url":
-            all_urls = []
-            for url in query_param_list[1]:
-                all_urls.append(decoder.decode(url))
-            stored_urls.extend(all_urls)
-            for url in stored_urls:
-                if not (url in urls):
-                    #print query_param_list, urls
-                    urls.append(url)
-        if query_param_list[0] == 'selected_url':
-            close_flag = True
-            for url in query_param_list[1]:
-                if not (url in selected_url):
-                    selected_url.append(url)
-                    append_tags_and_description_to_url(request.user, url, tags, "manually added item")
-
-    class UrlTagPair:
-        def __init__(self, url, tags):
-            self.url = url
-            self.tags = tags
-
-    request.session["saved_urls"] = urls
-    urls_with_tags = []
-    for url in urls:
-        tags = []
-        full_path = obj_tools.get_full_path_for_local_os(url)
-        obj_qs = UfsObj.objects.filter(full_path=full_path)
-        print obj_qs.count()
-        if 0 != obj_qs.count():
-            print 'object exists'
-            for obj in obj_qs:
-                print obj.tags
-                tags.extend(obj.tags)
-        urls_with_tags.append(UrlTagPair(url, tags))
-
-    c = {"urls": urls, "user": request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags,
-         "new_url_input": False}
-    if 0 == len(urls_with_tags):
-        c["new_url_input"] = True
-    c.update(csrf(request))
-    return render_to_response('objsys/tagging.html', c, context_instance=RequestContext(request))
-
-
 class AddTagTemplateView(TemplateView):
     template_name = 'objsys/tagging.html'
     http_method_names = ["post", "get"]
+
+    def __init__(self, **kwargs):
+        super(AddTagTemplateView, self).__init__(**kwargs)
+        self.encoding = None
+        self.tags = []
+        self.tagged_urls = []
+        self.stored_url = []
+        self.listed_urls = []
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
@@ -172,69 +113,84 @@ class AddTagTemplateView(TemplateView):
         context = super(AddTagTemplateView, self).get_context_data(**kwargs)
         data = retrieve_param(self.request)
 
-        #Load saved url
+        #Load saved submitted_url
         if "saved_urls" in self.request.session:
-            stored_urls = self.request.session["saved_urls"]
-        else:
-            stored_urls = []
-        selected_url = []
-        urls = []
+            self.stored_url = self.request.session["saved_urls"]
+
         close_flag = False
-        if "encoding" in data:
-            encoding = data["encoding"]
-        else:
-            encoding = "utf8"
+        self.retrieve_encoding(data)
 
         if "tags" in data:
-            tags = data["tags"]
-        else:
-            tags = []
-            #print tags
+            self.tags = data["tags"]
+
         decoder = SpecialEncoder()
 
         for query_param_list in data.lists():
             if query_param_list[0] == "url":
                 all_urls = []
-                for url in query_param_list[1]:
-                    all_urls.append(decoder.decode(url))
-                stored_urls.extend(all_urls)
-                for url in stored_urls:
-                    if not (url in urls):
+                for submitted_url in query_param_list[1]:
+                    all_urls.append(decoder.decode(submitted_url))
+                self.stored_url.extend(all_urls)
+                for submitted_url in self.stored_url:
+                    if not (submitted_url in self.listed_urls):
                         #print query_param_list, urls
-                        urls.append(url)
+                        self.listed_urls.append(submitted_url)
             if query_param_list[0] == 'selected_url':
                 close_flag = True
-                for url in query_param_list[1]:
-                    if not (url in selected_url):
-                        selected_url.append(url)
-                        append_tags_and_description_to_url(self.request.user, url, tags, "manually added item")
+                for submitted_url in query_param_list[1]:
+                    self.tag_url(submitted_url)
 
-        class UrlTagPair:
-            def __init__(self, url, tags):
-                self.url = url
-                self.tags = tags
+        self.request.session["saved_urls"] = self.listed_urls
 
-        self.request.session["saved_urls"] = urls
-        urls_with_tags = []
-        for url in urls:
-            tags = []
-            full_path = obj_tools.get_full_path_for_local_os(url)
-            obj_qs = UfsObj.objects.filter(full_path=full_path)
-            print obj_qs.count()
-            if 0 != obj_qs.count():
-                print 'object exists'
-                for obj in obj_qs:
-                    print obj.tags
-                    tags.extend(obj.tags)
-            urls_with_tags.append(UrlTagPair(url, tags))
+        urls_with_tags = self.get_urls_with_tags()
 
-        c = {"urls": urls, "user": self.request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags,
+        c = {"user": self.request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags,
              "new_url_input": False}
         if 0 == len(urls_with_tags):
             c["new_url_input"] = True
         c.update(csrf(self.request))
         context.update(c)
+        #log = logging.getLogger(__name__)
+        #log.error(context)
         return context
+
+
+    def retrieve_encoding(self, data):
+        if "encoding" in data:
+            self.encoding = data["encoding"]
+        else:
+            self.encoding = "utf8"
+
+    def get_url_tags(self, url_for_ufs_obj):
+        tags = []
+        if obj_tools.is_web_url(url_for_ufs_obj):
+            obj_qs = UfsObj.objects.filter(ufs_url=url_for_ufs_obj)
+        else:
+            full_path = obj_tools.get_full_path_for_local_os(url_for_ufs_obj)
+            obj_qs = UfsObj.objects.filter(full_path=full_path)
+            #print obj_qs.count()
+        if 0 != obj_qs.count():
+            #print 'object exists'
+            for obj in obj_qs:
+                #print obj.tags
+                tags.extend(obj.tags)
+        return tags
+
+    def get_urls_with_tags(self):
+        class UrlTagPair:
+            def __init__(self, url, tags):
+                self.url = url
+                self.tags = tags
+        urls_with_tags = []
+        for listed_url in self.listed_urls:
+            tags_for_existing_url = self.get_url_tags(listed_url)
+            urls_with_tags.append(UrlTagPair(listed_url, tags_for_existing_url))
+        return urls_with_tags
+
+    def tag_url(self, url_to_tag):
+        if not (url_to_tag in self.tagged_urls):
+            self.tagged_urls.append(url_to_tag)
+            append_tags_and_description_to_url(self.request.user, url_to_tag, self.tags, "manually added item")
 
 
 def remove_tag(request):

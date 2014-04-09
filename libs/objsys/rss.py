@@ -12,10 +12,16 @@ class LatestEntriesFeed(Feed):
         return UfsObj.objects.order_by('-timestamp')
 
     def item_title(self, item):
-        return item.description.content
+        try:
+            return item.descriptions[0].content
+        except:
+            return ""
 
     def item_description(self, item):
-        return item.description.content
+        try:
+            return item.descriptions[0].content
+        except:
+            return ""
 
     # item_link is only needed if NewsItem has no get_absolute_url method.
     def item_link(self, item):
