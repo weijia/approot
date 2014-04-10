@@ -5,7 +5,7 @@ from configuration import get_default_charset
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 from services.svc_base.gui_client import GuiClient
-from utils.string_tools import SpecialEncoder
+from utils.string_tools import quote_unicode
 
 log = logging.getLogger(__name__)
 
@@ -38,15 +38,15 @@ class SimpleTagging(PyroSimpleAppBase):
     #########################
     def put_msg(self, msg):
         links = ""
-        e = SpecialEncoder()
+
         log.debug(msg)
         for i in msg["urls"]:
-            links += "url=" + e.encode(unicode(i)).encode(get_default_charset()) + "&"
+            links += "url=" + quote_unicode(unicode(i)) + "&"
         self.gui_client.open_browser({"command": "Browser",
                                       "url": "http://127.0.0.1:" +
                                              str(get_ufs_web_server_port()) +
-                                             "/objsys/tagging/?" +
-                                             links + "encoding=" + get_default_charset(),
+                                             "/objsys/tagging_local/?" +
+                                             links,
                                       "handle": "tagging"})
 
 

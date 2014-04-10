@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from tagging.models import Tag
 from api import UfsObjResource
-from objsys.obj_tagging import AddTagTemplateView
+from objsys.add_tag_template_view import AddTagTemplateView
+from objsys.add_tag_template_view_local import AddTagTemplateViewLocal
 from objsys.rss import LatestEntriesFeed
 
 
@@ -14,6 +15,7 @@ ufsobj_resource = UfsObjResource()
 
 urlpatterns = patterns('',
     url(r'^tagging/$', login_required(AddTagTemplateView.as_view())),
+    url(r'^tagging_local/$', login_required(AddTagTemplateViewLocal.as_view())),
     url(r'^tagging/(?P<news_item_pk>\d+)/$', login_required(AddTagTemplateView.as_view()), name="news-item"),
     url(r'^manager/$', 'objsys.views.manager'),
     url(r'^listing/$', 'objsys.views.listing'),

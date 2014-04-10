@@ -18,6 +18,7 @@ import django.core.management as core_management
 def cmd(request):
     data = retrieve_param(request)
     import StringIO
+
     old_out = sys.stdout
     log_out = StringIO.StringIO()
     sys.stdout = log_out
@@ -32,29 +33,24 @@ def cmd(request):
 
     result = log_out.getvalue()
     sys.stdout = old_out
-    return HttpResponse(result.replace("\n","<br/>"))
+    return HttpResponse(result.replace("\n", "<br/>"))
 
 
 def index(request):
     import StringIO
     from django.core.management.commands.syncdb import Command as SyncDb
     from django.db import DEFAULT_DB_ALIAS
-    saveout = sys.stdout
-    log_out = StringIO.StringIO()  
-    sys.stdout = log_out
-    '''
-    try:
-        from management import execute_from_command_line
-    except:
-        from django.core.management import execute_from_command_line
 
-    execute_from_command_line(["manage.py", "syncdb", "--noinput"])
-    '''
+    saveout = sys.stdout
+    log_out = StringIO.StringIO()
+    sys.stdout = log_out
+
     #load_initial_data should be False so no directory searching for this command
-    SyncDb().handle_noargs(**{"interactive": False, "verbosity": 1, "database": DEFAULT_DB_ALIAS, 'load_initial_data': False})
+    SyncDb().handle_noargs(
+        **{"interactive": False, "verbosity": 1, "database": DEFAULT_DB_ALIAS, 'load_initial_data': False})
     result = log_out.getvalue()
     sys.stdout = saveout
-    return HttpResponse(result.replace("\n","<br/>"))
+    return HttpResponse(result.replace("\n", "<br/>"))
 
 
 def version(request):
@@ -62,14 +58,19 @@ def version(request):
     return HttpResponse(django.VERSION)
 
 
-def create_admin(request):
-    #user = User.objects.create_user('richard', 'r@j.cn', 'johnpassword')
-    #from django.contrib.auth.create_superuser import createsuperuser
-    #createsuperuser()
+def create_admin():
     from django.contrib.auth import models as auth_models
+
     try:
         from keys.admin_pass import default_admin_password, default_admin_user
     except:
-         from keys_template.admin_pass import default_admin_password, default_admin_user
+        from keys_template.admin_pass import default_admin_password, default_admin_user
     auth_models.User.objects.create_superuser(default_admin_user, 'r@j.cn', default_admin_password)
+
+
+def handle_create_admin_req(request):
+    #user = User.objects.create_user('richard', 'r@j.cn', 'johnpassword')
+    #from django.contrib.auth.create_superuser import createsuperuser
+    #createsuperuser()
+    create_admin()
     return HttpResponse('Done<script>window.href="/"</script>')
