@@ -1,5 +1,6 @@
 import pprint
 import os
+from django.conf.urls import patterns
 from default_module_list import DEFAULT_DJANGO_MODULES
 
 
@@ -7,23 +8,24 @@ class DjangoCxFreezeBuildSpecGenerator(object):
     def __init__(self):
         self.existing_config = None
 
-    def add_module_to_includes(self, item):
-        if type(item) == list:
+    def add_module_to_includes(self, module_full_name):
+        if type(module_full_name) == list:
             raise "No list permitted"
-        if not (item in self.existing_config['includes']):
-            self.existing_config['includes'].append(item)
+        if not (module_full_name in self.existing_config['includes']):
+            self.existing_config['includes'].append(module_full_name)
 
     def extend_includes(self, includes_list):
         for item in includes_list:
             self.add_module_to_includes(item)
 
-    def get_module_name_from_class_name(self, class_name):
+    @staticmethod
+    def get_module_name_from_class_name(class_name):
         return ".".join(class_name.split(".")[0:-1])
 
     def add_modules_from_class_name_list(self, class_name_list):
-        for clss_name_for_import in class_name_list:
+        for class_name_for_import in class_name_list:
             #print i, '[[[[[[[[[[[[[[[[[[[[['
-            self.add_module_to_includes(self.get_module_name_from_class_name(clss_name_for_import))
+            self.add_module_to_includes(self.get_module_name_from_class_name(class_name_for_import))
 
     def gen_spec(self, settings, existing_config):
         self.existing_config = existing_config
@@ -39,7 +41,8 @@ class DjangoCxFreezeBuildSpecGenerator(object):
         self.extend_includes(settings.INSTALLED_APPS)
         self.existing_config['include_files'].append("static")
 
-    def get_class_names_included_in_settings(self, settings):
+    @staticmethod
+    def get_class_names_included_in_settings(settings):
         res = []
         for i in ['MIDDLEWARE_CLASSES', 'AUTHENTICATION_BACKENDS',
                   'TEMPLATE_CONTEXT_PROCESSORS', 'TEMPLATE_LOADERS']:
@@ -80,12 +83,39 @@ class DjangoCxFreezeBuildSpecGenerator(object):
                     pass
                     #raise
 
-                    #########
-                    # TODO: import module from url
-                    #########
+        self.import_modules_in_urls(django_app_name)
+
+    def import_modules_in_urls(self, django_sub_module):
+        #########
+        # import modules from url
+        #########
+        try:
+            module_str = django_sub_module + ".urls"
+            url_module = __import__(module_str)
+            try:
+                url_module = getattr(url_module, "urls")
+                url_patterns = getattr(url_module, "urlpatterns")
+            except AttributeError:
+                #import traceback
+                #traceback.print_exc()
+                url_patterns = []
+        except ImportError:
+            url_patterns = []
+            #import traceback
+            #traceback.print_exc()
+
+        for url_pattern in url_patterns:
+            #print url_pattern
+            try:
+                print url_pattern._callback_str
+                self.add_module_for_class(url_pattern._callback_str)
+            except:
+                #import traceback
+                #traceback.print_exc()
+                pass
 
     def add_templates(self, module_root):
-        #################################################3
+        ##############################################
         #Install template/static files to target dir
         ##############################################
         for django_data_folder in ['templates']:
@@ -123,3 +153,6 @@ class DjangoCxFreezeBuildSpecGenerator(object):
         self.add_templatetags_modules(django_app_name, module_root)
         self.add_templates(module_root)
         self.include_default_files_in_django_app(django_app_name)
+
+    def add_module_for_class(self, class_full_import_name):
+        self.add_module_to_includes(self.get_module_name_from_class_name(class_full_import_name))

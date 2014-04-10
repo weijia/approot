@@ -13,14 +13,14 @@ class LatestEntriesFeed(Feed):
 
     def item_title(self, item):
         try:
-            return item.descriptions[0].content
-        except:
+            return item.descriptions.all()[0].content
+        except IndexError:
             return ""
 
     def item_description(self, item):
         try:
-            return item.descriptions[0].content
-        except:
+            return item.descriptions.all()[0].content
+        except IndexError:
             return ""
 
     # item_link is only needed if NewsItem has no get_absolute_url method.
