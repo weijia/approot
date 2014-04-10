@@ -150,8 +150,8 @@ class AddTagTemplateView(TemplateView):
             c["new_url_input"] = True
         c.update(csrf(self.request))
         context.update(c)
-        log = logging.getLogger(__name__)
-        log.error(context)
+        #log = logging.getLogger(__name__)
+        #log.error(context)
         return context
 
 
