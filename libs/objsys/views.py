@@ -37,17 +37,18 @@ class StarterThread(threading.Thread):
 
 
 def start(request):
-    full_path = request.META['QUERY_STRING']
+    data = retrieve_param(request)
+    full_path = data["full_path"]
     print full_path
     try:
         ext = os.path.splitext(full_path)[1]
     except:
         ext = ''
     if True:  #try:
-        if False:  #(ext in ['.bat', '.py']):
+        if ext in ['.bat', '.py']:
             from services.sap.launcher_sap import Launcher
 
-            Launcher().start_app_with_exact_full_path_and_param_list_no_wait(full_path, ['--startserver'])
+            Launcher().start_app_with_exact_full_path_and_param_list_no_wait(full_path)
             #raise "stop here"
             #return "app"
         else:
