@@ -17,6 +17,10 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
         if not (url in self.listed_urls):
             self.listed_urls.append(url)
 
+    def extend_listed_urls(self, urls):
+        for url in urls:
+            self.append_to_listed_urls(url)
+
     def get_context_data(self, **kwargs):
         context = super(AddTagTemplateView, self).get_context_data(**kwargs)
         data = retrieve_param(self.request)
@@ -40,8 +44,8 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
                 self.tag_url(selected_url_param)
 
         if "url" in data:
-            url_param = data["url"]
-            if type(url_param) == type(list):
+            url_param = data.getlist("url")
+            if type(url_param) == list:
                 self.extend_listed_urls(url_param)
             else:
                 self.append_to_listed_urls(url_param)

@@ -1,9 +1,9 @@
 import logging
 import os
-import traceback
-import urllib2
 import uuid
 import webbrowser
+from libs.utils.short_decorator.ignore_exception import ignore_exc
+from libs.utils.web.direct_opener import open_url
 from libsys import *
 from iconizer import Iconizer
 from app_framework.folders import get_or_create_app_data_folder
@@ -15,29 +15,19 @@ from services.pyro_service.pyro_utils import shutdown_all
 def stop_postgresql():
     os.system(find_callable_in_app_framework("postgresql_stop"))
 
-
-def ignore_exc(func):
-    def wrap_with_exc():
-        try:
-            func()
-        except:
-            traceback.print_exc()
-            pass
-    return wrap_with_exc
+stop_url_base = 'http://localhost:%d/stop/quit'
 
 
 @ignore_exc
 def stop_main_server():
-    proxy_handler = urllib2.ProxyHandler({})
-    opener = urllib2.build_opener(proxy_handler)
-    opener.open('http://localhost:%d/stop/quit' % configuration.g_config_dict["ufs_web_server_port"])
+    full_web_url = stop_url_base % configuration.g_config_dict["ufs_web_server_port"]
+    open_url(full_web_url)
 
 
 @ignore_exc
 def stop_thumb_server():
-    proxy_handler = urllib2.ProxyHandler({})
-    opener = urllib2.build_opener(proxy_handler)
-    opener.open('http://localhost:%d/stop/quit' % configuration.g_config_dict["thumb_server_port"])
+    full_web_url = stop_url_base % configuration.g_config_dict["thumb_server_port"]
+    open_url(full_web_url)
 
 
 def stop_services_and_web_servers():

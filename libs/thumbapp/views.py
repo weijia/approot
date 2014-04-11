@@ -1,3 +1,4 @@
+import logging
 import os
 from urllib import unquote
 from django.shortcuts import render_to_response
@@ -15,10 +16,13 @@ from logsys.logSys import *
 from objsys.view_utils import get_ufs_obj_from_full_path
 
 
+log = logging.getLogger(__name__)
+
 def get_thumb_file(target_file):
     full_path = format_path(target_file)
+    root_dir = libsys.get_root_dir()
     if not os.path.exists(full_path):
-        the_file = os.path.join(libsys.get_root_dir(), 'static/image/icons/file-broken-icon.png')
+        the_file = os.path.join(root_dir, 'static/image/icons/file-broken-icon.png')
     else:
         obj = get_ufs_obj_from_full_path(full_path)
         thumb_list = ThumbCache.objects.filter(obj=obj)
@@ -26,7 +30,7 @@ def get_thumb_file(target_file):
         if 0 == thumb_list.count():
 
             #Thumb not generated, generate it
-            target_dir = os.path.join(libsys.get_root_dir(), "../thumb")
+            target_dir = os.path.join(root_dir, "../thumb")
             ensure_dir(target_dir)
 
             the_file = get_thumb(target_file, target_dir)
@@ -38,8 +42,10 @@ def get_thumb_file(target_file):
             the_file = thumb_list[0].thumb_full_path
 
         if the_file is None:
-            the_file = os.path.join(libsys.get_root_dir(), get_icon(full_path, obj.get_type()))
+            the_file = os.path.join(root_dir, get_icon(full_path, obj.get_type()))
+            log.error(root_dir, full_path)
             #raise "No thumb"
+    cl(the_file)
     return the_file
 
 
@@ -53,9 +59,11 @@ def get_icon(full_path, file_type=None):
     cl(full_path, 'file type is:', file_type)
 
     if 'Zip archive data' in file_type:
+        cl("Zip archive file type found !!!!!!!!!!!!!!!!!!!!!!")
         ext = full_path.split('.')[-1]
         for new_office_ext in ["xlsx", "docx", "pptx"]:
             if new_office_ext in ext:
+                cl("file ext:"+ext)
                 return 'static/image/icons/online/512px/' + new_office_ext + '.png'
 
     ext_icons = ['html', 'xml', 'pdf']

@@ -1,6 +1,10 @@
 import logging
 import os
 import sys
+import thread
+import time
+from libs.utils.short_decorator.ignore_exception import ignore_exc
+from libs.utils.web.direct_opener import open_url
 import libsys
 from iconizer.iconizer_main import Iconizer
 import django_commands_dict
@@ -31,12 +35,21 @@ def exec_django_cmd(data_params_):
     core_management.execute_from_command_line(command_line_param)
 
 
+@ignore_exc
+def trigger_create_admin():
+    time.sleep(10)
+    create_admin_base_url = 'http://localhost:%d/webmanage/create_admin_user'
+    full_web_url = create_admin_base_url % configuration.g_config_dict["ufs_web_server_port"]
+    open_url(full_web_url)
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     PostgresApp()
     NameServerStarter()
 
     sync_migrate_db()
+    thread.start_new_thread(trigger_create_admin, [])
+
     log_folder = get_or_create_app_data_folder("logs")
     i = Iconizer(log_dir=log_folder, python_executable=sys.executable)
     i.register()

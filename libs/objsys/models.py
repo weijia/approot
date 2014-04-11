@@ -58,8 +58,8 @@ class UfsObj(models.Model):
         if not (self.full_path is None):
             try:
                 from libs.objsys_local.views import get_type_from_full_path
-                return get_type_from_full_path()
-            except:
+                return get_type_from_full_path(self)
+            except ImportError:
                 pass
         return 'unknown'
 

@@ -42,15 +42,15 @@ class LocalObj(object):
         return os.stat(self.full_path)[ST_SIZE]
         
     def get_type(self):
-        rootPath = libsys.get_root_dir()
-        magicPath = os.path.join(rootPath, "share\\misc\\magic")
-        #print magicPath
-        #print 'magic path: ',magicPath
-        if not os.path.exists(magicPath):
+        root_path = libsys.get_root_dir()
+        magic_path = os.path.join(root_path, "share\\misc\\magic")
+        #print magic_path
+        #print 'magic path: ',magic_path
+        if not os.path.exists(magic_path):
             raise "Magic file lost"
-        #print "magic path is", magicPath
-        #os.environ["MAGIC"] = magicPath
-        m = magic.Magic(magic_file=magicPath)
+        #print "magic path is", magic_path
+        #os.environ["MAGIC"] = magic_path
+        m = magic.Magic(magic_file=magic_path)
         #print type(fullPath)
         #print 'utf8, 3', fullPath.encode('utf8')
         #print 'exists?', os.path.exists(fullPath)

@@ -107,17 +107,17 @@ def set_fields_from_full_path(ufs_obj):
         #print 'full path is:', self.full_path, self.size, self.description, os.path.isdir(self.full_path)
 
 
-def get_type_from_full_path(self):
+def get_type_from_full_path(ufs_obj):
     magic_type = None
-    if os.path.exists(self.full_path):
-        try:
-            if self.description_json is None:
-                local_obj = LocalObj(self.full_path)
+    if os.path.exists(ufs_obj.full_path):
+        if True:#try:
+            if ufs_obj.description_json is None:
+                local_obj = LocalObj(ufs_obj.full_path)
                 magic_type = local_obj.get_type()
-                self.description_json = json.dumps({"magic_type": magic_type})
+                ufs_obj.description_json = json.dumps({"magic_type": magic_type})
             else:
-                magic_type = json.loads(self.description_json)['magic_type']
-        except:
+                magic_type = json.loads(ufs_obj.description_json)['magic_type']
+        else:#except:
             import traceback
             traceback.print_exc()
     return magic_type
