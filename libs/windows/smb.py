@@ -4,7 +4,7 @@ import libs.windows.netdisk.driver_mapping as driverMapping
 import libs.ufsDb.dictShoveDb as dictShoveDb
 import desktopApp.lib.localTreeItem as localTreeItem
 import winUfs
-import libs.utils.configurationTools as configurationTools
+import libs.ufs_utils.configurationTools as configurationTools
 
 
 def removeHeadingSlash(s):

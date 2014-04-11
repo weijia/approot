@@ -3,8 +3,8 @@ import os
 import sys
 import thread
 import time
-from libs.utils.short_decorator.ignore_exception import ignore_exc
-from libs.utils.web.direct_opener import open_url
+from libs.ufs_utils.short_decorator.ignore_exception import ignore_exc
+from libs.ufs_utils.web.direct_opener import open_url
 import libsys
 from iconizer.iconizer_main import Iconizer
 import django_commands_dict
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     NameServerStarter()
 
     sync_migrate_db()
-    thread.start_new_thread(trigger_create_admin, [])
+    thread.start_new_thread(trigger_create_admin, ())
 
     log_folder = get_or_create_app_data_folder("logs")
     i = Iconizer(log_dir=log_folder, python_executable=sys.executable)

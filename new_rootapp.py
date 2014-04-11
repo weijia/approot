@@ -2,11 +2,12 @@ import logging
 import os
 import uuid
 import webbrowser
-from libs.utils.short_decorator.ignore_exception import ignore_exc
-from libs.utils.web.direct_opener import open_url
 from libsys import *
+from ufs_utils.short_decorator.ignore_exception import ignore_exc
+from ufs_utils.web.direct_opener import open_url
 from iconizer import Iconizer
-from app_framework.folders import get_or_create_app_data_folder
+#The following line must has lib import prefix, don't know why
+from libs.app_framework.folders import get_or_create_app_data_folder
 from libtool.filetools import find_callable_in_app_framework
 import configuration
 from services.pyro_service.pyro_utils import shutdown_all

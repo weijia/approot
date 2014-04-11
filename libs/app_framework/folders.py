@@ -1,5 +1,8 @@
 import libtool
-from utils.misc import ensure_dir
+import sys
+print sys.path
+import ufs_utils
+from ufs_utils.misc import ensure_dir
 import os
 
 

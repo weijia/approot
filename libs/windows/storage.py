@@ -3,8 +3,8 @@
 import libs.collection.collectionManager as collectionManager
 import libs.ufsDb.dbSys as dbSys
 import libs.services.nameServiceV2 as nameService
-import libs.utils.configurationTools as configurationTools
-import libs.utils.objTools as objTools
+import libs.ufs_utils.configurationTools as configurationTools
+import libs.ufs_utils.objTools as objTools
 
 try:
     import localLibSys

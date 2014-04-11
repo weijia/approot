@@ -3,8 +3,8 @@
 import collection.collectionManager as collectionManager
 import ufsDb.dbSys as dbSys
 import services.nameServiceV2 as nameService
-import utils.configurationTools as configurationTools
-import utils.objTools as objTools
+import ufs_utils.configurationTools as configurationTools
+import ufs_utils.objTools as objTools
 
 try:
     import localLibSys
