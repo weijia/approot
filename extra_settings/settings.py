@@ -1,4 +1,5 @@
-BROKER_URL = 'django://'
+#BROKER_URL = 'django://'
+
 
 INSTALLED_APPS += (
     # Uncomment the next line to enable the admin:
@@ -27,6 +28,7 @@ INSTALLED_APPS += (
     'webmanage',
     'kombu.transport.django',
     'obj_operation',
+    'objsys_local',
 )
 
 import logging

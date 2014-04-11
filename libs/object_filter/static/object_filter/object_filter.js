@@ -14,11 +14,15 @@ function genHtml(data)
         {
             objName = value.full_path.substring(value.full_path.lastIndexOf("/")+1);
         }
+
         var desc_content
         if ((null!=value.descriptions)&&(value.descriptions.length>0))
             desc_content = value.descriptions[0].content.replace(/"/g,'');
         else
             desc_content = "";
+        if(objName == ""){
+            objName = desc_content;
+        }
         resHtml += String.format('<div class="element-root" style="position:relative" ufs_url="{0}" full_path="{1}">'+
                     '<img class="element-thumb" src="{6}?target={5}" title="{0} {1} {4}"/>' +
                     '<ul class="tag-list tag-list-no-autocomplete">{2}</ul>{3}</div>',

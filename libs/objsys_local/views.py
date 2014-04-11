@@ -1,9 +1,12 @@
+import os
 import threading
 from django.http import HttpResponse
 from tagging.models import Tag, TaggedItem
 from tagging.utils import parse_tag_input
 from objsys.models import UfsObj
 from utils.django_utils import retrieve_param
+import json
+from obj_related.local_obj import LocalObj
 
 
 class UfsFilter(object):
@@ -82,3 +85,39 @@ def remove_tags_from(request):
     t.set_tag_app('user:' + request.user.username)
     t.start()
     return HttpResponse('{"result": "Remove tags processing"}', mimetype="application/json")
+
+
+####################
+# Only used in UFS
+def set_fields_from_full_path(ufs_obj):
+    if os.path.exists(ufs_obj.full_path) and (not (os.path.isdir(ufs_obj.full_path))):
+        try:
+            local_obj = LocalObj(ufs_obj.full_path)
+            if ufs_obj.size is None:
+                ufs_obj.size = local_obj.get_size()
+
+            if ufs_obj.description_json is None:
+                ufs_obj.description_json = json.dumps({"magic_type": local_obj.get_type()})
+        except IOError:
+            import traceback
+            traceback.print_exc()
+    else:
+        print 'is dir or not exist'
+        pass
+        #print 'full path is:', self.full_path, self.size, self.description, os.path.isdir(self.full_path)
+
+
+def get_type_from_full_path(self):
+    magic_type = None
+    if os.path.exists(self.full_path):
+        try:
+            if self.description_json is None:
+                local_obj = LocalObj(self.full_path)
+                magic_type = local_obj.get_type()
+                self.description_json = json.dumps({"magic_type": magic_type})
+            else:
+                magic_type = json.loads(self.description_json)['magic_type']
+        except:
+            import traceback
+            traceback.print_exc()
+    return magic_type
