@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from platform_related.executor import execute_app
 from services.svc_base.service_starter import start_diagram
-from utils.django_utils import retrieve_param, get_content_item_list_in_tastypie_format, get_list_in_json, get_json_resp
+from ufs_utils.django_utils import retrieve_param, get_content_item_list_in_tastypie_format, get_list_in_json, get_json_resp
 
 # Create your views here.
 from objsys.view_utils import get_ufs_obj_from_ufs_url

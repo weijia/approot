@@ -6,9 +6,9 @@ import time
 from libtool import find_root_path
 from object_filter.operations import get_tag_info_for_obj
 from objsys.obj_tagging_local import UfsFilter
-from utils.django_utils import retrieve_param
-from utils.misc import ensure_dir
-from utils.obj_tools import get_hostname
+from ufs_utils.django_utils import retrieve_param
+from ufs_utils.misc import ensure_dir
+from ufs_utils.obj_tools import get_hostname
 
 
 class ExportTagsThread(UfsFilter, threading.Thread):

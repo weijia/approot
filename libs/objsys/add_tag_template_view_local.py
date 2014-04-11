@@ -1,7 +1,7 @@
 from django.core.context_processors import csrf
 from objsys.add_tag_template_view import AddTagTemplateView
-from utils.django_utils import retrieve_param
-from utils.string_tools import unquote_unicode
+from ufs_utils.django_utils import retrieve_param
+from ufs_utils.string_tools import unquote_unicode
 
 
 class AddTagTemplateViewLocal(AddTagTemplateView):

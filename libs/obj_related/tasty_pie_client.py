@@ -6,7 +6,7 @@ from app_framework.folders import get_or_create_app_data_folder
 from compress.enc_7z import EncZipFileOn7Zip
 from datetime_storage.datetime_folders import get_date_based_path_and_filename
 from libtool.filetools import get_free_timestamp_filename_in_path
-from utils.obj_tools import get_hostname
+from ufs_utils.obj_tools import get_hostname
 from obj_related.period_manager import Period, get_tasty_client_period_manager
 
 

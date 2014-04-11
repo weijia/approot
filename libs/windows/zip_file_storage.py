@@ -13,7 +13,7 @@ except ImportError:
     pass
 '''
 #import wwjufsdatabase.libs.tag.tagSystemInterface as tagSys
-import utils.odict as odict
+import ufs_utils.odict as odict
 import localLibSys
 from logSys.logSys import *
 #from localLibs.services.beanstalkdServices.FileArchiveServiceV2 import g_file_archive_storage_collection_id

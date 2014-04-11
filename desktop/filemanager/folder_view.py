@@ -8,7 +8,7 @@ from objsys.models import UfsObj
 import json
 from windows.windowsDriver import getDriverList
 import urllib2
-import utils.string_tools as string_tools
+import ufs_utils.string_tools as string_tools
 
 
 def root(request):
@@ -54,8 +54,8 @@ def root_rest(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-import utils.transform as transform
-import utils.obj_tools as obj_tools
+import ufs_utils.transform as transform
+import ufs_utils.obj_tools as obj_tools
 
 gDefaultFileListCnt = 20
 

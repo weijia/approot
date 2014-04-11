@@ -3,7 +3,7 @@ import json
 import os
 from folder_update_checker import FolderUpdateChecker
 from folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
-from utils.obj_tools import get_hostname
+from ufs_utils.obj_tools import get_hostname
 from objsys.models import UfsObj, ObjRelation
 
 

@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from tagging.models import TaggedItem
-from utils.django_utils import retrieve_param
+from ufs_utils.django_utils import retrieve_param
 
 
 __author__ = 'Administrator'

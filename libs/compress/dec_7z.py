@@ -4,8 +4,8 @@ import os
 import subprocess
 from app_framework.folders import get_app_full_path_by_name, get_or_create_app_data_folder
 from obj_related import test_keys
-from utils.misc import ensure_dir
-from utils.transform import format_path
+from ufs_utils.misc import ensure_dir
+from ufs_utils.transform import format_path
 
 CREATE_NO_WINDOW = 0x8000000
 

@@ -2,8 +2,8 @@ import os
 import datetime
 import time
 from libtool.filetools import get_free_timestamp_filename_in_path
-from utils import transform as transform
-from utils.misc import ensure_dir
+from ufs_utils import transform as transform
+from ufs_utils.misc import ensure_dir
 
 
 class PathIsNotDirException(Exception): pass

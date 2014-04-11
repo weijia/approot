@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import base_settings
-from utils import dump_attrs
+from auto_conf_utils import dump_attrs
 
 
 log = logging.getLogger(__name__)

@@ -1,11 +1,10 @@
 import logging
 from libsys import *
 from config import get_ufs_web_server_port
-from configuration import get_default_charset
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 from services.svc_base.gui_client import GuiClient
-from utils.string_tools import quote_unicode
+from ufs_utils.string_tools import quote_unicode
 
 log = logging.getLogger(__name__)
 

@@ -12,9 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from tagging.models import Tag
-from utils.django_utils import retrieve_param
-from utils.string_tools import SpecialEncoder
-import utils.obj_tools as obj_tools
+from ufs_utils.django_utils import retrieve_param
+from ufs_utils.string_tools import SpecialEncoder
+import ufs_utils.obj_tools as obj_tools
 from objsys.models import UfsObj
 from objsys.models import Description
 from objsys.view_utils import get_ufs_obj_from_ufs_url

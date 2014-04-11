@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from tagging.models import Tag, TaggedItem
 from tagging.utils import parse_tag_input
 from objsys.models import UfsObj
-from utils.django_utils import retrieve_param
+from ufs_utils.django_utils import retrieve_param
 import json
 from obj_related.local_obj import LocalObj
 

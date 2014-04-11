@@ -4,8 +4,8 @@ import ffmpegThumb
 import appThumb
 import os
 import traceback
-from utils.obj_tools import isUfsFs, getPathForUfsUrl
-from utils.transform import format_path
+from ufs_utils.obj_tools import isUfsFs, getPathForUfsUrl
+from ufs_utils.transform import format_path
 from logsys.logSys import *
 
 

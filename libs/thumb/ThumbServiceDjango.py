@@ -5,8 +5,8 @@ try:
     import appThumb
 except ImportError:
     appThumb = None
-from utils.transform import format_path
-from utils.obj_tools import isUfsFs, getPathForUfsUrl
+from ufs_utils.transform import format_path
+from ufs_utils.obj_tools import isUfsFs, getPathForUfsUrl
 import traceback
 
 

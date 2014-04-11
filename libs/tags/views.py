@@ -6,11 +6,11 @@ from django.shortcuts import render_to_response, redirect
 from tagging.models import Tag, TaggedItem
 #from django.core import serializers
 from logsys.logSys import cl
-from utils import transform as transform, obj_tools
+from ufs_utils import transform as transform, obj_tools
 from collection_management.models import CollectionItem
 from objsys.models import UfsObj
 import json
-from utils.django_utils import retrieve_param
+from ufs_utils.django_utils import retrieve_param
 
 
 def tag_list(request):

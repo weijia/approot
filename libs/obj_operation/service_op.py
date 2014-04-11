@@ -1,5 +1,5 @@
 from iconizer.pyro_launcher import get_app_name_from_full_path
-from utils.django_utils import retrieve_param, get_json_resp
+from ufs_utils.django_utils import retrieve_param, get_json_resp
 from services.sap.service_manager_sap import ServiceManager
 
 

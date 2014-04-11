@@ -3,8 +3,8 @@ from django.shortcuts import render_to_response
 
 
 # Create your views here.
-from utils.django_utils import retrieve_param
-from utils.string_tools import unquote_unicode
+from ufs_utils.django_utils import retrieve_param
+from ufs_utils.string_tools import unquote_unicode
 
 
 def object_filter(request):

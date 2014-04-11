@@ -6,12 +6,12 @@ from django.template import RequestContext
 
 from thumb.thumbInterface import get_thumb
 from obj_related.local_obj import LocalObj
-from utils.mobile.qrcode_image import get_qr_code
-from utils.django_utils import retrieve_param, return_file_data
+from ufs_utils.mobile.qrcode_image import get_qr_code
+from ufs_utils.django_utils import retrieve_param, return_file_data
 import libsys
-from utils.transform import format_path
+from ufs_utils.transform import format_path
 from models import ThumbCache
-from utils.misc import ensure_dir as ensure_dir
+from ufs_utils.misc import ensure_dir as ensure_dir
 from logsys.logSys import *
 from objsys.view_utils import get_ufs_obj_from_full_path
 

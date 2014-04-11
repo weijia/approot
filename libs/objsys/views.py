@@ -7,7 +7,7 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from obj_tagging import *
-from utils.django_utils import retrieve_param
+from ufs_utils.django_utils import retrieve_param
 from objsys.models import UfsObj
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect

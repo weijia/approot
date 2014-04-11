@@ -1,6 +1,6 @@
 import os
 from obj_related.json_obj import import_objects_from_json_full_path
-from utils.obj_tools import get_hostname
+from ufs_utils.obj_tools import get_hostname
 from folder_update_checker import FolderUpdateChecker
 from folder_update_checker.file_timestamp_keeper import FileCollectionExistenceInfoKeeper
 

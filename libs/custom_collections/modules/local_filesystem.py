@@ -1,9 +1,9 @@
 import os
 import urllib2
 import libsys
-import utils.string_tools as string_tools
+import ufs_utils.string_tools as string_tools
 from objsys.models import UfsObj
-from utils.obj_tools import get_formatted_full_path
+from ufs_utils.obj_tools import get_formatted_full_path
 
 
 def get_collection(path):

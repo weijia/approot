@@ -2,7 +2,7 @@ import os
 import qrcode
 from libtool import find_root_path
 from libtool.filetools import get_free_timestamp_filename_in_path
-from utils.misc import ensure_dir as ensure_dir
+from ufs_utils.misc import ensure_dir as ensure_dir
 
 
 def get_qr_code(data):

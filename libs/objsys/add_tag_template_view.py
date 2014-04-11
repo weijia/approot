@@ -2,9 +2,9 @@ from django.core.context_processors import csrf
 from django.views.generic import TemplateView
 from objsys.models import UfsObj
 from objsys.obj_tagging import append_tags_and_description_to_url
-from utils import obj_tools
-from utils.django_utils import retrieve_param
-from utils.string_tools import SpecialEncoder
+from ufs_utils import obj_tools
+from ufs_utils.django_utils import retrieve_param
+from ufs_utils.string_tools import SpecialEncoder
 
 
 class AddTagTemplateView(TemplateView):

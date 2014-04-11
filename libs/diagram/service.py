@@ -2,7 +2,7 @@ import os
 from libtool import find_root_path
 from libtool.filetools import collect_files_in_dir, find_callable_in_app_framework
 from objsys.view_utils import get_ufs_obj_from_full_path
-from utils.django_utils import get_content_item_list_in_tastypie_format
+from ufs_utils.django_utils import get_content_item_list_in_tastypie_format
 
 
 class App(object):

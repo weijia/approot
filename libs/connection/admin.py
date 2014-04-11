@@ -2,7 +2,7 @@ from collection_management.tree import register_menu
 from models import Connection, Processor
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
-from utils.string_tools import quote_unicode
+from ufs_utils.string_tools import quote_unicode
 
 
 class ConnectionAdmin(GuardedModelAdmin):

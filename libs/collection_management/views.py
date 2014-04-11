@@ -35,8 +35,8 @@ def collections(request):
     return HttpResponse(response, mimetype="application/json")
 
 
-import utils.obj_tools as obj_tools
-import utils.string_tools as string_tools
+import ufs_utils.obj_tools as obj_tools
+import ufs_utils.string_tools as string_tools
 
 
 def get_collection_by_protocol(collection_id):

@@ -4,7 +4,7 @@
 from django.http import HttpResponse
 import sys
 import django
-from utils.django_utils import retrieve_param
+from ufs_utils.django_utils import retrieve_param
 from django.core.management import execute_from_command_line
 
 try:
