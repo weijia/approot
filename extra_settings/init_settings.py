@@ -1,6 +1,7 @@
 import os
-from libtool import include_file_sibling_folder, include_in_folder, find_root_path, get_parent_folder
-include_in_folder(get_parent_folder(__file__), "libs")
+from libtool import include_file_sibling_folder, include_in_folder, find_root_path, get_file_folder, get_grand_parent
+
+include_in_folder(get_grand_parent(get_file_folder(__file__)), "libs")
 
 from djangoautoconf import DjangoAutoConf
 # configuration should not be imported here as setup.py will use this file,
