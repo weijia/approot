@@ -29,6 +29,9 @@ INSTALLED_APPS += (
     'kombu.transport.django',
     'obj_operation',
     'objsys_local',
+    #'planet',
+    #'feedreader',
+    'yarr',
 )
 
 import logging

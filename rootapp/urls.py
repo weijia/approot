@@ -26,6 +26,11 @@ urlpatterns = patterns('',
 
     url(r'^collection_management/', include('collection_management.urls')),
     url(r'^tags/', include('tags.urls')),
+    ############################################
+    url(r'^planet/', include('planet.urls')),
+    #url(r'^feedreader/', include('feedreader.urls')),
+    url(r'^yarr/', include('yarr.urls')),
+    ############################################
     url(r'^connection/', include('connection.urls')),
     url(r'^normal_admin/', include('normal_admin.urls')),
     url(r'^mapping_driver/', include('win_smb.urls')),
