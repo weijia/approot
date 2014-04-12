@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
 
+log = logging.getLogger(__name__)
+
 @login_required
 def manager(request):
     data = retrieve_param(request)
@@ -39,7 +41,7 @@ class StarterThread(threading.Thread):
 def start(request):
     data = retrieve_param(request)
     full_path = data["full_path"]
-    print full_path
+    log.debug(full_path)
     try:
         ext = os.path.splitext(full_path)[1]
     except:
