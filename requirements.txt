@@ -24,6 +24,7 @@ django-registration
 git+https://github.com/weijia/django-registration-defaults.git#egg=django-registration-defaults
 git+https://github.com/weijia/djangoautoconf.git#egg=djangoautoconf
 git+https://github.com/weijia/libtool.git#egg=djangoautoconf#egg=libtool
+git+https://github.com/radiac/django-yarr.git#egg=django-yarr
 requests
 git+https://github.com/weijia/baidu-pcs.git#egg=baidu-pcs
 git+https://github.com/weijia/iconizer.git#egg=iconizer
