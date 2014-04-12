@@ -10,7 +10,7 @@ import cPickle
 from stat import ST_SIZE
 #from dbus.mainloop.glib import threads_init
 import libsys
-from libs.logsys.logSys import *
+from logsys.logSys import *
 
 ACTIONS = {
   1 : "Created",

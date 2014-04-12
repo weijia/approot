@@ -3,9 +3,9 @@ import os
 import sys
 import thread
 import time
-from libs.ufs_utils.short_decorator.ignore_exception import ignore_exc
-from libs.ufs_utils.web.direct_opener import open_url
 import libsys
+from ufs_utils.short_decorator.ignore_exception import ignore_exc
+from ufs_utils.web.direct_opener import open_url
 from iconizer.iconizer_main import Iconizer
 import django_commands_dict
 from app_framework.folders import get_or_create_app_data_folder

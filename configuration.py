@@ -1,13 +1,13 @@
 import logging
 import os
 from libsys import *
-import root_lib_sys as root_lib
 
 ##################################
 # Configurations
 ##################################
 
-log_root = os.path.join(root_lib.get_root_dir(), "../data/logs")
+root_path = libtool.find_root_path(__file__, "approot")
+log_root = os.path.join(root_path, "../data/logs")
 
 
 gServerStartPort = 8110
@@ -39,8 +39,8 @@ for i in g_config_dict:
         g_config_dict[i] = loaded_config[i]
     os.environ[i] = str(g_config_dict[i])
     
-os.environ["POSTGRESQL_ROOT"] = os.path.join(root_lib.get_root_dir(), "..\\others\\pgsql\\")
-os.environ["CLASSPATH"] = os.path.join(root_lib.get_root_dir(), "..\\others\\scache\\src\\Beanstemc.jar")
+os.environ["POSTGRESQL_ROOT"] = os.path.join(root_path, "..\\others\\pgsql\\")
+os.environ["CLASSPATH"] = os.path.join(root_path, "..\\others\\scache\\src\\Beanstemc.jar")
 
 ###################################
 try:

@@ -48,7 +48,7 @@ class UfsObj(models.Model):
     def save(self, *args, **kwargs):
         if not (self.full_path is None):
             try:
-                from libs.objsys_local.views import set_fields_from_full_path
+                from objsys_local.views import set_fields_from_full_path
                 set_fields_from_full_path(self)
             except:
                 pass
@@ -57,7 +57,7 @@ class UfsObj(models.Model):
     def get_type(self):
         if not (self.full_path is None):
             try:
-                from libs.objsys_local.views import get_type_from_full_path
+                from objsys_local.views import get_type_from_full_path
                 return get_type_from_full_path(self)
             except ImportError:
                 pass

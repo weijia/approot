@@ -1,9 +1,13 @@
 import logging
+import sys
+print sys.path
 from libsys import *
+print sys.path
 from config import get_ufs_web_server_port
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 from services.svc_base.gui_client import GuiClient
+print sys.path
 from ufs_utils.string_tools import quote_unicode
 
 log = logging.getLogger(__name__)

@@ -88,7 +88,7 @@ class ThumbServiceBase(object):
 
 def getThumb(path, targetDir = gWorkingDir, mime_type = None, req = None):
     if req is None:
-        import libs.services.servicesV2 as service
+        import services.servicesV2 as service
         req = service.req()
     #We can have a database from the req. So save the thumb info.
     t = ThumbServiceBase(req.getDbSys())

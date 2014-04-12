@@ -12,7 +12,7 @@ except ImportError:
     sys.path.insert(0, os.path.join(c,'prodRoot'))
     import localLibs.windows.localTreeItem as localTreeItem
 
-import libs.ufs_utils.configurationTools as configurationTools
+import ufs_utils.configurationTools as configurationTools
 
 localDriverUuid = u'290b5fcc-be54-4ae4-9613-20a24de723cf'
 remoteDriverUuid = u'9ee70015-bfef-44ee-8d1c-48a4e6399954'

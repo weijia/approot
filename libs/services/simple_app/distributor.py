@@ -1,6 +1,6 @@
 # -*- coding: gbk -*-
 import logging
-from services.simple_app.libsys import *
+from libsys import *
 from connection.models import Processor
 from diagram.diagram import get_all_processors_for_diagram, dispatch_to_processor
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
