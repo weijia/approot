@@ -29,7 +29,7 @@ class NamedApp(App):
             raise "Obj not exists"
 
 
-gIgnoreAppList = ["root.exe", "__init__.py", "libsys.py",
+gIgnoreAppList = ["root.exe", "__init__.py", "ufs_django_conf.py",
                   "postgresql.bat",
                   "postgresql_stop.bat",
                   "start_ext.bat",
