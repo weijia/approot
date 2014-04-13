@@ -38,7 +38,7 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
         if "selected_url" in data:
             close_flag = True
             selected_url_param = data["selected_url"]
-            if type(selected_url_param) != type(list):
+            if type(selected_url_param) != list:
                 selected_url_param = [selected_url_param]
 
             self.tag_url_list(selected_url_param)
