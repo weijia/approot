@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+#from configuration import *
 from extra_settings.init_settings import init_settings
 from libtool import include_file_sibling_folder
 include_file_sibling_folder(__file__, "libs")

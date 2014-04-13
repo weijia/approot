@@ -29,9 +29,7 @@ INSTALLED_APPS += (
     'kombu.transport.django',
     'obj_operation',
     'objsys_local',
-    #'planet',
-    #'feedreader',
-    'yarr',
+    #'yarr',
 )
 
 import logging
@@ -61,3 +59,6 @@ if "" != postgresql:
     }
 else:
     pass
+
+
+TIME_ZONE = 'Asia/Shanghai'

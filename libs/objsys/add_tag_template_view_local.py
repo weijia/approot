@@ -22,7 +22,8 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
             self.append_to_listed_urls(url)
 
     def get_context_data(self, **kwargs):
-        context = super(AddTagTemplateView, self).get_context_data(**kwargs)
+        #context = super(AddTagTemplateView, self).get_context_data(**kwargs)
+        context = {}
         data = retrieve_param(self.request)
 
         #Load saved submitted_url
@@ -30,7 +31,6 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
             self.listed_urls = self.request.session["saved_urls"]
 
         close_flag = False
-        self.retrieve_encoding(data)
 
         if "tags" in data:
             self.tags = data["tags"]
@@ -38,17 +38,16 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
         if "selected_url" in data:
             close_flag = True
             selected_url_param = data["selected_url"]
-            if type(selected_url_param) == type(list):
-                self.tag_url_list(selected_url_param)
-            else:
-                self.tag_url(selected_url_param)
+            if type(selected_url_param) != type(list):
+                selected_url_param = [selected_url_param]
+
+            self.tag_url_list(selected_url_param)
 
         if "url" in data:
             url_param = data.getlist("url")
-            if type(url_param) == list:
-                self.extend_listed_urls(url_param)
-            else:
-                self.append_to_listed_urls(url_param)
+            if type(url_param) != list:
+                url_param = [url_param]
+            self.extend_listed_urls(url_param)
 
         for tagged_url in self.tagged_urls:
             if tagged_url in self.listed_urls:
