@@ -1,3 +1,4 @@
+import logging
 from django.core.context_processors import csrf
 from objsys.add_tag_template_view import AddTagTemplateView
 from ufs_utils.django_utils import retrieve_param
@@ -54,9 +55,10 @@ class AddTagTemplateViewLocal(AddTagTemplateView):
                 self.listed_urls.remove(tagged_url)
 
         self.request.session["saved_urls"] = self.listed_urls
-
+        log = logging.getLogger(__name__)
+        log.error(self.listed_urls)
         urls_with_tags = self.get_urls_with_tags()
-
+        log.error(urls_with_tags)
         c = {"user": self.request.user, "close_flag": close_flag, "urls_with_tags": urls_with_tags,
              "new_url_input": False}
         if 0 == len(urls_with_tags):

@@ -20,7 +20,7 @@ from objsys.models import Description
 from objsys.view_utils import get_ufs_obj_from_ufs_url
 
 
-def append_tags_and_description_to_url(user, url, tags, description):
+def get_or_create_obj_from_remote_or_local_url(url, user):
     #Tag object
     if obj_tools.is_web_url(url):
         full_path = None
@@ -30,12 +30,16 @@ def append_tags_and_description_to_url(user, url, tags, description):
         full_path = obj_tools.get_full_path_for_local_os(url)
         obj_qs = UfsObj.objects.filter(full_path=full_path)
         ufs_url = obj_tools.getUfsUrlForPath(full_path)
-
     if 0 == obj_qs.count():
         obj = UfsObj(ufs_url=ufs_url, uuid=unicode(uuid.uuid4()), timestamp=timezone.now(),
                      user=user, full_path=full_path)
         obj.save()
         obj_qs = [obj]
+    return obj_qs
+
+
+def append_tags_and_description_to_url(user, url, tags, description):
+    obj_qs = get_or_create_obj_from_remote_or_local_url(url, user)
     description_obj, created = Description.objects.get_or_create(content=description)
     for obj in obj_qs:
         #obj.tags = tags
