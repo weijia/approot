@@ -21,7 +21,7 @@ gAutoStartDiagramTagName = "system:autostart"
 gDiagramRootCollectionUuid = 'b4852a45-af7b-4a38-8025-15cf12212701'
 
 
-def save_diagram_to_db(full_path):
+def save_diagram_in_file_to_db(full_path):
     anonymous = User.objects.filter(pk=settings.ANONYMOUS_USER_ID)[0]
     file = open(full_path, 'r')
     data = json.load(file)
@@ -56,7 +56,7 @@ def save_all_diagram_from_predefined_folders():
         diagram_file_list.extend(collect_files_in_dir(sub_dir, ext))
     print diagram_file_list
     for full_path in diagram_file_list:
-        save_diagram_to_db(full_path)
+        save_diagram_in_file_to_db(full_path)
     return diagram_list
 
 
