@@ -41,6 +41,7 @@ urlpatterns = patterns('',
     url(r'^ui_framework/', include('ui_framework.urls')),                       
     url(r'^webmanage/', include('webmanage.urls')),
     url(r'^obj_operation/', include('obj_operation.urls')),
+    url(r'^scheduler/', include('external_git.djangotaskscheduler.scheduler.urls')),
     url(r'^$', RedirectView.as_view(url='/objsys/homepage/'), name='index'),
 )
 

@@ -11,6 +11,7 @@ from djangoautoconf import DjangoAutoConf
 
 def init_settings():
     include_file_sibling_folder(__file__, "keys")
+    include_file_sibling_folder(__file__, "../libs/external_git/djangotaskscheduler")
     c = DjangoAutoConf()
     c.set_default_settings("rootapp.settings")
     root_folder = find_root_path(__file__, 'approot')

@@ -30,6 +30,7 @@ INSTALLED_APPS += (
     'obj_operation',
     'objsys_local',
     #'yarr',
+    'scheduler'
 )
 
 import logging
@@ -62,3 +63,5 @@ else:
 
 
 TIME_ZONE = 'Asia/Shanghai'
+
+SCHEDULER_FILE_ROOT = "d:/tmp"
