@@ -1,0 +1,3 @@
+[submodule "libs/external_git/djangotaskscheduler"]
+	path = libs/external_git/djangotaskscheduler
+	url = https://github.com/weijia/djangotaskscheduler.git

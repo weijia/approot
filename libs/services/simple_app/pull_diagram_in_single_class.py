@@ -1,7 +1,8 @@
+import threading
 from git_wrapper.puller import Puller
 
 
-class SingleClassDiagramService(object):
+class SingleClassDiagramService(threading.Thread):
     pass
 
 
