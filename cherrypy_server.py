@@ -3,7 +3,8 @@
 import sys
 import logging
 import os
-import os.path
+print '------------------------------------'
+print sys.path
 
 ##########################################################
 #The following is a work arround for pytz's resource_stream is not imported correctly

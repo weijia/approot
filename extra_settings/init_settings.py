@@ -1,5 +1,6 @@
 import os
-from libtool import include_file_sibling_folder, include_in_folder, find_root_path, get_file_folder, get_grand_parent
+from libtool import include_file_sibling_folder, include_in_folder, find_root_path, get_file_folder, \
+    get_grand_parent, include_all_direct_subfolders
 
 include_in_folder(get_grand_parent(get_file_folder(__file__)), "libs")
 
@@ -11,10 +12,11 @@ from djangoautoconf import DjangoAutoConf
 
 def init_settings():
     include_file_sibling_folder(__file__, "keys")
-    include_file_sibling_folder(__file__, "../libs/external_git/djangotaskscheduler")
+    root_folder = find_root_path(__file__, 'approot')
+    include_all_direct_subfolders(os.path.join(root_folder, "libs/external_git/"))
     c = DjangoAutoConf()
     c.set_default_settings("rootapp.settings")
-    root_folder = find_root_path(__file__, 'approot')
+
     c.set_root_dir(root_folder)
     c.set_key_dir(os.path.join(root_folder, "keys"))
     c.add_extra_settings(["extra_settings.settings",
