@@ -2,7 +2,7 @@ import logging
 import time
 from msg_service.predefined_receivers import DISTRIBUTOR
 from services.svc_base.stated_worker import StatedWorker
-from tags.tag_utils import get_tagged_items_greater_than_timestamp
+from tags.tag_utils import get_items_with_certain_tag_greater_than_timestamp
 from services.sap.msg_service_sap import AutoRouteMsgService
 
 
@@ -21,7 +21,10 @@ class CertainTaggedItemEnumWorker(StatedWorker):
         first_tag_timestamp = self.state.get_state_value("certain_tag_enum_start_timestamp", 0)
         log.debug("first tag timestamp:" + str(first_tag_timestamp))
 
-        tagged_item_list = get_tagged_items_greater_than_timestamp(first_tag_timestamp)
+        tag = self.state.get_state_value("tag", "git_repo")
+
+        tagged_item_list = get_items_with_certain_tag_greater_than_timestamp(
+            first_tag_timestamp, tag)
 
         #Send all retrieved items
         for tagged_item in tagged_item_list:
