@@ -3,7 +3,7 @@ import os
 import sys
 import time
 import traceback
-import libsys
+import ufs_django_conf
 
 from connection.models import Processor, Connection
 #from objsys.local_obj_tools import get_ufs_obj_from_ufs_url

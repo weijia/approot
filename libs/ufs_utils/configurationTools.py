@@ -2,7 +2,7 @@ import json
 import encodingTools
 import os
 #commaEncoding = "gbk"
-import libsys
+import ufs_django_conf
 import sys
 '''
 def getTagSeparator():

@@ -7,7 +7,6 @@ import libsys
 from ufs_utils.short_decorator.ignore_exception import ignore_exc
 from ufs_utils.web.direct_opener import open_url
 from iconizer.iconizer_main import Iconizer
-import django_commands_dict
 from app_framework.folders import get_or_create_app_data_folder
 from libtool.filetools import find_callable_in_app_framework
 from platform_related.executor import execute_app_from_name_and_wait_for_complete
@@ -16,23 +15,14 @@ from services.svc_base.postgres_app_starter import PostgresApp
 #The following will set environment string for start web server.
 import configuration
 from extra_settings import init_settings
-import django.core.management as core_management
 from services.pyro_service.name_server_starter import NameServerStarter
+from webmanager.cmd_utils import exec_django_cmd
 
 
 def sync_migrate_db():
     init_settings.init_settings()
     exec_django_cmd("syncdb,--noinput")
     exec_django_cmd("migrate")
-
-
-def exec_django_cmd(data_params_):
-    params = data_params_.split(",")
-    # manage.py here is not used in execute_from_command_line, it is just used to occupy the position.
-    command_line_param = ["manage.py"]
-    command_line_param.extend(params)
-    core_management._commands = django_commands_dict.django_commands_dict
-    core_management.execute_from_command_line(command_line_param)
 
 
 @ignore_exc

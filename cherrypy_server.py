@@ -22,7 +22,7 @@ from cherrypy import _cplogging, _cperror
 from django.core.handlers.wsgi import WSGIHandler
 from django.http import HttpResponseServerError
 
-from libsys import *
+import ufs_django_conf
 from cherrypy.lib.static import serve_file
 from extra_settings.init_settings import init_settings
 

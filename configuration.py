@@ -1,6 +1,6 @@
 import logging
 import os
-from libsys import *
+import libtool
 
 ##################################
 # Configurations
