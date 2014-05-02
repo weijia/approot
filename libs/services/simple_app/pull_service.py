@@ -1,5 +1,5 @@
 import logging
-import libsys
+from ufs_django_conf import *
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from git_wrapper.puller import Puller
 

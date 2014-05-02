@@ -1,4 +1,5 @@
 import logging
+from ufs_django_conf import *
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 log = logging.getLogger(__name__)

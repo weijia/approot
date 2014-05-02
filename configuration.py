@@ -43,19 +43,4 @@ os.environ["POSTGRESQL_ROOT"] = os.path.join(root_path, "..\\others\\pgsql\\")
 os.environ["CLASSPATH"] = os.path.join(root_path, "..\\others\\scache\\src\\Beanstemc.jar")
 
 ###################################
-try:
-    os.mkdir(log_root)
-    print "created dir:", log_root
-except:
-    pass
 
-
-def get_default_charset():
-    from extra_settings.init_settings import init_settings
-
-    django_auto_conf = init_settings()
-    settings = django_auto_conf.get_settings()
-    try:
-        return settings.DEFAULT_CHARSET
-    except:
-        return "utf8"

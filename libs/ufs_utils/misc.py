@@ -1,9 +1,9 @@
 import os
 
 
-def ensure_dir(fullPath):
-    if not os.path.exists(fullPath):
-        os.makedirs(fullPath)
+def ensure_dir(full_path):
+    if not os.path.exists(full_path):
+        os.makedirs(full_path)
 
 
 gSupportedExt = ['jpg', 'avi']
