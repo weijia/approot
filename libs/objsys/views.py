@@ -7,6 +7,7 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from obj_tagging import *
+from objsys.obj_operator import ObjOperator, ObjListOperator, handle_operation_request
 from ufs_utils.django_utils import retrieve_param
 from objsys.models import UfsObj
 from django.contrib.auth.decorators import login_required
@@ -101,21 +102,6 @@ def rm_objs_for_path(request):
         return HttpResponse(res, mimetype="application/json")
 
 
-def rm_obj_from_db(request):
-    data = retrieve_param(request)
-    if "ufs_url" in data:
-        for obj in UfsObj.objects.filter(ufs_url=data["ufs_url"]):
-            #obj.tags = ""
-            json_description = json.loads(obj.description_json)
-            json_description["tags_before_delete"] = obj.tags
-            obj.description_json = json.dumps(json_description)
-            obj.tags = ""
-            #obj.delete()
-            obj.valid = False
-        return HttpResponse('{"result": "removed: %s"}' % (data["ufs_url"]), mimetype="application/json")
-    return HttpResponse('{"result": "not enough params"}', mimetype="application/json")
-
-
 def listing(request):
     objects = UfsObj.objects.all()
     return render_to_response('objsys/listing.html', {"objects": objects, "request": request},
@@ -131,17 +117,8 @@ def listing_with_description(request):
                               context_instance=RequestContext(request))
 
 
-class ObjOperator(object):
-    def __init__(self, pk):
-        self.pk = pk
-
-    def rm(self):
-        for obj in UfsObj.objects.filter(pk=self.pk):
-            obj.valid = False
-            obj.save()
-
-
-def do_operations(request):
+@login_required
+def do_operation(request):
     data = retrieve_param(request)
     if ("cmd" in data) and ("pk" in data):
         operator = ObjOperator(int(data["pk"]))
@@ -149,9 +126,6 @@ def do_operations(request):
     return HttpResponseRedirect("/objsys/homepage/")
 
 
-'''
-def homepage(request):
-    context = {}
-    context['ufs_objs'] = UfsObj.objects.filter(user=request.user)
-    return render(request, 'objsys/index.html', context)
-'''
+@login_required
+def do_json_operation(request):
+    return handle_operation_request(request)

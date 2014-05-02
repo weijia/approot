@@ -161,7 +161,7 @@ def create_processor(diagram_obj, obj, param_str):
 
 
 def update_diagram_list_from_database(diagram_list):
-    for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://"):
+    for diagram_obj in UfsObj.objects.filter(ufs_url__startswith="diagram://").filter(valid=True):
         diagram_list.append(Diagram(diagram_obj))
 
 

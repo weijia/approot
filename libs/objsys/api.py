@@ -62,7 +62,7 @@ class UfsObjResource(ModelResource):
             tag = data["tag"]
 
         if tag is None:
-            return super(UfsObjResource, self).get_object_list(request)
+            return super(UfsObjResource, self).get_object_list(request).filter(valid=True)
         else:
             request.session["tag"] = tag
             try:

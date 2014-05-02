@@ -5,7 +5,7 @@ $(document).ready(function () {
             function(data){});
     });
     $("#obj-pane").on("click", "#delButton", function(e){
-        $.getJSON("/objsys/rm_obj_from_db/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
+        $.getJSON("/objsys/do_json_operation/?cmd=rm&ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
     });
     $("#obj-pane").on("click", "#delDirectories", function(e){
         $.getJSON("/objsys/rm_objs_for_path/?ufs_url="+encodeURI($(this).parents(".element-root").attr("ufs_url")));
