@@ -7,8 +7,8 @@ import ufs_django_conf
 
 from connection.models import Processor, Connection
 #from objsys.local_obj_tools import get_ufs_obj_from_ufs_url
-from libtool import filetools
-from libtool.filetools import collect_files_in_dir
+from libtool.libtool import find_root_path
+from libtool.filetools import collect_files_in_dir, get_app_name_from_full_path
 from objsys.models import UfsObj
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -124,7 +124,7 @@ def save_diagram(req_param, user, export_diagram=True):
     if export_diagram:
         processor_export_str = json.dumps(req_param, indent=4)
         result_dict['dumped'] = processor_export_str
-        root_dir = libsys.get_root_dir()
+        root_dir = find_root_path("approot",)
 
         try:
             os.mkdir(os.path.join(root_dir, "../diagrams/"))
@@ -184,5 +184,5 @@ def dispatch_to_processor(diagram_uuid, processor, base_msg):
     base_msg.update({"diagram": {"diagram_id": diagram_uuid, "processor_id": processor.ufsobj.uuid, }})
     param_dict = json.loads(processor.param_descriptor)
     base_msg.update(param_dict)
-    target = filetools.get_app_name_from_full_path(processor.ufsobj.ufs_url)
+    target = get_app_name_from_full_path(processor.ufsobj.ufs_url)
     AutoRouteMsgService().send_to(target, base_msg)
