@@ -26,7 +26,7 @@ def save_diagram_in_file_to_db(full_path):
     file = open(full_path, 'r')
     data = json.load(file)
     diagram_id = data["diagram_id"]
-    diag_obj_list = UfsObj.objects.filter(ufs_url = u"diagram://" + diagram_id)
+    diag_obj_list = UfsObj.objects.filter(ufs_url=u"diagram://" + diagram_id, valid=True)
     if 0 == diag_obj_list.count():
         save_diagram(data, anonymous, False)
 

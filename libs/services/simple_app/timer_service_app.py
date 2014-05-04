@@ -8,8 +8,8 @@ from services.sap.msg_service_sap import AutoRouteMsgService
 
 
 class TimerWorker(threading.Thread):
-
-    def __init__(self, diagram_info, duration, is_recursive=False, group=None, target=None, name=None, args=(), kwargs=None, verbose=None):
+    def __init__(self, diagram_info, duration, is_recursive=False, group=None, target=None, name=None, args=(),
+                 kwargs=None, verbose=None):
         super(TimerWorker, self).__init__(group, target, name, args, kwargs, verbose)
         self.diagram_info = diagram_info
         self.duration = duration

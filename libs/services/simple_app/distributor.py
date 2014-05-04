@@ -48,4 +48,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     s = Distributor()
     #thread.start_new_thread(start_diagrams, ())
+    print "Before start service"
     s.start_service()
+    print "After start service"

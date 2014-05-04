@@ -29,11 +29,14 @@ def start_diagram_by_tag():
 
 def start_diagram(diagram_obj, connection_prefix=u''):
     diagram_uuid = diagram_obj.uuid
+    res = ""
     processors_for_diagram = get_all_processors_for_diagram(diagram_uuid)
+    res += str(processors_for_diagram)
     for processor in processors_for_diagram:
         input_count = processor.inputs.count()
         if 0 == input_count:
             dispatch_to_processor(diagram_uuid, processor, {})
+    return res
 
 
 if __name__ == "__main__":

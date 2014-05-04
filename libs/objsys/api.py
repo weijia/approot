@@ -67,7 +67,7 @@ class UfsObjResource(ModelResource):
             request.session["tag"] = tag
             try:
                 obj_tag = Tag.objects.get(name=tag)
-                objs = TaggedItem.objects.get_by_model(UfsObj, obj_tag).order_by('-timestamp')
+                objs = TaggedItem.objects.get_by_model(UfsObj, obj_tag).order_by('-timestamp').filter(valid=True)
             except:
                 objs = UfsObj.objects.none()
             return objs

@@ -1,6 +1,10 @@
+import logging
 from msg_service.msg_service_interface import MsgServiceInterface, UnknownReceiver
 from msg_service.predefined_receivers import TAGGING_RECEIVER
 from msg_service.pyro_msg_service import PyroMsgService
+
+
+log = logging.getLogger(__name__)
 
 
 class AutoRouteMsgService(MsgServiceInterface):
@@ -12,7 +16,8 @@ class AutoRouteMsgService(MsgServiceInterface):
         try:
             self.pyro_msg_service.send_to(receiver, msg)
         except UnknownReceiver:
-            pass
+            print "Unknown receiver:", receiver
+            log.error("Unknown receiver:"+receiver)
 
     def send_tagging_msg(self, msg):
         try:
