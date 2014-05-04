@@ -18,10 +18,10 @@ class TimerWorker(threading.Thread):
     def run(self):
         while True:
             #time.sleep(10)#self.duration)
-            time.sleep(self.duration)
             AutoRouteMsgService().send_to(DISTRIBUTOR, {"diagram": self.diagram_info})
             if not self.is_recursive:
                 break
+            time.sleep(self.duration)
 
 
 class TimerServiceApp(PyroSimpleAppBase):

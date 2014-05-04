@@ -65,9 +65,11 @@ class Puller(object):
         #    print 'no refs attr'
         #print "length:", len(i.refs)
         is_ref_valid = True
-        if True:#try:
+        try:
             len(remote_repo.refs)
-        else:#except:
+        except AssertionError, e:
+            e.print_exc()
+            print remote_repo
             is_ref_valid = False
         return is_ref_valid
 
