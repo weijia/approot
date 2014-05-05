@@ -68,7 +68,8 @@ class Puller(object):
         try:
             len(remote_repo.refs)
         except AssertionError, e:
-            e.print_exc()
+            import traceback
+            traceback.print_exc()
             print remote_repo
             is_ref_valid = False
         return is_ref_valid
@@ -86,7 +87,7 @@ class Puller(object):
         if not self.is_ignored(remote_repo.url):
             if self.is_repo_ref_valid(remote_repo):
                 for remote_ref in remote_repo.refs:
-                    log.warning("remote branch:", remote_ref)
+                    log.warning("remote branch:" + unicode(remote_ref).encode('utf8', 'replace'))
                     #self.pull_and_push_changes(branch, remote_branch, remote_repo)
                     RemoteRepo(remote_repo).pull_and_push_changes(branch, remote_ref)
                     
