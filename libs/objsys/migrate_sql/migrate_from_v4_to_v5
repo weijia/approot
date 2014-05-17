@@ -1,0 +1,27 @@
+SELECT "south_migrationhistory"."id", "south_migrationhistory"."app_name", "south_migrationhistory"."migration", "south_migrationhistory"."applied" FROM "south_migrationhistory" WHERE "south_migrationhistory"."applied" IS NOT NULL ORDER BY "south_migrationhistory"."applied" ASC
+CREATE TABLE ROLLBACK_TEST (X INT)
+INSERT INTO ROLLBACK_TEST (X) VALUES (8)
+SELECT COUNT(X) FROM ROLLBACK_TEST
+DROP TABLE ROLLBACK_TEST
+CREATE TABLE STDDEV_TEST (X INT)
+SELECT STDDEV(*) FROM STDDEV_TEST
+DROP TABLE STDDEV_TEST
+CREATE TABLE DDL_TRANSACTION_TEST (X INT)
+CREATE TABLE DDL_TRANSACTION_TEST (X INT)
+DROP TABLE DDL_TRANSACTION_TEST
+PRAGMA table_info("objsys_ufsobj")
+PRAGMA index_list("objsys_ufsobj")
+PRAGMA index_list("objsys_ufsobj")
+PRAGMA index_info("objsys_ufsobj_403f60f")
+PRAGMA table_info("objsys_ufsobj")
+CREATE TABLE "_south_new_objsys_ufsobj" ("user_id" integer, "uuid" varchar(60) NOT NULL, "timestamp" datetime NOT NULL, "head_md5" varchar(60), "ufs_url" text NOT NULL, "id" integer PRIMARY KEY, "ufs_obj_type" integer NOT NULL, "valid" bool NOT NULL, "obj_created" datetime, "last_modified" datetime NOT NULL, "total_md5" varchar(60), "description_json" text, "obj_last_modified" datetime, "full_path" text, "size" bigint)
+PRAGMA table_info("objsys_ufsobj")
+PRAGMA table_info("_south_new_objsys_ufsobj")
+INSERT INTO "_south_new_objsys_ufsobj" ("user_id", "uuid", "valid", "timestamp", "ufs_url", "obj_last_modified", "head_md5", "obj_created", "last_modified", "total_md5", "size", "id", "full_path", "description_json", "ufs_obj_type") SELECT "user_id", "uuid", "valid", "timestamp", "ufs_url", "obj_last_modified", "head_md5", "obj_created", "last_modified", "total_md5", "size", "id", "full_path", "description_json", '1' as "ufs_obj_type" FROM "objsys_ufsobj";
+DROP TABLE "objsys_ufsobj";
+ALTER TABLE "_south_new_objsys_ufsobj" RENAME TO "objsys_ufsobj";
+CREATE INDEX "objsys_ufsobj_403f60f" ON "objsys_ufsobj"("user_id");
+SELECT "south_migrationhistory"."id", "south_migrationhistory"."app_name", "south_migrationhistory"."migration", "south_migrationhistory"."applied" FROM "south_migrationhistory" WHERE ("south_migrationhistory"."app_name" = objsys  AND "south_migrationhistory"."migration" = 0005_auto__add_field_ufsobj_ufs_obj_type )
+INSERT INTO "south_migrationhistory" ("app_name", "migration", "applied") VALUES (objsys, 0005_auto__add_field_ufsobj_ufs_obj_type, 2014-05-17 06:06:14.643000)
+SELECT "south_migrationhistory"."id", "south_migrationhistory"."app_name", "south_migrationhistory"."migration", "south_migrationhistory"."applied" FROM "south_migrationhistory" WHERE "south_migrationhistory"."applied" IS NOT NULL ORDER BY "south_migrationhistory"."applied" ASC
+SELECT "south_migrationhistory"."id", "south_migrationhistory"."app_name", "south_migrationhistory"."migration", "south_migrationhistory"."applied" FROM "south_migrationhistory" WHERE "south_migrationhistory"."applied" IS NOT NULL ORDER BY "south_migrationhistory"."applied" ASC

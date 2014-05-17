@@ -19,6 +19,10 @@ class Description(models.Model):
 
 
 class UfsObj(models.Model):
+    UFS_OBJ_TYPE_CHOICES = (
+        (1, 'UFS OBJ TYPE (file or URL)'),
+        (2, 'TBD')
+    )
     full_path = models.TextField(null=True, blank=True)
     ufs_url = models.TextField(help_text='start with ufs:// or uuid:// etc.')
     uuid = models.CharField(max_length=60, default=get_new_uuid,
@@ -41,6 +45,7 @@ class UfsObj(models.Model):
                                        help_text="Related other information objects")
     descriptions = models.ManyToManyField(Description, related_name='descriptions', null=True, blank=True,
                                           help_text="Descriptions for this object")
+    ufs_obj_type = models.IntegerField(choices=UFS_OBJ_TYPE_CHOICES, default=1)
 
     def __unicode__(self):
         return unicode(self.ufs_url + '---------> uuid:' + self.uuid)

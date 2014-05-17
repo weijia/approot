@@ -3,10 +3,12 @@ try:
 except ImportError:
     from keys_template.admin_pass import default_admin_password, default_admin_user
 
+
 try:
-    import django_commands_dict.django_commands_dict as django_commands_dict
+    from django_commands_dict import django_commands_dict
 except ImportError:
     django_commands_dict = None
+
 
 import django.core.management as core_management
 

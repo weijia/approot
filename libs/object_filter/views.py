@@ -37,9 +37,6 @@ def get_object_table(request, descriptor_class):
     return render_to_response('object_filter/table.html', c)
 
 
-
-
-
 def object_table(request):
     try:
         from object_filter.desccriptors.diagram_descriptor import DiagramDescriptor
@@ -55,6 +52,3 @@ def object_table(request):
     #item_dict_url = data.get("items_url", "/connection/diagram_list/")
     descriptor_class = descriptor_dict[data.get("descriptor", "diagram")]
     return get_object_table(request, descriptor_class)
-
-
-

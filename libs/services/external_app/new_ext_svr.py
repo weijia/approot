@@ -1,9 +1,10 @@
 import logging
-import os
 import sys
 import thread
 import time
-import libsys
+import zipfile
+from ufs_django_conf import *
+
 from ufs_utils.short_decorator.ignore_exception import ignore_exc
 from ufs_utils.web.direct_opener import open_url
 from iconizer.iconizer_main import Iconizer
@@ -22,7 +23,7 @@ from webmanager.cmd_utils import exec_django_cmd
 def sync_migrate_db():
     init_settings.init_settings()
     exec_django_cmd("syncdb,--noinput")
-    exec_django_cmd("migrate")
+    #exec_django_cmd("migrate")
 
 
 @ignore_exc

@@ -1,6 +1,6 @@
 import json
 from django.http import HttpResponse
-from objsys.models import UfsObj
+from models import UfsObj
 from ufs_utils.django_utils import retrieve_param
 
 

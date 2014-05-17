@@ -10,7 +10,7 @@ from iconizer import Iconizer
 #The following line must has lib import prefix, don't know why
 from app_framework.folders import get_or_create_app_data_folder
 from libtool.filetools import find_callable_in_app_framework
-from libtool.libtool import find_root_path
+from libtool.libtool import find_root_path, get_current_path, find_root
 import configuration
 from services.pyro_service.pyro_utils import shutdown_all
 
@@ -47,7 +47,7 @@ def open_main():
 
 
 def main():
-    root_path = find_root_path(__file__, "approot")
+    root_path = find_root("approot")
     log_root = os.path.join(root_path, "../data/logs")
 
     ensure_dir(log_root)

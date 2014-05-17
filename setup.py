@@ -2,8 +2,10 @@
 import os
 import pprint
 import sys
+from libtool import include_sub_folder_in_root_path
+include_sub_folder_in_root_path(__file__, "approot", "libs")
+
 from cx_Freeze import setup, Executable
-from libsys import *
 from django_build.django_setup import DjangoCxFreezeBuildSpecGenerator
 from extra_settings.init_settings import init_settings
 from libtool import filetools
@@ -73,7 +75,6 @@ includes = [
     "iconizer",
     "libtool",
     "keys",
-    "keys_template",
     #For social auth
     "social_auth.db.django_models",
     #For registration
@@ -140,7 +141,6 @@ include_files.extend([
     #("syncdb.bat", "syncdb.bat"),
     ("share", "share"),
     ("keys", "keys"),
-    ("keys_template", "keys_template"),
     #("../others", "../others"),
 ])
 
@@ -175,6 +175,7 @@ build_exe_params = {
     "build_exe": build_exe_dir,
     "zip_includes": zip_includes,
     #"packages": find_packages(),
+    #"create_shared_zip": False,
 }
 
 
@@ -184,6 +185,7 @@ settings_module = init_settings().get_settings()
 os.system("syncdb.bat")
 os.system(sys.executable + " ./manage.py migrate")
 os.system("collectstatic.bat")
+os.system("collectcmd.bat")
 
 #Need to remove port_v3 for QT for cx_freeze when packaging PyQt
 

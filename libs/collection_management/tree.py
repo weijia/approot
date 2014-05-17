@@ -8,7 +8,8 @@ from django.conf import settings
 
 from objsys.models import UfsObj
 from guardian.admin import GuardedModelAdmin
-from guardian.shortcuts import assign
+from guardian.shortcuts import assign_perm
+
 try:
     from collection_management.models import CollectionItem
 except:
@@ -39,7 +40,8 @@ def register(objectClass, group_name = "scheduling"):
         #Group not exist, create it
         group = Group.objects.create(name=group_name)
     #print 'assigning: ', group, c
-    assign('view_collection_item', group, c)
+    assign_perm('view_collection_item', group, c)
+
 
 def get_item_id(parent_path):
     subitem_list = parent_path.split("/")
@@ -51,7 +53,8 @@ def get_item_id(parent_path):
         parent_item_uuid = CollectionItem.objects.filter(uuid = parent_item_uuid, id_in_col = i)[0].obj.uuid
     #print 'returning parent', parent_item_uuid
     return parent_item_uuid
-        
+
+
 def register_menu(subitem_url, subitem_text, parent_path = "/", permmited_group = None):
     """
     If subitem_test contains dynamic, subitem_url is not used.
@@ -66,10 +69,10 @@ def register_menu(subitem_url, subitem_text, parent_path = "/", permmited_group 
     :param permmited_group:
     :return: N/A
     """
-    root_uuid = get_item_id(parent_path)
-    url = u"view://%s"%(subitem_url)
-    qs = UfsObj.objects.filter(ufs_url = url)
-    if True:#try:
+    try:
+        root_uuid = get_item_id(parent_path)
+        url = u"view://%s"%(subitem_url)
+        qs = UfsObj.objects.filter(ufs_url = url)
         if 0 == qs.count():
             print 'creating new ufs obj'
             o = UfsObj(ufs_url = url, uuid = unicode(uuid.uuid4()), timestamp=timezone.now(), user=User.objects.filter(username="AnonymousUser")[0])
@@ -78,7 +81,7 @@ def register_menu(subitem_url, subitem_text, parent_path = "/", permmited_group 
             #print 'use existing item'
             o = qs[0]
         
-    else:#except django.db.utils.DatabaseError:
+    except django.db.utils.DatabaseError:
         #Database is not created yet, just return, items will be created after syncdb is executed
         return
     #print 'creating collection item for root: ', root_uuid
@@ -100,7 +103,7 @@ def register_menu(subitem_url, subitem_text, parent_path = "/", permmited_group 
         c = collqs[0]
     #Assign group permission
 
-    assign('view_collection_item', permitted_user_or_group, c)
+    assign_perm('view_collection_item', permitted_user_or_group, c)
 
     
 
