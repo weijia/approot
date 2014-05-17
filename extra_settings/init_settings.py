@@ -13,7 +13,10 @@ from djangoautoconf import DjangoAutoConf
 def init_settings():
     include_file_sibling_folder(__file__, "keys")
     root_folder = find_root_path(__file__, 'approot')
-    include_all_direct_subfolders(os.path.join(root_folder, "libs/external_git/"))
+
+    external_repo_lib_path = os.path.join(root_folder, "libs/external_git/")
+    if os.path.exists(external_repo_lib_path):
+        include_all_direct_subfolders(external_repo_lib_path)
     c = DjangoAutoConf()
     c.set_default_settings("rootapp.settings")
 

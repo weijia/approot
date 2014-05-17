@@ -68,13 +68,37 @@ class DjangoCxFreezeBuildSpecGenerator(object):
                         self.add_module_to_includes(django_app_name + ".templatetags." + name)
                         #print i+".templatetags."+name
 
+    def add_sub_module_for_module(self, django_app_name, django_sub_module):
+        #print django_app_name + "." + django_sub_module
+        sub_module_import_name = django_app_name + "." + django_sub_module
+        sub_module = __import__(sub_module_import_name)
+        self.add_module_to_includes(sub_module_import_name)
+        sub_module_path = sub_module.__file__
+        if django_sub_module in ["migrations"]:
+            #This module has sub modules, include them
+            #The following is because sub_module_path is not migration sub module but its parent
+            sub_module_dir = os.path.join(os.path.dirname(sub_module_path), django_sub_module)
+            for second_level_sub_module_file in os.listdir(sub_module_dir):
+                if (second_level_sub_module_file[-3:] == ".py") and (second_level_sub_module_file != "__init__.py"):
+                    second_level_sub_module = os.path.splitext(second_level_sub_module_file)[0]
+                    self.add_sub_module_for_module(sub_module_import_name, second_level_sub_module)
+
+        if django_sub_module in ["management"]:
+            #This module has sub modules, include them
+            #The following is because sub_module_path is not migration sub module but its parent
+            sub_module_dir = os.path.join(os.path.dirname(sub_module_path), django_sub_module)
+            cmd_sub_module_dir = os.path.join(sub_module_dir, "commands")
+            if os.path.exists(cmd_sub_module_dir):
+                for second_level_sub_module_file in os.listdir(cmd_sub_module_dir):
+                    if (second_level_sub_module_file[-3:] == ".py") and (second_level_sub_module_file != "__init__.py"):
+                        second_level_sub_module = os.path.splitext(second_level_sub_module_file)[0]
+                        self.add_sub_module_for_module(sub_module_import_name+".commands", second_level_sub_module)
+
     def include_default_files_in_django_app(self, django_app_name):
         for django_sub_module in ['urls', 'views', 'admin', 'api', 'models', 'forms', 'decorators', 'mixins',
-                                  'management']:
+                                  'management', 'migrations']:
             try:
-                #print django_app_name + "." + django_sub_module
-                sub_module = __import__(django_app_name + "." + django_sub_module)
-                self.add_module_to_includes(django_app_name + "." + django_sub_module)
+                self.add_sub_module_for_module(django_app_name, django_sub_module)
             except ImportError, e:
                 #print e
                 #print e.message

@@ -6,7 +6,11 @@ import sys
 import django
 from ufs_utils.django_utils import retrieve_param
 from django.contrib.auth import models as auth_models
-from webmanager.cmd_utils import exec_django_cmd
+from cmd_utils import exec_django_cmd
+try:
+    from keys.admin_pass import default_admin_password, default_admin_user
+except ImportError:
+    from keys_template.admin_pass import default_admin_password, default_admin_user
 
 
 def cmd(request):

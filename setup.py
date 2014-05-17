@@ -175,6 +175,7 @@ build_exe_params = {
     "build_exe": build_exe_dir,
     "zip_includes": zip_includes,
     #"packages": find_packages(),
+    #"create_shared_zip": False,
 }
 
 
