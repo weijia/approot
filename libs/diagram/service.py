@@ -1,3 +1,4 @@
+import logging
 import os
 from libtool import find_root_path
 from libtool.filetools import collect_files_in_dir, find_callable_in_app_framework
@@ -52,18 +53,23 @@ def list_in_tastypie_format(request):
     return get_content_item_list_in_tastypie_format(app_list)
 
 
+log = logging.getLogger(__name__)
+
+
 def get_service_app_list():
     app_path_list = []
     #for app_name in gDefaultServices:
     #    app_list.append(NamedApp(app_name))
     #Add root folder .exe, (used for built apps)
     root_dir = find_root_path(__file__, "approot")
-    for sub_dir, ext in [("/", ".exe"), ("libs/services/simple_app/", ".py"),
+    for sub_dir, ext in [(".", ".exe"), ("libs/services/simple_app/", ".py"),
                          ("libs/services/external_app/", ".bat"),
                          ("/external/", ".bat")]:
         sub_dir_full_path = os.path.join(root_dir, sub_dir)
+        #log.error(root_dir +"->"+sub_dir + "="+sub_dir_full_path)
         app_path_list.extend(collect_files_in_dir(sub_dir_full_path, ext, gIgnoreAppList))
     app_list = []
+    #log.error(root_dir+str(app_list))
     for full_path in app_path_list:
         app_list.append(FullPathApp(full_path))
     return app_list

@@ -83,10 +83,10 @@ includes = [
     #'rootapp.separated_settings.build_settings',
     #'rootapp.separated_settings.local_postgresql_settings',
     "django.core.management",
-    "django.core.management.commands.syncdb",
-    "django.core.management.commands.loaddata",
-    'south.management.commands.syncdb',
-    'south.management.commands.migrate',
+    #"django.core.management.commands.syncdb",
+    #"django.core.management.commands.loaddata",
+    #'south.management.commands.syncdb',
+    #'south.management.commands.migrate',
 ]
 
 app_list = ['new_rootapp',
