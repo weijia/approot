@@ -55,6 +55,7 @@ includes = [
     "djangoautoconf.features.pagination",
     "djangoautoconf.features.django_social_auth",
     "djangoautoconf.features.django_registration",
+    "djangoautoconf.django_adv_zip_template_loader",
     "connection.save_diagram_view",
     #"tags.tag_utils",
     #"objsys.tree",

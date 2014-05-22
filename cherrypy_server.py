@@ -178,6 +178,9 @@ if __name__ == '__main__':
         import configuration
 
         port = configuration.g_config_dict["ufs_web_server_port"]
-    #from django_build.django_adv_zip_template_loader import app_template_dirs
-    #print app_template_dirs
+    #from djangoautoconf.django_adv_zip_template_loader import app_template_dirs, get_zip_file_and_relative_path
+
+    #for folder in app_template_dirs:
+    #    print get_zip_file_and_relative_path(folder)
+
     Server(port).run()

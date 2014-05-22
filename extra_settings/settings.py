@@ -33,8 +33,12 @@ INSTALLED_APPS += (
     'scheduler'
 )
 
+TEMPLATE_LOADERS += (
+    'djangoautoconf.django_adv_zip_template_loader.Loader',
+)
 import logging
 from os import environ
+
 postgresql = environ.get("POSTGRESQL_ROOT", "")
 postgresql_port = environ.get("POSTGRESQL_PORT", "")
 if "" != postgresql:
