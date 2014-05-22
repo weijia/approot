@@ -23,13 +23,13 @@ from webmanager.cmd_utils import exec_django_cmd
 def sync_migrate_db():
     init_settings.init_settings()
     exec_django_cmd("syncdb,--noinput")
-    #exec_django_cmd("migrate")
+    exec_django_cmd("migrate")
 
 
 @ignore_exc
 def trigger_create_admin():
     time.sleep(10)
-    create_admin_base_url = 'http://localhost:%d/webmanage/create_admin_user'
+    create_admin_base_url = 'http://localhost:%d/webmanager/create_admin_user'
     full_web_url = create_admin_base_url % configuration.g_config_dict["ufs_web_server_port"]
     open_url(full_web_url)
 
@@ -49,6 +49,7 @@ if __name__ == "__main__":
     i.execute({"simple_tagging": [find_callable_in_app_framework("simple_tagging")]})
     i.execute({"tag_enum_app": [find_callable_in_app_framework("tag_enum_app")]})
     i.execute({"timer_service_app": [find_callable_in_app_framework("timer_service_app")]})
+    i.execute({"url_opener": [find_callable_in_app_framework("url_opener")]})
     #i.execute({"tag_distributor": [find_callable_in_app_framework("tag_distributor")]})
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
