@@ -7,7 +7,7 @@ import ufs_django_conf
 
 from connection.models import Processor, Connection
 #from objsys.local_obj_tools import get_ufs_obj_from_ufs_url
-from libtool.libtool import find_root_path
+from libtool.libtool import find_root
 from libtool.filetools import collect_files_in_dir, get_app_name_from_full_path
 from objsys.models import UfsObj
 from django.contrib.auth.models import User
@@ -124,7 +124,7 @@ def save_diagram(req_param, user, export_diagram=True):
     if export_diagram:
         processor_export_str = json.dumps(req_param, indent=4)
         result_dict['dumped'] = processor_export_str
-        root_dir = find_root_path("approot",)
+        root_dir = find_root("approot")
 
         try:
             os.mkdir(os.path.join(root_dir, "../diagrams/"))

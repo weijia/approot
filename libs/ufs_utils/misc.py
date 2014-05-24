@@ -16,10 +16,3 @@ def withExt(fullPath, extList=gSupportedExt):
             #print fullPath, extList
             return True
     return False
-
-
-def get_prot_root():
-    c = os.getcwd()
-    while c.find('prodRoot') != -1:
-        c = os.path.dirname(c)
-    return os.path.join(c, 'prodRoot')
