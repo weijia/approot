@@ -42,6 +42,7 @@ urlpatterns = patterns('',
     url(r'^webmanager/', include('webmanager.urls')),
     url(r'^obj_operation/', include('obj_operation.urls')),
     url(r'^scheduler/', include('scheduler.urls')),
+    url(r'^url_based_task_apps/', include('url_based_task_apps.urls')),
     url(r'^$', RedirectView.as_view(url='/objsys/homepage/'), name='index'),
 )
 

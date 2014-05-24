@@ -52,7 +52,11 @@ class Diagram(object):
 def save_all_diagram_from_predefined_folders():
     diagram_list = []
     diagram_file_list = []
-    for sub_dir, ext in [("/libs/services/apps/diagrams/", ".json"), ("/diagrams/", ".json")]:
+    app_root_folder = find_root("approot")
+    developing_diagram_relative_path = "libs/services/diagrams/"
+    released_diagram_relative_path = "diagrams/"
+    for sub_dir, ext in [(os.path.join(app_root_folder, developing_diagram_relative_path), ".json"),
+                         (os.path.join(app_root_folder, released_diagram_relative_path), ".json")]:
         diagram_file_list.extend(collect_files_in_dir(sub_dir, ext))
     print diagram_file_list
     for full_path in diagram_file_list:

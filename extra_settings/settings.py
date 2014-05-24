@@ -24,13 +24,14 @@ INSTALLED_APPS += (
     'registration_defaults',
     'pagination',
     'tagging',
-    'south',
+    #'south',
     'webmanager',
     #'kombu.transport.django',
     'obj_operation',
     'objsys_local',
     #'yarr',
-    'scheduler'
+    'scheduler',
+    'url_based_task_apps',
 )
 
 TEMPLATE_LOADERS += (

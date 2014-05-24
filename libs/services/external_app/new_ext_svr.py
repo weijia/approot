@@ -23,7 +23,7 @@ from webmanager.cmd_utils import exec_django_cmd
 def sync_migrate_db():
     init_settings.init_settings()
     exec_django_cmd("syncdb,--noinput")
-    exec_django_cmd("migrate")
+    #exec_django_cmd("migrate,--delete-ghost-migrations")
 
 
 @ignore_exc

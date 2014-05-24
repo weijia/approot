@@ -62,11 +62,14 @@ class UfsObjResource(ModelResource):
             tag = data["tag"]
 
         if tag is None:
+            if "all" in data:
+                return super(UfsObjResource, self).get_object_list(request)
             return super(UfsObjResource, self).get_object_list(request).filter(valid=True)
         else:
             request.session["tag"] = tag
             try:
                 obj_tag = Tag.objects.get(name=tag)
+                #When enumerating tagged items use descent timestamp, it means newest first
                 objs = TaggedItem.objects.get_by_model(UfsObj, obj_tag).order_by('-timestamp').filter(valid=True)
             except:
                 objs = UfsObj.objects.none()
@@ -95,6 +98,7 @@ class UfsObjResource(ModelResource):
     '''
 
     class Meta:
+        #When listing all ufs objects, sort timestamp ascend, it means oldest first
         queryset = UfsObj.objects.all().order_by("timestamp")
         resource_name = 'ufsobj'
         #authentication = SessionAuthentication()
