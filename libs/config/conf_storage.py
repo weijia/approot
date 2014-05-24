@@ -6,10 +6,10 @@ from ufs_utils.misc import ensure_dir
 
 class ConfStorage(object):
     @staticmethod
-    def get_free_name_for_exported_data():
+    def get_free_name_for_exported_data(prefix=''):
         exported_root_path = ConfStorage.get_root_path_for_exported_data()
         ensure_dir(exported_root_path)
-        return get_free_timestamp_filename_in_path(exported_root_path, ".json")
+        return get_free_timestamp_filename_in_path(exported_root_path, ".json", prefix)
 
     @staticmethod
     def get_root_path_for_exported_data():

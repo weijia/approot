@@ -16,11 +16,11 @@ log = logging.getLogger(__name__)
 
 class ObjExportTask(TemplateView):
     template_name = "url_based_task_apps/export_result.html"
-    TASK_UFS_URL = "task://export_from_localhost"
+    TASK_UFS_URL = "task://export_from_localhost1"
     SERVER_BASE = "http://127.0.0.1:8110"
     INITIAL_IMPORT_URL = SERVER_BASE + "/objsys/api/ufsobj/ufsobj/?" \
                                        "format=json&username=richard&password=johnpassword"
-    DIAGRAM_UFS_URL = "diagram://load_from_baidu"
+    DIAGRAM_UFS_URL = "diagram://load_from_localhost1"
     NEXT_URL_PARAM_NAME = "next_url"
 
     def get_context_data(self, **kwargs):
@@ -32,28 +32,36 @@ class ObjExportTask(TemplateView):
         #print context_data
         dict_result = {}
         self.result = ""
-        process_ufs_url = data.get("process_ufs_url", self.TASK_UFS_URL)
-        diagram_ufs_url = data.get("diagram_ufs_url", self.DIAGRAM_UFS_URL)
+        self.server_base = data.get("server_base", self.SERVER_BASE)
+        self.process_ufs_url = data.get("process_ufs_url", self.TASK_UFS_URL)
+        self.diagram_ufs_url = data.get("diagram_ufs_url", self.DIAGRAM_UFS_URL)
 
-        self.processor_state = self.load_task_state(process_ufs_url, diagram_ufs_url)
+        self.processor_state = self.load_task_state()
+        #log.error(self.processor_state)
         next_url = self.get_next_url(self.processor_state)
+        #log.error(next_url)
         dict_result = self.fetch_json_data(next_url)
         if self.is_updated(dict_result):
+            #log.error("is updated returns true")
             self.save_data_to_file(dict_result)
             self.save_next_url(dict_result)
         return {"result": self.result}
 
+    def get_saved_attr_value(self, state_attr, default_value=0):
+        if state_attr in self.processor_state:
+            saved_attr_value = self.processor_state[state_attr]
+        else:
+            saved_attr_value = default_value
+        return saved_attr_value
+
     def is_updated(self, dict_result):
-        if ("meta" in dict_result) and ("total_count" in dict_result["meta"]):
-            total_count = dict_result["meta"]["total_count"]
-            if "total_count" in self.processor_state:
-                saved_total_count = self.processor_state["total_count"]
-            else:
-                saved_total_count = 0
-            if total_count != saved_total_count:
-                return True
-        self.result += "item not updated "
-        return False
+        saved_total_count = self.get_saved_attr_value("total_count")
+        saved_offset = self.get_saved_attr_value("offset")
+        saved_limit = self.get_saved_attr_value("limit")
+        if saved_offset+saved_limit > saved_total_count:
+            if dict_result["meta"]["total_count"] == saved_total_count:
+                return False
+        return True
 
     def get_next_url(self, state):
         if "next_url" in state:
@@ -62,23 +70,31 @@ class ObjExportTask(TemplateView):
             next_url = self.INITIAL_IMPORT_URL
         return next_url
 
-    def save_next_url(self, result):
-        state = {}
-        if "meta" in result:
-            if ("next" in result["meta"]) and \
-                    (not (result["meta"]["next"] is None)):
-                self.result += "saving next:" + result["meta"]["next"]
+    def update_new_state_for_attr(self, retrieved_data_dict, state_attr):
+        if state_attr in retrieved_data_dict["meta"]:
+            self.new_state[state_attr] = retrieved_data_dict["meta"][state_attr]
+            self.result += state_attr + ":" + str(retrieved_data_dict["meta"][state_attr])+"\n"
 
-                state[self.NEXT_URL_PARAM_NAME] = self.SERVER_BASE + result["meta"]["next"]
-            if "total_count" in result["meta"]:
-                state["total_count"] = result["meta"]["total_count"]
-                self.result += "total_count:" + str(result["meta"]["total_count"])
-            log.error(state)
-            self.save_task_state(state)
+    def save_next_url(self, retrieved_data_dict):
+        self.new_state = {self.NEXT_URL_PARAM_NAME: self.get_saved_attr_value(self.NEXT_URL_PARAM_NAME)}
+        log.error(retrieved_data_dict)
+        if "meta" in retrieved_data_dict:
+            if ("next" in retrieved_data_dict["meta"]) and \
+                    (not (retrieved_data_dict["meta"]["next"] is None)):
+                self.result += "saving next:" + retrieved_data_dict["meta"]["next"]+"\n"
 
-    def load_task_state(self, process_ufs_url, diagram_ufs_url):
-        task_obj, created = UfsObj.objects.get_or_create(ufs_url=process_ufs_url)
-        diagram_obj, created = UfsObj.objects.get_or_create(ufs_url=diagram_ufs_url)
+                self.new_state[self.NEXT_URL_PARAM_NAME] = self.SERVER_BASE + retrieved_data_dict["meta"]["next"]
+
+            self.update_new_state_for_attr(retrieved_data_dict, "total_count")
+            self.update_new_state_for_attr(retrieved_data_dict, "offset")
+            self.update_new_state_for_attr(retrieved_data_dict, "limit")
+
+            log.error("saving new state: "+str(self.new_state))
+            self.save_task_state(self.new_state)
+
+    def load_task_state(self):
+        task_obj, created = UfsObj.objects.get_or_create(ufs_url=self.process_ufs_url)
+        diagram_obj, created = UfsObj.objects.get_or_create(ufs_url=self.diagram_ufs_url)
         processor, created = Processor.objects.get_or_create(ufsobj=task_obj, diagram_obj=diagram_obj)
         result = {}
         if (not (processor.param_descriptor is None)) and (not (processor.param_descriptor == "")):
@@ -93,7 +109,7 @@ class ObjExportTask(TemplateView):
         return result
 
     def save_task_state(self, state):
-        task_obj = UfsObj.objects.get(ufs_url=self.TASK_UFS_URL)
+        task_obj = UfsObj.objects.get(ufs_url=self.process_ufs_url)
         processor = Processor.objects.get(ufsobj=task_obj)
         self.result += "processor:" + str(processor) + "\n"
         processor.param_descriptor = json.dumps(state)
@@ -130,9 +146,9 @@ class ObjExportTask(TemplateView):
             #tastypie_item = TastypieItem(item)
             self.import_one_obj(item)
 
-    @staticmethod
-    def save_data_to_file(dict_result):
-        path = ConfStorage.get_free_name_for_exported_data()
+    def save_data_to_file(self, dict_result):
+        encoded_server = self.server_base.replace("http://", "").replace("/", "_").replace(":", "_")+"_"
+        path = ConfStorage.get_free_name_for_exported_data(encoded_server)
         of = open(path, "w")
         json.dump(dict_result, of, indent=4)
         of.close()

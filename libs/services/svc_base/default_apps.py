@@ -4,4 +4,5 @@ gDefaultServices = ['tag_enum_app',
                     'simple_tagging',
                     'distributor',
                     'pull_service',
+                    'url_opener',
                 ]
