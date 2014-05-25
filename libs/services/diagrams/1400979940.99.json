@@ -1,0 +1,45 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "timer_service_app", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py"
+            }, 
+            null
+        ], 
+        [
+            {
+                "data": "obj_importer", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/obj_importer.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/obj_importer.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/obj_importer.py"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {
+        "jsPlumb_1_6": {
+            "inputs": [
+                0
+            ], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/obj_importer.py", 
+            "outputs": [],
+            "params": {
+                "full_path": "G:/codes/codes/ufs/build/obj_exported"
+            }
+        }, 
+        "jsPlumb_1_1": {
+            "inputs": [], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+            "outputs": [
+                0
+            ],
+            "params": {
+                "duration":360000,"is_recursive":true
+            }
+        }
+    }, 
+    "diagram_id": "e18b1919-80d4-4ba0-8ba2-df74ecef88d5"
+}

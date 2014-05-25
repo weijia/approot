@@ -1,0 +1,39 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "timer_service_app", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py"
+            }, 
+            null
+        ], 
+        [
+            {
+                "data": "url_opener", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {
+        "jsPlumb_1_6": {
+            "inputs": [
+                0
+            ], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py", 
+            "outputs": []
+        }, 
+        "jsPlumb_1_1": {
+            "inputs": [], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+            "outputs": [
+                0
+            ]
+        }
+    }, 
+    "diagram_id": "18123be8-ecb5-4033-8fac-c4e2efeb6c0a"
+}
