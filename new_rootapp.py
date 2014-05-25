@@ -18,6 +18,7 @@ from services.pyro_service.pyro_utils import shutdown_all
 def stop_postgresql():
     os.system(find_callable_in_app_framework("postgresql_stop"))
 
+
 stop_url_base = 'http://localhost:%d/stop/quit'
 
 
@@ -42,8 +43,14 @@ def stop_services_and_web_servers():
 
 
 def open_main():
-    webbrowser.open("http://127.0.0.1:" + str(configuration.g_config_dict["ufs_web_server_port"]) +
-                    "/objsys/manager/", new=1)
+    try:
+        from keys.admin_pass import default_admin_password, default_admin_user
+    except ImportError:
+        from keys_template.admin_pass import default_admin_password, default_admin_user
+
+    webbrowser.open("http://127.0.0.1:%s/webmanager/login_and_go_home/?username=%s&password=%s&target="
+                    "/objsys/manager/" % (str(configuration.g_config_dict["ufs_web_server_port"]),
+                                              default_admin_user, default_admin_password), new=1)
 
 
 def main():
@@ -61,6 +68,7 @@ def main():
         i.add_final_close_listener(stop_postgresql)
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
         import configuration
+
         i.execute({"new_ext_svr": [find_callable_in_app_framework("new_ext_svr")]})
         #i.execute({"dir": ["dir"]})
 

@@ -5,6 +5,7 @@ urlpatterns = patterns('',
     url(r'^cmd/$', 'webmanager.views.cmd'),
     url(r'^django_version/$', 'webmanager.views.version'),
     url(r'^create_admin_user/$', 'webmanager.views.handle_create_admin_req'),
+    url(r'^login_and_go_home/$', 'webmanager.views.login_and_go_home'),
 )
 
 # The following can be used to do mail backend testing
