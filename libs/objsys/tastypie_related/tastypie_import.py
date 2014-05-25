@@ -13,9 +13,16 @@ class TastypieImporter(object):
         super(TastypieImporter, self).__init__()
         self.log_str = ""
 
+    @staticmethod
+    def is_already_exist(tastypie_item):
+        if 0 == UfsObj.objects.filter(ufs_url=tastypie_item.get_url()).count():
+            log.error("already exist:"+tastypie_item.get_url())
+            return True
+        return False
+
     def import_one_obj(self, item, user_id=1):
         tastypie_item = TastypieItem(item)
-        if tastypie_item.is_valid_url() and (0 == UfsObj.objects.filter(ufs_url=tastypie_item.get_url()).count()):
+        if tastypie_item.is_valid_url() and self.is_already_exist(tastypie_item):
             #user_id = self.kwargs['user_id']
             user = User.objects.get(pk=user_id)
             tags_str = tastypie_item.get_tag_str()
@@ -32,7 +39,7 @@ class TastypieImporter(object):
                 obj.descriptions.add(description_obj)
                 obj.save()
             Tag.objects.update_tags(obj, tags_str, tag_app='import from BAE')
-            self.log_str += "Tag:" + tags_str + "\n\n"
+            self.log_str += tastypie_item.get_url() + "Tag:" + tags_str + "\n"
         else:
             self.log_str += "ignored:" + tastypie_item.get_url() + "\nis valid:" + str(
                 tastypie_item.is_valid_url()) + "\n"

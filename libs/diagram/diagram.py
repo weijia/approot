@@ -76,10 +76,10 @@ def save_diagram(req_param, user, export_diagram=True):
             diagram_obj = get_diagram_obj(diagram_id, user)
 
             if "params" in processor_list[i]:
-                param_str = processor_list[i]["params"]
+                param = processor_list[i]["params"]
             else:
                 param = {}
-                param_str = json.dumps(param)
+            param_str = json.dumps(param)
 
             #This object may be a script file object or a diagram object
             obj = get_ufs_obj_from_ufs_url(processor_list[i]["ufs_url"])
