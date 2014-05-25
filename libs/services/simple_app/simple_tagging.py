@@ -6,6 +6,13 @@ from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from services.svc_base.gui_client import GuiClient
 from ufs_utils.string_tools import quote_unicode
 
+
+try:
+    from keys.admin_pass import default_admin_password, default_admin_user
+except ImportError:
+    from keys_template.admin_pass import default_admin_password, default_admin_user
+
+
 log = logging.getLogger(__name__)
 
 
@@ -42,10 +49,13 @@ class SimpleTagging(PyroSimpleAppBase):
         for i in msg["urls"]:
             links += "url=" + quote_unicode(unicode(i)) + "&"
         self.gui_client.open_browser({"command": "Browser",
-                                      "url": "http://127.0.0.1:" +
-                                             str(get_ufs_web_server_port()) +
-                                             "/objsys/tagging_local/?" +
-                                             links,
+                                      "url": "http://127.0.0.1:%s/webmanager/login_and_go_home/?"
+                                            "username=%s&password=%s&target="
+                                            "/objsys/tagging_local/?%s" %
+                                             (str(get_ufs_web_server_port()),
+                                              default_admin_user,
+                                              default_admin_password,
+                                              links),
                                       "handle": "tagging"})
 
 
