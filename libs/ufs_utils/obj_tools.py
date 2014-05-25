@@ -96,6 +96,10 @@ def isUfsFs(url):
     return url.find(gUfsObjUrlPrefix) == 0
 
 
+def is_ufs_url(url):
+    return isUfsFs(url)
+
+
 def getUfsBasename(url):
     return url.rsplit(gUfsObjUrlSeparator, 1)[1]
 

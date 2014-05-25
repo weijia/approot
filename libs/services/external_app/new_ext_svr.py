@@ -33,6 +33,11 @@ def trigger_create_admin():
     full_web_url = create_admin_base_url % configuration.g_config_dict["ufs_web_server_port"]
     open_url(full_web_url)
 
+
+def start_app_in_iconizer(iconizer_instance, app_name):
+    iconizer_instance.execute({app_name: [find_callable_in_app_framework(app_name)]})
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     PostgresApp()
@@ -44,15 +49,14 @@ if __name__ == "__main__":
     log_folder = get_or_create_app_data_folder("logs")
     i = Iconizer(log_dir=log_folder, python_executable=sys.executable)
     i.register()
-    i.execute({"distributor": [find_callable_in_app_framework("distributor")]})
-    i.execute({"pull_service": [find_callable_in_app_framework("pull_service")]})
-    i.execute({"simple_tagging": [find_callable_in_app_framework("simple_tagging")]})
-    i.execute({"tag_enum_app": [find_callable_in_app_framework("tag_enum_app")]})
-    i.execute({"timer_service_app": [find_callable_in_app_framework("timer_service_app")]})
-    i.execute({"url_opener": [find_callable_in_app_framework("url_opener")]})
+    for app_name in ["distributor", "pull_service", "simple_tagging", "tag_enum_app",
+                     "timer_service_app", "url_opener", "obj_importer"]:
+        start_app_in_iconizer(i, app_name)
+
     #i.execute({"tag_distributor": [find_callable_in_app_framework("tag_distributor")]})
     #i.execute({"startBeanstalkd": [find_callable_in_app_framework("startBeanstalkd")]})
     #i.execute({"msg_based_service_mgr": [find_callable_in_app_framework("msg_based_service_mgr")]})
+
     thumb_port = configuration.g_config_dict.get("thumb_server_port", 8114)
     i.execute({"thumb_server": [find_callable_in_app_framework("cherrypy_server"), str(thumb_port)]})
     #execute_app_from_name_and_wait_for_complete("syncdb")

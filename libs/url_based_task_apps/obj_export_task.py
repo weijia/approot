@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from tagging.models import Tag
 from connection.models import Processor
 from objsys.models import UfsObj, Description
-from objsys.tastypie_import import TastypieItem
+from objsys.tastypie_related.tastypie_import import TastypieItem
 from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
 
@@ -77,7 +77,7 @@ class ObjExportTask(TemplateView):
 
     def save_next_url(self, retrieved_data_dict):
         self.new_state = {self.NEXT_URL_PARAM_NAME: self.get_saved_attr_value(self.NEXT_URL_PARAM_NAME)}
-        log.error(retrieved_data_dict)
+        #log.error(retrieved_data_dict)
         if "meta" in retrieved_data_dict:
             if ("next" in retrieved_data_dict["meta"]) and \
                     (not (retrieved_data_dict["meta"]["next"] is None)):
@@ -89,7 +89,7 @@ class ObjExportTask(TemplateView):
             self.update_new_state_for_attr(retrieved_data_dict, "offset")
             self.update_new_state_for_attr(retrieved_data_dict, "limit")
 
-            log.error("saving new state: "+str(self.new_state))
+            #log.error("saving new state: "+str(self.new_state))
             self.save_task_state(self.new_state)
 
     def load_task_state(self):

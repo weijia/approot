@@ -5,4 +5,5 @@ gDefaultServices = ['tag_enum_app',
                     'distributor',
                     'pull_service',
                     'url_opener',
+                    'obj_importer',
                 ]

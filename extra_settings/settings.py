@@ -32,6 +32,8 @@ INSTALLED_APPS += (
     #'yarr',
     'scheduler',
     'url_based_task_apps',
+    'jsonrpc',
+    'json_rpc_services',
 )
 
 TEMPLATE_LOADERS += (

@@ -24,3 +24,4 @@ obs
 /keys
 *.log
 /libs/services/apps
+/libs/services/svc_base/logs/dir/*.log

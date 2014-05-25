@@ -1,5 +1,7 @@
-import json
-from ufs_utils.obj_tools import is_web_url
+import logging
+from ufs_utils.obj_tools import is_web_url, is_ufs_url
+
+log = logging.getLogger(__name__)
 
 
 class TastypieItem(object):
@@ -9,9 +11,15 @@ class TastypieItem(object):
 
     def is_valid_url(self):
         url = self.get_url()
+        log.debug(url)
         if url == "":
             return False
-        return is_web_url(url)
+        if is_web_url(url):
+            return True
+        if is_ufs_url(url):
+            return True
+        return False
+
 
     def get_description(self):
         descriptions = self.item["descriptions"]
