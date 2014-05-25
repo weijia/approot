@@ -9,10 +9,15 @@ gUfsObjUrlPrefix = u'ufs' + config.getFsProtocolSeparator()
 gUfsObjUrlSeparator = u'/'
 
 
+log = logging.getLogger(__name__)
+
+
 def is_web_url(url):
-    protocol, content = parseUrl(url)
-    if protocol in ["https", "http", "ftp"]:
-        return True
+    log.error(url)
+    if isUfsUrl(url):
+        protocol, content = parseUrl(url)
+        if protocol in ["https", "http", "ftp"]:
+            return True
     return False
 
 

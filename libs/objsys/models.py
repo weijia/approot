@@ -21,7 +21,7 @@ class Description(models.Model):
 class UfsObj(models.Model):
     full_path = models.TextField(null=True, blank=True)
     ufs_url = models.TextField(help_text='start with ufs:// or uuid:// etc.')
-    uuid = models.CharField(max_length=60, default=get_new_uuid,
+    uuid = models.CharField(max_length=60, default=get_new_uuid, unique=True,
                             help_text='the uuid string of the object, no "uuid" prefix needed')
     head_md5 = models.CharField(max_length=60, null=True, blank=True,
                                 help_text="the md5 for the header of the object")

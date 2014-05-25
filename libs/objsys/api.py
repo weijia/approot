@@ -1,7 +1,9 @@
+from django.utils.timezone import is_naive
 from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.authentication import Authentication
 from tastypie.authorization import DjangoAuthorization
+from tastypie.serializers import Serializer
 
 from ufs_utils.django_utils import retrieve_param
 from objsys.models import UfsObj
@@ -31,6 +33,19 @@ class DjangoUserAuthentication(Authentication):
     # Optional but recommended
     def get_identifier(self, request):
         return request.user.username
+
+
+#Ref: http://www.tryolabs.com/Blog/2013/03/16/displaying-timezone-aware-dates-tastypie/
+class DateSerializerWithTimezone(Serializer):
+    """
+    Our own serializer to format datetimes in ISO 8601 but with timezone
+    offset.
+    """
+    def format_datetime(self, data):
+        # If naive or rfc-2822, default behavior...
+        if is_naive(data) or self.datetime_formatting == 'rfc-2822':
+            return super(DateSerializerWithTimezone, self).format_datetime(data)
+        return data.isoformat()
 
 
 class DescriptionResource(ModelResource):
@@ -108,7 +123,7 @@ class UfsObjResource(ModelResource):
             "ufs_url": ('contains',),
             "full_path": ('contains', 'iendswith'),
         }
-
+        serializer = DateSerializerWithTimezone()
 
 
 '''

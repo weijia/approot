@@ -20,7 +20,6 @@ class TastypieItem(object):
             return True
         return False
 
-
     def get_description(self):
         descriptions = self.item["descriptions"]
         if len(descriptions) > 0:
