@@ -14,3 +14,7 @@ class ConfStorage(object):
     @staticmethod
     def get_root_path_for_exported_data():
         return os.path.join(find_root_even_frozen("approot"), "../obj_exported/")
+
+    @staticmethod
+    def get_ufs_server_and_port_str():
+        return "http://127.0.0.1:8210"

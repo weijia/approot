@@ -25,7 +25,10 @@
                 0
             ], 
             "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py", 
-            "outputs": []
+            "outputs": [],
+            "params": {
+                "target_url": "http://$UFS_SERVER_AND_PORT/url_based_task_apps/export/1/"
+            }
         }, 
         "jsPlumb_1_1": {
             "inputs": [], 

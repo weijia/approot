@@ -17,11 +17,15 @@ log = logging.getLogger(__name__)
 class ObjExportTask(TemplateView):
     template_name = "url_based_task_apps/export_result.html"
     TASK_UFS_URL = "task://export_from_localhost1"
-    SERVER_BASE = "http://127.0.0.1:8110"
-    INITIAL_IMPORT_URL = SERVER_BASE + "/objsys/api/ufsobj/ufsobj/?" \
+    SERVER_BASE = "http://127.0.0.1"
+    SERVER_BASE_AND_PORT = SERVER_BASE + ":8110"
+    INITIAL_IMPORT_URL = SERVER_BASE_AND_PORT + "objsys/api/ufsobj/ufsobj/?" \
                                        "format=json&username=richard&password=johnpassword"
     DIAGRAM_UFS_URL = "diagram://load_from_localhost1"
     NEXT_URL_PARAM_NAME = "next_url"
+    
+    
+    def get_default_initial_import_url():
 
     def get_context_data(self, **kwargs):
         #return super(TaskResultView, self).get_context_data(**kwargs)
@@ -32,10 +36,17 @@ class ObjExportTask(TemplateView):
         #print context_data
         dict_result = {}
         self.result = ""
-        self.server_base = data.get("server_base", self.SERVER_BASE)
+        self.server_base = data.get("server_base", ConfStorage.get_ufs_server_and_port_str())
         self.process_ufs_url = data.get("process_ufs_url", self.TASK_UFS_URL)
         self.diagram_ufs_url = data.get("diagram_ufs_url", self.DIAGRAM_UFS_URL)
-
+        self.initial_import_url = data.get("initial_import_url", ConfStorage.get_ufs_server_and_port_str())
+        self.force_direct_access_param = data.get("force_direct_access", "yes")
+        
+        if self.force_direct_access_param == "yes":
+            self.force_direct_access = True
+        else:
+            self.force_direct_access = False
+        
         self.processor_state = self.load_task_state()
         #log.error(self.processor_state)
         next_url = self.get_next_url(self.processor_state)
@@ -67,7 +78,7 @@ class ObjExportTask(TemplateView):
         if "next_url" in state:
             next_url = state[self.NEXT_URL_PARAM_NAME]
         else:
-            next_url = self.INITIAL_IMPORT_URL
+            next_url = ConfStorage.get_ufs_server_and_port_str()+
         return next_url
 
     def update_new_state_for_attr(self, retrieved_data_dict, state_attr):
@@ -104,7 +115,12 @@ class ObjExportTask(TemplateView):
 
     @staticmethod
     def fetch_json_data(data_url):
-        response = urllib2.urlopen(data_url)
+        if not self.force_direct_access: 
+            response = urllib2.urlopen(data_url)
+        else:
+            proxy_handler = urllib2.ProxyHandler({})
+            opener = urllib2.build_opener(proxy_handler)
+            response = opener.open(data_url)
         result = json.loads(response.read())
         return result
 

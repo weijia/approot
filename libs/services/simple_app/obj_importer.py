@@ -4,6 +4,7 @@ from simple_app_import_lib import *
 from objsys.tastypie_related.tastypie_import import TastypieImporter
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from jsonrpc.proxy import ServiceProxy
+import os
 
 
 log = logging.getLogger(__name__)
