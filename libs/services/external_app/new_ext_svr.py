@@ -3,6 +3,8 @@ import sys
 import thread
 import time
 import zipfile
+from libtool.libtool import include, find_root
+include(find_root("approot"))
 from ufs_django_conf import *
 
 from ufs_utils.short_decorator.ignore_exception import ignore_exc

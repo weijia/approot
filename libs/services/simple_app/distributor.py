@@ -1,6 +1,6 @@
 # -*- coding: gbk -*-
 import logging
-from ufs_django_conf import *
+from simple_app_import_lib import *
 from connection.models import Processor
 from diagram.diagram import get_all_processors_for_diagram, dispatch_to_processor
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase

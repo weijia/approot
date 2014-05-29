@@ -1,5 +1,5 @@
 import logging
-from ufs_django_conf import *
+from simple_app_import_lib import *
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from ufs_utils.web.direct_opener import open_url
 

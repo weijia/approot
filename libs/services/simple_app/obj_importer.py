@@ -1,7 +1,7 @@
 import json
 import logging
+from simple_app_import_lib import *
 from objsys.tastypie_related.tastypie_import import TastypieImporter
-from ufs_django_conf import *
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from jsonrpc.proxy import ServiceProxy
 

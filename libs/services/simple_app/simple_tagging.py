@@ -1,16 +1,11 @@
 import logging
-from ufs_django_conf import *
+from simple_app_import_lib import *
 from config import get_ufs_web_server_port
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 from services.svc_base.gui_client import GuiClient
 from ufs_utils.string_tools import quote_unicode
-
-
-try:
-    from keys.admin_pass import default_admin_password, default_admin_user
-except ImportError:
-    from keys_template.admin_pass import default_admin_password, default_admin_user
+from webmanager.default_user_conf import get_default_username_and_pass
 
 
 log = logging.getLogger(__name__)
@@ -44,7 +39,7 @@ class SimpleTagging(PyroSimpleAppBase):
     #########################
     def put_msg(self, msg):
         links = ""
-
+        default_admin_password, default_admin_user = get_default_username_and_pass()
         log.debug(msg)
         for i in msg["urls"]:
             links += "url=" + quote_unicode(unicode(i)) + "&"

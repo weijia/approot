@@ -54,6 +54,7 @@ def open_main():
 
 
 def main():
+    #find_root will fail when use: python new_rootapp.py.
     root_path = find_root("approot")
     log_root = os.path.join(root_path, "../data/logs")
 

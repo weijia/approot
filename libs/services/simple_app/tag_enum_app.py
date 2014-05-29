@@ -1,6 +1,6 @@
 # -*- coding: gbk -*-
 import logging
-from ufs_django_conf import *
+from simple_app_import_lib import *
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from services.simple_app.tag_enum_lib.certain_tag_enum_worker import CertainTaggedItemEnumWorker
 

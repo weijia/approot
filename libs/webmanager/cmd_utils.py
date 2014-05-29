@@ -1,16 +1,13 @@
 try:
-    from keys.admin_pass import default_admin_password, default_admin_user
-except ImportError:
-    from keys_template.admin_pass import default_admin_password, default_admin_user
-
-
-try:
     from django_commands_dict import django_commands_dict
 except ImportError:
     django_commands_dict = None
 
 
 import django.core.management as core_management
+
+
+from default_user_conf import *
 
 
 def exec_django_cmd(data_params):
