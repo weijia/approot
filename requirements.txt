@@ -44,4 +44,4 @@ cx_Freeze
 # pyopenssl: https://pypi.python.org/pypi/pyOpenSSL
 pyopenssl
 Pyro4
-jsonrpc
+django-json-rpc
