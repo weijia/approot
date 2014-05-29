@@ -1,8 +1,10 @@
 import os
-from libtool import find_root_even_frozen
+from libtool import find_root_even_frozen, include_root_path
 from libtool.filetools import get_free_timestamp_filename_in_path
 from ufs_utils.misc import ensure_dir
 
+include_root_path(__file__, "approot")
+import configuration
 
 class ConfStorage(object):
     @staticmethod
@@ -17,4 +19,8 @@ class ConfStorage(object):
 
     @staticmethod
     def get_ufs_server_and_port_str():
-        return "http://127.0.0.1:8210"
+        return "127.0.0.1:" + str(ConfStorage.get_ufs_web_server_port())
+
+    @staticmethod
+    def get_ufs_web_server_port():
+        return configuration.g_config_dict["ufs_web_server_port"]

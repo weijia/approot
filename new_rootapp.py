@@ -45,7 +45,7 @@ def stop_services_and_web_servers():
 def open_main():
     try:
         from webmanager.default_user_conf import get_default_username_and_pass
-        default_admin_password, default_admin_user = get_default_username_and_pass()
+        default_admin_user, default_admin_password = get_default_username_and_pass()
 
         webbrowser.open("http://127.0.0.1:%s/webmanager/login_and_go_home/?username=%s&password=%s&target="
                     "/objsys/manager/" % (str(configuration.g_config_dict["ufs_web_server_port"]),

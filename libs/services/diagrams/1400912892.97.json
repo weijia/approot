@@ -27,7 +27,7 @@
             "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py", 
             "outputs": [],
             "params": {
-                "target_url": "http://$UFS_SERVER_AND_PORT/url_based_task_apps/export/1/"
+                "target_url": "http://$UFS_SERVER_AND_PORT/url_based_task_apps/export/1/?process_ufs_url=ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py&diagram_ufs_url=diagram://18123be8-ecb5-4033-8fac-c4e2efeb6c0a"
             }
         }, 
         "jsPlumb_1_1": {
@@ -35,7 +35,10 @@
             "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
             "outputs": [
                 0
-            ]
+            ],
+            "params": {
+                "duration":60,"is_recursive":true
+            }
         }
     }, 
     "diagram_id": "18123be8-ecb5-4033-8fac-c4e2efeb6c0a"

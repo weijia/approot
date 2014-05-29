@@ -39,7 +39,7 @@ class SimpleTagging(PyroSimpleAppBase):
     #########################
     def put_msg(self, msg):
         links = ""
-        default_admin_password, default_admin_user = get_default_username_and_pass()
+        default_admin_user, default_admin_password = get_default_username_and_pass()
         log.debug(msg)
         for i in msg["urls"]:
             links += "url=" + quote_unicode(unicode(i)) + "&"

@@ -9,6 +9,7 @@ from objsys.models import UfsObj, Description
 from objsys.tastypie_related.tastypie_import import TastypieItem
 from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
+from webmanager.default_user_conf import get_default_username_and_pass
 
 
 log = logging.getLogger(__name__)
@@ -16,17 +17,19 @@ log = logging.getLogger(__name__)
 
 class ObjExportTask(TemplateView):
     template_name = "url_based_task_apps/export_result.html"
-    TASK_UFS_URL = "task://export_from_localhost1"
-    SERVER_BASE = "http://127.0.0.1"
-    SERVER_BASE_AND_PORT = SERVER_BASE + ":8110"
-    INITIAL_IMPORT_URL = SERVER_BASE_AND_PORT + "objsys/api/ufsobj/ufsobj/?" \
-                                       "format=json&username=richard&password=johnpassword"
-    DIAGRAM_UFS_URL = "diagram://load_from_localhost1"
+    TASK_UFS_URL = "task://export_from_localhost"
+    DIAGRAM_UFS_URL = "diagram://load_from_localhost"
     NEXT_URL_PARAM_NAME = "next_url"
-    
-    
-    def get_default_initial_import_url():
 
+
+    @staticmethod
+    def get_default_initial_import_url():
+        default_admin_user, default_admin_password = get_default_username_and_pass()
+        return "http://" + ConfStorage.get_ufs_server_and_port_str() + \
+               "/objsys/api/ufsobj/ufsobj/?" + \
+               "format=json&username=%s&password=%s" % (default_admin_user, default_admin_password)
+
+    #noinspection PyAttributeOutsideInit
     def get_context_data(self, **kwargs):
         #return super(TaskResultView, self).get_context_data(**kwargs)
         context_data = super(ObjExportTask, self).get_context_data(**kwargs)
@@ -36,17 +39,17 @@ class ObjExportTask(TemplateView):
         #print context_data
         dict_result = {}
         self.result = ""
-        self.server_base = data.get("server_base", ConfStorage.get_ufs_server_and_port_str())
+        self.server_base = data.get("server_base", "http://" + ConfStorage.get_ufs_server_and_port_str())
         self.process_ufs_url = data.get("process_ufs_url", self.TASK_UFS_URL)
         self.diagram_ufs_url = data.get("diagram_ufs_url", self.DIAGRAM_UFS_URL)
-        self.initial_import_url = data.get("initial_import_url", ConfStorage.get_ufs_server_and_port_str())
+        self.initial_import_url = data.get("initial_import_url", self.get_default_initial_import_url())
         self.force_direct_access_param = data.get("force_direct_access", "yes")
-        
+
         if self.force_direct_access_param == "yes":
             self.force_direct_access = True
         else:
             self.force_direct_access = False
-        
+
         self.processor_state = self.load_task_state()
         #log.error(self.processor_state)
         next_url = self.get_next_url(self.processor_state)
@@ -69,7 +72,7 @@ class ObjExportTask(TemplateView):
         saved_total_count = self.get_saved_attr_value("total_count")
         saved_offset = self.get_saved_attr_value("offset")
         saved_limit = self.get_saved_attr_value("limit")
-        if saved_offset+saved_limit > saved_total_count:
+        if saved_offset + saved_limit > saved_total_count:
             if dict_result["meta"]["total_count"] == saved_total_count:
                 return False
         return True
@@ -78,23 +81,24 @@ class ObjExportTask(TemplateView):
         if "next_url" in state:
             next_url = state[self.NEXT_URL_PARAM_NAME]
         else:
-            next_url = ConfStorage.get_ufs_server_and_port_str()+
+            next_url = self.initial_import_url
         return next_url
 
     def update_new_state_for_attr(self, retrieved_data_dict, state_attr):
         if state_attr in retrieved_data_dict["meta"]:
             self.new_state[state_attr] = retrieved_data_dict["meta"][state_attr]
-            self.result += state_attr + ":" + str(retrieved_data_dict["meta"][state_attr])+"\n"
+            self.result += state_attr + ":" + str(retrieved_data_dict["meta"][state_attr]) + "\n"
 
     def save_next_url(self, retrieved_data_dict):
-        self.new_state = {self.NEXT_URL_PARAM_NAME: self.get_saved_attr_value(self.NEXT_URL_PARAM_NAME)}
+        self.new_state = self.processor_state.copy()
+        self.new_state[self.NEXT_URL_PARAM_NAME] = self.get_saved_attr_value(self.NEXT_URL_PARAM_NAME)
         #log.error(retrieved_data_dict)
         if "meta" in retrieved_data_dict:
             if ("next" in retrieved_data_dict["meta"]) and \
                     (not (retrieved_data_dict["meta"]["next"] is None)):
-                self.result += "saving next:" + retrieved_data_dict["meta"]["next"]+"\n"
+                self.result += "saving next:" + retrieved_data_dict["meta"]["next"] + "\n"
 
-                self.new_state[self.NEXT_URL_PARAM_NAME] = self.SERVER_BASE + retrieved_data_dict["meta"]["next"]
+                self.new_state[self.NEXT_URL_PARAM_NAME] = self.server_base + retrieved_data_dict["meta"]["next"]
 
             self.update_new_state_for_attr(retrieved_data_dict, "total_count")
             self.update_new_state_for_attr(retrieved_data_dict, "offset")
@@ -113,9 +117,8 @@ class ObjExportTask(TemplateView):
         self.result += str(result)
         return result
 
-    @staticmethod
-    def fetch_json_data(data_url):
-        if not self.force_direct_access: 
+    def fetch_json_data(self, data_url):
+        if not self.force_direct_access:
             response = urllib2.urlopen(data_url)
         else:
             proxy_handler = urllib2.ProxyHandler({})
@@ -163,7 +166,7 @@ class ObjExportTask(TemplateView):
             self.import_one_obj(item)
 
     def save_data_to_file(self, dict_result):
-        encoded_server = self.server_base.replace("http://", "").replace("/", "_").replace(":", "_")+"_"
+        encoded_server = self.server_base.replace("http://", "").replace("/", "_").replace(":", "_") + "_"
         path = ConfStorage.get_free_name_for_exported_data(encoded_server)
         of = open(path, "w")
         json.dump(dict_result, of, indent=4)
