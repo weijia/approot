@@ -1,6 +1,10 @@
 # -*- coding: gbk -*-
 import logging
-from simple_app_import_lib import *
+import sys
+print sys.path
+#There are 2 ufs_django_conf file in the codes. In exe, the file in root will be used. Otherwise, simple app
+# use the local file located in service/simple_apps
+from ufs_django_conf import *
 from connection.models import Processor
 from diagram.diagram import get_all_processors_for_diagram, dispatch_to_processor
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase

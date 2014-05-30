@@ -1,7 +1,9 @@
 import logging
 import threading
 import time
-from simple_app_import_lib import *
+#There are 2 ufs_django_conf file in the codes. In exe, the file in root will be used. Otherwise, simple app
+# use the local file located in service/simple_apps
+from ufs_django_conf import *
 from msg_service.predefined_receivers import DISTRIBUTOR
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from services.sap.msg_service_sap import AutoRouteMsgService

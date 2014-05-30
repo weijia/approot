@@ -1,6 +1,8 @@
 import json
 import logging
-from simple_app_import_lib import *
+#There are 2 ufs_django_conf file in the codes. In exe, the file in root will be used. Otherwise, simple app
+# use the local file located in service/simple_apps
+from ufs_django_conf import *
 from objsys.tastypie_related.tastypie_import import TastypieImporter
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 from jsonrpc.proxy import ServiceProxy
