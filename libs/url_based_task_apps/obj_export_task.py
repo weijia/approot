@@ -1,6 +1,8 @@
 import json
 import logging
+import urllib
 import urllib2
+import urlparse
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from tagging.models import Tag
@@ -11,6 +13,7 @@ from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
 from webmanager.default_user_conf import get_default_username_and_pass
 from ufs_utils.web.smart_opener import open_url
+from ufs_utils.web.url_updater import update_url_param
 
 
 log = logging.getLogger(__name__)
@@ -100,6 +103,11 @@ class ObjExportTask(TemplateView):
                 self.result += "saving next:" + retrieved_data_dict["meta"]["next"] + "\n"
 
                 self.new_state[self.NEXT_URL_PARAM_NAME] = self.server_base + retrieved_data_dict["meta"]["next"]
+            elif self.NEXT_URL_PARAM_NAME in self.new_state:
+                attr_name = "offset"
+                attr_value = retrieved_data_dict["meta"]["offset"]
+                self.new_state[self.NEXT_URL_PARAM_NAME] = \
+                    update_url_param(self.new_state[self.NEXT_URL_PARAM_NAME], attr_name, attr_value)
 
             self.update_new_state_for_attr(retrieved_data_dict, "total_count")
             self.update_new_state_for_attr(retrieved_data_dict, "offset")
