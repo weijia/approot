@@ -74,8 +74,11 @@ class ObjExportTask(TemplateView):
 
     def is_updated(self, dict_result):
         saved_total_count = self.get_saved_attr_value("total_count")
-        if dict_result["meta"]["total_count"] == saved_total_count:
-            return False
+        saved_offset = self.get_saved_attr_value("offset")
+        saved_limit = self.get_saved_attr_value("limit")
+        if saved_offset + saved_limit > saved_total_count:
+            if dict_result["meta"]["total_count"] == saved_total_count:
+                return False
         return True
 
     def get_next_url(self, state):
