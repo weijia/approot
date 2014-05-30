@@ -23,7 +23,3 @@ REM The script sets environment variables helpful for PostgreSQL
 REM Next line MUST be uncommented the first time to init the server, it can then be commented.
 if not exist %PGDATA% "%POSTGRESQL_ROOT%\bin\initdb" -U postgres -A trust -E UTF8
 "%POSTGRESQL_ROOT%\bin\pg_ctl" -D "%POSTGRESQL_ROOT%/../../data/data_post" -l %POSTGRESQL_ROOT%/../../logfile start
-
-rem ECHO "Click enter to stop"
-rem pause
-rem "%POSTGRESQL_ROOT%\bin\pg_ctl" -D "%POSTGRESQL_ROOT%/data" stop

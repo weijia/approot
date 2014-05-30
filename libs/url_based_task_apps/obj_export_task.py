@@ -59,7 +59,7 @@ class ObjExportTask(TemplateView):
         next_url = self.get_next_url(self.processor_state)
         #log.error(next_url)
         dict_result = self.fetch_json_data(next_url)
-        if self.is_updated(dict_result):
+        if self.is_new_obj_received(dict_result):
             #log.error("is updated returns true")
             self.save_data_to_file(dict_result)
             self.save_next_url(dict_result)
@@ -72,7 +72,8 @@ class ObjExportTask(TemplateView):
             saved_attr_value = default_value
         return saved_attr_value
 
-    def is_updated(self, dict_result):
+    def is_new_obj_received(self, dict_result):
+        #print dict_result["meta"]
         saved_total_count = self.get_saved_attr_value("total_count")
         saved_offset = self.get_saved_attr_value("offset")
         saved_limit = self.get_saved_attr_value("limit")

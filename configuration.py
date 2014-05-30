@@ -24,8 +24,6 @@ g_config_dict = {
 import traceback
 loaded_config = {}
 
-import libtool
-
 
 try:
     f = open(os.path.join(libtool.get_file_folder(__file__), 'config.json'), 'r')
