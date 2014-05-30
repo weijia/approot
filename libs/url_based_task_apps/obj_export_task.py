@@ -10,6 +10,7 @@ from objsys.tastypie_related.tastypie_import import TastypieItem
 from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
 from webmanager.default_user_conf import get_default_username_and_pass
+from ufs_utils.web.smart_opener import open_url
 
 
 log = logging.getLogger(__name__)
@@ -118,12 +119,7 @@ class ObjExportTask(TemplateView):
         return result
 
     def fetch_json_data(self, data_url):
-        if not self.force_direct_access:
-            response = urllib2.urlopen(data_url)
-        else:
-            proxy_handler = urllib2.ProxyHandler({})
-            opener = urllib2.build_opener(proxy_handler)
-            response = opener.open(data_url)
+        response = open_url(data_url)
         result = json.loads(response.read())
         return result
 
