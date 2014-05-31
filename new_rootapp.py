@@ -10,7 +10,7 @@ from iconizer import Iconizer
 #The following line must has lib import prefix, don't know why
 from app_framework.folders import get_or_create_app_data_folder
 from libtool.filetools import find_callable_in_app_framework
-from libtool.libtool import find_root_path, get_current_path, find_root
+from libtool.libtool import find_root_path, get_current_path, find_root, add_path_to_python_path_env
 import configuration
 from services.pyro_service.pyro_utils import shutdown_all
 
@@ -70,6 +70,8 @@ def main():
         i.add_final_close_listener(stop_postgresql)
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
         import configuration
+        add_path_to_python_path_env(root_path)
+        print "___________________", os.environ["PYTHONPATH"]
 
         i.execute({"new_ext_svr": [find_callable_in_app_framework("new_ext_svr")]})
         #i.execute({"dir": ["dir"]})

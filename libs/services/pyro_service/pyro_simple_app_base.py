@@ -36,6 +36,6 @@ class PyroSimpleAppBase(PyroServiceBase, SimpleAppBase):
     def start_service(self):
         if not self.is_checking_properties():
             log.debug("is not checking properties")
-            print "is not checking properties"
+            #print "is not checking properties"
             self.start_daemon_register_and_launch_loop()
         log.debug("quitting start service")
