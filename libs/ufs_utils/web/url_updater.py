@@ -1,9 +1,14 @@
+import logging
 import urllib
 import urlparse
 
 
+log = logging.getLogger(__name__)
+
+
 def update_url_param(original_url, attr_name, attr_value):
     #Use the old url but change the offset
+    log.error("%s, %s, %s" % (str(original_url), str(attr_name), str(attr_value)))
     parse_result = urlparse.urlparse(original_url)
     params = urlparse.parse_qs(parse_result.query)
     params[attr_name] = [attr_value]

@@ -6,6 +6,9 @@ from objsys.view_utils import get_ufs_obj_from_full_path
 from ufs_utils.django_utils import get_content_item_list_in_tastypie_format
 
 
+log = logging.getLogger(__name__)
+
+
 class App(object):
     """
     Can not be called directly
@@ -51,9 +54,6 @@ gIgnoreAppList = ["root.exe", "__init__.py", "ufs_django_conf.py",
 def list_in_tastypie_format(request):
     app_list = get_service_app_list()
     return get_content_item_list_in_tastypie_format(app_list)
-
-
-log = logging.getLogger(__name__)
 
 
 def get_service_app_list():

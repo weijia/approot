@@ -3,7 +3,7 @@ import os
 import sys
 import time
 import traceback
-import ufs_django_conf
+from ufs_django_conf import *
 
 from connection.models import Processor, Connection
 #from objsys.local_obj_tools import get_ufs_obj_from_ufs_url
@@ -15,6 +15,7 @@ from django.conf import settings
 from django.utils import timezone
 from objsys.view_utils import get_ufs_obj_from_ufs_url
 from services.sap.msg_service_sap import AutoRouteMsgService
+from ufs_utils.misc import ensure_dir
 
 
 gAutoStartDiagramTagName = "system:autostart"
@@ -25,29 +26,32 @@ def save_diagram_in_file_to_db(full_path):
     anonymous = User.objects.filter(pk=settings.ANONYMOUS_USER_ID)[0]
     file = open(full_path, 'r')
     data = json.load(file)
-    diagram_id = data["diagram_id"]
-    diag_obj_list = UfsObj.objects.filter(ufs_url=u"diagram://" + diagram_id, valid=True)
-    for item in diag_obj_list:
-        item.delete()
-    if 0 == diag_obj_list.count():
+    diagram_uuid = data["diagram_id"]
+    is_refresh_default_diagram_every_time = True
+    if is_refresh_default_diagram_every_time:
+        UfsObj.objects.filter(ufs_url=u"diagram://" + diagram_uuid, valid=True).delete()
         save_diagram(data, anonymous, False)
+    else:
+        diagram_obj_list = UfsObj.objects.filter(ufs_url=u"diagram://" + diagram_uuid, valid=True)
+        if 0 == diagram_obj_list.count():
+            save_diagram(data, anonymous, False)
 
 
 class Diagram(object):
-    def __init__(self, diagram_obj):
-        self.diagram_obj = diagram_obj
+    def __init__(self, diagram_ufs_obj):
+        self.diagram_ufs_obj = diagram_ufs_obj
 
     def get_info(self):
         tag_list = []
-        for tag in self.diagram_obj.tags:
+        for tag in self.diagram_ufs_obj.tags:
             tag_list.append(tag.name)
 
         processor_list = []
-        for processor in Processor.objects.filter(diagram_obj=self.diagram_obj):
+        for processor in Processor.objects.filter(diagram_obj=self.diagram_ufs_obj):
             processor_list.append(processor.ufsobj.ufs_url)
 
-        return {"data": self.diagram_obj.ufs_url, "full_path": self.diagram_obj.ufs_url,
-                "ufs_url": self.diagram_obj.ufs_url, "diagram_uuid": self.diagram_obj.uuid,
+        return {"data": self.diagram_ufs_obj.ufs_url, "full_path": self.diagram_ufs_obj.ufs_url,
+                "ufs_url": self.diagram_ufs_obj.ufs_url, "diagram_uuid": self.diagram_ufs_obj.uuid,
                 "tags": tag_list, "description": "<br/>".join(processor_list)}
 
 
@@ -66,57 +70,73 @@ def save_all_diagram_from_predefined_folders():
     return diagram_list
 
 
+def save_diagram_str_to_file(processor_export_str):
+    root_dir = find_root("approot")
+    ensure_dir(os.path.join(root_dir, "../diagrams/"))
+    dump_filename = os.path.join(root_dir, "../diagrams/" + str(time.time()) + ".json")
+    f = open(dump_filename, "w")
+    f.write(processor_export_str)
+    f.close()
+    return dump_filename
+
+
+log = logging.getLogger(__name__)
+
+
 def save_diagram(req_param, user, export_diagram=True):
     try:
-        processor_list = req_param["processorList"]
+        processor_list_in_req = req_param["processorList"]
         diagram_id = req_param["diagram_id"]
         auto_start = req_param.get("auto_start", False)
         info = ""
-        connection_uuid_list = {}
-        for i in processor_list:
+        connection_in_req_to_db_connection_mapping = {}
+        for i in processor_list_in_req:
             info += i + ","
             diagram_obj = get_diagram_obj(diagram_id, user)
 
-            if "params" in processor_list[i]:
-                param = processor_list[i]["params"]
+            if "params" in processor_list_in_req[i]:
+                param = processor_list_in_req[i]["params"]
             else:
                 param = {}
             param_str = json.dumps(param)
 
             #This object may be a script file object or a diagram object
-            obj = get_ufs_obj_from_ufs_url(processor_list[i]["ufs_url"])
+            processor_ufs_obj = get_ufs_obj_from_ufs_url(processor_list_in_req[i]["ufs_url"])
 
-            processor = create_processor(diagram_obj, obj, param_str)
+            processor = create_processor(diagram_obj, processor_ufs_obj, param_str)
 
-            for connection in processor_list[i]["inputs"]:
+            for connection in processor_list_in_req[i]["inputs"]:
+                #log.error("inputs: %d, %s" % (connection , str(connection_in_req_to_db_connection_mapping)))
                 #connection is 0, 1 .... created in jquery diagram
-                if not connection_uuid_list.has_key(connection):
+                if not (connection in connection_in_req_to_db_connection_mapping):
                     conn = Connection()
                     #conn's uuid will be created automatically
                     conn.save()
-                    connection_uuid_list[connection] = conn
+                    #log.error("%s, %s" % (str(connection_in_req_to_db_connection_mapping), str(conn)))
+                    connection_in_req_to_db_connection_mapping[connection] = conn
                 else:
-                    conn = connection_uuid_list[connection]
+                    conn = connection_in_req_to_db_connection_mapping[connection]
+
                 processor.inputs.add(conn)
 
-            for connection in processor_list[i]["outputs"]:
-                if not (connection in connection_uuid_list):
+            for connection in processor_list_in_req[i]["outputs"]:
+                if not (connection in connection_in_req_to_db_connection_mapping):
                     conn = Connection()
                     conn.save()
-                    connection_uuid_list[connection] = conn
+                    connection_in_req_to_db_connection_mapping[connection] = conn
                 else:
-                    conn = connection_uuid_list[connection]
+                    conn = connection_in_req_to_db_connection_mapping[connection]
                 processor.outputs.add(conn)
 
             processor.save()
 
         #If there is no processor list, process standalone processors. Just to make it work currently
-        if 0 == len(processor_list):
+        if 0 == len(processor_list_in_req):
             standalone_processor_list = req_param["standaloneProcessor"]
             diagram_obj = get_diagram_obj(diagram_id, user)
             for processor_info, param_str in standalone_processor_list:
-                obj = get_ufs_obj_from_ufs_url(processor_info["ufs_url"])
-                processor = create_processor(diagram_obj, obj, param_str)
+                processor_ufs_obj = get_ufs_obj_from_ufs_url(processor_info["ufs_url"])
+                processor = create_processor(diagram_obj, processor_ufs_obj, param_str)
 
     except:
         traceback.print_exc()
@@ -130,17 +150,7 @@ def save_diagram(req_param, user, export_diagram=True):
     if export_diagram:
         processor_export_str = json.dumps(req_param, indent=4)
         result_dict['dumped'] = processor_export_str
-        root_dir = find_root("approot")
-
-        try:
-            os.mkdir(os.path.join(root_dir, "../diagrams/"))
-        except:
-            #Maybe it already exists.
-            pass
-        dump_filename = os.path.join(root_dir, "../diagrams/" + str(time.time()) + ".json")
-        f = open(dump_filename, "w")
-        f.write(processor_export_str)
-        f.close()
+        dump_filename = save_diagram_str_to_file(processor_export_str)
         result_dict['dump_file'] = dump_filename
 
     result_dict['message'] = info
@@ -187,7 +197,7 @@ def get_all_processors_for_diagram(diagram_id):
 
 
 def dispatch_to_processor(diagram_uuid, processor, base_msg):
-    base_msg.update({"diagram": {"diagram_id": diagram_uuid, "processor_id": processor.ufsobj.uuid, }})
+    base_msg.update({"diagram": {"diagram_id": diagram_uuid, "processor_uuid": processor.uuid, }})
     param_dict = json.loads(processor.param_descriptor)
     base_msg.update(param_dict)
     target = get_app_name_from_full_path(processor.ufsobj.ufs_url)

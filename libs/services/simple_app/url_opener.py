@@ -14,6 +14,7 @@ class UrlOpener(PyroSimpleAppBase):
     def handle_req(self, msg):
         target_url = msg["target_url"]
         target_url = target_url.replace("$UFS_SERVER_AND_PORT", ConfStorage.get_ufs_server_and_port_str())
+        target_url = target_url.replace("$UFS_PROCESSOR_UUID", msg["diagram"]["processor_uuid"])
         log.error("opening: %s" % target_url)
         open_url(target_url)
 

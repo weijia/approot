@@ -71,7 +71,6 @@ def main():
         i.get_gui_launch_manager().taskbar_icon_app["Open Main Page"] = open_main
         import configuration
         add_path_to_python_path_env(root_path)
-        print "___________________", os.environ["PYTHONPATH"]
 
         i.execute({"new_ext_svr": [find_callable_in_app_framework("new_ext_svr")]})
         #i.execute({"dir": ["dir"]})

@@ -27,11 +27,11 @@ class Distributor(PyroSimpleAppBase):
         diagram_id = msg["diagram"]["diagram_id"]
         processors = get_all_processors_for_diagram(diagram_id)
         for processor in processors:
-            if processor.ufsobj.uuid == msg["diagram"]["processor_id"]:
+            if processor.uuid == msg["diagram"]["processor_uuid"]:
                 try:
                     connection = processor.outputs.all()[0]
                 except IndexError:
-                    print processor, connection
+                    log.error("No output processor found for %s on connection: %s" % (processor, connection))
                 target_processor = Processor.objects.filter(inputs=connection)[0]
                 dispatch_to_processor(diagram_id, target_processor, msg)
 

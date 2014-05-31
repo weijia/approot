@@ -12,8 +12,10 @@ from objsys.tastypie_related.tastypie_import import TastypieItem
 from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
 from webmanager.default_user_conf import get_default_username_and_pass
+from ufs_utils.obj_tools import is_web_url
 from ufs_utils.web.smart_opener import open_url
 from ufs_utils.web.url_updater import update_url_param
+from url_based_task_apps.state_storage import DjangoProcessorState
 
 
 log = logging.getLogger(__name__)
@@ -24,7 +26,7 @@ class ObjExportTask(TemplateView):
     TASK_UFS_URL = "task://export_from_localhost"
     DIAGRAM_UFS_URL = "diagram://load_from_localhost"
     NEXT_URL_PARAM_NAME = "next_url"
-
+    DEFAULT_PROCESSOR_UUID = "invalid_processor_uuid"
 
     @staticmethod
     def get_default_initial_import_url():
@@ -44,17 +46,13 @@ class ObjExportTask(TemplateView):
         dict_result = {}
         self.result = ""
         self.server_base = data.get("server_base", "http://" + ConfStorage.get_ufs_server_and_port_str())
-        self.process_ufs_url = data.get("process_ufs_url", self.TASK_UFS_URL)
-        self.diagram_ufs_url = data.get("diagram_ufs_url", self.DIAGRAM_UFS_URL)
+        self.process_uuid = data.get("process_uuid", self.DEFAULT_PROCESSOR_UUID)
         self.initial_import_url = data.get("initial_import_url", self.get_default_initial_import_url())
-        self.force_direct_access_param = data.get("force_direct_access", "yes")
 
-        if self.force_direct_access_param == "yes":
-            self.force_direct_access = True
-        else:
-            self.force_direct_access = False
+        self.state_storage = DjangoProcessorState(self.process_uuid)
+        self.processor_state = self.state_storage.get_state()
+        log.debug(str(self.processor_state))
 
-        self.processor_state = self.load_task_state()
         #log.error(self.processor_state)
         next_url = self.get_next_url(self.processor_state)
         #log.error(next_url)
@@ -83,7 +81,7 @@ class ObjExportTask(TemplateView):
         return True
 
     def get_next_url(self, state):
-        if "next_url" in state:
+        if self.NEXT_URL_PARAM_NAME in state:
             next_url = state[self.NEXT_URL_PARAM_NAME]
         else:
             next_url = self.initial_import_url
@@ -96,8 +94,8 @@ class ObjExportTask(TemplateView):
 
     def save_next_url(self, retrieved_data_dict):
         self.new_state = self.processor_state.copy()
-        self.new_state[self.NEXT_URL_PARAM_NAME] = self.get_saved_attr_value(self.NEXT_URL_PARAM_NAME)
         #log.error(retrieved_data_dict)
+        #log.error(""+str(self.new_state))
         if "meta" in retrieved_data_dict:
             if ("next" in retrieved_data_dict["meta"]) and \
                     (not (retrieved_data_dict["meta"]["next"] is None)):
@@ -105,41 +103,26 @@ class ObjExportTask(TemplateView):
 
                 self.new_state[self.NEXT_URL_PARAM_NAME] = self.server_base + retrieved_data_dict["meta"]["next"]
             elif self.NEXT_URL_PARAM_NAME in self.new_state:
-                attr_name = "offset"
-                attr_value = retrieved_data_dict["meta"]["total_count"]
-                self.new_state[self.NEXT_URL_PARAM_NAME] = \
-                    update_url_param(self.new_state[self.NEXT_URL_PARAM_NAME], attr_name, attr_value)
-                self.new_state["real_offset"] = attr_value
+                if is_web_url(self.new_state[self.NEXT_URL_PARAM_NAME]):
+                    self.new_state[self.NEXT_URL_PARAM_NAME] = \
+                        update_url_param(self.new_state[self.NEXT_URL_PARAM_NAME], "offset",
+                                         retrieved_data_dict["meta"]["total_count"])
+                    self.new_state["real_offset"] = retrieved_data_dict["meta"]["total_count"]
+                else:
+                    del self.new_state[self.NEXT_URL_PARAM_NAME]
 
             self.update_new_state_for_attr(retrieved_data_dict, "total_count")
             self.update_new_state_for_attr(retrieved_data_dict, "offset")
             self.update_new_state_for_attr(retrieved_data_dict, "limit")
 
             #log.error("saving new state: "+str(self.new_state))
-            self.save_task_state(self.new_state)
+            self.state_storage.save_state(self.new_state)
 
-    def load_task_state(self):
-        task_obj, created = UfsObj.objects.get_or_create(ufs_url=self.process_ufs_url)
-        diagram_obj, created = UfsObj.objects.get_or_create(ufs_url=self.diagram_ufs_url)
-        processor, created = Processor.objects.get_or_create(ufsobj=task_obj, diagram_obj=diagram_obj)
-        result = {}
-        if (not (processor.param_descriptor is None)) and (not (processor.param_descriptor == "")):
-            result = json.loads(processor.param_descriptor)
-        self.result += str(result)
-        return result
-
-    def fetch_json_data(self, data_url):
+    @staticmethod
+    def fetch_json_data(data_url):
         response = open_url(data_url)
         result = json.loads(response.read())
         return result
-
-    def save_task_state(self, state):
-        task_obj = UfsObj.objects.get(ufs_url=self.process_ufs_url)
-        processor = Processor.objects.get(ufsobj=task_obj)
-        self.result += "processor:" + str(processor) + "\n"
-        processor.param_descriptor = json.dumps(state)
-        processor.save()
-        self.result += "saved:" + str(processor.param_descriptor) + "\n"
 
     def import_one_obj(self, item):
         tastypie_item = TastypieItem(item)

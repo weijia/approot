@@ -10,6 +10,7 @@ class Connection(models.Model):
     def __unicode__(self):
         return unicode(self.connection_uuid)
 
+
 # Create your models here.
 class Processor(models.Model):
     '''
@@ -33,6 +34,7 @@ class Processor(models.Model):
         processor.output
         processor.params
     '''
+    uuid = models.CharField(max_length=60, default=get_new_uuid)
     #Object for the script or the diagram
     ufsobj = models.ForeignKey(UfsObj)
     
@@ -49,7 +51,6 @@ class Processor(models.Model):
     #There might be several inputs and outputs
     inputs = models.ManyToManyField(Connection, related_name="inputs", null=True, blank=True)
     outputs = models.ManyToManyField(Connection, related_name="outputs", null=True, blank=True)
-    
 
     def __unicode__(self):
         return unicode(self.ufsobj.ufs_url) + u'->' + unicode(self.diagram_obj.ufs_url)
