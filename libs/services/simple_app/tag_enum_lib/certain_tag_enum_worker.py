@@ -42,7 +42,7 @@ class CertainTaggedItemEnumWorker(StatedWorker):
                 "tag_app": tag_app,
                 "timestamp": time.mktime(tagged_item.timestamp.timetuple()) +
                 (tagged_item.timestamp.microsecond / 1000000.0),
-                "diagram_id": self.diagram_id})
+                "diagram_id": self.diagram_info["diagram_id"]})
             if self.is_quitting():
                 break
             time.sleep(1)
