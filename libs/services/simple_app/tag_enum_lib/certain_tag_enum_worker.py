@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 class CertainTaggedItemEnumWorker(StatedWorker):
     def __init__(self, diagram_info, parent, group=None, target=None, name=None, args=(), kwargs=None, verbose=None):
-        processor_uuid = diagram_info["process_uuid"]
+        processor_uuid = diagram_info["processor_uuid"]
         super(CertainTaggedItemEnumWorker, self).__init__(processor_uuid, parent, group, target, name, args, kwargs,
                                                           verbose)
         self.diagram_info = diagram_info

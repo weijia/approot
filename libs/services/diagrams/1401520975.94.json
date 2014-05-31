@@ -43,7 +43,7 @@
                 0
             ],
             "params": {
-                "duration":360000,"is_recursive":true
+                "duration":60,"is_recursive":true
             }
         }, 
         "jsPlumb_1_1": {

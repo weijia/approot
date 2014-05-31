@@ -5,7 +5,7 @@ import os
 
 urlpatterns = patterns('',
     #url(r'^connection/$', 'connection.views.create_diagram_obj'),
-    url(r'^services_list_tastypie_format/$', 'diagram.service.list_in_tastypie_format'),
+    url(r'^services_list_tastypie_format/$', 'ufs_diagram.service.list_in_tastypie_format'),
     url(r'^diagram_list/$', 'connection.views.get_diagrams'),
     url(r'^save_diagram/$', 'connection.save_diagram_view.handle_save_diagram'),
     url(r'^start_diagram/$', 'connection.views.handle_start_diagram_req'),

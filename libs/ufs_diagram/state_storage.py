@@ -1,5 +1,8 @@
-#noinspection PyClassHasNoInit
-class MethodNotImplemented:
+class MethodNotImplemented(Exception):
+    pass
+
+
+class NoParamDefined(Exception):
     pass
 
 
@@ -12,7 +15,10 @@ class StateStorageBase(object):
         raise MethodNotImplemented
 
     def get_state_dict(self, default_dict):
-        return self.get_state(default_dict)
+        try:
+            self.get_raw_state(default_dict)
+        except:
+            return default_dict
 
     def get_state_value(self, state_key, default_value):
         state_dict = self.get_state_dict({state_key: default_value})
