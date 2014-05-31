@@ -1,5 +1,5 @@
 import libsys
-from diagram.diagram import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, \
+from ufs_diagram.diagram_processing import save_all_diagram_from_predefined_folders, gAutoStartDiagramTagName, \
     gDiagramRootCollectionUuid, get_all_processors_for_diagram
 from iconizer.pyro_launcher import Launcher
 from tagging.models import TaggedItem

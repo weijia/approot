@@ -1,23 +1,10 @@
-#noinspection PyClassHasNoInit
 import json
 import logging
 from connection.models import Processor
+from ufs_diagram.state_storage import StateStorageBase
 
 
 log = logging.getLogger(__name__)
-
-
-class MethodNotImplemented:
-    pass
-
-
-#noinspection PyMethodMayBeStatic
-class StateStorageBase(object):
-    def get_state(self):
-        raise MethodNotImplemented
-
-    def save_state(self, state_dict):
-        raise MethodNotImplemented
 
 
 class DjangoProcessorState(StateStorageBase):

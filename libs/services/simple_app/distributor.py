@@ -6,7 +6,7 @@ print sys.path
 # use the local file located in service/simple_apps
 from ufs_django_conf import *
 from connection.models import Processor
-from diagram.diagram import get_all_processors_for_diagram, dispatch_to_processor
+from ufs_diagram.diagram_processing import get_all_processors_for_diagram, dispatch_to_processor
 from services.pyro_service.pyro_simple_app_base import PyroSimpleAppBase
 
 log = logging.getLogger(__name__)

@@ -1,4 +1,4 @@
-from services.svc_base.state import StateManager
+from diagram_processing.state import StateManager
 
 
 class DiagramState(object):

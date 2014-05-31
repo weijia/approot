@@ -17,7 +17,7 @@ class TagEnumApp(PyroSimpleAppBase):
 
     def handle_req(self, msg):
         diagram_id = msg["diagram"]["diagram_id"]
-        processor_id = msg["diagram"]["processor_id"]
+        #processor_uuid = msg["diagram"]["processor_uuid"]
         #if diagram_id in self.diagram_to_task:
         #    raise "Duplicated request"
         task = CertainTaggedItemEnumWorker(msg["diagram"], self)

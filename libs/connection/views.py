@@ -4,13 +4,13 @@ import json
 
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
-from diagram.diagram import get_all_diagrams
-from diagram.service import get_service_app_list
+from ufs_diagram.diagram_processing import get_all_diagrams
 from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required
 from platform_related.executor import execute_app
 from services.svc_base.service_starter import start_diagram
+from ufs_diagram.service import get_service_app_list
 from ufs_utils.django_utils import retrieve_param, get_content_item_list_in_tastypie_format, get_list_in_json, get_json_resp
 
 # Create your views here.

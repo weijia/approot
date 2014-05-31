@@ -1,0 +1,60 @@
+{
+    "standaloneProcessor": [
+        [
+            {
+                "data": "timer_service_app", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py"
+            }, 
+            null
+        ], 
+        [
+            {
+                "data": "tag_enum_app", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/tag_enum_app.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/tag_enum_app.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/tag_enum_app.py"
+            }, 
+            null
+        ], 
+        [
+            {
+                "data": "pull_service", 
+                "description": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/pull_service.py", 
+                "full_path": "G:/codes/codes/ufs/approot/libs/services/simple_app/pull_service.py", 
+                "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/pull_service.py"
+            }, 
+            null
+        ]
+    ], 
+    "processorList": {
+        "jsPlumb_1_11": {
+            "inputs": [
+                1
+            ], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/pull_service.py", 
+            "outputs": []
+        }, 
+        "jsPlumb_1_6": {
+            "inputs": [], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/timer_service_app.py", 
+            "outputs": [
+                0
+            ],
+            "params": {
+                "duration":360000,"is_recursive":true
+            }
+        }, 
+        "jsPlumb_1_1": {
+            "inputs": [
+                0
+            ], 
+            "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/tag_enum_app.py", 
+            "outputs": [
+                1
+            ]
+        }
+    }, 
+    "diagram_id": "b4ec15af-65cb-4db9-8e88-d028ea46548f"
+}

@@ -1,21 +1,19 @@
 import json
 import logging
-import urllib
-import urllib2
-import urlparse
+
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from tagging.models import Tag
-from connection.models import Processor
+from webmanager.default_user_conf import get_default_username_and_pass
+
 from objsys.models import UfsObj, Description
 from objsys.tastypie_related.tastypie_import import TastypieItem
 from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
-from webmanager.default_user_conf import get_default_username_and_pass
 from ufs_utils.obj_tools import is_web_url
 from ufs_utils.web.smart_opener import open_url
 from ufs_utils.web.url_updater import update_url_param
-from url_based_task_apps.state_storage import DjangoProcessorState
+from ufs_diagram.django_processor_state import DjangoProcessorState
 
 
 log = logging.getLogger(__name__)

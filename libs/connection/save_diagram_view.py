@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
-from diagram.diagram import save_diagram
+from ufs_diagram.diagram_processing import save_diagram
 
 from django.http import HttpResponse
 #from django.core import serializers
