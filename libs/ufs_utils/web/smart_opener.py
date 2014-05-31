@@ -6,5 +6,5 @@ def open_url(full_web_url):
         proxy_handler = urllib2.ProxyHandler({})
         opener = urllib2.build_opener(proxy_handler)
         return opener.open(full_web_url)
-    except KeyError:
+    except urllib2.HTTPError:
         return urllib2.urlopen(full_web_url)

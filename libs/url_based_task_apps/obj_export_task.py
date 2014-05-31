@@ -12,7 +12,7 @@ from config.conf_storage import ConfStorage
 from ufs_utils.django_utils import retrieve_param
 from ufs_utils.obj_tools import is_web_url
 from ufs_utils.web.smart_opener import open_url
-from ufs_utils.web.url_updater import update_url_param
+from ufs_utils.web.url_updater import update_url_param, get_server_base
 from ufs_diagram.django_processor_state import DjangoProcessorState
 
 
@@ -21,8 +21,8 @@ log = logging.getLogger(__name__)
 
 class ObjExportTask(TemplateView):
     template_name = "url_based_task_apps/export_result.html"
-    TASK_UFS_URL = "task://export_from_localhost"
-    DIAGRAM_UFS_URL = "diagram://load_from_localhost"
+    #TASK_UFS_URL = "task://export_from_localhost"
+    #DIAGRAM_UFS_URL = "diagram://load_from_localhost"
     NEXT_URL_PARAM_NAME = "next_url"
     DEFAULT_PROCESSOR_UUID = "invalid_processor_uuid"
 
@@ -43,9 +43,10 @@ class ObjExportTask(TemplateView):
         #print context_data
         dict_result = {}
         self.result = ""
-        self.server_base = data.get("server_base", "http://" + ConfStorage.get_ufs_server_and_port_str())
+        #self.server_base = data.get("server_base", "http://" + ConfStorage.get_ufs_server_and_port_str())
         self.process_uuid = data.get("process_uuid", self.DEFAULT_PROCESSOR_UUID)
         self.initial_import_url = data.get("initial_import_url", self.get_default_initial_import_url())
+        self.server_base = get_server_base(self.initial_import_url)
 
         self.state_storage = DjangoProcessorState(self.process_uuid)
         self.processor_state = self.state_storage.get_state()
@@ -153,8 +154,7 @@ class ObjExportTask(TemplateView):
             self.import_one_obj(item)
 
     def save_data_to_file(self, dict_result):
-        encoded_server = self.server_base.replace("http://", "").replace("/", "_").replace(":", "_") + "_"
-        path = ConfStorage.get_free_name_for_exported_data(encoded_server)
+        path = ConfStorage.get_server_exporting_free_name(self.server_base)
         of = open(path, "w")
         json.dump(dict_result, of, indent=4)
         of.close()

@@ -14,6 +14,14 @@ class ConfStorage(object):
         return get_free_timestamp_filename_in_path(exported_root_path, ".json", prefix)
 
     @staticmethod
+    def get_server_exporting_free_name(server):
+        exported_root_path = ConfStorage.get_root_path_for_exported_data()
+        encoded_server_name = server.replace("http://", "").replace("/", "_").replace(":", "_")
+        target_full_path = os.path.abspath(os.path.join(exported_root_path, encoded_server_name))
+        ensure_dir(target_full_path)
+        return get_free_timestamp_filename_in_path(target_full_path, ".json")
+
+    @staticmethod
     def get_root_path_for_exported_data():
         return os.path.join(find_root_even_frozen("approot"), "../obj_exported/")
 
