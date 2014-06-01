@@ -44,11 +44,11 @@ class ObjExportTask(TemplateView):
         dict_result = {}
         self.result = ""
         #self.server_base = data.get("server_base", "http://" + ConfStorage.get_ufs_server_and_port_str())
-        self.process_uuid = data.get("process_uuid", self.DEFAULT_PROCESSOR_UUID)
+        self.processor_uuid = data.get("processor_uuid", self.DEFAULT_PROCESSOR_UUID)
         self.initial_import_url = data.get("initial_import_url", self.get_default_initial_import_url())
         self.server_base = get_server_base(self.initial_import_url)
 
-        self.state_storage = DjangoProcessorState(self.process_uuid)
+        self.state_storage = DjangoProcessorState(self.processor_uuid)
         self.processor_state = self.state_storage.get_state()
         log.debug(str(self.processor_state))
 

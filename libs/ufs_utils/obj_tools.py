@@ -1,11 +1,18 @@
 import socket
-import configurationTools as config
+
 from ufs_utils import transform as transform
 from logsys.logSys import *
 #from objsys.models import UfsObj
 
 
-gUfsObjUrlPrefix = u'ufs' + config.getFsProtocolSeparator()
+def get_fs_protocol_separator():
+    try:
+        import configurationTools as config
+        return config.getFsProtocolSeparator()
+    except ImportError:
+        return "://"
+
+gUfsObjUrlPrefix = u'ufs' + get_fs_protocol_separator()
 gUfsObjUrlSeparator = u'/'
 
 
@@ -26,7 +33,7 @@ def get_formatted_full_path(full_path):
 
 
 def parseUrl(url):
-    return url.split(config.getFsProtocolSeparator(), 2)
+    return url.split(get_fs_protocol_separator(), 2)
 
 
 def get_hostname():
@@ -43,7 +50,6 @@ def getUfsUrlForPath(fullPath):
 
 def getFullPathFromUfsUrl(ufsUrl):
     if not isUfsFs(ufsUrl):
-        cl(ufsUrl)
         raise "not ufs url"
     objPath = parseUrl(ufsUrl)[1]
     hostname, fullPath = objPath.split(gUfsObjUrlSeparator, 1)
@@ -62,7 +68,7 @@ def get_full_path_for_local_os(ufs_url):
 
 
 def isUuid(url):
-    return url.find(u"uuid" + config.getFsProtocolSeparator()) == 0
+    return url.find(u"uuid" + get_fs_protocol_separator()) == 0
 
 
 def getUrlContent(url):
@@ -80,14 +86,14 @@ def getUuid(url):
 
 
 def getUrlForUuid(id):
-    return u"uuid" + config.getFsProtocolSeparator() + id
+    return u"uuid" + get_fs_protocol_separator() + id
 
 
 def isUfsUrl(url):
     """
     In format of xxxx://xxxx
     """
-    if url.find(config.getFsProtocolSeparator()) == -1:
+    if url.find(get_fs_protocol_separator()) == -1:
         return False
     else:
         return True
