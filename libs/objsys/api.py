@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.utils.timezone import is_naive
 from tastypie import fields
 from tastypie.resources import ModelResource
@@ -57,6 +58,12 @@ class DescriptionResource(ModelResource):
         authorization = DjangoAuthorization()
 
 
+class UserResource(ModelResource):
+    class Meta:
+        queryset = User.objects.all()
+        resource_name = 'user'
+
+
 class UfsObjResource(ModelResource):
     #json_indent = 2
     #descriptions = fields.ToOneField(DescriptionResource, 'descriptions')
@@ -95,6 +102,7 @@ class UfsObjResource(ModelResource):
         for tag in bundle.obj.tags:
             res.append(tag)
         bundle.data["tags"] = res
+        bundle.data["username"] = bundle.obj.user.username
         return bundle
 
     '''
