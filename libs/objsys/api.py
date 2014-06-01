@@ -101,7 +101,9 @@ class UfsObjResource(ModelResource):
         for tag in bundle.obj.tags:
             res.append(tag)
         bundle.data["tags"] = res
-        bundle.data["username"] = bundle.obj.user.username
+        user = bundle.obj.user
+        if not (user is None):
+            bundle.data["username"] = user.username
         return bundle
 
     '''
