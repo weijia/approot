@@ -27,7 +27,7 @@
             "ufs_url": "ufs://e6700/G:/codes/codes/ufs/approot/libs/services/simple_app/url_opener.py", 
             "outputs": [],
             "params": {
-                "target_url": "http://$UFS_SERVER_AND_PORT/url_based_task_apps/export/1/?processor_uuid=$UFS_PROCESSOR_UUID&initial_import_url=http://allbookmarks.sinaapp.com/objsys/api/ufsobj/ufsobj/?format=json%26username=$ALLBOOKMARK_USERNAME%26password=$ALLBOOKMARK_PASSWORD"
+                "target_url": "http://$UFS_SERVER_AND_PORT/url_based_task_apps/export/1/?processor_uuid=$UFS_PROCESSOR_UUID&initial_import_url=http://tag4u.sinaapp.com/objsys/api/ufsobj/ufsobj/?format=json%26username=$TAG4U_USERNAME%26password=$TAG4U_PASSWORD"
             }
         }, 
         "jsPlumb_1_1": {
@@ -41,5 +41,5 @@
             }
         }
     }, 
-    "diagram_id": "ad193f5c-6c52-48d8-a3ee-875579899ac5"
+    "diagram_id": "af9c3f6a-afc9-4fe7-94c2-d4f672690d2e"
 }
