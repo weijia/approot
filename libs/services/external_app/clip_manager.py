@@ -1,8 +1,8 @@
 from PyQt4 import QtCore
 from clip_manager_ui import Ui_MainWindow
 import sys
-from PyQt4.QtGui import QApplication, QDialog, QMainWindow, QFileDialog
-
+from PyQt4.QtGui import QApplication, QMainWindow, QFileDialog
+from PyQt4 import Qsci
 
 class ClipManagerApp(object):
     def __init__(self):
@@ -14,6 +14,8 @@ class ClipManagerApp(object):
         self.window.connect(self.ui.action, QtCore.SIGNAL('triggered()'), self.on_open)
         self.window.connect(self.ui.action_3, QtCore.SIGNAL('triggered()'), self.on_exit)
         self.window.connect(self.ui.action_4, QtCore.SIGNAL('triggered()'), self.on_execute)
+
+        self.ui.textEdit.setLexer(Qsci.QsciLexerPython())
 
         self.ui.textEdit.setText("""#y=x
 ##or
