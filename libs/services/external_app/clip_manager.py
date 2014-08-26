@@ -15,6 +15,13 @@ class ClipManagerApp(object):
         self.window.connect(self.ui.action_3, QtCore.SIGNAL('triggered()'), self.on_exit)
         self.window.connect(self.ui.action_4, QtCore.SIGNAL('triggered()'), self.on_execute)
 
+        self.ui.textEdit.setText("""#y=x
+##or
+#yl = []
+#for i in xl:
+#    yl.append(i+"i")
+"""
+        )
         self.window.show()
         sys.exit(app.exec_())
 
@@ -34,7 +41,7 @@ class ClipManagerApp(object):
     def on_execute(self):
         script_text = str(self.ui.textEdit.text())
         # print 'script is:',script_text
-        source_text = self.ui.textEdit_2.text()
+        source_text = str(self.ui.textEdit_2.text())
         source_text = source_text.replace('\r', '')
         xl = source_text.split('\n')
         #Set source text to x so script can use x as source text as well
