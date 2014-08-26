@@ -13,6 +13,7 @@ class ClipManagerApp(object):
 
         self.window.connect(self.ui.action, QtCore.SIGNAL('triggered()'), self.on_open)
         self.window.connect(self.ui.action_3, QtCore.SIGNAL('triggered()'), self.on_exit)
+        self.window.connect(self.ui.action_4, QtCore.SIGNAL('triggered()'), self.on_execute)
 
         self.window.show()
         sys.exit(app.exec_())
@@ -30,8 +31,8 @@ class ClipManagerApp(object):
     def on_exit(self):
         self.window.close()
 
-    def execute(self):
-        script_text = self.ui.textEdit.text()
+    def on_execute(self):
+        script_text = str(self.ui.textEdit.text())
         # print 'script is:',script_text
         source_text = self.ui.textEdit_2.text()
         source_text = source_text.replace('\r', '')

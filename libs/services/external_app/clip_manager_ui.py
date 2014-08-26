@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\weijia\Desktop\resumes\clip_manager.ui'
+# Form implementation generated from reading ui file 'libs\services\external_app\clip_manager.ui'
 #
-# Created: Mon Aug 25 22:39:50 2014
-# by: PyQt4 UI code generator 4.10.3
+# Created: Tue Aug 26 21:44:07 2014
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,13 +17,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -64,20 +62,30 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menu = QtGui.QMenu(self.menubar)
         self.menu.setObjectName(_fromUtf8("menu"))
+        self.menu_2 = QtGui.QMenu(self.menubar)
+        self.menu_2.setObjectName(_fromUtf8("menu_2"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
+        self.toolBar = QtGui.QToolBar(MainWindow)
+        self.toolBar.setObjectName(_fromUtf8("toolBar"))
+        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.action = QtGui.QAction(MainWindow)
         self.action.setObjectName(_fromUtf8("action"))
         self.action_2 = QtGui.QAction(MainWindow)
         self.action_2.setObjectName(_fromUtf8("action_2"))
         self.action_3 = QtGui.QAction(MainWindow)
         self.action_3.setObjectName(_fromUtf8("action_3"))
+        self.action_4 = QtGui.QAction(MainWindow)
+        self.action_4.setObjectName(_fromUtf8("action_4"))
         self.menu.addAction(self.action)
         self.menu.addAction(self.action_2)
         self.menu.addAction(self.action_3)
+        self.menu_2.addAction(self.action_4)
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menu_2.menuAction())
+        self.toolBar.addAction(self.action_4)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -85,9 +93,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
         self.menu.setTitle(_translate("MainWindow", "文件", None))
+        self.menu_2.setTitle(_translate("MainWindow", "脚本", None))
+        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar", None))
         self.action.setText(_translate("MainWindow", "打开", None))
         self.action_2.setText(_translate("MainWindow", "保存", None))
         self.action_3.setText(_translate("MainWindow", "退出", None))
-
+        self.action_4.setText(_translate("MainWindow", "执行", None))
 
 from PyQt4 import Qsci
