@@ -30,6 +30,32 @@ class ClipManagerApp(object):
     def on_exit(self):
         self.window.close()
 
+    def execute(self):
+        script_text = self.ui.textEdit.text()
+        # print 'script is:',script_text
+        source_text = self.ui.textEdit_2.text()
+        source_text = source_text.replace('\r', '')
+        xl = source_text.split('\n')
+        #Set source text to x so script can use x as source text as well
+        x = source_text
+        y = None
+        t = None
+        exec script_text
+        #print y
+        if y is None:
+            y = '\n'.join(yl)
+            #print y
+        self.ui.textEdit_3.setText(y)
+
+        """
+        if self.autoTransformFlag:
+            if (t is None) or t:
+                print 'setting text to %s' % y
+                type = self.combo.child.get_text()
+                print 'current type is:', type
+                self.setClipboardData(type, y)
+        """
+
 
 def main():
     c = ClipManagerApp()
